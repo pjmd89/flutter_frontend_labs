@@ -13,7 +13,7 @@ class Template extends StatelessWidget {
   Widget build(BuildContext context) {
     String localeCode = context.watch<AppLocaleNotifier>().locale;
     return MaterialApp.router(
-      routerConfig: templateRouter,
+      routerConfig: loginRouter,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,
