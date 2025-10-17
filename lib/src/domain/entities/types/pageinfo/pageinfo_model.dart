@@ -2,12 +2,12 @@ import "package:json_annotation/json_annotation.dart";
 part "pageinfo_model.g.dart";
 @JsonSerializable(includeIfNull: false)
 class PageInfo {
-  final num page;
-  final num pages;
-  final num shown;
-  final num total;
-  final num overall;
-  final num split;
+  num page;
+  num pages;
+  num shown;
+  num total;
+  num overall;
+  num split;
   PageInfo({
     this.page = 0,
     this.pages = 0,

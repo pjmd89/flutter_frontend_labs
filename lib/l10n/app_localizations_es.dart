@@ -22,4 +22,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get brightnessDark => 'Oscuro';
+
+  @override
+  String get date => 'Fecha';
+
+  @override
+  String get confirm => 'Confirmar';
+
+  @override
+  String get somethingWentWrong => 'Algo salió mal';
+
+  @override
+  String get connectionError => 'Error de conexión';
+
+  @override
+  String get pleaseTryLater => 'Por favor, inténtelo más tarde';
+
+  @override
+  String get tryAgain => 'Inténtalo de nuevo';
+
+  @override
+  String get undefinedError => 'Undefined error';
+
+  @override
+  String get formatEmailError => 'Invalid email format';
+
+  @override
+  String get emptyFieldError => 'Empty field';
 }

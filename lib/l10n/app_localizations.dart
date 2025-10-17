@@ -124,6 +124,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Oscuro'**
   String get brightnessDark;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha'**
+  String get date;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get confirm;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Algo salió mal'**
+  String get somethingWentWrong;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Error de conexión'**
+  String get connectionError;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Por favor, inténtelo más tarde'**
+  String get pleaseTryLater;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Inténtalo de nuevo'**
+  String get tryAgain;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Undefined error'**
+  String get undefinedError;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Invalid email format'**
+  String get formatEmailError;
+
+  ///
+  ///
+  /// In es, this message translates to:
+  /// **'Empty field'**
+  String get emptyFieldError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,23 +1,59 @@
 {
-    "@@locale": "en",
-    "languageEnglish":"English",
-    "@languageEnglish": {
-      "description": ""
-    },
-    "languageSpanish":"Spanish",
-    "@languageSpanish": {
-      "description": ""
-    },
-    "brightnessTheme":"Theme",
-    "@brightnessTheme": {
-      "description": ""
-    },
-    "brightnessLight":"Light",
-    "@brightnessLight": {
-      "description": ""
-    },
-    "brightnessDark":"Dark",
-    "@brightnessDark": {
-      "description": ""
-    }
+  "@@locale": "en",
+  "languageEnglish":"English",
+  "@languageEnglish": {
+    "description": ""
+  },
+  "languageSpanish":"Spanish",
+  "@languageSpanish": {
+    "description": ""
+  },
+  "brightnessTheme":"Theme",
+  "@brightnessTheme": {
+    "description": ""
+  },
+  "brightnessLight":"Light",
+  "@brightnessLight": {
+    "description": ""
+  },
+  "brightnessDark":"Dark",
+  "@brightnessDark": {
+    "description": ""
+  },
+  "date":"Date",
+  "@date": {
+    "description": ""
+  },
+  "confirm":"Confirm",
+  "@confirm": {
+    "description": ""
+  },
+  "somethingWentWrong":"Something went wrong",
+  "@somethingWentWrong": {
+    "description": ""
+  },
+  "connectionError":"Connection error",
+  "@connectionError": {
+    "description": ""
+  },
+  "pleaseTryLater":"Please try later",
+  "@pleaseTryLater": {
+    "description": ""
+  },
+  "tryAgain":"Inténtalo de nuevo",
+  "@tryAgain": {
+    "description": ""
+  },
+  "undefinedError":"Undefined error",
+  "@undefinedError": {
+    "description": ""
+  },
+  "formatEmailError":"Invalid email format",
+  "@formatEmailError": {
+    "description": ""
+  },
+  "emptyFieldError":"Empty field",
+  "@emptyFieldError": {
+    "description": ""
+  }
 }

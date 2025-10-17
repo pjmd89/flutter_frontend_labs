@@ -9,12 +9,14 @@ import 'examtemplate_routes.dart';
 import 'examindicator_routes.dart';
 import 'invoice_routes.dart';
 import 'patient_routes.dart';
+import 'login_routes.dart';
 
 ShellRoute userShellRoute = ShellRoute(
   builder: (context, state, child) {
     return BasicTemplate(child: child);
   },
   routes: [
+    ...loginRoutes,
     ...examRoutes,
     ...companyRoutes,
     ...laboratoryRoutes,
@@ -28,7 +30,7 @@ ShellRoute userShellRoute = ShellRoute(
 );
 
 GoRouter templateRouter = GoRouter(
-  initialLocation: "/",
+  initialLocation: "/login",
   routes: [
     userShellRoute
   ],

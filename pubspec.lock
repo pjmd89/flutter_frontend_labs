@@ -14,7 +14,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "7881211642dae5772cd8d886fb6bc1b9283f3407"
+      resolved-ref: "0a79f70b16f55b2c751043a09a225ad7d06fbd06"
       url: "https://github.com/pjmd89/agile_front.git"
     source: git
     version: "0.1.0"

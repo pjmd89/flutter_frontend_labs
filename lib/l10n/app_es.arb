@@ -19,5 +19,41 @@
   "brightnessDark":"Oscuro",
   "@brightnessDark": {
     "description": ""
+  },
+  "date":"Fecha",
+  "@date": {
+    "description": ""
+  },
+  "confirm":"Confirmar",
+  "@confirm": {
+    "description": ""
+  },
+  "somethingWentWrong":"Algo salió mal",
+  "@somethingWentWrong": {
+    "description": ""
+  },
+  "connectionError":"Error de conexión",
+  "@connectionError": {
+    "description": ""
+  },
+  "pleaseTryLater":"Por favor, inténtelo más tarde",
+  "@pleaseTryLater": {
+    "description": ""
+  },
+  "tryAgain":"Inténtalo de nuevo",
+  "@tryAgain": {
+    "description": ""
+  },
+  "undefinedError":"Undefined error",
+  "@undefinedError": {
+    "description": ""
+  },
+  "formatEmailError":"Invalid email format",
+  "@formatEmailError": {
+    "description": ""
+  },
+  "emptyFieldError":"Empty field",
+  "@emptyFieldError": {
+    "description": ""
   }
 }
