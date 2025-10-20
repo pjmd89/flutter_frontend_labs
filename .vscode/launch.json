@@ -7,6 +7,9 @@
             "type": "dart",
             "toolArgs": [
                 "--dart-define-from-file=.env/dev.json"
+            ],
+            "args": [
+                "--web-port=8081"
             ]
         }
     ]

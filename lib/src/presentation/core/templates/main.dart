@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import '/src/presentation/core/navigation/routes/main.dart';
 import '/src/presentation/core/themes/teal.dart';
+import '/src/presentation/providers/auth_notifier.dart';
 import '/src/presentation/providers/locale_notifier.dart';
 import '/l10n/app_localizations.dart';
 
@@ -12,8 +13,10 @@ class Template extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String localeCode = context.watch<AppLocaleNotifier>().locale;
+    final authNotifier = context.watch<AuthNotifier>();
+    final router = authNotifier.isAuthenticated ? templateRouter : loginRouter;
     return MaterialApp.router(
-      routerConfig: loginRouter,
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,

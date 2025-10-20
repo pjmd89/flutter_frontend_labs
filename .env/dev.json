@@ -5,5 +5,9 @@
     "desktopApiURL":"https://localhost:8443/",
     "mobileWsURL":"https://localhost:8443/ws/",
     "webWsURL":"https://localhost:8443/ws/",
-    "desktopWsURL":"https://localhost:8443/ws/"
+    "desktopWsURL":"https://localhost:8443/ws/",
+    "mobileAuthURL":"https://localhost:8443/auth/google",
+    "webAuthURL":"https://localhost:8443/auth/google",
+    "desktopAuthURL":"https://localhost:8443/auth/google",
+    "webAuthCallbackPath":"https://localhost:8443/auth/google/callback"
 }
