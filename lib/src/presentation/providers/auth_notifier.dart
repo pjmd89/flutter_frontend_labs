@@ -1,47 +1,36 @@
 import 'package:flutter/foundation.dart';
-import '/src/infraestructure/auth/oauth_platform.dart';
+import 'package:labs/src/domain/entities/enums/role_enum.dart';
+import 'package:labs/src/domain/entities/types/user/user_model.dart';
 
 class AuthNotifier extends ChangeNotifier {
-  AuthNotifier() {
-    bootstrap();
-  }
+  AuthNotifier();
 
-  String? _accessToken;
-  String? _refreshToken;
-  bool _initializing = true;
+  String? _firstName;
+  String? _lastName;
+  String? _id;
+  Role? _role;
 
-  bool get initializing => _initializing;
-  bool get isAuthenticated => !_initializing && _accessToken != null && _accessToken!.isNotEmpty;
-  String? get accessToken => _accessToken;
-  String? get refreshToken => _refreshToken;
+  String get firstName => _firstName ?? '';
+  String get fullName => '$_firstName ${_lastName ?? ''}'.trim();
+  String get id => _id ?? '';
+  Role? get role => _role;
+  bool get isAuthenticated => _id != null;
+  
 
-  void bootstrap() {
-    if (_initializing) {
-      if (kIsWeb) {
-        _accessToken = readStoredAccessToken();
-        _refreshToken = readStoredRefreshToken();
-      }
-      _initializing = false;
-      notifyListeners();
-    }
-  }
+  Future<void> signIn({required User user}) async {
+    _firstName = user.firstName;
+    _lastName = user.lastName;
+    _id = user.id;
+    _role = user.role;
 
-  Future<void> signIn({required String accessToken, String? refreshToken}) async {
-    _accessToken = accessToken;
-    _refreshToken = refreshToken;
-    if (kIsWeb) {
-      persistOAuthTokens(accessToken: accessToken, refreshToken: refreshToken);
-    }
     notifyListeners();
   }
 
   Future<void> signOut() async {
-    _accessToken = null;
-    _refreshToken = null;
-    if (kIsWeb) {
-      clearStoredTokens();
-      clearOAuthState();
-    }
+    _firstName = null;
+    _lastName = null;
+    _id = null;
+    _role = null;
     notifyListeners();
   }
 }

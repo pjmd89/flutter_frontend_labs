@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import '/src/infraestructure/auth/oauth_platform.dart';
-import '/src/presentation/providers/auth_notifier.dart';
+import 'package:labs/src/domain/entities/types/user/user_model.dart';
+import './view_model.dart';
 
 class AuthCallbackPage extends StatefulWidget {
   const AuthCallbackPage({super.key, required this.uri});
@@ -16,64 +15,47 @@ class AuthCallbackPage extends StatefulWidget {
 class _AuthCallbackPageState extends State<AuthCallbackPage> {
   String? _status;
   bool _success = false;
-
+  bool _loading = true;
+  late ViewModel viewModel;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _handleCallback());
   }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    viewModel = ViewModel(context: context);
+  }
 
   Future<void> _handleCallback() async {
-    final returnedState = widget.uri.queryParameters['state'];
-    final storedState = retrieveOAuthState();
-
-    if (storedState == null || storedState != returnedState) {
+    final User? user = await viewModel.loggedUser();
+    
+    if(user == null){
       setState(() {
-        _status = 'No fue posible validar la sesión de OAuth (state inválido).';
+        _status = 'Error al validar las credenciales.';
         _success = false;
+        _loading = false;
       });
-      return;
     }
 
-    clearOAuthState();
+    if(user != null){
 
-    final errorDescription = widget.uri.queryParameters['error_description'] ?? widget.uri.queryParameters['error'];
-    if (errorDescription != null) {
       setState(() {
-        _status = 'Google devolvió un error: $errorDescription';
-        _success = false;
+        _status = 'Inicio de sesión exitoso. Redirigiendo…';
+        _success = true;
+        _loading = false;
       });
-      return;
+      _scheduleRedirect(user);
     }
+  }
 
-    final token = widget.uri.queryParameters['token'] ?? widget.uri.queryParameters['access_token'];
-    final refresh = widget.uri.queryParameters['refresh_token'];
-
-    if (token == null || token.isEmpty) {
-      setState(() {
-        _status = 'No se recibió ningún token en la redirección.';
-        _success = false;
-      });
-      return;
-    }
-
-    persistOAuthTokens(accessToken: token, refreshToken: refresh);
-    if (!mounted) return;
-
-    await context.read<AuthNotifier>().signIn(accessToken: token, refreshToken: refresh);
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _status = 'Autenticación completada. Redirigiendo…';
-      _success = true;
-    });
-
-    Future.delayed(const Duration(milliseconds: 250), () {
+  void _scheduleRedirect(User user) {
+    final router = GoRouter.of(context);
+    Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
-      context.go('/dashboard');
+      viewModel.setLoginUser(user);
+      router.go('/home');
     });
   }
 
@@ -88,7 +70,7 @@ class _AuthCallbackPageState extends State<AuthCallbackPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(),
+              _loading ? const CircularProgressIndicator() : const SizedBox.shrink(),
               const SizedBox(height: 24),
               Text(
                 _status ?? 'Validando credenciales…',

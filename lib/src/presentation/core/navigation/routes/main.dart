@@ -41,7 +41,7 @@ ShellRoute loginShellRoute = ShellRoute(
 );
 
 GoRouter templateRouter = GoRouter(
-  initialLocation: "/dashboard",
+  initialLocation: "/home",
   routes: [
     userShellRoute
   ],
