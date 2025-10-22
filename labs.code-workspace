@@ -1,8 +1,21 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "dart.projectSearchDepth": 10,
+    "dart.flutterSdkPath": null,
+    "dart.analysisExcludedFolders": [
+      "/home/munozp/Desktop/tcp",
+      "/home/munozp/Proyectos/go",
+      "/home/munozp/Proyectos/terraform"
+    ],
+    "go.directoryFilters": [
+      "-Desktop",
+      "-Proyectos/go",
+      "-Proyectos/terraform"
+    ]
+  }
 }
