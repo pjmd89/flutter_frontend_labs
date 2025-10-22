@@ -11,4 +11,5 @@ const _$RoleEnumMap = {
   Role.admin: 'admin',
   Role.owner: 'owner',
   Role.technician: 'technician',
+  Role.billing: 'billing',
 };

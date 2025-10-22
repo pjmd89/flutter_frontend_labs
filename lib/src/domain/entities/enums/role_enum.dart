@@ -10,4 +10,6 @@ enum Role {
   owner,
   @JsonValue("technician")
   technician,
+  @JsonValue("billing")
+  billing,
 }

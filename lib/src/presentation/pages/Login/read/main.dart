@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '/src/infraestructure/auth/oauth_platform.dart';
 import '/src/infraestructure/auth/oauth_state.dart';
 import '/src/infraestructure/config/env.dart';
@@ -80,6 +81,11 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Image.asset(
+                  'assets/images/asb.png',
+                  height: 120,
+                  fit: BoxFit.contain,
+                ),
                 Text(
                   'Inicia sesión con Google',
                   style: Theme.of(context).textTheme.headlineSmall,
@@ -88,7 +94,12 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 24),
                 ElevatedButton.icon(
                   onPressed: _isRedirecting ? null : _startGoogleLogin,
-                  icon: const Icon(Icons.login),
+                  icon: SvgPicture.asset(
+                    'assets/images/google.svg',
+                    height: 24,
+                    width: 24,
+                    semanticsLabel: 'Google logo',
+                  ),
                   label: Text(_isRedirecting ? 'Redirigiendo…' : 'Continuar con Google'),
                 ),
                 const SizedBox(height: 16),

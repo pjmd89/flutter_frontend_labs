@@ -24,9 +24,12 @@ class CustomDrawer extends StatelessWidget {
       list.add(drawerHeader!);
     }
     for(final i in drawerButtonConfigList){
-      list.add(CustomDrawerButton(
-        key: Key('drawer_button_${drawerButtonConfigList.indexOf(i)}'),
-        drawerButtonConfig: i
+      list.add(Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: CustomDrawerButton(
+          key: Key('drawer_button_${drawerButtonConfigList.indexOf(i)}'),
+          drawerButtonConfig: i
+        ),
       ));
     }
     return list;
