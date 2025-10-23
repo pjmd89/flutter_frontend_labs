@@ -23,6 +23,7 @@ dependencies:
   flutter_svg: ^2.0.9
   intl: any
   web: ^1.1.1
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:

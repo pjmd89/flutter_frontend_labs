@@ -1,10 +1,12 @@
 {
     "version": "0.2.0",
     "configurations": [
-        { 
-            "name": "dev",
+        {
+            "name": "Flutter (dev)",
             "request": "launch",
             "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
             "toolArgs": [
                 "--dart-define-from-file=.env/dev.json"
             ],

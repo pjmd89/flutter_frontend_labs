@@ -51,9 +51,9 @@ class _UserPageState extends State<UserPage> {
         child: Wrap(
           spacing: 20,
           runSpacing: 20,
-          children: viewModel.loading
+          children: /*viewModel.loading
             ? [const Center(child: CircularProgressIndicator())]
-            : [
+            : */[
               ReadCard(),
             ],
           /*

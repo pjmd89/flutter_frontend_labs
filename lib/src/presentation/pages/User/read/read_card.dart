@@ -7,19 +7,25 @@ class ReadCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Column(
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 360, maxHeight: 150),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
+            leading: const CircleAvatar(
+              child: Icon(Icons.person_outline),
+            ),
             title: Text(
               'Jaime Reyes',
               style: theme.textTheme.titleMedium,
             ),
             subtitle: const Text('Laboratorio Clínico Dr. Jaime ...'),
-            trailing: const CircleAvatar(
-              child: Icon(Icons.person_outline),
+            trailing: IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: () {},
             ),
           ),
           const Divider(height: 1),
@@ -42,6 +48,7 @@ class ReadCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
