@@ -162,6 +162,14 @@
   "@name": {
     "description": "Etiqueta para campo de nombre"
   },
+  "firstName": "Nombre",
+  "@firstName": {
+    "description": "Etiqueta para campo de nombre (primer nombre)"
+  },
+  "lastName": "Apellido",
+  "@lastName": {
+    "description": "Etiqueta para campo de apellido"
+  },
   "email": "Correo electrónico",
   "@email": {
     "description": "Etiqueta para campo de correo electrónico"

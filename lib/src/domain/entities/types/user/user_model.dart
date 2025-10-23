@@ -1,6 +1,7 @@
 import "/src/domain/entities/main.dart";
 import "package:json_annotation/json_annotation.dart";
 part "user_model.g.dart";
+
 @JsonSerializable(includeIfNull: false)
 class User {
   @JsonKey(name: "_id")
@@ -9,7 +10,7 @@ class User {
   final String lastName;
   final Role? role;
   final String email;
-  final String cutOffDate;
+  final num cutOffDate;
   final num fee;
   final String created;
   final String updated;
@@ -19,7 +20,7 @@ class User {
     this.lastName = "",
     this.role,
     this.email = "",
-    this.cutOffDate = "",
+    this.cutOffDate = 0,
     this.fee = 0,
     this.created = "",
     this.updated = "",

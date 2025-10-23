@@ -251,6 +251,18 @@ abstract class AppLocalizations {
   /// **'Nombre'**
   String get name;
 
+  /// Etiqueta para campo de nombre (primer nombre)
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get firstName;
+
+  /// Etiqueta para campo de apellido
+  ///
+  /// In es, this message translates to:
+  /// **'Apellido'**
+  String get lastName;
+
   /// Etiqueta para campo de correo electrónico
   ///
   /// In es, this message translates to:

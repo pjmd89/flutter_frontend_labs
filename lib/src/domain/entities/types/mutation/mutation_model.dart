@@ -19,6 +19,7 @@ class Mutation {
   final Laboratory? manageLaboratoryEmployees;
   final Patient? createPatient;
   final Patient? updatePatient;
+  final Patient? deletePatient;
   final User? createUser;
   final User? updateUser;
   final User? deleteUser;
@@ -39,6 +40,7 @@ class Mutation {
     this.manageLaboratoryEmployees,
     this.createPatient,
     this.updatePatient,
+    this.deletePatient,
     this.createUser,
     this.updateUser,
     this.deleteUser,

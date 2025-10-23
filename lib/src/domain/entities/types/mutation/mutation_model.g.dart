@@ -87,6 +87,10 @@ Mutation _$MutationFromJson(Map<String, dynamic> json) => Mutation(
       json['updatePatient'] == null
           ? null
           : Patient.fromJson(json['updatePatient'] as Map<String, dynamic>),
+  deletePatient:
+      json['deletePatient'] == null
+          ? null
+          : Patient.fromJson(json['deletePatient'] as Map<String, dynamic>),
   createUser:
       json['createUser'] == null
           ? null
@@ -123,6 +127,7 @@ Map<String, dynamic> _$MutationToJson(Mutation instance) => <String, dynamic>{
     'manageLaboratoryEmployees': value,
   if (instance.createPatient case final value?) 'createPatient': value,
   if (instance.updatePatient case final value?) 'updatePatient': value,
+  if (instance.deletePatient case final value?) 'deletePatient': value,
   if (instance.createUser case final value?) 'createUser': value,
   if (instance.updateUser case final value?) 'updateUser': value,
   if (instance.deleteUser case final value?) 'deleteUser': value,

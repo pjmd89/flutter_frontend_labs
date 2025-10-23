@@ -6,8 +6,6 @@ import '/src/domain/operation/fields_builders/main.dart';
 import '/src/domain/operation/queries/getUsers/getusers_query.dart';
 import '/src/domain/extensions/edgeuser_fields_builder_extension.dart';
 import '/src/domain/usecases/User/read_user_usecase.dart';
-import '/src/domain/entities/inputs/searchinput_input.dart';
-import '/src/domain/entities/types/pageinfo/pageinfo_model.dart';
 
 class ViewModel extends ChangeNotifier {
   bool _loading = false;

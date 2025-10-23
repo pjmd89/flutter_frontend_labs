@@ -12,7 +12,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
   lastName: json['lastName'] as String? ?? "",
   role: $enumDecodeNullable(_$RoleEnumMap, json['role']),
   email: json['email'] as String? ?? "",
-  cutOffDate: json['cutOffDate'] as String? ?? "",
+  cutOffDate: json['cutOffDate'] as num? ?? 0,
   fee: json['fee'] as num? ?? 0,
   created: json['created'] as String? ?? "",
   updated: json['updated'] as String? ?? "",

@@ -162,6 +162,14 @@
   "@name": {
     "description": "Label for name field"
   },
+  "firstName": "First Name",
+  "@firstName": {
+    "description": "Label for first name field"
+  },
+  "lastName": "Last Name",
+  "@lastName": {
+    "description": "Label for last name field"
+  },
   "email": "Email",
   "@email": {
     "description": "Label for email field"
