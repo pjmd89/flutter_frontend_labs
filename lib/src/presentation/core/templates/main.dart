@@ -9,8 +9,40 @@ import '/src/presentation/providers/auth_notifier.dart';
 import '/src/presentation/providers/locale_notifier.dart';
 import '/l10n/app_localizations.dart';
 
-class Template extends StatelessWidget {
+class Template extends StatefulWidget {
   const Template({super.key});
+
+  @override
+  State<Template> createState() => _TemplateState();
+}
+
+class _TemplateState extends State<Template> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final authNotifier = context.read<AuthNotifier>();
+    authNotifier.addListener(_onAuthChanged);
+  }
+
+  void _onAuthChanged() {
+    final authNotifier = context.read<AuthNotifier>();
+
+    if (!authNotifier.isAuthenticated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.go('/login');
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    final authNotifier = context.read<AuthNotifier>();
+    authNotifier.removeListener(_onAuthChanged);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +65,7 @@ class Template extends StatelessWidget {
       default:
         router = loginRouter;
     }
-    
+
     return MaterialApp.router(
       routerConfig: router,
       debugShowCheckedModeBanner: false,
@@ -45,10 +77,7 @@ class Template extends StatelessWidget {
       ],
       theme: TealTheme().materialTheme,
       locale: Locale(localeCode),
-      supportedLocales: const [
-        Locale('es'),
-        Locale('en'),
-      ],
+      supportedLocales: const [Locale('es'), Locale('en')],
     );
   }
 }

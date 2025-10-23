@@ -34,6 +34,7 @@ class ViewModel extends ChangeNotifier {
     );
 
     try {
+      input.laboratoryID = null;
       var response = await useCase.execute(input: input);
 
       if (response is User) {

@@ -19,7 +19,7 @@ CreateUserInput _$CreateUserInputFromJson(Map<String, dynamic> json) =>
               : CreateCompanyInput.fromJson(
                 json['companyInfo'] as Map<String, dynamic>,
               ),
-      cutOffDate: json['cutOffDate'] as String?,
+      cutOffDate: json['cutOffDate'] as num?,
       fee: json['fee'] as num?,
     );
 

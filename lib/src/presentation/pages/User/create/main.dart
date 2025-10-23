@@ -23,6 +23,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Role? selectedRole;
+  DateTime? selectedCutOffDate;
 
   @override
   void initState() {
@@ -139,10 +140,24 @@ class _UserCreatePageState extends State<UserCreatePage> {
                       controller: cutOffDateController,
                       isDense: true,
                       fieldLength: FormFieldLength.password,
+                      readOnly: true,
                       counterText: "",
-                      onChange: (value) {
-                        viewModel.input.cutOffDate = value;
+                      onTap: () async {
+                        final pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: selectedCutOffDate ?? DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+                        if (pickedDate != null) {
+                          setState(() {
+                            selectedCutOffDate = pickedDate;
+                            cutOffDateController.text =
+                                pickedDate.toLocal().toString().split(' ')[0];
+                          });
+                        }
                       },
+                      onChange: (_) {}, // No hacer nada aquí
                     ),
                     const SizedBox(height: 16),
                     CustomTextFormField(
@@ -177,6 +192,14 @@ class _UserCreatePageState extends State<UserCreatePage> {
                           ? null
                           : () async {
                             if (formKey.currentState!.validate()) {
+                              // Asignar fecha como unix timestamp
+                              if (selectedRole == Role.owner) {
+                                viewModel.input.cutOffDate =
+                                    selectedCutOffDate != null
+                                        ? selectedCutOffDate!
+                                            .millisecondsSinceEpoch
+                                        : null;
+                              }
                               var isErr = await viewModel.create();
 
                               if (!isErr) {

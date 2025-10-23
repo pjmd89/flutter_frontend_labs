@@ -23,8 +23,6 @@ class GQLNotifier extends ChangeNotifier {
       'Session error detected: ${errors.map((e) => e.message).join(', ')}',
     );
 
-    // Hacer signOut - esto automáticamente redirigirá al login
-    // porque Template está escuchando cambios en AuthNotifier
     await authNotifier.signOut();
   }
 }
