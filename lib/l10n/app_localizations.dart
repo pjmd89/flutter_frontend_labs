@@ -178,6 +178,150 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Empty field'**
   String get emptyFieldError;
+
+  /// Término para usuario en singular
+  ///
+  /// In es, this message translates to:
+  /// **'Usuario'**
+  String get user;
+
+  /// Término para usuarios en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Usuarios'**
+  String get users;
+
+  /// Plantilla para crear entidad masculina/neutra. Ej: Nuevo Usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo {thing}'**
+  String newThing(String thing);
+
+  /// Plantilla para crear entidad femenina. Ej: Nueva Empresa
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva {thing}'**
+  String newFemeThing(String thing);
+
+  /// Plantilla para acción de crear. Ej: Crear Usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Crear {thing}'**
+  String createThing(String thing);
+
+  /// Plantilla para acción de actualizar. Ej: Actualizar Usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar {thing}'**
+  String updateThing(String thing);
+
+  /// Plantilla para acción de editar. Ej: Editar Usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Editar {thing}'**
+  String editThing(String thing);
+
+  /// Plantilla para acción de eliminar. Ej: Eliminar Usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar {thing}'**
+  String deleteThing(String thing);
+
+  /// Pregunta de confirmación para eliminar. Ej: ¿Está seguro de eliminar Usuario?
+  ///
+  /// In es, this message translates to:
+  /// **'¿Está seguro de eliminar {thing}?'**
+  String deleteQuestion(String thing);
+
+  /// Mensaje cuando no hay registros (masculino/neutro). Ej: No hay Usuarios registrados
+  ///
+  /// In es, this message translates to:
+  /// **'No hay {thing} registrados'**
+  String noRegisteredMaleThings(String thing);
+
+  /// Mensaje cuando no hay registros (femenino). Ej: No hay Empresas registradas
+  ///
+  /// In es, this message translates to:
+  /// **'No hay {thing} registradas'**
+  String noRegisteredFemaleThings(String thing);
+
+  /// Etiqueta para campo de nombre
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get name;
+
+  /// Etiqueta para campo de correo electrónico
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get email;
+
+  /// Mensaje mostrado durante carga de datos
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando...'**
+  String get loading;
+
+  /// Mensaje de error cuando falla la carga de datos
+  ///
+  /// In es, this message translates to:
+  /// **'Error al cargar los datos'**
+  String get errorLoadingData;
+
+  /// Mensaje cuando no existen datos para mostrar
+  ///
+  /// In es, this message translates to:
+  /// **'No hay datos disponibles'**
+  String get noDataAvailable;
+
+  /// Acción o etiqueta para búsqueda
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar'**
+  String get search;
+
+  /// Acción o etiqueta para filtrado
+  ///
+  /// In es, this message translates to:
+  /// **'Filtrar'**
+  String get filter;
+
+  /// Acción para editar registro
+  ///
+  /// In es, this message translates to:
+  /// **'Editar'**
+  String get edit;
+
+  /// Acción para eliminar registro
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get delete;
+
+  /// Acción para guardar cambios
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get save;
+
+  /// Acción para cancelar operación
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get cancel;
+
+  /// Acción para ver laboratorios de un usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Ver laboratorios'**
+  String get viewLaboratories;
+
+  /// Acción para ver facturación de un usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Ver facturación'**
+  String get viewBilling;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

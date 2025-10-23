@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 
 class UserItem extends StatelessWidget {
   final User user;
+  final AppLocalizations l10n;
   final Function(String id)? onViewLabs;
   final Function(String id)? onViewBilling;
   final Function(String id)? onUpdate;
@@ -11,6 +13,7 @@ class UserItem extends StatelessWidget {
   const UserItem({
     super.key,
     required this.user,
+    required this.l10n,
     this.onViewLabs,
     this.onViewBilling,
     this.onUpdate,
@@ -45,23 +48,23 @@ class UserItem extends StatelessWidget {
                 },
                 itemBuilder:
                     (context) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'edit',
                         child: Row(
                           children: [
-                            Icon(Icons.edit),
-                            SizedBox(width: 8),
-                            Text('Editar'),
+                            const Icon(Icons.edit),
+                            const SizedBox(width: 8),
+                            Text(l10n.edit),
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'delete',
                         child: Row(
                           children: [
-                            Icon(Icons.delete),
-                            SizedBox(width: 8),
-                            Text('Eliminar'),
+                            const Icon(Icons.delete),
+                            const SizedBox(width: 8),
+                            Text(l10n.delete),
                           ],
                         ),
                       ),
@@ -77,13 +80,13 @@ class UserItem extends StatelessWidget {
                   if (onViewLabs != null)
                     OutlinedButton(
                       onPressed: () => onViewLabs!(user.id),
-                      child: const Text('Ver laboratorios'),
+                      child: Text(l10n.viewLaboratories),
                     ),
                   if (onViewLabs != null) const SizedBox(width: 8),
                   if (onViewBilling != null)
                     FilledButton(
                       onPressed: () => onViewBilling!(user.id),
-                      child: const Text('Ver facturación'),
+                      child: Text(l10n.viewBilling),
                     ),
                 ],
               ),

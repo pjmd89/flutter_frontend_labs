@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import './view_model.dart';
 import './user_item.dart';
 
 List<Widget> buildList({
   required BuildContext context,
   required ViewModel viewModel,
+  required AppLocalizations l10n,
 }) {
   // Estado: Cargando
   if (viewModel.loading) {
@@ -14,18 +16,19 @@ List<Widget> buildList({
 
   // Estado: Error
   if (viewModel.error) {
-    return [const Center(child: Text('Error al cargar los usuarios'))];
+    return [Center(child: Text(l10n.errorLoadingData))];
   }
 
   // Estado: Sin datos
   if (viewModel.userList == null || viewModel.userList!.isEmpty) {
-    return [const Center(child: Text('No hay usuarios disponibles'))];
+    return [Center(child: Text(l10n.noRegisteredMaleThings(l10n.users)))];
   }
 
-  // Estado: Con datos
+  // Estado: Con datos - mapea cada item a su widget
   return viewModel.userList!.map((user) {
     return UserItem(
       user: user,
+      l10n: l10n,
       onUpdate: (id) async {
         final result = await context.push('/user/update/$id');
         if (result == true) {

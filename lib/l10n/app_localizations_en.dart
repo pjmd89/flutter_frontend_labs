@@ -49,4 +49,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyFieldError => 'Empty field';
+
+  @override
+  String get user => 'User';
+
+  @override
+  String get users => 'Users';
+
+  @override
+  String newThing(String thing) {
+    return 'New $thing';
+  }
+
+  @override
+  String newFemeThing(String thing) {
+    return 'New $thing';
+  }
+
+  @override
+  String createThing(String thing) {
+    return 'Create $thing';
+  }
+
+  @override
+  String updateThing(String thing) {
+    return 'Update $thing';
+  }
+
+  @override
+  String editThing(String thing) {
+    return 'Edit $thing';
+  }
+
+  @override
+  String deleteThing(String thing) {
+    return 'Delete $thing';
+  }
+
+  @override
+  String deleteQuestion(String thing) {
+    return 'Are you sure you want to delete $thing?';
+  }
+
+  @override
+  String noRegisteredMaleThings(String thing) {
+    return 'No $thing registered';
+  }
+
+  @override
+  String noRegisteredFemaleThings(String thing) {
+    return 'No $thing registered';
+  }
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get errorLoadingData => 'Error loading data';
+
+  @override
+  String get noDataAvailable => 'No data available';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get viewLaboratories => 'View laboratories';
+
+  @override
+  String get viewBilling => 'View billing';
 }

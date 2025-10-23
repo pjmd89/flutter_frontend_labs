@@ -55,5 +55,161 @@
   "emptyFieldError":"Empty field",
   "@emptyFieldError": {
     "description": ""
+  },
+  
+  "user": "Usuario",
+  "@user": {
+    "description": "Término para usuario en singular"
+  },
+  "users": "Usuarios",
+  "@users": {
+    "description": "Término para usuarios en plural"
+  },
+  
+  "newThing": "Nuevo {thing}",
+  "@newThing": {
+    "description": "Plantilla para crear entidad masculina/neutra. Ej: Nuevo Usuario",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "newFemeThing": "Nueva {thing}",
+  "@newFemeThing": {
+    "description": "Plantilla para crear entidad femenina. Ej: Nueva Empresa",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Empresa"
+      }
+    }
+  },
+  "createThing": "Crear {thing}",
+  "@createThing": {
+    "description": "Plantilla para acción de crear. Ej: Crear Usuario",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "updateThing": "Actualizar {thing}",
+  "@updateThing": {
+    "description": "Plantilla para acción de actualizar. Ej: Actualizar Usuario",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "editThing": "Editar {thing}",
+  "@editThing": {
+    "description": "Plantilla para acción de editar. Ej: Editar Usuario",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "deleteThing": "Eliminar {thing}",
+  "@deleteThing": {
+    "description": "Plantilla para acción de eliminar. Ej: Eliminar Usuario",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "deleteQuestion": "¿Está seguro de eliminar {thing}?",
+  "@deleteQuestion": {
+    "description": "Pregunta de confirmación para eliminar. Ej: ¿Está seguro de eliminar Usuario?",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  
+  "noRegisteredMaleThings": "No hay {thing} registrados",
+  "@noRegisteredMaleThings": {
+    "description": "Mensaje cuando no hay registros (masculino/neutro). Ej: No hay Usuarios registrados",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuarios"
+      }
+    }
+  },
+  "noRegisteredFemaleThings": "No hay {thing} registradas",
+  "@noRegisteredFemaleThings": {
+    "description": "Mensaje cuando no hay registros (femenino). Ej: No hay Empresas registradas",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Empresas"
+      }
+    }
+  },
+  
+  "name": "Nombre",
+  "@name": {
+    "description": "Etiqueta para campo de nombre"
+  },
+  "email": "Correo electrónico",
+  "@email": {
+    "description": "Etiqueta para campo de correo electrónico"
+  },
+  
+  "loading": "Cargando...",
+  "@loading": {
+    "description": "Mensaje mostrado durante carga de datos"
+  },
+  "errorLoadingData": "Error al cargar los datos",
+  "@errorLoadingData": {
+    "description": "Mensaje de error cuando falla la carga de datos"
+  },
+  "noDataAvailable": "No hay datos disponibles",
+  "@noDataAvailable": {
+    "description": "Mensaje cuando no existen datos para mostrar"
+  },
+  
+  "search": "Buscar",
+  "@search": {
+    "description": "Acción o etiqueta para búsqueda"
+  },
+  "filter": "Filtrar",
+  "@filter": {
+    "description": "Acción o etiqueta para filtrado"
+  },
+  "edit": "Editar",
+  "@edit": {
+    "description": "Acción para editar registro"
+  },
+  "delete": "Eliminar",
+  "@delete": {
+    "description": "Acción para eliminar registro"
+  },
+  "save": "Guardar",
+  "@save": {
+    "description": "Acción para guardar cambios"
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Acción para cancelar operación"
+  },
+  "viewLaboratories": "Ver laboratorios",
+  "@viewLaboratories": {
+    "description": "Acción para ver laboratorios de un usuario"
+  },
+  "viewBilling": "Ver facturación",
+  "@viewBilling": {
+    "description": "Acción para ver facturación de un usuario"
   }
 }

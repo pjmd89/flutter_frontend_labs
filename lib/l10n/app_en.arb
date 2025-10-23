@@ -55,5 +55,161 @@
   "emptyFieldError":"Empty field",
   "@emptyFieldError": {
     "description": ""
+  },
+  
+  "user": "User",
+  "@user": {
+    "description": "Term for user in singular form"
+  },
+  "users": "Users",
+  "@users": {
+    "description": "Term for users in plural form"
+  },
+  
+  "newThing": "New {thing}",
+  "@newThing": {
+    "description": "Template for creating new entity. Ex: New User",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "newFemeThing": "New {thing}",
+  "@newFemeThing": {
+    "description": "Template for creating new entity (same as newThing in English). Ex: New Company",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Company"
+      }
+    }
+  },
+  "createThing": "Create {thing}",
+  "@createThing": {
+    "description": "Template for create action. Ex: Create User",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "updateThing": "Update {thing}",
+  "@updateThing": {
+    "description": "Template for update action. Ex: Update User",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "editThing": "Edit {thing}",
+  "@editThing": {
+    "description": "Template for edit action. Ex: Edit User",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "deleteThing": "Delete {thing}",
+  "@deleteThing": {
+    "description": "Template for delete action. Ex: Delete User",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "deleteQuestion": "Are you sure you want to delete {thing}?",
+  "@deleteQuestion": {
+    "description": "Confirmation question for deletion. Ex: Are you sure you want to delete User?",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  
+  "noRegisteredMaleThings": "No {thing} registered",
+  "@noRegisteredMaleThings": {
+    "description": "Message when no records exist. Ex: No Users registered",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Users"
+      }
+    }
+  },
+  "noRegisteredFemaleThings": "No {thing} registered",
+  "@noRegisteredFemaleThings": {
+    "description": "Message when no records exist (same as male in English). Ex: No Companies registered",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Companies"
+      }
+    }
+  },
+  
+  "name": "Name",
+  "@name": {
+    "description": "Label for name field"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Label for email field"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Message displayed during data loading"
+  },
+  "errorLoadingData": "Error loading data",
+  "@errorLoadingData": {
+    "description": "Error message when data loading fails"
+  },
+  "noDataAvailable": "No data available",
+  "@noDataAvailable": {
+    "description": "Message when no data exists to display"
+  },
+  
+  "search": "Search",
+  "@search": {
+    "description": "Action or label for search"
+  },
+  "filter": "Filter",
+  "@filter": {
+    "description": "Action or label for filtering"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Action to edit record"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Action to delete record"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Action to save changes"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Action to cancel operation"
+  },
+  "viewLaboratories": "View laboratories",
+  "@viewLaboratories": {
+    "description": "Action to view user's laboratories"
+  },
+  "viewBilling": "View billing",
+  "@viewBilling": {
+    "description": "Action to view user's billing"
   }
 }

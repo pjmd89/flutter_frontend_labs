@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/infraestructure/utils/search_fields.dart';
 import 'package:labs/src/presentation/core/ui/search/main.dart';
 import './view_model.dart';
@@ -7,26 +8,26 @@ import './view_model.dart';
 SearchTemplateConfig getSearchConfig({
   required BuildContext context,
   required ViewModel viewModel,
+  required AppLocalizations l10n,
 }) {
   return SearchTemplateConfig(
     rightWidget: FilledButton.icon(
       icon: const Icon(Icons.add),
-      label: Text("Nuevo Usuario"),
+      label: Text(l10n.newThing(l10n.user)),
       onPressed: () async {
-        final pushResult = await context.push('/destinationoffice/create');
+        final pushResult = await context.push('/user/create');
         if (pushResult == true) {
-          //viewModel.getResults();
+          viewModel.getUsers();
         }
       },
     ),
-    searchFields: [SearchFields(field: 'name')],
-    //pageInfo: viewModel.pageInfo,
+    searchFields: [SearchFields(field: 'name'), SearchFields(field: 'email')],
+    pageInfo: viewModel.pageInfo,
     onSearchChanged: (search) {
-      //viewModel.search(search);
+      viewModel.search(search);
     },
     onPageInfoChanged: (pageInfo) {
-      //viewModel.pageInfo = pageInfo;
-      //viewModel.getResults();
+      viewModel.updatePageInfo(pageInfo);
     },
   );
 }

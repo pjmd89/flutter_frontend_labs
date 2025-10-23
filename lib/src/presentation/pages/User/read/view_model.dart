@@ -2,18 +2,32 @@ import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/domain/operation/fields_builders/main.dart';
+import '/src/domain/operation/queries/getUsers/getusers_query.dart';
+import '/src/domain/extensions/edgeuser_fields_builder_extension.dart';
+import '/src/domain/usecases/User/read_user_usecase.dart';
+import '/src/domain/entities/inputs/searchinput_input.dart';
+import '/src/domain/entities/types/pageinfo/pageinfo_model.dart';
 
 class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   List<User>? _userList;
+  PageInfo? _pageInfo;
 
   late GqlConn _gqlConn;
+  late ReadUserUsecase _readUseCase;
   final BuildContext _context;
+
+  // Query con FieldsBuilder configurado
+  final GetUsersQuery _operation = GetUsersQuery(
+    builder: EdgeUserFieldsBuilder().defaultValues(),
+  );
 
   bool get loading => _loading;
   bool get error => _error;
   List<User>? get userList => _userList;
+  PageInfo? get pageInfo => _pageInfo;
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -30,14 +44,19 @@ class ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  set pageInfo(PageInfo? value) {
+    _pageInfo = value;
+    notifyListeners();
+  }
+
   ViewModel({required BuildContext context}) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _readUseCase = ReadUserUsecase(operation: _operation, conn: _gqlConn);
     _init();
   }
 
   Future<void> _init() async {
-    // TODO: Implementar getUsers cuando esté lista la query
-    // await getUsers();
+    await getUsers();
   }
 
   Future<void> getUsers() async {
@@ -45,20 +64,41 @@ class ViewModel extends ChangeNotifier {
     error = false;
 
     try {
-      // TODO: Implementar llamada a GraphQL
-      // final response = await _gqlConn.operation(operation: getUsersQuery);
-      // userList = response.data?.getUsers?.edges ?? [];
+      final response = await _readUseCase.build();
 
-      // Datos de prueba temporales
-      userList = [];
+      if (response is EdgeUser) {
+        userList = response.edges;
+        pageInfo = response.pageInfo;
+      }
     } catch (e) {
       error = true;
+      userList = [];
     } finally {
       loading = false;
     }
   }
 
-  read(Operation operation) async {
-    _gqlConn.operation(operation: operation);
+  Future<void> search(List<SearchInput> searchInputs) async {
+    loading = true;
+    error = false;
+
+    try {
+      final response = await _readUseCase.search(searchInputs, _pageInfo);
+
+      if (response is EdgeUser) {
+        userList = response.edges;
+        pageInfo = response.pageInfo;
+      }
+    } catch (e) {
+      error = true;
+      userList = [];
+    } finally {
+      loading = false;
+    }
+  }
+
+  Future<void> updatePageInfo(PageInfo newPageInfo) async {
+    _pageInfo = newPageInfo;
+    await search([]); // Recargar con la nueva página
   }
 }
