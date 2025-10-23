@@ -212,6 +212,44 @@
   "@cancel": {
     "description": "Action to cancel operation"
   },
+  
+  "role": "Role",
+  "@role": {
+    "description": "Label for role field"
+  },
+  "roleRoot": "Root",
+  "@roleRoot": {
+    "description": "Root role (superadministrator)"
+  },
+  "roleAdmin": "Administrator",
+  "@roleAdmin": {
+    "description": "Administrator role"
+  },
+  "roleOwner": "Owner",
+  "@roleOwner": {
+    "description": "Owner role"
+  },
+  "roleTechnician": "Technician",
+  "@roleTechnician": {
+    "description": "Technician role"
+  },
+  "roleBilling": "Billing",
+  "@roleBilling": {
+    "description": "Billing role"
+  },
+  "isAdmin": "Is administrator",
+  "@isAdmin": {
+    "description": "Label for boolean administrator field"
+  },
+  "cutOffDate": "Cut-off date",
+  "@cutOffDate": {
+    "description": "Label for cut-off date"
+  },
+  "fee": "Fee",
+  "@fee": {
+    "description": "Label for fee"
+  },
+  
   "viewLaboratories": "View laboratories",
   "@viewLaboratories": {
     "description": "Action to view user's laboratories"

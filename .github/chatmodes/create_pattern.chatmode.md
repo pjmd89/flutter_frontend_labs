@@ -108,6 +108,156 @@ Para crear un nuevo módulo de creación (ej: Product):
 - ✅ `create()` - Método en ViewModel que ejecuta la creación
 - ✅ `execute()` - Método en UseCase que ejecuta la mutation
 
+## ⚠️ Análisis del Input: Identificación de Campos y Tipos
+
+**REGLA CRÍTICA:** Antes de crear el formulario, SIEMPRE analiza el `Create{Feature}Input` completo para identificar:
+
+### 1. Todos los Campos Disponibles
+- Lee el Input completo (`/domain/entities/types/{feature}/inputs/create{feature}input_input.dart`)
+- Identifica TODOS los campos (no solo los básicos)
+- Verifica si son required u optional
+
+### 2. Identificación de Tipos Especiales
+
+#### **Enums → DropdownButtonFormField**
+**Cómo identificar:**
+- El tipo del campo es un Enum (ej: `Role`, `Status`, `Type`)
+- Busca la definición en `/domain/entities/enums/{enum}_enum.dart`
+
+**Implementación:**
+```dart
+// 1. Variable de estado para el valor seleccionado
+Status? selectedStatus;
+
+// 2. Función helper para obtener labels i18n
+String getStatusLabel(BuildContext context, Status status) {
+  final l10n = AppLocalizations.of(context)!;
+  switch (status) {
+    case Status.active:
+      return l10n.statusActive;
+    case Status.inactive:
+      return l10n.statusInactive;
+  }
+}
+
+// 3. En el formulario
+DropdownButtonFormField<Status>(
+  value: selectedStatus,
+  decoration: InputDecoration(
+    labelText: l10n.status,
+    isDense: true,
+    border: const OutlineInputBorder(),
+  ),
+  items: Status.values.map((Status status) {
+    return DropdownMenuItem<Status>(
+      value: status,
+      child: Text(getStatusLabel(context, status)),
+    );
+  }).toList(),
+  onChanged: (Status? newValue) {
+    setState(() {
+      selectedStatus = newValue;
+      viewModel.input.status = newValue;
+    });
+  },
+)
+```
+
+**i18n para Enums:**
+```json
+{
+  "status": "Estado",
+  "statusActive": "Activo",
+  "statusInactive": "Inactivo"
+}
+```
+
+#### **IDs (String terminado en "ID") → Generalmente Select/Autocomplete**
+**Cómo identificar:**
+- Campo tipo `String?` o `String` con nombre terminado en "ID" (ej: `laboratoryID`, `companyID`)
+- Requiere cargar opciones de otra entidad
+
+**Nota:** Por ahora, si encuentras un ID, documenta que necesita un selector pero puede dejarse como TextField temporalmente.
+
+#### **Booleanos → Switch o Checkbox**
+**Cómo identificar:**
+- Campo tipo `bool` o `bool?`
+
+**Implementación:**
+```dart
+SwitchListTile(
+  title: Text(l10n.isActive),
+  value: viewModel.input.isActive ?? false,
+  onChanged: (bool value) {
+    viewModel.input.isActive = value;
+  },
+)
+```
+
+#### **Fechas (DateTime o String con "date") → DatePicker**
+**Cómo identificar:**
+- Campo tipo `DateTime` o `String` con nombre que contiene "date" o "Date"
+
+**Implementación:**
+```dart
+CustomTextFormField(
+  labelText: l10n.cutOffDate,
+  controller: cutOffDateController,
+  readOnly: true,
+  onTap: () async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (date != null) {
+      cutOffDateController.text = date.toString().split(' ')[0];
+      viewModel.input.cutOffDate = date.toString();
+    }
+  },
+)
+```
+
+#### **Números (num, int, double) → TextField con validación numérica**
+**Cómo identificar:**
+- Campo tipo `num`, `num?`, `int`, `int?`, `double`, `double?`
+
+**Implementación:**
+```dart
+CustomTextFormField(
+  labelText: l10n.fee,
+  controller: feeController,
+  onChange: (value) {
+    viewModel.input.fee = num.tryParse(value);
+  },
+)
+```
+
+### 3. Orden de Implementación de Campos
+
+1. **Analizar Input completo** - Identificar todos los campos
+2. **Categorizar tipos** - Enum, ID, Boolean, Date, Number, String
+3. **Crear keys i18n** - Para cada campo y valores de enums
+4. **Crear controllers** - Solo para TextFields
+5. **Crear variables de estado** - Para Enums y otros selects
+6. **Crear helper functions** - Para labels de enums
+7. **Implementar formulario** - En orden lógico (no alfabético)
+8. **Dispose controllers** - Limpiar memoria
+
+### 4. Checklist de Análisis del Input
+
+- [ ] Leí el archivo `Create{Feature}Input` completo
+- [ ] Identifiqué todos los campos (no solo firstName/lastName/email)
+- [ ] Categoricé cada campo por tipo (Enum/ID/Boolean/Date/Number/String)
+- [ ] Para cada Enum: creé las keys i18n para todos los valores
+- [ ] Para cada campo: creé la key i18n del label
+- [ ] Creé controllers solo para TextFields
+- [ ] Creé variables de estado para Enums
+- [ ] Implementé helper functions para labels de Enums
+- [ ] Ordené campos lógicamente en el formulario
+- [ ] Agregué dispose() para todos los controllers
+
 ## Implementación Detallada
 
 ### 1. Archivo Principal (main.dart)
@@ -254,10 +404,20 @@ class _{Feature}CreatePageState extends State<{Feature}CreatePage> {
 ```
 
 **Ejemplo Real (UserCreatePage):**
+
+**Nota:** Este ejemplo incluye:
+- ✅ Todos los campos del CreateUserInput (firstName, lastName, email, role, cutOffDate, fee)
+- ✅ Enum `Role` implementado como DropdownButtonFormField
+- ✅ Helper function `getRoleLabel()` para i18n del enum
+- ✅ Variable de estado `selectedRole` para el dropdown
+- ✅ Campos numéricos (cutOffDate, fee) con parsing
+- ✅ SingleChildScrollView para formularios largos
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
+import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
@@ -271,9 +431,14 @@ class UserCreatePage extends StatefulWidget {
 
 class _UserCreatePageState extends State<UserCreatePage> {
   late ViewModel viewModel;
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
+  final cutOffDateController = TextEditingController();
+  final feeController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  
+  Role? selectedRole;
 
   @override
   void initState() {
@@ -288,9 +453,28 @@ class _UserCreatePageState extends State<UserCreatePage> {
 
   @override
   void dispose() {
-    nameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     emailController.dispose();
+    cutOffDateController.dispose();
+    feeController.dispose();
     super.dispose();
+  }
+  
+  String getRoleLabel(BuildContext context, Role role) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (role) {
+      case Role.root:
+        return l10n.roleRoot;
+      case Role.admin:
+        return l10n.roleAdmin;
+      case Role.owner:
+        return l10n.roleOwner;
+      case Role.technician:
+        return l10n.roleTechnician;
+      case Role.billing:
+        return l10n.roleBilling;
+    }
   }
 
   @override
@@ -306,42 +490,87 @@ class _UserCreatePageState extends State<UserCreatePage> {
           loading: viewModel.loading,
           form: Form(
             key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomTextFormField(
-                  labelText: l10n.firstName,
-                  controller: nameController,
-                  isDense: true,
-                  fieldLength: FormFieldLength.name,
-                  counterText: "",
-                  onChange: (value) {
-                    viewModel.input.firstName = value;
-                  },
-                ),
-                const SizedBox(height: 16),
-                CustomTextFormField(
-                  labelText: l10n.lastName,
-                  controller: emailController,
-                  isDense: true,
-                  fieldLength: FormFieldLength.name,
-                  counterText: "",
-                  onChange: (value) {
-                    viewModel.input.lastName = value;
-                  },
-                ),
-                const SizedBox(height: 16),
-                CustomTextFormField(
-                  labelText: l10n.email,
-                  controller: emailController,
-                  isDense: true,
-                  fieldLength: FormFieldLength.email,
-                  counterText: "",
-                  onChange: (value) {
-                    viewModel.input.email = value;
-                  },
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomTextFormField(
+                    labelText: l10n.firstName,
+                    controller: firstNameController,
+                    isDense: true,
+                    fieldLength: FormFieldLength.name,
+                    counterText: "",
+                    onChange: (value) {
+                      viewModel.input.firstName = value;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextFormField(
+                    labelText: l10n.lastName,
+                    controller: lastNameController,
+                    isDense: true,
+                    fieldLength: FormFieldLength.name,
+                    counterText: "",
+                    onChange: (value) {
+                      viewModel.input.lastName = value;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextFormField(
+                    labelText: l10n.email,
+                    controller: emailController,
+                    isDense: true,
+                    fieldLength: FormFieldLength.email,
+                    counterText: "",
+                    onChange: (value) {
+                      viewModel.input.email = value;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownButtonFormField<Role>(
+                    value: selectedRole,
+                    decoration: InputDecoration(
+                      labelText: l10n.role,
+                      isDense: true,
+                      border: const OutlineInputBorder(),
+                    ),
+                    items: Role.values.map((Role role) {
+                      return DropdownMenuItem<Role>(
+                        value: role,
+                        child: Text(getRoleLabel(context, role)),
+                      );
+                    }).toList(),
+                    onChanged: (Role? newValue) {
+                      setState(() {
+                        selectedRole = newValue;
+                        viewModel.input.isAdmin = newValue == Role.admin;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextFormField(
+                    labelText: l10n.cutOffDate,
+                    controller: cutOffDateController,
+                    isDense: true,
+                    fieldLength: FormFieldLength.password,
+                    counterText: "",
+                    onChange: (value) {
+                      viewModel.input.cutOffDate = value;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextFormField(
+                    labelText: l10n.fee,
+                    controller: feeController,
+                    isDense: true,
+                    fieldLength: FormFieldLength.password,
+                    counterText: "",
+                    onChange: (value) {
+                      viewModel.input.fee = num.tryParse(value);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -1002,19 +1231,50 @@ class CreateUserInput {
 
 ### Keys Necesarias para CREATE
 
-Ya documentadas en `read_pattern.chatmode.md`, las keys principales son:
+**IMPORTANTE:** Crear keys i18n para TODOS los campos del Input y TODOS los valores de enums.
 
+#### Keys Básicas del Módulo
 ```json
 {
   "createThing": "Crear {thing}",
   "newThing": "Nuevo {thing}",
   "save": "Guardar",
-  "cancel": "Cancelar",
-  "name": "Nombre",
-  "email": "Correo electrónico",
-  // ... campos específicos del formulario
+  "cancel": "Cancelar"
 }
 ```
+
+#### Keys de Campos (una por cada campo del Input)
+```json
+{
+  "firstName": "Nombre",
+  "lastName": "Apellido",
+  "email": "Correo electrónico",
+  "role": "Rol",
+  "cutOffDate": "Fecha de corte",
+  "fee": "Tarifa"
+}
+```
+
+#### Keys de Enums (una por cada valor del enum)
+Para cada enum, crear:
+1. Key del campo: `"role": "Rol"`
+2. Key por cada valor: `"role{Value}": "Etiqueta"`
+
+**Ejemplo con enum Role:**
+```json
+{
+  "role": "Rol",
+  "roleRoot": "Root",
+  "roleAdmin": "Administrador",
+  "roleOwner": "Propietario",
+  "roleTechnician": "Técnico",
+  "roleBilling": "Facturación"
+}
+```
+
+**Patrón de nomenclatura para enums:**
+- Campo: `{fieldName}` (ej: `role`, `status`)
+- Valores: `{fieldName}{ValuePascalCase}` (ej: `roleAdmin`, `statusActive`)
 
 ## Flujo Completo CREATE
 

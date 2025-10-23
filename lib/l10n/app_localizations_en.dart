@@ -141,6 +141,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get role => 'Role';
+
+  @override
+  String get roleRoot => 'Root';
+
+  @override
+  String get roleAdmin => 'Administrator';
+
+  @override
+  String get roleOwner => 'Owner';
+
+  @override
+  String get roleTechnician => 'Technician';
+
+  @override
+  String get roleBilling => 'Billing';
+
+  @override
+  String get isAdmin => 'Is administrator';
+
+  @override
+  String get cutOffDate => 'Cut-off date';
+
+  @override
+  String get fee => 'Fee';
+
+  @override
   String get viewLaboratories => 'View laboratories';
 
   @override

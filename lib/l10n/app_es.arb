@@ -212,6 +212,44 @@
   "@cancel": {
     "description": "Acción para cancelar operación"
   },
+  
+  "role": "Rol",
+  "@role": {
+    "description": "Etiqueta para campo de rol"
+  },
+  "roleRoot": "Root",
+  "@roleRoot": {
+    "description": "Rol root (superadministrador)"
+  },
+  "roleAdmin": "Administrador",
+  "@roleAdmin": {
+    "description": "Rol administrador"
+  },
+  "roleOwner": "Propietario",
+  "@roleOwner": {
+    "description": "Rol propietario"
+  },
+  "roleTechnician": "Técnico",
+  "@roleTechnician": {
+    "description": "Rol técnico"
+  },
+  "roleBilling": "Facturación",
+  "@roleBilling": {
+    "description": "Rol de facturación"
+  },
+  "isAdmin": "Es administrador",
+  "@isAdmin": {
+    "description": "Etiqueta para campo booleano de administrador"
+  },
+  "cutOffDate": "Fecha de corte",
+  "@cutOffDate": {
+    "description": "Etiqueta para fecha de corte"
+  },
+  "fee": "Tarifa",
+  "@fee": {
+    "description": "Etiqueta para tarifa"
+  },
+  
   "viewLaboratories": "Ver laboratorios",
   "@viewLaboratories": {
     "description": "Acción para ver laboratorios de un usuario"

@@ -323,6 +323,60 @@ abstract class AppLocalizations {
   /// **'Cancelar'**
   String get cancel;
 
+  /// Etiqueta para campo de rol
+  ///
+  /// In es, this message translates to:
+  /// **'Rol'**
+  String get role;
+
+  /// Rol root (superadministrador)
+  ///
+  /// In es, this message translates to:
+  /// **'Root'**
+  String get roleRoot;
+
+  /// Rol administrador
+  ///
+  /// In es, this message translates to:
+  /// **'Administrador'**
+  String get roleAdmin;
+
+  /// Rol propietario
+  ///
+  /// In es, this message translates to:
+  /// **'Propietario'**
+  String get roleOwner;
+
+  /// Rol técnico
+  ///
+  /// In es, this message translates to:
+  /// **'Técnico'**
+  String get roleTechnician;
+
+  /// Rol de facturación
+  ///
+  /// In es, this message translates to:
+  /// **'Facturación'**
+  String get roleBilling;
+
+  /// Etiqueta para campo booleano de administrador
+  ///
+  /// In es, this message translates to:
+  /// **'Es administrador'**
+  String get isAdmin;
+
+  /// Etiqueta para fecha de corte
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de corte'**
+  String get cutOffDate;
+
+  /// Etiqueta para tarifa
+  ///
+  /// In es, this message translates to:
+  /// **'Tarifa'**
+  String get fee;
+
   /// Acción para ver laboratorios de un usuario
   ///
   /// In es, this message translates to:
