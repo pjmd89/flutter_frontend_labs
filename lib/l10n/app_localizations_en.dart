@@ -172,4 +172,163 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewBilling => 'View billing';
+
+  @override
+  String get error001 => 'User not logged in';
+
+  @override
+  String get error002 => 'Empty or invalid input ID';
+
+  @override
+  String get error003 => 'User not found';
+
+  @override
+  String get error004 => 'Laboratory not found';
+
+  @override
+  String get error005 => 'Error when trying to create laboratory';
+
+  @override
+  String get error006 => 'Error when trying to update laboratory';
+
+  @override
+  String get error007 => 'Error when trying to delete laboratory';
+
+  @override
+  String get error008 => 'Laboratory is required';
+
+  @override
+  String get error009 => 'An account already exists with the email provided';
+
+  @override
+  String get error010 => 'A company already exists with the tax ID provided';
+
+  @override
+  String get error011 => 'Error when trying to create user';
+
+  @override
+  String get error012 => 'Error when trying to update user';
+
+  @override
+  String get error013 => 'Error when trying to delete user';
+
+  @override
+  String get error014 => 'Missing owner or company info';
+
+  @override
+  String get error015 => 'Company not found';
+
+  @override
+  String get error016 => 'Error when trying to create company';
+
+  @override
+  String get error017 => 'Error when trying to update company';
+
+  @override
+  String get error018 => 'Error when trying to delete company';
+
+  @override
+  String get error019 => 'Once you log in for the first time, you cannot update your email';
+
+  @override
+  String get error020 => 'The employee is not part of the laboratory';
+
+  @override
+  String get error021 => 'User already logged in';
+
+  @override
+  String get error022 => 'Invalid OIDC state code';
+
+  @override
+  String get error023 => 'Error when trying to create OIDC state code';
+
+  @override
+  String get error024 => 'Error when trying to log in with OIDC';
+
+  @override
+  String get error025 => 'Access denied';
+
+  @override
+  String get error026 => 'Invalid phone number, must be in E.164 format';
+
+  @override
+  String get error027 => 'Invalid email format';
+
+  @override
+  String get error028 => 'Invalid date time format, must be unix timestamp';
+
+  @override
+  String get error029 => 'Session not found';
+
+  @override
+  String get error030 => 'Error when trying to create exam template';
+
+  @override
+  String get error031 => 'Error when trying to update exam template';
+
+  @override
+  String get error032 => 'Error when trying to delete exam template';
+
+  @override
+  String get error033 => 'Exam template not found';
+
+  @override
+  String get error034 => 'The exam template is being used in one or more laboratory exams';
+
+  @override
+  String get error035 => 'An exam template with the same name already exists';
+
+  @override
+  String get error036 => 'Company ID is required';
+
+  @override
+  String get error037 => 'Address cannot be empty';
+
+  @override
+  String get error038 => 'The employee is already part of the laboratory';
+
+  @override
+  String get error039 => 'The laboratory has no employees';
+
+  @override
+  String get error040 => 'Exam not found';
+
+  @override
+  String get error041 => 'Error when trying to create exam';
+
+  @override
+  String get error042 => 'Error when trying to update exam';
+
+  @override
+  String get error043 => 'Error when trying to delete exam';
+
+  @override
+  String get error044 => 'Exam base cost must be a positive value';
+
+  @override
+  String get error045 => 'The exam is being used in one or more evaluation packages and cannot be deleted';
+
+  @override
+  String get error046 => 'Missing human patient fields';
+
+  @override
+  String get error047 => 'The date time provided cannot be greater than the current time';
+
+  @override
+  String get error048 => 'Error when trying to create patient';
+
+  @override
+  String get error049 => 'Error when trying to update patient';
+
+  @override
+  String get error050 => 'Patient not found';
+
+  @override
+  String get error051 => 'An account already exists with the phone number provided';
+
+  @override
+  String get error052 => 'Error when trying to delete patient';
+
+  @override
+  String get error053 => 'A patient with the provided DNI already exists';
 }

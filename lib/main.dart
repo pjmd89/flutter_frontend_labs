@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:agile_front/agile_front.dart' as af;
 import '/src/presentation/core/templates/main.dart';
 import '/src/presentation/providers/auth_notifier.dart';
+import '/src/infraestructure/services/error_service.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/presentation/providers/locale_notifier.dart';
 import '/src/presentation/providers/theme_brightness_notifier.dart';
@@ -20,18 +21,29 @@ class MyApp extends StatelessWidget {
       providers: [
         af.ChangeNotifierProvider(create: (_) => AppLocaleNotifier()),
         af.ChangeNotifierProvider(create: (_) => AuthNotifier()),
-        af.ChangeNotifierProxyProvider<AuthNotifier, GQLNotifier>(
+        af.Provider<ErrorService>(create: (_) => ErrorService()),
+        af.ChangeNotifierProxyProvider2<
+          AuthNotifier,
+          ErrorService,
+          GQLNotifier
+        >(
           create:
-              (context) =>
-                  GQLNotifier(authNotifier: context.read<AuthNotifier>()),
+              (context) => GQLNotifier(
+                authNotifier: context.read<AuthNotifier>(),
+                errorService: context.read<ErrorService>(),
+              ),
           update:
-              (context, authNotifier, previous) =>
-                  previous ?? GQLNotifier(authNotifier: authNotifier),
+              (context, authNotifier, errorService, previous) =>
+                  previous ??
+                  GQLNotifier(
+                    authNotifier: authNotifier,
+                    errorService: errorService,
+                  ),
         ),
         af.ChangeNotifierProvider(create: (_) => ThemeBrightnessNotifier()),
         af.ChangeNotifierProvider(create: (_) => LoadingNotifier()),
       ],
-      child: Template(),
+      child: const Template(),
     );
   }
 }

@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '/src/presentation/core/navigation/routes/main.dart';
 import '/src/presentation/core/themes/teal.dart';
 import '/src/presentation/providers/auth_notifier.dart';
+import '/src/infraestructure/services/error_service.dart';
+import '/src/presentation/providers/gql_notifier.dart';
 import '/src/presentation/providers/locale_notifier.dart';
 import '/l10n/app_localizations.dart';
 
@@ -23,6 +25,10 @@ class _TemplateState extends State<Template> {
 
     final authNotifier = context.read<AuthNotifier>();
     authNotifier.addListener(_onAuthChanged);
+
+    // Configurar context para GQLNotifier
+    final gqlNotifier = context.read<GQLNotifier>();
+    gqlNotifier.setContext(context);
   }
 
   void _onAuthChanged() {
@@ -48,6 +54,8 @@ class _TemplateState extends State<Template> {
   Widget build(BuildContext context) {
     String localeCode = context.watch<AppLocaleNotifier>().locale;
     final authNotifier = context.watch<AuthNotifier>();
+    final errorService = context.read<ErrorService>();
+
     GoRouter router;
     switch (authNotifier.role) {
       case Role.owner:
@@ -67,6 +75,7 @@ class _TemplateState extends State<Template> {
     }
 
     return MaterialApp.router(
+      scaffoldMessengerKey: errorService.scaffoldMessengerKey,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [

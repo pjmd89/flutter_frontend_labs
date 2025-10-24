@@ -172,4 +172,163 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get viewBilling => 'Ver facturación';
+
+  @override
+  String get error001 => 'Usuario no ha iniciado sesión';
+
+  @override
+  String get error002 => 'ID de entrada vacío o inválido';
+
+  @override
+  String get error003 => 'Usuario no encontrado';
+
+  @override
+  String get error004 => 'Laboratorio no encontrado';
+
+  @override
+  String get error005 => 'Error al intentar crear el laboratorio';
+
+  @override
+  String get error006 => 'Error al intentar actualizar el laboratorio';
+
+  @override
+  String get error007 => 'Error al intentar eliminar el laboratorio';
+
+  @override
+  String get error008 => 'El laboratorio es requerido';
+
+  @override
+  String get error009 => 'Ya existe una cuenta con el correo electrónico proporcionado';
+
+  @override
+  String get error010 => 'Ya existe una empresa con el RUC/NIT proporcionado';
+
+  @override
+  String get error011 => 'Error al intentar crear el usuario';
+
+  @override
+  String get error012 => 'Error al intentar actualizar el usuario';
+
+  @override
+  String get error013 => 'Error al intentar eliminar el usuario';
+
+  @override
+  String get error014 => 'Falta información del propietario o de la empresa';
+
+  @override
+  String get error015 => 'Empresa no encontrada';
+
+  @override
+  String get error016 => 'Error al intentar crear la empresa';
+
+  @override
+  String get error017 => 'Error al intentar actualizar la empresa';
+
+  @override
+  String get error018 => 'Error al intentar eliminar la empresa';
+
+  @override
+  String get error019 => 'Una vez que inicias sesión por primera vez, no puedes actualizar tu correo electrónico';
+
+  @override
+  String get error020 => 'El empleado no forma parte del laboratorio';
+
+  @override
+  String get error021 => 'El usuario ya ha iniciado sesión';
+
+  @override
+  String get error022 => 'Código de estado OIDC inválido';
+
+  @override
+  String get error023 => 'Error al intentar crear el código de estado OIDC';
+
+  @override
+  String get error024 => 'Error al intentar iniciar sesión con OIDC';
+
+  @override
+  String get error025 => 'Acceso denegado';
+
+  @override
+  String get error026 => 'Número de teléfono inválido, debe estar en formato E.164';
+
+  @override
+  String get error027 => 'Formato de correo electrónico inválido';
+
+  @override
+  String get error028 => 'Formato de fecha y hora inválido, debe ser timestamp unix';
+
+  @override
+  String get error029 => 'Sesión no encontrada';
+
+  @override
+  String get error030 => 'Error al intentar crear la plantilla de examen';
+
+  @override
+  String get error031 => 'Error al intentar actualizar la plantilla de examen';
+
+  @override
+  String get error032 => 'Error al intentar eliminar la plantilla de examen';
+
+  @override
+  String get error033 => 'Plantilla de examen no encontrada';
+
+  @override
+  String get error034 => 'La plantilla de examen está siendo usada en uno o más exámenes de laboratorio';
+
+  @override
+  String get error035 => 'Ya existe una plantilla de examen con el mismo nombre';
+
+  @override
+  String get error036 => 'El ID de la empresa es requerido';
+
+  @override
+  String get error037 => 'La dirección no puede estar vacía';
+
+  @override
+  String get error038 => 'El empleado ya forma parte del laboratorio';
+
+  @override
+  String get error039 => 'El laboratorio no tiene empleados';
+
+  @override
+  String get error040 => 'Examen no encontrado';
+
+  @override
+  String get error041 => 'Error al intentar crear el examen';
+
+  @override
+  String get error042 => 'Error al intentar actualizar el examen';
+
+  @override
+  String get error043 => 'Error al intentar eliminar el examen';
+
+  @override
+  String get error044 => 'El costo base del examen debe ser un valor positivo';
+
+  @override
+  String get error045 => 'El examen está siendo usado en uno o más paquetes de evaluación y no puede ser eliminado';
+
+  @override
+  String get error046 => 'Faltan campos del paciente humano';
+
+  @override
+  String get error047 => 'La fecha y hora proporcionada no puede ser mayor que la hora actual';
+
+  @override
+  String get error048 => 'Error al intentar crear el paciente';
+
+  @override
+  String get error049 => 'Error al intentar actualizar el paciente';
+
+  @override
+  String get error050 => 'Paciente no encontrado';
+
+  @override
+  String get error051 => 'Ya existe una cuenta con el número de teléfono proporcionado';
+
+  @override
+  String get error052 => 'Error al intentar eliminar el paciente';
+
+  @override
+  String get error053 => 'Ya existe un paciente con el DNI proporcionado';
 }

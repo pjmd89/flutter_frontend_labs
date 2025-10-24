@@ -388,6 +388,324 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ver facturación'**
   String get viewBilling;
+
+  /// No description provided for @error001.
+  ///
+  /// In es, this message translates to:
+  /// **'Usuario no ha iniciado sesión'**
+  String get error001;
+
+  /// No description provided for @error002.
+  ///
+  /// In es, this message translates to:
+  /// **'ID de entrada vacío o inválido'**
+  String get error002;
+
+  /// No description provided for @error003.
+  ///
+  /// In es, this message translates to:
+  /// **'Usuario no encontrado'**
+  String get error003;
+
+  /// No description provided for @error004.
+  ///
+  /// In es, this message translates to:
+  /// **'Laboratorio no encontrado'**
+  String get error004;
+
+  /// No description provided for @error005.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar crear el laboratorio'**
+  String get error005;
+
+  /// No description provided for @error006.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar actualizar el laboratorio'**
+  String get error006;
+
+  /// No description provided for @error007.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar eliminar el laboratorio'**
+  String get error007;
+
+  /// No description provided for @error008.
+  ///
+  /// In es, this message translates to:
+  /// **'El laboratorio es requerido'**
+  String get error008;
+
+  /// No description provided for @error009.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe una cuenta con el correo electrónico proporcionado'**
+  String get error009;
+
+  /// No description provided for @error010.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe una empresa con el RUC/NIT proporcionado'**
+  String get error010;
+
+  /// No description provided for @error011.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar crear el usuario'**
+  String get error011;
+
+  /// No description provided for @error012.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar actualizar el usuario'**
+  String get error012;
+
+  /// No description provided for @error013.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar eliminar el usuario'**
+  String get error013;
+
+  /// No description provided for @error014.
+  ///
+  /// In es, this message translates to:
+  /// **'Falta información del propietario o de la empresa'**
+  String get error014;
+
+  /// No description provided for @error015.
+  ///
+  /// In es, this message translates to:
+  /// **'Empresa no encontrada'**
+  String get error015;
+
+  /// No description provided for @error016.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar crear la empresa'**
+  String get error016;
+
+  /// No description provided for @error017.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar actualizar la empresa'**
+  String get error017;
+
+  /// No description provided for @error018.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar eliminar la empresa'**
+  String get error018;
+
+  /// No description provided for @error019.
+  ///
+  /// In es, this message translates to:
+  /// **'Una vez que inicias sesión por primera vez, no puedes actualizar tu correo electrónico'**
+  String get error019;
+
+  /// No description provided for @error020.
+  ///
+  /// In es, this message translates to:
+  /// **'El empleado no forma parte del laboratorio'**
+  String get error020;
+
+  /// No description provided for @error021.
+  ///
+  /// In es, this message translates to:
+  /// **'El usuario ya ha iniciado sesión'**
+  String get error021;
+
+  /// No description provided for @error022.
+  ///
+  /// In es, this message translates to:
+  /// **'Código de estado OIDC inválido'**
+  String get error022;
+
+  /// No description provided for @error023.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar crear el código de estado OIDC'**
+  String get error023;
+
+  /// No description provided for @error024.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar iniciar sesión con OIDC'**
+  String get error024;
+
+  /// No description provided for @error025.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso denegado'**
+  String get error025;
+
+  /// No description provided for @error026.
+  ///
+  /// In es, this message translates to:
+  /// **'Número de teléfono inválido, debe estar en formato E.164'**
+  String get error026;
+
+  /// No description provided for @error027.
+  ///
+  /// In es, this message translates to:
+  /// **'Formato de correo electrónico inválido'**
+  String get error027;
+
+  /// No description provided for @error028.
+  ///
+  /// In es, this message translates to:
+  /// **'Formato de fecha y hora inválido, debe ser timestamp unix'**
+  String get error028;
+
+  /// No description provided for @error029.
+  ///
+  /// In es, this message translates to:
+  /// **'Sesión no encontrada'**
+  String get error029;
+
+  /// No description provided for @error030.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar crear la plantilla de examen'**
+  String get error030;
+
+  /// No description provided for @error031.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar actualizar la plantilla de examen'**
+  String get error031;
+
+  /// No description provided for @error032.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar eliminar la plantilla de examen'**
+  String get error032;
+
+  /// No description provided for @error033.
+  ///
+  /// In es, this message translates to:
+  /// **'Plantilla de examen no encontrada'**
+  String get error033;
+
+  /// No description provided for @error034.
+  ///
+  /// In es, this message translates to:
+  /// **'La plantilla de examen está siendo usada en uno o más exámenes de laboratorio'**
+  String get error034;
+
+  /// No description provided for @error035.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe una plantilla de examen con el mismo nombre'**
+  String get error035;
+
+  /// No description provided for @error036.
+  ///
+  /// In es, this message translates to:
+  /// **'El ID de la empresa es requerido'**
+  String get error036;
+
+  /// No description provided for @error037.
+  ///
+  /// In es, this message translates to:
+  /// **'La dirección no puede estar vacía'**
+  String get error037;
+
+  /// No description provided for @error038.
+  ///
+  /// In es, this message translates to:
+  /// **'El empleado ya forma parte del laboratorio'**
+  String get error038;
+
+  /// No description provided for @error039.
+  ///
+  /// In es, this message translates to:
+  /// **'El laboratorio no tiene empleados'**
+  String get error039;
+
+  /// No description provided for @error040.
+  ///
+  /// In es, this message translates to:
+  /// **'Examen no encontrado'**
+  String get error040;
+
+  /// No description provided for @error041.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar crear el examen'**
+  String get error041;
+
+  /// No description provided for @error042.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar actualizar el examen'**
+  String get error042;
+
+  /// No description provided for @error043.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar eliminar el examen'**
+  String get error043;
+
+  /// No description provided for @error044.
+  ///
+  /// In es, this message translates to:
+  /// **'El costo base del examen debe ser un valor positivo'**
+  String get error044;
+
+  /// No description provided for @error045.
+  ///
+  /// In es, this message translates to:
+  /// **'El examen está siendo usado en uno o más paquetes de evaluación y no puede ser eliminado'**
+  String get error045;
+
+  /// No description provided for @error046.
+  ///
+  /// In es, this message translates to:
+  /// **'Faltan campos del paciente humano'**
+  String get error046;
+
+  /// No description provided for @error047.
+  ///
+  /// In es, this message translates to:
+  /// **'La fecha y hora proporcionada no puede ser mayor que la hora actual'**
+  String get error047;
+
+  /// No description provided for @error048.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar crear el paciente'**
+  String get error048;
+
+  /// No description provided for @error049.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar actualizar el paciente'**
+  String get error049;
+
+  /// No description provided for @error050.
+  ///
+  /// In es, this message translates to:
+  /// **'Paciente no encontrado'**
+  String get error050;
+
+  /// No description provided for @error051.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe una cuenta con el número de teléfono proporcionado'**
+  String get error051;
+
+  /// No description provided for @error052.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al intentar eliminar el paciente'**
+  String get error052;
+
+  /// No description provided for @error053.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe un paciente con el DNI proporcionado'**
+  String get error053;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
