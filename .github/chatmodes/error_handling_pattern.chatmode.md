@@ -13,14 +13,22 @@ Este chatmode documenta el patrón completo para implementar manejo de errores G
 - Cada handler decide cómo procesar el error (logout, mostrar mensaje, etc.)
 
 ### 2. Feedback Visual Consistente
-- Los errores se muestran con `SnackBar` flotante y rojo
+- Los errores se muestran con `SnackBar` flotante
 - Los mensajes están internacionalizados (i18n)
 - Fallback al mensaje del servidor si no hay traducción
+- **Respeta el tema de la aplicación** (colores, tipografía, espaciado)
 
 ### 3. Separación de Responsabilidades
-- `GQLNotifier`: Registra handlers y callbacks
-- `Template`: Muestra los errores en la UI
+- `ErrorService`: Maneja la visualización de errores (UI)
+- `GQLNotifier`: Detecta errores GraphQL y delega al ErrorService
+- `Template`: Solo orquesta providers (no lógica de errores)
 - `ErrorManager`: Ejecuta el handler correcto según el código
+
+### 4. Integración con el Sistema de Temas
+- **ColorScheme**: Usa colores del tema (error, tertiary, primary, secondary)
+- **TextTheme**: Usa tipografía definida en el tema (bodyMedium)
+- **SnackBarTheme**: Respeta configuración global de SnackBars
+- **BuildContext requerido**: Todos los métodos necesitan context para acceder al tema
 
 ## Estructura de Archivos
 
@@ -196,6 +204,13 @@ class ErrorManager implements ErrorConnManager {
 
 **Responsabilidad:** Servicio sin estado para manejar visualización de errores
 
+**⚠️ IMPORTANTE - Cambios recientes:**
+- ✅ Todos los métodos públicos ahora **requieren BuildContext**
+- ✅ Usa colores del **Theme** (ColorScheme) en lugar de hardcoded
+- ✅ Usa tipografía del **Theme** (textTheme.bodyMedium)
+- ✅ Limpia SnackBars anteriores antes de mostrar nuevos
+- ✅ Configuración mejorada de UI (padding, dismissDirection, shape)
+
 ```dart
 import 'package:flutter/material.dart';
 import '/l10n/app_localizations.dart';
@@ -213,11 +228,10 @@ class ErrorService {
 
   /// Muestra un error del backend con código y mensaje
   void showBackendError({
-    required BuildContext context,
+    required BuildContext context,  // ← BuildContext REQUERIDO
     required String errorCode,
     required String errorMessage,
   }) {
-    // Obtener mensaje i18n si existe, sino usar el del servidor
     String displayMessage = errorMessage;
 
     try {
@@ -233,48 +247,83 @@ class ErrorService {
     }
 
     _showSnackBar(
+      context: context,
       message: displayMessage,
-      backgroundColor: Colors.red[700]!,
+      type: ErrorType.error,
       duration: const Duration(seconds: 4),
     );
   }
 
   /// Muestra un error de validación (formularios)
   void showValidationError({
+    required BuildContext context,  // ← BuildContext REQUERIDO
     required String message,
     Duration? duration,
   }) {
     _showSnackBar(
+      context: context,
       message: message,
-      backgroundColor: Colors.orange[700]!,
+      type: ErrorType.warning,
       duration: duration ?? const Duration(seconds: 3),
     );
   }
 
   /// Muestra un error genérico con tipo personalizable
   void showError({
+    required BuildContext context,  // ← BuildContext REQUERIDO
     required String message,
     ErrorType type = ErrorType.error,
     Duration? duration,
   }) {
     _showSnackBar(
+      context: context,
       message: message,
-      backgroundColor: _getBackgroundColor(type),
+      type: type,
       duration: duration ?? const Duration(seconds: 3),
     );
   }
 
   void _showSnackBar({
+    required BuildContext context,
     required String message,
-    required Color backgroundColor,
+    required ErrorType type,
     required Duration duration,
   }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    // Obtener colores del tema según el tipo
+    final backgroundColor = _getBackgroundColor(colorScheme, type);
+    final textColor = _getTextColor(colorScheme, type);
+
+    // Limpiar cualquier SnackBar anterior para evitar apilamiento
+    scaffoldMessengerKey.currentState?.clearSnackBars();
+
     scaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: textColor,
+          ),
+        ),
         backgroundColor: backgroundColor,
         duration: duration,
         behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.all(16),
+        elevation: theme.snackBarTheme.elevation ?? 6,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        dismissDirection: DismissDirection.down,
+        action: SnackBarAction(
+          label: 'OK',
+          textColor: textColor,
+          onPressed: () {
+            scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+          },
+        ),
       ),
     );
   }
@@ -283,23 +332,36 @@ class ErrorService {
     final errorMessages = {
       '001': l10n.error001,
       '002': l10n.error002,
-      // ... mapear los 53 códigos
+      // ... mapear todos los códigos de error del backend
       '053': l10n.error053,
     };
     
     return errorMessages[errorCode];
   }
 
-  Color _getBackgroundColor(ErrorType type) {
+  Color _getBackgroundColor(ColorScheme colorScheme, ErrorType type) {
     switch (type) {
       case ErrorType.error:
-        return Colors.red[700]!;
+        return colorScheme.error;
       case ErrorType.warning:
-        return Colors.orange[700]!;
+        return colorScheme.tertiary;
       case ErrorType.info:
-        return Colors.blue[700]!;
+        return colorScheme.primary;
       case ErrorType.success:
-        return Colors.green[700]!;
+        return colorScheme.secondary;
+    }
+  }
+
+  Color _getTextColor(ColorScheme colorScheme, ErrorType type) {
+    switch (type) {
+      case ErrorType.error:
+        return colorScheme.onError;
+      case ErrorType.warning:
+        return colorScheme.onTertiary;
+      case ErrorType.info:
+        return colorScheme.onPrimary;
+      case ErrorType.success:
+        return colorScheme.onSecondary;
     }
   }
 }
@@ -309,13 +371,27 @@ class ErrorService {
 - **NO extiende ChangeNotifier** (es un servicio sin estado)
 - Registrado con `Provider<ErrorService>` (NO ChangeNotifierProvider)
 - Tiene el `GlobalKey<ScaffoldMessengerState>` para SnackBars globales
+- **Todos los métodos públicos requieren BuildContext** para acceder al tema
+- **Usa colores del ColorScheme del tema** (no hardcoded):
+  - `ErrorType.error` → `colorScheme.error / onError`
+  - `ErrorType.warning` → `colorScheme.tertiary / onTertiary`
+  - `ErrorType.info` → `colorScheme.primary / onPrimary`
+  - `ErrorType.success` → `colorScheme.secondary / onSecondary`
+- **Usa tipografía del tema**: `theme.textTheme.bodyMedium`
+- **Limpia SnackBars anteriores**: `clearSnackBars()` antes de mostrar
+- **UI mejorada**:
+  - Bordes redondeados (12px)
+  - Padding consistente
+  - Botón "OK" para cerrar
+  - Dismissible hacia abajo
+  - Elevation del tema o fallback a 6
 - Tres métodos públicos:
-  - `showBackendError()`: Para errores GraphQL con código
-  - `showValidationError()`: Para errores de formularios (naranja)
-  - `showError()`: Genérico con tipo personalizable
-- Método privado `_getBackendErrorMessage()` que mapea los 53 códigos a i18n
+  - `showBackendError(context, code, message)`: Para errores GraphQL
+  - `showValidationError(context, message)`: Para formularios (warning)
+  - `showError(context, message, type)`: Genérico con tipo
+- Método privado `_getBackendErrorMessage()` que mapea todos los códigos de error a i18n
 - Método privado `_showSnackBar()` para lógica común de SnackBar
-- Método privado `_getBackgroundColor()` para colores según ErrorType
+- Métodos privados `_getBackgroundColor()` y `_getTextColor()` usan ColorScheme
 - Fallback al mensaje del servidor si no hay traducción
 - `ErrorType` enum con 4 valores: error, warning, info, success
 
@@ -353,7 +429,7 @@ class GQLNotifier extends ChangeNotifier {
       '001': handleSessionError,
       '002': handleGenericError,
       '003': handleGenericError,
-      // ... registrar los 53 códigos
+      // ... registrar todos los códigos de error del backend
       '053': handleGenericError,
     };
     
@@ -395,7 +471,7 @@ class GQLNotifier extends ChangeNotifier {
 
 **Características:**
 - Recibe `AuthNotifier` y `ErrorService` en constructor
-- Registra TODOS los códigos de error (001-053) en el Map
+- Registra TODOS los códigos de error del backend en el Map
 - El error 001 (sesión) tiene handler especial que hace logout
 - Los demás errores usan `handleGenericError` que delega al `ErrorService`
 - Método `setContext()` para guardar el contexto (llamado desde Template)
@@ -510,6 +586,87 @@ class MyApp extends StatelessWidget {
 - El orden es crítico: AuthNotifier → ErrorService → GQLNotifier
 - ErrorService es un **servicio de infraestructura sin estado**, no un notifier
 
+### 6. Configuración del Tema
+
+**Ubicación:** `/src/presentation/core/themes/teal.dart` (o purple.dart)
+
+**Responsabilidad:** Definir SnackBarTheme para errores
+
+```dart
+class TealTheme {
+  ThemeData get materialTheme {
+    return ThemeData(
+      useMaterial3: true,
+      fontFamily: GoogleFonts.roboto().fontFamily,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.teal,
+        secondary: Colors.teal,
+        brightness: Brightness.dark,
+      ),
+      brightness: Brightness.dark,
+      // Configuración de SnackBar para animaciones suaves
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        actionTextColor: Colors.white,
+        contentTextStyle: TextStyle(fontSize: 14),
+      ),
+    );
+  }
+}
+```
+
+**Mapeo de ErrorType a ColorScheme:**
+
+| ErrorType | backgroundColor | textColor | Uso |
+|-----------|-----------------|-----------|-----|
+| `error` | `colorScheme.error` | `colorScheme.onError` | Errores de backend/GraphQL |
+| `warning` | `colorScheme.tertiary` | `colorScheme.onTertiary` | Validaciones de formularios |
+| `info` | `colorScheme.primary` | `colorScheme.onPrimary` | Mensajes informativos |
+| `success` | `colorScheme.secondary` | `colorScheme.onSecondary` | Operaciones exitosas |
+
+**⚠️ IMPORTANTE:**
+- El `ErrorService` accede al tema mediante `Theme.of(context)`
+- Por eso TODOS los métodos públicos requieren `BuildContext`
+- Los colores se adaptan automáticamente al tema activo (Teal/Purple)
+- Respeta dark/light mode según `brightness` del tema
+
+**Responsabilidad:** Registrar todos los providers en el orden correcto
+
+```dart
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return af.MultiProvider(
+      providers: [
+        af.ChangeNotifierProvider(create: (_) => AppLocaleNotifier()),
+        af.ChangeNotifierProvider(create: (_) => AuthNotifier()),
+        af.Provider<ErrorService>(create: (_) => ErrorService()),  // ← Provider, NO ChangeNotifierProvider
+        af.ChangeNotifierProxyProvider2<AuthNotifier, ErrorService, GQLNotifier>(
+          create: (context) => GQLNotifier(
+            authNotifier: context.read<AuthNotifier>(),
+            errorService: context.read<ErrorService>(),
+          ),
+          update: (context, authNotifier, errorService, previous) =>
+              previous ?? GQLNotifier(
+                authNotifier: authNotifier,
+                errorService: errorService,
+              ),
+        ),
+        // ... otros providers
+      ],
+      child: const Template(),
+    );
+  }
+}
+```
+
+**⚠️ IMPORTANTE:**
+- `ErrorService` debe registrarse ANTES de `GQLNotifier`
+- Se usa `Provider<ErrorService>` (NO ChangeNotifierProvider) porque no tiene estado observable
+- Usar `ChangeNotifierProxyProvider2<AuthNotifier, ErrorService, GQLNotifier>` porque `GQLNotifier` depende de un notifier y un service
+- El orden es crítico: AuthNotifier → ErrorService → GQLNotifier
+- ErrorService es un **servicio de infraestructura sin estado**, no un notifier
+
 ### 6. Internacionalización (i18n)
 
 **Ubicación:** `/l10n/app_es.arb` y `/l10n/app_en.arb`
@@ -568,7 +725,7 @@ flutter gen-l10n
     - Template._onAuthChanged() detecta cambio
     - Redirecciona a /login
    ↓
-6b. Si es otro código (002-053):
+6b. Si es otro código (002-XXX):
     - Ejecuta GQLNotifier.handleGenericError()
     - Llama errorService.showBackendError(context, code, message)
     - ErrorService busca mensaje i18n para el código
@@ -698,30 +855,40 @@ void handleMaintenanceError(List<GraphQLError> errors) {
 ### ErrorService
 - [ ] NO extiende `ChangeNotifier` (es un servicio sin estado)
 - [ ] `GlobalKey<ScaffoldMessengerState>` creada como field público
-- [ ] Método `showBackendError()` recibe context, errorCode, errorMessage
-- [ ] Método `showValidationError()` para errores de formularios
-- [ ] Método `showError()` genérico con ErrorType enum
+- [ ] **TODOS los métodos públicos requieren BuildContext**
+- [ ] Método `showBackendError(context, code, message)` para errores GraphQL
+- [ ] Método `showValidationError(context, message)` para formularios
+- [ ] Método `showError(context, message, type)` genérico con ErrorType
 - [ ] `ErrorType` enum con 4 valores (error, warning, info, success)
 - [ ] `showBackendError()` usa try-catch para i18n
-- [ ] `_getBackendErrorMessage()` mapea TODOS los códigos (001-053)
-- [ ] `_showSnackBar()` método privado para lógica común
-- [ ] `_getBackgroundColor()` retorna color según ErrorType
-- [ ] SnackBar flotante con colores según tipo
-- [ ] Duración configurable (por defecto 4s backend, 3s otros)
-- [ ] Fallback al mensaje del servidor
+- [ ] `_getBackendErrorMessage()` mapea TODOS los códigos del backend
+- [ ] `_showSnackBar()` método privado con context, message, type, duration
+- [ ] **Usa colores del tema**: `_getBackgroundColor(colorScheme, type)`
+- [ ] **Usa colores de texto del tema**: `_getTextColor(colorScheme, type)`
+- [ ] **Usa tipografía del tema**: `theme.textTheme.bodyMedium`
+- [ ] **Limpia SnackBars anteriores**: `clearSnackBars()` antes de mostrar
+- [ ] SnackBar flotante con `behavior: SnackBarBehavior.floating`
+- [ ] Bordes redondeados (12px): `BorderRadius.circular(12)`
+- [ ] Padding explícito: `EdgeInsets.symmetric(horizontal: 16, vertical: 14)`
+- [ ] Margin: `EdgeInsets.all(16)`
+- [ ] Elevation del tema: `theme.snackBarTheme.elevation ?? 6`
+- [ ] Dismissible: `dismissDirection: DismissDirection.down`
+- [ ] Botón "OK" con `SnackBarAction`
+- [ ] Duración configurable (4s backend, 3s otros)
+- [ ] Fallback al mensaje del servidor si no hay i18n
 
 ### GQLNotifier
 - [ ] Recibe `AuthNotifier` y `ErrorService` en constructor
-- [ ] Todos los códigos registrados en el Map (001-053)
+- [ ] Todos los códigos registrados en el Map del ErrorManager
 - [ ] Error 001 usa `handleSessionError`
 - [ ] Demás errores usan `handleGenericError`
-- [ ] `handleGenericError` llama `errorService.showBackendError()`
+- [ ] `handleGenericError` llama `errorService.showBackendError(context, code, message)`
 - [ ] Verifica que `_context` existe antes de llamar
 - [ ] Método `setContext()` para guardar contexto
 
 ### Template
 - [ ] Llama `gqlNotifier.setContext(context)` en `didChangeDependencies`
-- [ ] Usa `context.read<ErrorService>()` (NO watch)
+- [ ] Usa `context.read<ErrorService>()` (NO watch - no hay estado observable)
 - [ ] Usa `errorService.scaffoldMessengerKey` en MaterialApp.router
 - [ ] NO tiene lógica de manejo de errores
 - [ ] Solo orquesta y conecta providers
@@ -731,6 +898,14 @@ void handleMaintenanceError(List<GraphQLError> errors) {
 - [ ] `ErrorService` registrado ANTES de `GQLNotifier`
 - [ ] Usa `ChangeNotifierProxyProvider2<AuthNotifier, ErrorService, GQLNotifier>`
 - [ ] GQLNotifier recibe authNotifier y errorService en constructor y update
+
+### Tema (Theme)
+- [ ] `SnackBarTheme` definido en ThemeData (opcional pero recomendado)
+- [ ] `ColorScheme.error` y `onError` definidos
+- [ ] `ColorScheme.tertiary` y `onTertiary` para warnings
+- [ ] `ColorScheme.primary` y `onPrimary` para info
+- [ ] `ColorScheme.secondary` y `onSecondary` para success
+- [ ] `textTheme.bodyMedium` definido (tipografía del SnackBar)
 
 ### i18n
 - [ ] Todas las keys en `app_es.arb`

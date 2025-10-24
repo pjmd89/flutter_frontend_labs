@@ -95,6 +95,9 @@ class ErrorService {
     final backgroundColor = _getBackgroundColor(colorScheme, type);
     final textColor = _getTextColor(colorScheme, type);
 
+    // Limpiar cualquier SnackBar anterior para evitar apilamiento
+    scaffoldMessengerKey.currentState?.clearSnackBars();
+
     scaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
         content: Text(
@@ -107,6 +110,10 @@ class ErrorService {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(16),
         elevation: theme.snackBarTheme.elevation ?? 6,
+        // Configuración para animación suave
+        width: null, // Permite que use el ancho completo con margin
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        dismissDirection: DismissDirection.down,
         action: SnackBarAction(
           label: 'OK',
           textColor: textColor,
