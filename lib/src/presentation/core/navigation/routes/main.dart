@@ -12,13 +12,14 @@ import 'invoice_routes.dart';
 import 'patient_routes.dart';
 import 'login_routes.dart';
 import 'dashboard_routes.dart';
+import 'home_routes.dart';
 
 ShellRoute ownerShellRoute = ShellRoute(
   builder: (context, state, child) {
     return BasicTemplate(child: child);
   },
   routes: [
-    ...dashboardRoutes,
+    ...homeRoutes,
     ...examRoutes,
     ...companyRoutes,
     ...laboratoryRoutes,
@@ -47,55 +48,37 @@ ShellRoute billingShellRoute = ShellRoute(
   builder: (context, state, child) {
     return BasicTemplate(child: child);
   },
-  routes: [
-    ...invoiceRoutes,
-    ...patientRoutes,
-  ],
+  routes: [...invoiceRoutes, ...patientRoutes],
 );
 ShellRoute technicianShellRoute = ShellRoute(
   builder: (context, state, child) {
     return BasicTemplate(child: child);
   },
-  routes: [
-    ...examRoutes,
-    ...evaluationpackageRoutes,
-  ],
+  routes: [...examRoutes, ...evaluationpackageRoutes],
 );
 ShellRoute loginShellRoute = ShellRoute(
   builder: (context, state, child) {
     return LoginTemplate(child: child);
   },
-  routes: [
-    ...loginRoutes,
-  ],
+  routes: [...loginRoutes],
 );
 GoRouter rootRouter = GoRouter(
-  initialLocation: "/home",
-  routes: [
-    rootShellRoute
-  ],
+  initialLocation: "/dashboard",
+  routes: [rootShellRoute],
 );
 GoRouter ownerRouter = GoRouter(
   initialLocation: "/home",
-  routes: [
-    ownerShellRoute
-  ],
+  routes: [ownerShellRoute],
 );
 GoRouter billingRouter = GoRouter(
   initialLocation: "/billing",
-  routes: [
-    billingShellRoute
-  ],
+  routes: [billingShellRoute],
 );
 GoRouter technicianRouter = GoRouter(
   initialLocation: "/exams",
-  routes: [
-    technicianShellRoute
-  ],
+  routes: [technicianShellRoute],
 );
 GoRouter loginRouter = GoRouter(
   initialLocation: "/login",
-  routes: [
-    loginShellRoute
-  ],
+  routes: [loginShellRoute],
 );

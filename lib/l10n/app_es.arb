@@ -75,6 +75,43 @@
     "description": "Término para empresas en plural"
   },
   
+  "dashboard": "Panel de Control",
+  "@dashboard": {
+    "description": "Título del panel de control principal"
+  },
+  "welcomeToDashboard": "Bienvenido al Panel de Control",
+  "@welcomeToDashboard": {
+    "description": "Mensaje de bienvenida en el dashboard"
+  },
+  "dashboardDescription": "Gestiona tu laboratorio desde aquí",
+  "@dashboardDescription": {
+    "description": "Descripción del dashboard"
+  },
+  "manageUsers": "Gestionar usuarios",
+  "@manageUsers": {
+    "description": "Descripción para la tarjeta de usuarios"
+  },
+  "manageCompanies": "Gestionar empresas",
+  "@manageCompanies": {
+    "description": "Descripción para la tarjeta de empresas"
+  },
+  "laboratories": "Laboratorios",
+  "@laboratories": {
+    "description": "Término para laboratorios en plural"
+  },
+  "manageLaboratories": "Gestionar laboratorios",
+  "@manageLaboratories": {
+    "description": "Descripción para la tarjeta de laboratorios"
+  },
+  "reports": "Reportes",
+  "@reports": {
+    "description": "Término para reportes en plural"
+  },
+  "viewReports": "Ver reportes",
+  "@viewReports": {
+    "description": "Descripción para la tarjeta de reportes"
+  },
+  
   "taxID": "RIF",
   "@taxID": {
     "description": "Registro de Identificación Fiscal"
@@ -327,6 +364,166 @@
   "viewBilling": "Ver facturación",
   "@viewBilling": {
     "description": "Acción para ver facturación de un usuario"
+  },
+  
+  "@error001": {
+    "description": "Error cuando la sesión del usuario no es válida o ha expirado"
+  },
+  "@error002": {
+    "description": "Error cuando el ID proporcionado está vacío o no es válido"
+  },
+  "@error003": {
+    "description": "Error cuando no se encuentra un usuario específico en el sistema"
+  },
+  "@error004": {
+    "description": "Error cuando no se encuentra un laboratorio específico en el sistema"
+  },
+  "@error005": {
+    "description": "Error que ocurre durante el proceso de creación de un laboratorio"
+  },
+  "@error006": {
+    "description": "Error que ocurre durante el proceso de actualización de un laboratorio"
+  },
+  "@error007": {
+    "description": "Error que ocurre durante el proceso de eliminación de un laboratorio"
+  },
+  "@error008": {
+    "description": "Error de validación cuando el campo laboratorio es obligatorio"
+  },
+  "@error009": {
+    "description": "Error cuando se intenta crear una cuenta con un correo electrónico ya existente"
+  },
+  "@error010": {
+    "description": "Error cuando se intenta crear una empresa con un RUC/NIT ya existente"
+  },
+  "@error011": {
+    "description": "Error que ocurre durante el proceso de creación de un usuario"
+  },
+  "@error012": {
+    "description": "Error que ocurre durante el proceso de actualización de un usuario"
+  },
+  "@error013": {
+    "description": "Error que ocurre durante el proceso de eliminación de un usuario"
+  },
+  "@error014": {
+    "description": "Error cuando faltan datos obligatorios del propietario o empresa"
+  },
+  "@error015": {
+    "description": "Error cuando no se encuentra una empresa específica en el sistema"
+  },
+  "@error016": {
+    "description": "Error que ocurre durante el proceso de creación de una empresa"
+  },
+  "@error017": {
+    "description": "Error que ocurre durante el proceso de actualización de una empresa"
+  },
+  "@error018": {
+    "description": "Error que ocurre durante el proceso de eliminación de una empresa"
+  },
+  "@error019": {
+    "description": "Error cuando se intenta actualizar el correo electrónico después del primer inicio de sesión"
+  },
+  "@error020": {
+    "description": "Error cuando un empleado no está asociado con el laboratorio especificado"
+  },
+  "@error021": {
+    "description": "Error cuando un usuario intenta iniciar sesión pero ya tiene una sesión activa"
+  },
+  "@error022": {
+    "description": "Error cuando el código de estado OIDC proporcionado no es válido"
+  },
+  "@error023": {
+    "description": "Error que ocurre durante la creación del código de estado OIDC"
+  },
+  "@error024": {
+    "description": "Error que ocurre durante el proceso de autenticación OIDC"
+  },
+  "@error025": {
+    "description": "Error cuando un usuario no tiene permisos para acceder a un recurso"
+  },
+  "@error026": {
+    "description": "Error de validación cuando el número de teléfono no está en formato E.164"
+  },
+  "@error027": {
+    "description": "Error de validación cuando el formato del correo electrónico es inválido"
+  },
+  "@error028": {
+    "description": "Error de validación cuando el formato de fecha/hora no es un timestamp unix válido"
+  },
+  "@error029": {
+    "description": "Error cuando no se encuentra una sesión específica en el sistema"
+  },
+  "@error030": {
+    "description": "Error que ocurre durante el proceso de creación de una plantilla de examen"
+  },
+  "@error031": {
+    "description": "Error que ocurre durante el proceso de actualización de una plantilla de examen"
+  },
+  "@error032": {
+    "description": "Error que ocurre durante el proceso de eliminación de una plantilla de examen"
+  },
+  "@error033": {
+    "description": "Error cuando no se encuentra una plantilla de examen específica en el sistema"
+  },
+  "@error034": {
+    "description": "Error cuando se intenta eliminar una plantilla de examen que está siendo utilizada"
+  },
+  "@error035": {
+    "description": "Error cuando se intenta crear una plantilla de examen con un nombre duplicado"
+  },
+  "@error036": {
+    "description": "Error de validación cuando el ID de empresa es un campo obligatorio"
+  },
+  "@error037": {
+    "description": "Error de validación cuando el campo dirección está vacío y es obligatorio"
+  },
+  "@error038": {
+    "description": "Error cuando un empleado ya está asociado con el laboratorio especificado"
+  },
+  "@error039": {
+    "description": "Error cuando un laboratorio no tiene empleados asociados"
+  },
+  "@error040": {
+    "description": "Error cuando no se encuentra un examen específico en el sistema"
+  },
+  "@error041": {
+    "description": "Error que ocurre durante el proceso de creación de un examen"
+  },
+  "@error042": {
+    "description": "Error que ocurre durante el proceso de actualización de un examen"
+  },
+  "@error043": {
+    "description": "Error que ocurre durante el proceso de eliminación de un examen"
+  },
+  "@error044": {
+    "description": "Error de validación cuando el costo base del examen no es un valor positivo"
+  },
+  "@error045": {
+    "description": "Error cuando se intenta eliminar un examen que está siendo utilizado en paquetes"
+  },
+  "@error046": {
+    "description": "Error de validación cuando faltan campos obligatorios del paciente humano"
+  },
+  "@error047": {
+    "description": "Error de validación cuando la fecha/hora proporcionada es mayor que la actual"
+  },
+  "@error048": {
+    "description": "Error que ocurre durante el proceso de creación de un paciente"
+  },
+  "@error049": {
+    "description": "Error que ocurre durante el proceso de actualización de un paciente"
+  },
+  "@error050": {
+    "description": "Error cuando no se encuentra un paciente específico en el sistema"
+  },
+  "@error051": {
+    "description": "Error cuando se intenta crear una cuenta con un número de teléfono ya existente"
+  },
+  "@error052": {
+    "description": "Error que ocurre durante el proceso de eliminación de un paciente"
+  },
+  "@error053": {
+    "description": "Error cuando se intenta crear un paciente con un DNI ya existente"
   },
   
   "error001": "Usuario no ha iniciado sesión",

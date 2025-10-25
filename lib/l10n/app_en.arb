@@ -75,6 +75,43 @@
     "description": "Term for companies in plural form"
   },
   
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Main dashboard title"
+  },
+  "welcomeToDashboard": "Welcome to Dashboard",
+  "@welcomeToDashboard": {
+    "description": "Welcome message in dashboard"
+  },
+  "dashboardDescription": "Manage your laboratory from here",
+  "@dashboardDescription": {
+    "description": "Dashboard description"
+  },
+  "manageUsers": "Manage users",
+  "@manageUsers": {
+    "description": "Description for users card"
+  },
+  "manageCompanies": "Manage companies",
+  "@manageCompanies": {
+    "description": "Description for companies card"
+  },
+  "laboratories": "Laboratories",
+  "@laboratories": {
+    "description": "Term for laboratories in plural form"
+  },
+  "manageLaboratories": "Manage laboratories",
+  "@manageLaboratories": {
+    "description": "Description for laboratories card"
+  },
+  "reports": "Reports",
+  "@reports": {
+    "description": "Term for reports in plural form"
+  },
+  "viewReports": "View reports",
+  "@viewReports": {
+    "description": "Description for reports card"
+  },
+  
   "taxID": "Tax ID",
   "@taxID": {
     "description": "Tax Identification Number"
@@ -330,56 +367,215 @@
   },
   
   "error001": "User not logged in",
+  "@error001": {
+    "description": "Error when user session is not valid or expired"
+  },
   "error002": "Empty or invalid input ID",
+  "@error002": {
+    "description": "Error when required ID parameter is missing or invalid"
+  },
   "error003": "User not found",
+  "@error003": {
+    "description": "Error when requested user does not exist"
+  },
   "error004": "Laboratory not found",
+  "@error004": {
+    "description": "Error when requested laboratory does not exist"
+  },
   "error005": "Error when trying to create laboratory",
+  "@error005": {
+    "description": "Error during laboratory creation process"
+  },
   "error006": "Error when trying to update laboratory",
+  "@error006": {
+    "description": "Error during laboratory update process"
+  },
   "error007": "Error when trying to delete laboratory",
+  "@error007": {
+    "description": "Error during laboratory deletion process"
+  },
   "error008": "Laboratory is required",
+  "@error008": {
+    "description": "Error when laboratory field is mandatory but not provided"
+  },
   "error009": "An account already exists with the email provided",
+  "@error009": {
+    "description": "Error when trying to create user with existing email"
+  },
   "error010": "A company already exists with the tax ID provided",
+  "@error010": {
+    "description": "Error when trying to create company with existing tax ID"
+  },
   "error011": "Error when trying to create user",
+  "@error011": {
+    "description": "Error during user creation process"
+  },
   "error012": "Error when trying to update user",
+  "@error012": {
+    "description": "Error during user update process"
+  },
   "error013": "Error when trying to delete user",
+  "@error013": {
+    "description": "Error during user deletion process"
+  },
   "error014": "Missing owner or company info",
+  "@error014": {
+    "description": "Error when owner role requires company information but it's missing"
+  },
   "error015": "Company not found",
+  "@error015": {
+    "description": "Error when requested company does not exist"
+  },
   "error016": "Error when trying to create company",
+  "@error016": {
+    "description": "Error during company creation process"
+  },
   "error017": "Error when trying to update company",
+  "@error017": {
+    "description": "Error during company update process"
+  },
   "error018": "Error when trying to delete company",
+  "@error018": {
+    "description": "Error during company deletion process"
+  },
   "error019": "Once you log in for the first time, you cannot update your email",
+  "@error019": {
+    "description": "Error when trying to change email after first login"
+  },
   "error020": "The employee is not part of the laboratory",
+  "@error020": {
+    "description": "Error when user doesn't belong to the specified laboratory"
+  },
   "error021": "User already logged in",
+  "@error021": {
+    "description": "Error when trying to login while already authenticated"
+  },
   "error022": "Invalid OIDC state code",
+  "@error022": {
+    "description": "Error with OpenID Connect authentication state"
+  },
   "error023": "Error when trying to create OIDC state code",
+  "@error023": {
+    "description": "Error during OpenID Connect state creation"
+  },
   "error024": "Error when trying to log in with OIDC",
+  "@error024": {
+    "description": "Error during OpenID Connect login process"
+  },
   "error025": "Access denied",
+  "@error025": {
+    "description": "Error when user doesn't have permission for the requested action"
+  },
   "error026": "Invalid phone number, must be in E.164 format",
+  "@error026": {
+    "description": "Error when phone number format is incorrect"
+  },
   "error027": "Invalid email format",
+  "@error027": {
+    "description": "Error when email format is incorrect"
+  },
   "error028": "Invalid date time format, must be unix timestamp",
+  "@error028": {
+    "description": "Error when datetime format is incorrect"
+  },
   "error029": "Session not found",
+  "@error029": {
+    "description": "Error when user session cannot be found"
+  },
   "error030": "Error when trying to create exam template",
+  "@error030": {
+    "description": "Error during exam template creation process"
+  },
   "error031": "Error when trying to update exam template",
+  "@error031": {
+    "description": "Error during exam template update process"
+  },
   "error032": "Error when trying to delete exam template",
+  "@error032": {
+    "description": "Error during exam template deletion process"
+  },
   "error033": "Exam template not found",
+  "@error033": {
+    "description": "Error when requested exam template does not exist"
+  },
   "error034": "The exam template is being used in one or more laboratory exams",
+  "@error034": {
+    "description": "Error when trying to delete exam template that is in use"
+  },
   "error035": "An exam template with the same name already exists",
+  "@error035": {
+    "description": "Error when trying to create exam template with duplicate name"
+  },
   "error036": "Company ID is required",
+  "@error036": {
+    "description": "Error when company ID field is mandatory but not provided"
+  },
   "error037": "Address cannot be empty",
+  "@error037": {
+    "description": "Error when address field is required but empty"
+  },
   "error038": "The employee is already part of the laboratory",
+  "@error038": {
+    "description": "Error when trying to add user that already belongs to laboratory"
+  },
   "error039": "The laboratory has no employees",
+  "@error039": {
+    "description": "Error when laboratory operation requires employees but none exist"
+  },
   "error040": "Exam not found",
+  "@error040": {
+    "description": "Error when requested exam does not exist"
+  },
   "error041": "Error when trying to create exam",
+  "@error041": {
+    "description": "Error during exam creation process"
+  },
   "error042": "Error when trying to update exam",
+  "@error042": {
+    "description": "Error during exam update process"
+  },
   "error043": "Error when trying to delete exam",
+  "@error043": {
+    "description": "Error during exam deletion process"
+  },
   "error044": "Exam base cost must be a positive value",
+  "@error044": {
+    "description": "Error when exam cost is not a positive number"
+  },
   "error045": "The exam is being used in one or more evaluation packages and cannot be deleted",
+  "@error045": {
+    "description": "Error when trying to delete exam that is referenced in evaluation packages"
+  },
   "error046": "Missing human patient fields",
+  "@error046": {
+    "description": "Error when required patient information is missing"
+  },
   "error047": "The date time provided cannot be greater than the current time",
+  "@error047": {
+    "description": "Error when provided date is in the future but shouldn't be"
+  },
   "error048": "Error when trying to create patient",
+  "@error048": {
+    "description": "Error during patient creation process"
+  },
   "error049": "Error when trying to update patient",
+  "@error049": {
+    "description": "Error during patient update process"
+  },
   "error050": "Patient not found",
+  "@error050": {
+    "description": "Error when requested patient does not exist"
+  },
   "error051": "An account already exists with the phone number provided",
+  "@error051": {
+    "description": "Error when trying to create account with existing phone number"
+  },
   "error052": "Error when trying to delete patient",
-  "error053": "A patient with the provided DNI already exists"
+  "@error052": {
+    "description": "Error during patient deletion process"
+  },
+  "error053": "A patient with the provided DNI already exists",
+  "@error053": {
+    "description": "Error when trying to create patient with existing DNI"
+  }
 }

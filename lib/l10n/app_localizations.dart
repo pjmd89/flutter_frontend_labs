@@ -203,6 +203,60 @@ abstract class AppLocalizations {
   /// **'Empresas'**
   String get companies;
 
+  /// Título del panel de control principal
+  ///
+  /// In es, this message translates to:
+  /// **'Panel de Control'**
+  String get dashboard;
+
+  /// Mensaje de bienvenida en el dashboard
+  ///
+  /// In es, this message translates to:
+  /// **'Bienvenido al Panel de Control'**
+  String get welcomeToDashboard;
+
+  /// Descripción del dashboard
+  ///
+  /// In es, this message translates to:
+  /// **'Gestiona tu laboratorio desde aquí'**
+  String get dashboardDescription;
+
+  /// Descripción para la tarjeta de usuarios
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar usuarios'**
+  String get manageUsers;
+
+  /// Descripción para la tarjeta de empresas
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar empresas'**
+  String get manageCompanies;
+
+  /// Término para laboratorios en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Laboratorios'**
+  String get laboratories;
+
+  /// Descripción para la tarjeta de laboratorios
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar laboratorios'**
+  String get manageLaboratories;
+
+  /// Término para reportes en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Reportes'**
+  String get reports;
+
+  /// Descripción para la tarjeta de reportes
+  ///
+  /// In es, this message translates to:
+  /// **'Ver reportes'**
+  String get viewReports;
+
   /// Registro de Identificación Fiscal
   ///
   /// In es, this message translates to:
@@ -461,319 +515,319 @@ abstract class AppLocalizations {
   /// **'Ver facturación'**
   String get viewBilling;
 
-  /// No description provided for @error001.
+  /// Error cuando la sesión del usuario no es válida o ha expirado
   ///
   /// In es, this message translates to:
   /// **'Usuario no ha iniciado sesión'**
   String get error001;
 
-  /// No description provided for @error002.
+  /// Error cuando el ID proporcionado está vacío o no es válido
   ///
   /// In es, this message translates to:
   /// **'ID de entrada vacío o inválido'**
   String get error002;
 
-  /// No description provided for @error003.
+  /// Error cuando no se encuentra un usuario específico en el sistema
   ///
   /// In es, this message translates to:
   /// **'Usuario no encontrado'**
   String get error003;
 
-  /// No description provided for @error004.
+  /// Error cuando no se encuentra un laboratorio específico en el sistema
   ///
   /// In es, this message translates to:
   /// **'Laboratorio no encontrado'**
   String get error004;
 
-  /// No description provided for @error005.
+  /// Error que ocurre durante el proceso de creación de un laboratorio
   ///
   /// In es, this message translates to:
   /// **'Error al intentar crear el laboratorio'**
   String get error005;
 
-  /// No description provided for @error006.
+  /// Error que ocurre durante el proceso de actualización de un laboratorio
   ///
   /// In es, this message translates to:
   /// **'Error al intentar actualizar el laboratorio'**
   String get error006;
 
-  /// No description provided for @error007.
+  /// Error que ocurre durante el proceso de eliminación de un laboratorio
   ///
   /// In es, this message translates to:
   /// **'Error al intentar eliminar el laboratorio'**
   String get error007;
 
-  /// No description provided for @error008.
+  /// Error de validación cuando el campo laboratorio es obligatorio
   ///
   /// In es, this message translates to:
   /// **'El laboratorio es requerido'**
   String get error008;
 
-  /// No description provided for @error009.
+  /// Error cuando se intenta crear una cuenta con un correo electrónico ya existente
   ///
   /// In es, this message translates to:
   /// **'Ya existe una cuenta con el correo electrónico proporcionado'**
   String get error009;
 
-  /// No description provided for @error010.
+  /// Error cuando se intenta crear una empresa con un RUC/NIT ya existente
   ///
   /// In es, this message translates to:
   /// **'Ya existe una empresa con el RUC/NIT proporcionado'**
   String get error010;
 
-  /// No description provided for @error011.
+  /// Error que ocurre durante el proceso de creación de un usuario
   ///
   /// In es, this message translates to:
   /// **'Error al intentar crear el usuario'**
   String get error011;
 
-  /// No description provided for @error012.
+  /// Error que ocurre durante el proceso de actualización de un usuario
   ///
   /// In es, this message translates to:
   /// **'Error al intentar actualizar el usuario'**
   String get error012;
 
-  /// No description provided for @error013.
+  /// Error que ocurre durante el proceso de eliminación de un usuario
   ///
   /// In es, this message translates to:
   /// **'Error al intentar eliminar el usuario'**
   String get error013;
 
-  /// No description provided for @error014.
+  /// Error cuando faltan datos obligatorios del propietario o empresa
   ///
   /// In es, this message translates to:
   /// **'Falta información del propietario o de la empresa'**
   String get error014;
 
-  /// No description provided for @error015.
+  /// Error cuando no se encuentra una empresa específica en el sistema
   ///
   /// In es, this message translates to:
   /// **'Empresa no encontrada'**
   String get error015;
 
-  /// No description provided for @error016.
+  /// Error que ocurre durante el proceso de creación de una empresa
   ///
   /// In es, this message translates to:
   /// **'Error al intentar crear la empresa'**
   String get error016;
 
-  /// No description provided for @error017.
+  /// Error que ocurre durante el proceso de actualización de una empresa
   ///
   /// In es, this message translates to:
   /// **'Error al intentar actualizar la empresa'**
   String get error017;
 
-  /// No description provided for @error018.
+  /// Error que ocurre durante el proceso de eliminación de una empresa
   ///
   /// In es, this message translates to:
   /// **'Error al intentar eliminar la empresa'**
   String get error018;
 
-  /// No description provided for @error019.
+  /// Error cuando se intenta actualizar el correo electrónico después del primer inicio de sesión
   ///
   /// In es, this message translates to:
   /// **'Una vez que inicias sesión por primera vez, no puedes actualizar tu correo electrónico'**
   String get error019;
 
-  /// No description provided for @error020.
+  /// Error cuando un empleado no está asociado con el laboratorio especificado
   ///
   /// In es, this message translates to:
   /// **'El empleado no forma parte del laboratorio'**
   String get error020;
 
-  /// No description provided for @error021.
+  /// Error cuando un usuario intenta iniciar sesión pero ya tiene una sesión activa
   ///
   /// In es, this message translates to:
   /// **'El usuario ya ha iniciado sesión'**
   String get error021;
 
-  /// No description provided for @error022.
+  /// Error cuando el código de estado OIDC proporcionado no es válido
   ///
   /// In es, this message translates to:
   /// **'Código de estado OIDC inválido'**
   String get error022;
 
-  /// No description provided for @error023.
+  /// Error que ocurre durante la creación del código de estado OIDC
   ///
   /// In es, this message translates to:
   /// **'Error al intentar crear el código de estado OIDC'**
   String get error023;
 
-  /// No description provided for @error024.
+  /// Error que ocurre durante el proceso de autenticación OIDC
   ///
   /// In es, this message translates to:
   /// **'Error al intentar iniciar sesión con OIDC'**
   String get error024;
 
-  /// No description provided for @error025.
+  /// Error cuando un usuario no tiene permisos para acceder a un recurso
   ///
   /// In es, this message translates to:
   /// **'Acceso denegado'**
   String get error025;
 
-  /// No description provided for @error026.
+  /// Error de validación cuando el número de teléfono no está en formato E.164
   ///
   /// In es, this message translates to:
   /// **'Número de teléfono inválido, debe estar en formato E.164'**
   String get error026;
 
-  /// No description provided for @error027.
+  /// Error de validación cuando el formato del correo electrónico es inválido
   ///
   /// In es, this message translates to:
   /// **'Formato de correo electrónico inválido'**
   String get error027;
 
-  /// No description provided for @error028.
+  /// Error de validación cuando el formato de fecha/hora no es un timestamp unix válido
   ///
   /// In es, this message translates to:
   /// **'Formato de fecha y hora inválido, debe ser timestamp unix'**
   String get error028;
 
-  /// No description provided for @error029.
+  /// Error cuando no se encuentra una sesión específica en el sistema
   ///
   /// In es, this message translates to:
   /// **'Sesión no encontrada'**
   String get error029;
 
-  /// No description provided for @error030.
+  /// Error que ocurre durante el proceso de creación de una plantilla de examen
   ///
   /// In es, this message translates to:
   /// **'Error al intentar crear la plantilla de examen'**
   String get error030;
 
-  /// No description provided for @error031.
+  /// Error que ocurre durante el proceso de actualización de una plantilla de examen
   ///
   /// In es, this message translates to:
   /// **'Error al intentar actualizar la plantilla de examen'**
   String get error031;
 
-  /// No description provided for @error032.
+  /// Error que ocurre durante el proceso de eliminación de una plantilla de examen
   ///
   /// In es, this message translates to:
   /// **'Error al intentar eliminar la plantilla de examen'**
   String get error032;
 
-  /// No description provided for @error033.
+  /// Error cuando no se encuentra una plantilla de examen específica en el sistema
   ///
   /// In es, this message translates to:
   /// **'Plantilla de examen no encontrada'**
   String get error033;
 
-  /// No description provided for @error034.
+  /// Error cuando se intenta eliminar una plantilla de examen que está siendo utilizada
   ///
   /// In es, this message translates to:
   /// **'La plantilla de examen está siendo usada en uno o más exámenes de laboratorio'**
   String get error034;
 
-  /// No description provided for @error035.
+  /// Error cuando se intenta crear una plantilla de examen con un nombre duplicado
   ///
   /// In es, this message translates to:
   /// **'Ya existe una plantilla de examen con el mismo nombre'**
   String get error035;
 
-  /// No description provided for @error036.
+  /// Error de validación cuando el ID de empresa es un campo obligatorio
   ///
   /// In es, this message translates to:
   /// **'El ID de la empresa es requerido'**
   String get error036;
 
-  /// No description provided for @error037.
+  /// Error de validación cuando el campo dirección está vacío y es obligatorio
   ///
   /// In es, this message translates to:
   /// **'La dirección no puede estar vacía'**
   String get error037;
 
-  /// No description provided for @error038.
+  /// Error cuando un empleado ya está asociado con el laboratorio especificado
   ///
   /// In es, this message translates to:
   /// **'El empleado ya forma parte del laboratorio'**
   String get error038;
 
-  /// No description provided for @error039.
+  /// Error cuando un laboratorio no tiene empleados asociados
   ///
   /// In es, this message translates to:
   /// **'El laboratorio no tiene empleados'**
   String get error039;
 
-  /// No description provided for @error040.
+  /// Error cuando no se encuentra un examen específico en el sistema
   ///
   /// In es, this message translates to:
   /// **'Examen no encontrado'**
   String get error040;
 
-  /// No description provided for @error041.
+  /// Error que ocurre durante el proceso de creación de un examen
   ///
   /// In es, this message translates to:
   /// **'Error al intentar crear el examen'**
   String get error041;
 
-  /// No description provided for @error042.
+  /// Error que ocurre durante el proceso de actualización de un examen
   ///
   /// In es, this message translates to:
   /// **'Error al intentar actualizar el examen'**
   String get error042;
 
-  /// No description provided for @error043.
+  /// Error que ocurre durante el proceso de eliminación de un examen
   ///
   /// In es, this message translates to:
   /// **'Error al intentar eliminar el examen'**
   String get error043;
 
-  /// No description provided for @error044.
+  /// Error de validación cuando el costo base del examen no es un valor positivo
   ///
   /// In es, this message translates to:
   /// **'El costo base del examen debe ser un valor positivo'**
   String get error044;
 
-  /// No description provided for @error045.
+  /// Error cuando se intenta eliminar un examen que está siendo utilizado en paquetes
   ///
   /// In es, this message translates to:
   /// **'El examen está siendo usado en uno o más paquetes de evaluación y no puede ser eliminado'**
   String get error045;
 
-  /// No description provided for @error046.
+  /// Error de validación cuando faltan campos obligatorios del paciente humano
   ///
   /// In es, this message translates to:
   /// **'Faltan campos del paciente humano'**
   String get error046;
 
-  /// No description provided for @error047.
+  /// Error de validación cuando la fecha/hora proporcionada es mayor que la actual
   ///
   /// In es, this message translates to:
   /// **'La fecha y hora proporcionada no puede ser mayor que la hora actual'**
   String get error047;
 
-  /// No description provided for @error048.
+  /// Error que ocurre durante el proceso de creación de un paciente
   ///
   /// In es, this message translates to:
   /// **'Error al intentar crear el paciente'**
   String get error048;
 
-  /// No description provided for @error049.
+  /// Error que ocurre durante el proceso de actualización de un paciente
   ///
   /// In es, this message translates to:
   /// **'Error al intentar actualizar el paciente'**
   String get error049;
 
-  /// No description provided for @error050.
+  /// Error cuando no se encuentra un paciente específico en el sistema
   ///
   /// In es, this message translates to:
   /// **'Paciente no encontrado'**
   String get error050;
 
-  /// No description provided for @error051.
+  /// Error cuando se intenta crear una cuenta con un número de teléfono ya existente
   ///
   /// In es, this message translates to:
   /// **'Ya existe una cuenta con el número de teléfono proporcionado'**
   String get error051;
 
-  /// No description provided for @error052.
+  /// Error que ocurre durante el proceso de eliminación de un paciente
   ///
   /// In es, this message translates to:
   /// **'Error al intentar eliminar el paciente'**
   String get error052;
 
-  /// No description provided for @error053.
+  /// Error cuando se intenta crear un paciente con un DNI ya existente
   ///
   /// In es, this message translates to:
   /// **'Ya existe un paciente con el DNI proporcionado'**

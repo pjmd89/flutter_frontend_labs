@@ -63,6 +63,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String get companies => 'Empresas';
 
   @override
+  String get dashboard => 'Panel de Control';
+
+  @override
+  String get welcomeToDashboard => 'Bienvenido al Panel de Control';
+
+  @override
+  String get dashboardDescription => 'Gestiona tu laboratorio desde aquí';
+
+  @override
+  String get manageUsers => 'Gestionar usuarios';
+
+  @override
+  String get manageCompanies => 'Gestionar empresas';
+
+  @override
+  String get laboratories => 'Laboratorios';
+
+  @override
+  String get manageLaboratories => 'Gestionar laboratorios';
+
+  @override
+  String get reports => 'Reportes';
+
+  @override
+  String get viewReports => 'Ver reportes';
+
+  @override
   String get taxID => 'RIF';
 
   @override

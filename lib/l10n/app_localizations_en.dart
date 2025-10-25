@@ -63,6 +63,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get companies => 'Companies';
 
   @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get welcomeToDashboard => 'Welcome to Dashboard';
+
+  @override
+  String get dashboardDescription => 'Manage your laboratory from here';
+
+  @override
+  String get manageUsers => 'Manage users';
+
+  @override
+  String get manageCompanies => 'Manage companies';
+
+  @override
+  String get laboratories => 'Laboratories';
+
+  @override
+  String get manageLaboratories => 'Manage laboratories';
+
+  @override
+  String get reports => 'Reports';
+
+  @override
+  String get viewReports => 'View reports';
+
+  @override
   String get taxID => 'Tax ID';
 
   @override
