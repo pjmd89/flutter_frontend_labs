@@ -186,6 +186,27 @@
     }
   },
   
+  "thingCreatedSuccessfully": "{thing} created successfully",
+  "@thingCreatedSuccessfully": {
+    "description": "Success message after creating. Ex: User created successfully",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "femeThingCreatedSuccessfully": "{thing} created successfully",
+  "@femeThingCreatedSuccessfully": {
+    "description": "Success message after creating (same as thingCreatedSuccessfully in English). Ex: Company created successfully",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Company"
+      }
+    }
+  },
+  
   "noRegisteredMaleThings": "No {thing} registered",
   "@noRegisteredMaleThings": {
     "description": "Message when no records exist. Ex: No Users registered",

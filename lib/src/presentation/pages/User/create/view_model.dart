@@ -5,9 +5,12 @@ import '/src/domain/operation/fields_builders/main.dart';
 import '/src/domain/operation/mutations/createUser/createuser_mutation.dart';
 import '/src/domain/usecases/User/create_user_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/infraestructure/services/error_service.dart';
+import '/l10n/app_localizations.dart';
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
+  late ErrorService _errorService;
   final BuildContext _context;
   bool _loading = false;
 
@@ -22,6 +25,7 @@ class ViewModel extends ChangeNotifier {
 
   ViewModel({required BuildContext context}) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _errorService = _context.read<ErrorService>();
   }
 
   Future<bool> create() async {
@@ -70,6 +74,13 @@ class ViewModel extends ChangeNotifier {
 
       if (response is User) {
         isError = false;
+
+        // Mostrar mensaje de éxito
+        final l10n = AppLocalizations.of(_context)!;
+        _errorService.showError(
+          message: l10n.thingCreatedSuccessfully(l10n.user),
+          type: ErrorType.success,
+        );
       } else {
         isError = true;
       }

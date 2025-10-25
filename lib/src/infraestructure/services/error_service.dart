@@ -22,26 +22,37 @@ class ErrorService {
   ///
   /// Usado por: GQLNotifier cuando detecta errores GraphQL
   void showBackendError({
-    required BuildContext context,
     required String errorCode,
     required String errorMessage,
   }) {
     String displayMessage = errorMessage;
 
-    try {
-      final l10n = AppLocalizations.of(context);
-      if (l10n != null) {
+    // Obtener el context del ScaffoldMessenger
+    final context = scaffoldMessengerKey.currentContext;
+
+    if (context != null) {
+      try {
+        debugPrint('🌍 Intentando obtener AppLocalizations...');
+        final l10n = AppLocalizations.of(context)!;
+        debugPrint('✅ AppLocalizations obtenido correctamente');
+        debugPrint('🔍 Buscando traducción para código: $errorCode');
+
         final translatedMessage = _getBackendErrorMessage(l10n, errorCode);
         if (translatedMessage != null) {
+          debugPrint('✅ Traducción encontrada: $translatedMessage');
           displayMessage = translatedMessage;
+        } else {
+          debugPrint(
+            '⚠️ No hay traducción para código $errorCode, usando mensaje del servidor',
+          );
         }
+      } catch (e) {
+        debugPrint('❌ Error obteniendo traducciones: $e');
+        debugPrint('📝 Usando mensaje del servidor: $errorMessage');
       }
-    } catch (e) {
-      // Si falla, usar el mensaje del servidor
     }
 
     _showSnackBar(
-      context: context,
       message: displayMessage,
       type: ErrorType.error,
       duration: const Duration(seconds: 4),
@@ -51,13 +62,8 @@ class ErrorService {
   /// Muestra un error de validación de formulario.
   ///
   /// Usado por: Widgets de formularios cuando fallan validaciones locales
-  void showValidationError({
-    required BuildContext context,
-    required String message,
-    Duration? duration,
-  }) {
+  void showValidationError({required String message, Duration? duration}) {
     _showSnackBar(
-      context: context,
       message: message,
       type: ErrorType.warning,
       duration: duration ?? const Duration(seconds: 3),
@@ -68,13 +74,11 @@ class ErrorService {
   ///
   /// Usado por: Cualquier parte de la app que necesite mostrar errores
   void showError({
-    required BuildContext context,
     required String message,
     ErrorType type = ErrorType.error,
     Duration? duration,
   }) {
     _showSnackBar(
-      context: context,
       message: message,
       type: type,
       duration: duration ?? const Duration(seconds: 3),
@@ -83,11 +87,16 @@ class ErrorService {
 
   /// Muestra el SnackBar usando el GlobalKey
   void _showSnackBar({
-    required BuildContext context,
     required String message,
     required ErrorType type,
     required Duration duration,
   }) {
+    final context = scaffoldMessengerKey.currentContext;
+    if (context == null) {
+      debugPrint('⚠️ No hay context disponible en ScaffoldMessenger');
+      return;
+    }
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 

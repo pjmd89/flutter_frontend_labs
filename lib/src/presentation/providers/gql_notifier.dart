@@ -10,13 +10,6 @@ class GQLNotifier extends ChangeNotifier {
   final ErrorService errorService;
   late GqlConn gqlConn;
 
-  // Context para poder mostrar errores (se configura desde el Template)
-  BuildContext? _context;
-
-  void setContext(BuildContext context) {
-    _context = context;
-  }
-
   GQLNotifier({required this.authNotifier, required this.errorService}) {
     Map<String, ErrorHandler> errorHandlers = {
       '001': handleSessionError,
@@ -98,12 +91,8 @@ class GQLNotifier extends ChangeNotifier {
       debugPrint('GraphQL Error [$code]: $message');
 
       // Mostrar error usando ErrorService
-      if (_context != null && code != null) {
-        errorService.showBackendError(
-          context: _context!,
-          errorCode: code,
-          errorMessage: message,
-        );
+      if (code != null) {
+        errorService.showBackendError(errorCode: code, errorMessage: message);
       }
     }
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:labs/src/presentation/core/ui/custom_text_form_fields/utils/set_inputs_Formatters/main.dart';
 
-class CustomTextFormField extends StatefulWidget { 
+class CustomTextFormField extends StatefulWidget {
   final bool isEnabled;
   final double? width;
   final String? initialValue;
@@ -26,7 +26,7 @@ class CustomTextFormField extends StatefulWidget {
   final FocusNode? focusNode;
   final EdgeInsets? contentPadding;
   final bool obscureText;
-  
+
   const CustomTextFormField({
     super.key,
     this.labelText,
@@ -35,21 +35,21 @@ class CustomTextFormField extends StatefulWidget {
     required this.isDense,
     this.readOnly = false,
     this.prefixIcon,
-    this.onChange, 
-    this.initialValue, 
-    this.type, 
-    required this.fieldLength, 
-    this.validator, 
-    this.inputFormatters = const [], 
-    this.suffixIcon, 
-    this.canRequestFocus = true, 
-    this.isEnabled = true, 
-    this.maxLines, 
-    this.onTap, 
+    this.onChange,
+    this.initialValue,
+    this.type,
+    required this.fieldLength,
+    this.validator,
+    this.inputFormatters = const [],
+    this.suffixIcon,
+    this.canRequestFocus = true,
+    this.isEnabled = true,
+    this.maxLines,
+    this.onTap,
     this.counterText = "",
-    this.floatingLabelBehavior, 
-    this.focusNode, 
-    this.prefix, 
+    this.floatingLabelBehavior,
+    this.focusNode,
+    this.prefix,
     this.contentPadding,
     this.obscureText = false,
   });
@@ -59,7 +59,6 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  
   @override
   Widget build(BuildContext context) {
     List<TextInputFormatter> inputFormatters = [];
@@ -78,24 +77,25 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       controller: widget.controller,
       maxLength: widget.fieldLength,
       inputFormatters: setTextInputFormatters(
-        userTextFormatters: inputFormatters
+        userTextFormatters: inputFormatters,
       ),
       onChanged: (value) {
-        if(widget.onChange != null) widget.onChange!(value);
+        if (widget.onChange != null) widget.onChange!(value);
       },
       decoration: InputDecoration(
-        helperText: "",
         isDense: widget.isDense,
         labelText: widget.labelText,
         floatingLabelBehavior: widget.floatingLabelBehavior,
         border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(3))
+          borderRadius: BorderRadius.all(Radius.circular(3)),
         ),
         prefix: widget.prefix,
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.suffixIcon,
         counterText: widget.counterText ?? "",
-        contentPadding: widget.contentPadding, // Use the contentPadding parameter from the widget
+        contentPadding:
+            widget
+                .contentPadding, // Use the contentPadding parameter from the widget
       ),
       validator: widget.validator,
       onTap: widget.onTap,

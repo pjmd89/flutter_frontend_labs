@@ -186,6 +186,27 @@
     }
   },
   
+  "thingCreatedSuccessfully": "{thing} creado exitosamente",
+  "@thingCreatedSuccessfully": {
+    "description": "Mensaje de éxito al crear (masculino/neutro). Ej: Usuario creado exitosamente",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "femeThingCreatedSuccessfully": "{thing} creada exitosamente",
+  "@femeThingCreatedSuccessfully": {
+    "description": "Mensaje de éxito al crear (femenino). Ej: Empresa creada exitosamente",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Empresa"
+      }
+    }
+  },
+  
   "noRegisteredMaleThings": "No hay {thing} registrados",
   "@noRegisteredMaleThings": {
     "description": "Mensaje cuando no hay registros (masculino/neutro). Ej: No hay Usuarios registrados",

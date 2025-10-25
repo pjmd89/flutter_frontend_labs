@@ -170,6 +170,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
                   const SizedBox(height: 16),
                   // Email y Rol en la misma fila
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         flex: 2,
@@ -374,6 +375,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
 
                     // Campo para agregar teléfonos
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           child: CustomTextFormField(
@@ -381,7 +383,6 @@ class _UserCreatePageState extends State<UserCreatePage> {
                             controller: phoneController,
                             isDense: true,
                             fieldLength: FormFieldLength.name,
-                            counterText: "",
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -389,12 +390,6 @@ class _UserCreatePageState extends State<UserCreatePage> {
                           onPressed: _addPhoneNumber,
                           icon: const Icon(Icons.add, size: 18),
                           label: Text(l10n.addPhoneNumber),
-                          style: FilledButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                          ),
                         ),
                       ],
                     ),

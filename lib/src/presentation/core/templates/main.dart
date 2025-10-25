@@ -7,7 +7,6 @@ import '/src/presentation/core/navigation/routes/main.dart';
 import '/src/presentation/core/themes/teal.dart';
 import '/src/presentation/providers/auth_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
-import '/src/presentation/providers/gql_notifier.dart';
 import '/src/presentation/providers/locale_notifier.dart';
 import '/l10n/app_localizations.dart';
 
@@ -25,10 +24,6 @@ class _TemplateState extends State<Template> {
 
     final authNotifier = context.read<AuthNotifier>();
     authNotifier.addListener(_onAuthChanged);
-
-    // Configurar context para GQLNotifier
-    final gqlNotifier = context.read<GQLNotifier>();
-    gqlNotifier.setContext(context);
   }
 
   void _onAuthChanged() {

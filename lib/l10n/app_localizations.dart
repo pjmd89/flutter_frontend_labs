@@ -293,6 +293,18 @@ abstract class AppLocalizations {
   /// **'¿Está seguro de eliminar {thing}?'**
   String deleteQuestion(String thing);
 
+  /// Mensaje de éxito al crear (masculino/neutro). Ej: Usuario creado exitosamente
+  ///
+  /// In es, this message translates to:
+  /// **'{thing} creado exitosamente'**
+  String thingCreatedSuccessfully(String thing);
+
+  /// Mensaje de éxito al crear (femenino). Ej: Empresa creada exitosamente
+  ///
+  /// In es, this message translates to:
+  /// **'{thing} creada exitosamente'**
+  String femeThingCreatedSuccessfully(String thing);
+
   /// Mensaje cuando no hay registros (masculino/neutro). Ej: No hay Usuarios registrados
   ///
   /// In es, this message translates to:
