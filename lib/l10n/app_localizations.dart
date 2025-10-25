@@ -191,6 +191,66 @@ abstract class AppLocalizations {
   /// **'Usuarios'**
   String get users;
 
+  /// Término para empresa en singular
+  ///
+  /// In es, this message translates to:
+  /// **'Empresa'**
+  String get company;
+
+  /// Término para empresas en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Empresas'**
+  String get companies;
+
+  /// Registro de Identificación Fiscal
+  ///
+  /// In es, this message translates to:
+  /// **'RIF'**
+  String get taxID;
+
+  /// Logotipo de la empresa
+  ///
+  /// In es, this message translates to:
+  /// **'Logo'**
+  String get logo;
+
+  /// Indica que un campo es opcional
+  ///
+  /// In es, this message translates to:
+  /// **'Opcional'**
+  String get optional;
+
+  /// Título de sección para datos de empresa
+  ///
+  /// In es, this message translates to:
+  /// **'Información de la Empresa'**
+  String get companyInformation;
+
+  /// Título de sección para datos de laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'Información del Laboratorio'**
+  String get laboratoryInformation;
+
+  /// Dirección física
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección'**
+  String get address;
+
+  /// Número telefónico
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get phoneNumber;
+
+  /// Acción para agregar un número de teléfono
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar teléfono'**
+  String get addPhoneNumber;
+
   /// Plantilla para crear entidad masculina/neutra. Ej: Nuevo Usuario
   ///
   /// In es, this message translates to:

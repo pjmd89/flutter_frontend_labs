@@ -57,6 +57,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get users => 'Users';
 
   @override
+  String get company => 'Company';
+
+  @override
+  String get companies => 'Companies';
+
+  @override
+  String get taxID => 'Tax ID';
+
+  @override
+  String get logo => 'Logo';
+
+  @override
+  String get optional => 'Optional';
+
+  @override
+  String get companyInformation => 'Company Information';
+
+  @override
+  String get laboratoryInformation => 'Laboratory Information';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get addPhoneNumber => 'Add phone number';
+
+  @override
   String newThing(String thing) {
     return 'New $thing';
   }

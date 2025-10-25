@@ -1,30 +1,111 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
+import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/domain/operation/fields_builders/main.dart';
+import '/src/domain/operation/queries/getCompanies/getcompanies_query.dart';
+import '/src/domain/extensions/edgecompany_fields_builder_extension.dart';
+import '/src/domain/usecases/Company/read_company_usecase.dart';
 
 class ViewModel extends ChangeNotifier {
-  bool _loading = true;
+  // Estados privados
+  bool _loading = false;
   bool _error = false;
+  List<Company>? _companyList;
+  PageInfo? _pageInfo;
+
+  // Dependencias
   late GqlConn _gqlConn;
+  late ReadCompanyUsecase _readUseCase;
   final BuildContext _context;
+
+  // Query con FieldsBuilder configurado
+  final GetCompaniesQuery _operation = GetCompaniesQuery(
+    builder: EdgeCompanyFieldsBuilder().defaultValues(),
+  );
+
+  // Getters públicos
   bool get loading => _loading;
   bool get error => _error;
+  List<Company>? get companyList => _companyList;
+  PageInfo? get pageInfo => _pageInfo;
 
+  // Setters con notificación
   set loading(bool newLoading) {
     _loading = newLoading;
     notifyListeners();
   }
+
   set error(bool value) {
     _error = value;
     notifyListeners();
   }
-  ViewModel(
-    {required BuildContext context}
-  ) : _context = context{
-    _gqlConn = _context.read<GQLNotifier>().gqlConn;
+
+  set companyList(List<Company>? value) {
+    _companyList = value;
+    notifyListeners();
   }
 
-  read(Operation operation) async{
-    _gqlConn.operation(operation: operation);
+  set pageInfo(PageInfo? value) {
+    _pageInfo = value;
+    notifyListeners();
+  }
+
+  // Constructor - Inicializa dependencias
+  ViewModel({required BuildContext context}) : _context = context {
+    _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _readUseCase = ReadCompanyUsecase(operation: _operation, conn: _gqlConn);
+    _init();
+  }
+
+  // Inicialización - Carga datos al crear el ViewModel
+  Future<void> _init() async {
+    await getCompanies();
+  }
+
+  // Obtener todas las empresas (sin filtros)
+  Future<void> getCompanies() async {
+    loading = true;
+    error = false;
+
+    try {
+      final response = await _readUseCase.build();
+
+      if (response is EdgeCompany) {
+        companyList = response.edges;
+        pageInfo = response.pageInfo;
+      }
+    } catch (e) {
+      error = true;
+      companyList = [];
+    } finally {
+      loading = false;
+    }
+  }
+
+  // Buscar empresas con filtros
+  Future<void> search(List<SearchInput> searchInputs) async {
+    loading = true;
+    error = false;
+
+    try {
+      final response = await _readUseCase.search(searchInputs, _pageInfo);
+
+      if (response is EdgeCompany) {
+        companyList = response.edges;
+        pageInfo = response.pageInfo;
+      }
+    } catch (e) {
+      error = true;
+      companyList = [];
+    } finally {
+      loading = false;
+    }
+  }
+
+  // Cambiar de página
+  Future<void> updatePageInfo(PageInfo newPageInfo) async {
+    _pageInfo = newPageInfo;
+    await search([]); // Recargar con la nueva página
   }
 }

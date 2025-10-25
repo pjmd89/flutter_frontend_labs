@@ -66,6 +66,55 @@
     "description": "Término para usuarios en plural"
   },
   
+  "company": "Empresa",
+  "@company": {
+    "description": "Término para empresa en singular"
+  },
+  "companies": "Empresas",
+  "@companies": {
+    "description": "Término para empresas en plural"
+  },
+  
+  "taxID": "RIF",
+  "@taxID": {
+    "description": "Registro de Identificación Fiscal"
+  },
+  
+  "logo": "Logo",
+  "@logo": {
+    "description": "Logotipo de la empresa"
+  },
+  
+  "optional": "Opcional",
+  "@optional": {
+    "description": "Indica que un campo es opcional"
+  },
+  
+  "companyInformation": "Información de la Empresa",
+  "@companyInformation": {
+    "description": "Título de sección para datos de empresa"
+  },
+  
+  "laboratoryInformation": "Información del Laboratorio",
+  "@laboratoryInformation": {
+    "description": "Título de sección para datos de laboratorio"
+  },
+  
+  "address": "Dirección",
+  "@address": {
+    "description": "Dirección física"
+  },
+  
+  "phoneNumber": "Teléfono",
+  "@phoneNumber": {
+    "description": "Número telefónico"
+  },
+  
+  "addPhoneNumber": "Agregar teléfono",
+  "@addPhoneNumber": {
+    "description": "Acción para agregar un número de teléfono"
+  },
+  
   "newThing": "Nuevo {thing}",
   "@newThing": {
     "description": "Plantilla para crear entidad masculina/neutra. Ej: Nuevo Usuario",

@@ -66,6 +66,55 @@
     "description": "Term for users in plural form"
   },
   
+  "company": "Company",
+  "@company": {
+    "description": "Term for company in singular form"
+  },
+  "companies": "Companies",
+  "@companies": {
+    "description": "Term for companies in plural form"
+  },
+  
+  "taxID": "Tax ID",
+  "@taxID": {
+    "description": "Tax Identification Number"
+  },
+  
+  "logo": "Logo",
+  "@logo": {
+    "description": "Company logo"
+  },
+  
+  "optional": "Optional",
+  "@optional": {
+    "description": "Indicates that a field is optional"
+  },
+  
+  "companyInformation": "Company Information",
+  "@companyInformation": {
+    "description": "Section title for company data"
+  },
+  
+  "laboratoryInformation": "Laboratory Information",
+  "@laboratoryInformation": {
+    "description": "Section title for laboratory data"
+  },
+  
+  "address": "Address",
+  "@address": {
+    "description": "Physical address"
+  },
+  
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Telephone number"
+  },
+  
+  "addPhoneNumber": "Add phone number",
+  "@addPhoneNumber": {
+    "description": "Action to add a phone number"
+  },
+  
   "newThing": "New {thing}",
   "@newThing": {
     "description": "Template for creating new entity. Ex: New User",
