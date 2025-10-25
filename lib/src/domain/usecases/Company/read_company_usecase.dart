@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:agile_front/agile_front.dart' as af;
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
 import '/src/domain/entities/inputs/searchinput_input.dart';
@@ -19,7 +20,15 @@ class ReadCompanyUsecase implements af.UseCase {
 
   @override
   Future<dynamic> build() async {
-    return _conn.operation(operation: _operation, callback: callback);
+    debugPrint('🔧 Query GraphQL que se enviará:');
+    debugPrint(_operation.build());
+    debugPrint('---');
+    final result = await _conn.operation(
+      operation: _operation,
+      callback: callback,
+    );
+    debugPrint('📥 Resultado de la operación: $result');
+    return result;
   }
 
   Future<dynamic> search(List<SearchInput> search, PageInfo? pageInfo) async {

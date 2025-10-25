@@ -1900,6 +1900,22 @@ Text(l10n.noRegisteredFemaleThings(l10n.companies)) // "No hay Empresas registra
    "${l10n.create} ${l10n.user}"  // Más difícil de traducir
    ```
 
+8. 🐛 **USAR debugPrint EN LUGAR DE print:**
+   ```dart
+   // MAL ❌
+   print('Valor: $value');
+   
+   // BIEN ✅
+   debugPrint('Valor: $value');
+   ```
+   
+   **Razones:**
+   - `debugPrint` no se trunca en consola con textos largos
+   - Solo imprime en modo debug, no en release
+   - Mejor rendimiento en producción
+   - Es la práctica recomendada de Flutter
+   - Requiere `import 'package:flutter/foundation.dart';` en archivos de dominio
+
 ## Manejo de Contexto
 
 ### Regla Importante
@@ -2123,6 +2139,8 @@ import './user_item.dart';  // → import './product_item.dart';
 - [ ] `l10n` se pasa como parámetro a funciones y widgets
 - [ ] Imports organizados: externos → internos → locales
 - [ ] Import de AppLocalizations en archivos que usan textos
+- [ ] 🐛 Usar `debugPrint` en lugar de `print` para debugging
+- [ ] ✅ Import `package:flutter/foundation.dart` en archivos de dominio que usen debugPrint
 - [ ] No hay código comentado innecesario
 - [ ] Nombres genéricos en archivos reutilizables
 - [ ] Sin errores de compilación

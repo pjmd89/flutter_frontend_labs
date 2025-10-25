@@ -47,9 +47,9 @@ class CreateUserInput extends ChangeNotifier {
     notifyListeners();
   }
 
-  num? _cutOffDate;
-  num? get cutOffDate => _cutOffDate;
-  set cutOffDate(num? value) {
+  String? _cutOffDate;
+  String? get cutOffDate => _cutOffDate;
+  set cutOffDate(String? value) {
     _cutOffDate = value;
     notifyListeners();
   }
@@ -68,7 +68,7 @@ class CreateUserInput extends ChangeNotifier {
     bool? isAdmin,
     String? laboratoryID,
     CreateCompanyInput? companyInfo,
-    num? cutOffDate,
+    String? cutOffDate,
     num? fee,
   }) {
     this.firstName = firstName ?? "";
@@ -77,7 +77,7 @@ class CreateUserInput extends ChangeNotifier {
     this.isAdmin = isAdmin ?? false;
     this.laboratoryID = laboratoryID ?? "";
     this.companyInfo = companyInfo;
-    this.cutOffDate = cutOffDate ?? 0;
+    this.cutOffDate = cutOffDate;
     this.fee = fee ?? 0;
   }
   factory CreateUserInput.fromJson(Map<String, dynamic> json) =>

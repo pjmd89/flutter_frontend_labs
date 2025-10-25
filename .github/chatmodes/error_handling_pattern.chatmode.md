@@ -850,6 +850,35 @@ void handleMaintenanceError(List<GraphQLError> errors) {
 6. **Separado** - UI no conoce la lógica de errores, solo muestra
 7. **Type-safe** - Map tipado previene errores de código
 
+## Mejores Prácticas
+
+### Debugging
+**🐛 USAR debugPrint EN LUGAR DE print:**
+```dart
+// MAL ❌
+print('Error: $error');
+
+// BIEN ✅
+debugPrint('Error: $error');
+```
+
+**Razones:**
+- `debugPrint` no se trunca en consola con textos largos
+- Solo imprime en modo debug, no en release
+- Mejor rendimiento en producción
+- Es la práctica recomendada de Flutter
+- Requiere `import 'package:flutter/foundation.dart';` en archivos de dominio
+
+### Context Management
+- BuildContext SIEMPRE se pasa como parámetro a métodos públicos
+- Nunca almacenar context en variables de instancia
+- Verificar que context existe antes de usarlo en callbacks async
+
+### Internacionalización
+- Todos los mensajes de error deben tener traducción en i18n
+- Usar fallback al mensaje del servidor cuando no hay traducción
+- Formato consistente para keys: `error{código}` con 3 dígitos
+
 ## Checklist de Verificación
 
 ### ErrorService
@@ -913,6 +942,12 @@ void handleMaintenanceError(List<GraphQLError> errors) {
 - [ ] Formato: `error{código}` con 3 dígitos
 - [ ] `flutter gen-l10n` ejecutado sin errores
 - [ ] Sin strings hardcodeados
+
+### General
+- [ ] 🐛 Usar `debugPrint` en lugar de `print` para debugging
+- [ ] ✅ Import `package:flutter/foundation.dart` en archivos de dominio que usen debugPrint
+- [ ] Sin errores de compilación
+- [ ] Context se pasa como parámetro, nunca se almacena
 
 ## Próximos Patrones
 

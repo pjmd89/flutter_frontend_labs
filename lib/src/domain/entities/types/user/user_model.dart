@@ -12,8 +12,8 @@ class User {
   final String email;
   final num cutOffDate;
   final num fee;
-  final String created;
-  final String updated;
+  final num created;
+  final num updated;
   User({
     this.id = "",
     this.firstName = "",
@@ -22,8 +22,8 @@ class User {
     this.email = "",
     this.cutOffDate = 0,
     this.fee = 0,
-    this.created = "",
-    this.updated = "",
+    this.created = 0,
+    this.updated = 0,
   });
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);

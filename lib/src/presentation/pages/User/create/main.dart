@@ -20,10 +20,21 @@ class _UserCreatePageState extends State<UserCreatePage> {
   final emailController = TextEditingController();
   final cutOffDateController = TextEditingController();
   final feeController = TextEditingController();
+
+  // Controllers para CreateCompanyInput
+  final companyNameController = TextEditingController();
+  final companyTaxIDController = TextEditingController();
+  final companyLogoController = TextEditingController();
+  final labAddressController = TextEditingController();
+  final phoneController = TextEditingController();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Role? selectedRole;
   DateTime? selectedCutOffDate;
+
+  // Lista para teléfonos múltiples del laboratorio
+  List<String> phoneNumbers = [];
 
   @override
   void initState() {
@@ -43,7 +54,52 @@ class _UserCreatePageState extends State<UserCreatePage> {
     emailController.dispose();
     cutOffDateController.dispose();
     feeController.dispose();
+    companyNameController.dispose();
+    companyTaxIDController.dispose();
+    companyLogoController.dispose();
+    labAddressController.dispose();
+    phoneController.dispose();
     super.dispose();
+  }
+
+  void _addPhoneNumber() {
+    final phoneText = phoneController.text.trim();
+    debugPrint('Intentando agregar teléfono: "$phoneText"');
+
+    if (phoneText.isNotEmpty) {
+      setState(() {
+        phoneNumbers.add(phoneText);
+        phoneController.clear();
+
+        // Inicializar companyInfo si no existe
+        viewModel.input.companyInfo ??= CreateCompanyInput();
+
+        // Actualizar la lista de teléfonos
+        viewModel
+            .input
+            .companyInfo!
+            .laboratoryInfo
+            .contactPhoneNumbers = List<String>.from(phoneNumbers);
+
+        debugPrint('Teléfono agregado. Total: ${phoneNumbers.length}');
+      });
+    } else {
+      debugPrint('Campo de teléfono vacío');
+    }
+  }
+
+  void _removePhoneNumber(int index) {
+    setState(() {
+      phoneNumbers.removeAt(index);
+
+      if (viewModel.input.companyInfo != null) {
+        viewModel
+            .input
+            .companyInfo!
+            .laboratoryInfo
+            .contactPhoneNumbers = List<String>.from(phoneNumbers);
+      }
+    });
   }
 
   String getRoleLabel(BuildContext context, Role role) {
@@ -73,103 +129,293 @@ class _UserCreatePageState extends State<UserCreatePage> {
           icon: Icons.person_add,
           title: l10n.createThing(l10n.user),
           loading: viewModel.loading,
+          maxWidth: 700,
+          minWidth: 700,
           form: Form(
             key: formKey,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomTextFormField(
-                    labelText: l10n.firstName,
-                    controller: firstNameController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.name,
-                    counterText: "",
-                    onChange: (value) {
-                      viewModel.input.firstName = value;
-                    },
+                  // Nombre y Apellido en la misma fila
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.firstName,
+                          controller: firstNameController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.firstName = value;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.lastName,
+                          controller: lastNameController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.lastName = value;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
-                  CustomTextFormField(
-                    labelText: l10n.lastName,
-                    controller: lastNameController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.name,
-                    counterText: "",
-                    onChange: (value) {
-                      viewModel.input.lastName = value;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextFormField(
-                    labelText: l10n.email,
-                    controller: emailController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.email,
-                    counterText: "",
-                    onChange: (value) {
-                      viewModel.input.email = value;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  DropdownButtonFormField<Role>(
-                    value: selectedRole,
-                    decoration: InputDecoration(
-                      labelText: l10n.role,
-                      isDense: true,
-                      border: const OutlineInputBorder(),
-                    ),
-                    items:
-                        Role.values.map((Role role) {
-                          return DropdownMenuItem<Role>(
-                            value: role,
-                            child: Text(getRoleLabel(context, role)),
-                          );
-                        }).toList(),
-                    onChanged: (Role? newValue) {
-                      setState(() {
-                        selectedRole = newValue;
-                        viewModel.input.isAdmin = newValue == Role.admin;
-                      });
-                    },
+                  // Email y Rol en la misma fila
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: CustomTextFormField(
+                          labelText: l10n.email,
+                          controller: emailController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.email,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.email = value;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        flex: 1,
+                        child: DropdownButtonFormField<Role>(
+                          value: selectedRole,
+                          decoration: InputDecoration(
+                            labelText: l10n.role,
+                            isDense: true,
+                            border: const OutlineInputBorder(),
+                          ),
+                          items:
+                              Role.values.map((Role role) {
+                                return DropdownMenuItem<Role>(
+                                  value: role,
+                                  child: Text(getRoleLabel(context, role)),
+                                );
+                              }).toList(),
+                          onChanged: (Role? newValue) {
+                            setState(() {
+                              selectedRole = newValue;
+                              viewModel.input.isAdmin = newValue == Role.admin;
+
+                              // Inicializar companyInfo cuando se selecciona owner
+                              if (newValue == Role.owner) {
+                                viewModel.input.companyInfo ??=
+                                    CreateCompanyInput();
+                              } else {
+                                // Limpiar companyInfo cuando no es owner
+                                viewModel.input.companyInfo = null;
+                                phoneNumbers.clear();
+                                companyNameController.clear();
+                                companyTaxIDController.clear();
+                                companyLogoController.clear();
+                                labAddressController.clear();
+                                phoneController.clear();
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   if (selectedRole == Role.owner) ...[
                     const SizedBox(height: 16),
-                    CustomTextFormField(
-                      labelText: l10n.cutOffDate,
-                      controller: cutOffDateController,
-                      isDense: true,
-                      fieldLength: FormFieldLength.password,
-                      readOnly: true,
-                      counterText: "",
-                      onTap: () async {
-                        final pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: selectedCutOffDate ?? DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                        );
-                        if (pickedDate != null) {
-                          setState(() {
-                            selectedCutOffDate = pickedDate;
-                            cutOffDateController.text =
-                                pickedDate.toLocal().toString().split(' ')[0];
-                          });
-                        }
-                      },
-                      onChange: (_) {}, // No hacer nada aquí
+                    // CutOffDate y Fee en la misma fila
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            labelText: l10n.cutOffDate,
+                            controller: cutOffDateController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.password,
+                            readOnly: true,
+                            counterText: "",
+                            onTap: () async {
+                              final pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate:
+                                    selectedCutOffDate ?? DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+
+                              if (pickedDate != null) {
+                                // Asignar hora fija 00:00
+                                final dateTime = DateTime(
+                                  pickedDate.year,
+                                  pickedDate.month,
+                                  pickedDate.day,
+                                  0,
+                                  0,
+                                );
+
+                                setState(() {
+                                  selectedCutOffDate = dateTime;
+                                  // Formato: dd/MM/yyyy HH:mm
+                                  final day = dateTime.day.toString().padLeft(
+                                    2,
+                                    '0',
+                                  );
+                                  final month = dateTime.month
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  final year = dateTime.year.toString();
+
+                                  cutOffDateController.text =
+                                      '$day/$month/$year 00:00';
+                                });
+                              }
+                            },
+                            onChange: (_) {}, // No hacer nada aquí
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: CustomTextFormField(
+                            labelText: l10n.fee,
+                            controller: feeController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.password,
+                            counterText: "",
+                            onChange: (value) {
+                              viewModel.input.fee = num.tryParse(value);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Sección: Información de la Empresa
+                    Text(
+                      l10n.companyInformation,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    // Nombre de empresa y TaxID en la misma fila
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: CustomTextFormField(
+                            labelText: l10n.name,
+                            controller: companyNameController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.name,
+                            counterText: "",
+                            onChange: (value) {
+                              viewModel.input.companyInfo ??=
+                                  CreateCompanyInput();
+                              viewModel.input.companyInfo!.name = value;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          flex: 1,
+                          child: CustomTextFormField(
+                            labelText: l10n.taxID,
+                            controller: companyTaxIDController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.name,
+                            counterText: "",
+                            onChange: (value) {
+                              viewModel.input.companyInfo ??=
+                                  CreateCompanyInput();
+                              viewModel.input.companyInfo!.taxID = value;
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16),
+                    // Logo (opcional) - ancho completo
                     CustomTextFormField(
-                      labelText: l10n.fee,
-                      controller: feeController,
+                      labelText: '${l10n.logo} (${l10n.optional})',
+                      controller: companyLogoController,
                       isDense: true,
-                      fieldLength: FormFieldLength.password,
+                      fieldLength: FormFieldLength.email,
                       counterText: "",
                       onChange: (value) {
-                        viewModel.input.fee = num.tryParse(value);
+                        viewModel.input.companyInfo ??= CreateCompanyInput();
+                        viewModel.input.companyInfo!.logo = value;
                       },
                     ),
+                    const SizedBox(height: 24),
+
+                    // Sección: Información del Laboratorio
+                    Text(
+                      l10n.laboratoryInformation,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    CustomTextFormField(
+                      labelText: l10n.address,
+                      controller: labAddressController,
+                      isDense: true,
+                      fieldLength: FormFieldLength.email,
+                      counterText: "",
+                      onChange: (value) {
+                        viewModel.input.companyInfo ??= CreateCompanyInput();
+                        viewModel.input.companyInfo!.laboratoryInfo.address =
+                            value;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Campo para agregar teléfonos
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            labelText: l10n.phoneNumber,
+                            controller: phoneController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.name,
+                            counterText: "",
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        FilledButton.icon(
+                          onPressed: _addPhoneNumber,
+                          icon: const Icon(Icons.add, size: 18),
+                          label: Text(l10n.addPhoneNumber),
+                          style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Lista de teléfonos agregados
+                    if (phoneNumbers.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children:
+                            phoneNumbers.asMap().entries.map((entry) {
+                              return Chip(
+                                label: Text(entry.value),
+                                onDeleted: () => _removePhoneNumber(entry.key),
+                                deleteIcon: const Icon(Icons.close, size: 18),
+                              );
+                            }).toList(),
+                      ),
+                    ],
                   ],
                 ],
               ),
@@ -192,13 +438,23 @@ class _UserCreatePageState extends State<UserCreatePage> {
                           ? null
                           : () async {
                             if (formKey.currentState!.validate()) {
-                              // Asignar fecha como unix timestamp
-                              if (selectedRole == Role.owner) {
+                              // Asignar cutOffDate como string en formato dd/MM/yyyy HH:mm
+                              if (selectedRole == Role.owner &&
+                                  selectedCutOffDate != null) {
+                                final day = selectedCutOffDate!.day
+                                    .toString()
+                                    .padLeft(2, '0');
+                                final month = selectedCutOffDate!.month
+                                    .toString()
+                                    .padLeft(2, '0');
+                                final year =
+                                    selectedCutOffDate!.year.toString();
+
+                                // Formato: dd/MM/yyyy 00:00
                                 viewModel.input.cutOffDate =
-                                    selectedCutOffDate != null
-                                        ? selectedCutOffDate!
-                                            .millisecondsSinceEpoch
-                                        : null;
+                                    '$day/$month/$year 00:00';
+                              } else if (selectedRole == Role.owner) {
+                                viewModel.input.cutOffDate = null;
                               }
                               var isErr = await viewModel.create();
 

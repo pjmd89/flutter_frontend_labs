@@ -69,13 +69,20 @@ class ViewModel extends ChangeNotifier {
     error = false;
 
     try {
+      debugPrint('🔍 Llamando a getCompanies...');
       final response = await _readUseCase.build();
+      debugPrint('📦 Respuesta recibida: ${response.runtimeType}');
 
       if (response is EdgeCompany) {
+        debugPrint('✅ EdgeCompany detectado');
+        debugPrint('📊 Número de empresas: ${response.edges.length}');
         companyList = response.edges;
         pageInfo = response.pageInfo;
+      } else {
+        debugPrint('❌ Respuesta no es EdgeCompany: $response');
       }
     } catch (e) {
+      debugPrint('💥 Error en getCompanies: $e');
       error = true;
       companyList = [];
     } finally {

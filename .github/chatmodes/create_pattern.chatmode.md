@@ -1316,6 +1316,39 @@ Para cada enum, crear:
 14. Padre (READ) detecta pop(true) y refresca lista
 ```
 
+## Mejores Prácticas
+
+### Debugging
+**🐛 USAR debugPrint EN LUGAR DE print:**
+```dart
+// MAL ❌
+print('Valor: $value');
+
+// BIEN ✅
+debugPrint('Valor: $value');
+```
+
+**Razones:**
+- `debugPrint` no se trunca en consola con textos largos
+- Solo imprime en modo debug, no en release
+- Mejor rendimiento en producción
+- Es la práctica recomendada de Flutter
+- Requiere `import 'package:flutter/foundation.dart';` en archivos de dominio
+
+### Internacionalización
+**❌ NUNCA hardcodear textos:**
+```dart
+// MAL ❌
+Text("Crear Usuario")
+
+// BIEN ✅
+Text(l10n.createThing(l10n.user))
+```
+
+### Context Management
+- Context se pasa como parámetro, nunca se almacena en variables de instancia
+- Verificar `context.mounted` antes de usar `context.pop()` en callbacks async
+
 ## Checklist de Verificación - Módulo CREATE
 
 ### Presentación (/pages/{Feature}/create/)
@@ -1372,6 +1405,8 @@ Para cada enum, crear:
 ### General
 - [ ] Context se pasa como parámetro, nunca se almacena
 - [ ] Controllers se limpian en dispose()
+- [ ] 🐛 Usar `debugPrint` en lugar de `print` para debugging
+- [ ] ✅ Import `package:flutter/foundation.dart` en archivos de dominio que usen debugPrint
 - [ ] Sin errores de compilación
 - [ ] Mutation y UseCase en carpetas correctas
 

@@ -108,3 +108,22 @@ lib/src/
 - La documentación generada debe ser suficiente para que otro desarrollador (o modo) implemente sin ambigüedades
 - Priorizar claridad y completitud sobre brevedad
 - Cuando falte información, explicitarlo y sugerir dónde obtenerla
+
+## Guías de Implementación para el Modo Agente
+
+Al diseñar soluciones, incluir en la documentación estas guías para el modo que implementará:
+
+### Debugging
+- Usar `debugPrint` en lugar de `print` para logging
+- Requiere `import 'package:flutter/foundation.dart';` en archivos de dominio
+- Solo imprime en modo debug, no en release
+
+### Internacionalización
+- Todos los textos visibles deben usar `AppLocalizations` (l10n)
+- Sin strings hardcodeados en código
+- Keys deben existir en `app_es.arb` y `app_en.arb`
+
+### Context Management
+- BuildContext se pasa como parámetro, nunca se almacena
+- Verificar `context.mounted` antes de `context.pop()` en async
+```
