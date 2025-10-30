@@ -673,5 +673,8 @@
   "dniRequiredOver17": "ID required for patients over 17 years old",
   "searchExam": "Search exam...",
   "noExamsSelected": "No exams selected",
-  "examsCount": "{count} exams"
+  "examsCount": "{count} exams",
+  "logout": "Logout",
+  "logoutConfirmation": "Are you sure you want to logout?",
+  "loggingOut": "Logging out..."
 }

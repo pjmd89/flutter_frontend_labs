@@ -545,4 +545,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String examsCount(int count) {
     return '$count exams';
   }
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get logoutConfirmation => 'Are you sure you want to logout?';
+
+  @override
+  String get loggingOut => 'Logging out...';
 }

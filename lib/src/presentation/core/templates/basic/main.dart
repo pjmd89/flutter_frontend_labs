@@ -11,7 +11,7 @@ import 'package:labs/src/presentation/core/ui/custom_drawer/drawer_config.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import '/src/presentation/widgets/loading/main.dart';
 import 'package:labs/src/presentation/core/ui/custom_drawer/main.dart';
-
+import 'package:labs/src/presentation/core/ui/user_menu/main.dart';
 
 class BasicTemplate extends StatelessWidget {
   const BasicTemplate({super.key, required this.child, this.title = "Labs"});
@@ -31,7 +31,10 @@ class BasicTemplate extends StatelessWidget {
         drawerButtonConfigList = getBillingDrawerButtonList(context, fullPath);
         break;
       case Role.technician:
-        drawerButtonConfigList = getTechnicianDrawerButtonList(context, fullPath);
+        drawerButtonConfigList = getTechnicianDrawerButtonList(
+          context,
+          fullPath,
+        );
         break;
       case Role.root:
         drawerButtonConfigList = getRootDrawerButtonList(context, fullPath);
@@ -43,22 +46,17 @@ class BasicTemplate extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
         centerTitle: false,
+        actions: const [UserMenu()],
       ),
       drawer: CustomDrawer(
         drawerHeader: buildDrawerHeader(),
-        drawerButtonConfigList: drawerButtonConfigList
+        drawerButtonConfigList: drawerButtonConfigList,
       ),
       body: Flex(
         direction: Axis.vertical,
         children: [
-          const Expanded(
-            flex: 0,
-            child: Loading()
-          ),
-          Expanded(
-            flex: 1,
-            child: child
-          )
+          const Expanded(flex: 0, child: Loading()),
+          Expanded(flex: 1, child: child),
         ],
       ),
     );

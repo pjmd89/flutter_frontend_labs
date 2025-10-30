@@ -1114,6 +1114,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{count} exámenes'**
   String examsCount(int count);
+
+  /// Cerrar sesión
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get logout;
+
+  /// Confirmación de cierre de sesión
+  ///
+  /// In es, this message translates to:
+  /// **'¿Está seguro que desea cerrar sesión?'**
+  String get logoutConfirmation;
+
+  /// Mensaje durante logout
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrando sesión...'**
+  String get loggingOut;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

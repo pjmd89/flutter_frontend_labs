@@ -785,5 +785,17 @@
         "example": "3"
       }
     }
+  },
+  "logout": "Cerrar sesión",
+  "@logout": {
+    "description": "Cerrar sesión"
+  },
+  "logoutConfirmation": "¿Está seguro que desea cerrar sesión?",
+  "@logoutConfirmation": {
+    "description": "Confirmación de cierre de sesión"
+  },
+  "loggingOut": "Cerrando sesión...",
+  "@loggingOut": {
+    "description": "Mensaje durante logout"
   }
 }
