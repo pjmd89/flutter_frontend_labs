@@ -642,6 +642,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
 **Template:**
 ```dart
 import 'package:agile_front/agile_front.dart';
+import 'package:flutter/foundation.dart'; // Para debugPrint
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
@@ -688,11 +689,17 @@ class ViewModel extends ChangeNotifier {
       if (response is {Feature}) {
         isError = false;
       } else {
-        // Manejar error
         isError = true;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en create{Feature}: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
+      
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al crear {feature}: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }
@@ -705,6 +712,7 @@ class ViewModel extends ChangeNotifier {
 **Ejemplo Real (CreateUserViewModel):**
 ```dart
 import 'package:agile_front/agile_front.dart';
+import 'package:flutter/foundation.dart'; // Para debugPrint
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
@@ -753,8 +761,15 @@ class ViewModel extends ChangeNotifier {
       } else {
         isError = true;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en createUser: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
+      
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al crear usuario: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }
@@ -771,6 +786,10 @@ class ViewModel extends ChangeNotifier {
 4. **Type checking** - Verifica `response is {Feature}`
 5. **try-catch-finally** - finally siempre apaga loading
 6. **No necesita _init()** - No hay carga inicial de datos
+7. **⚠️ Manejo de Errores** - catch incluye stackTrace para debugging
+8. **🐛 debugPrint** - Usar siempre en lugar de print (requiere import foundation.dart)
+9. **ErrorService** - Muestra SnackBar al usuario con mensaje descriptivo
+10. **Emoji prefixes** - 💥 para errores, 📍 para stackTrace (facilita filtrado en consola)
 
 ### 3. GraphQL Mutation (Capa de Dominio)
 
@@ -1349,6 +1368,34 @@ Text(l10n.createThing(l10n.user))
 - Context se pasa como parámetro, nunca se almacena en variables de instancia
 - Verificar `context.mounted` antes de usar `context.pop()` en callbacks async
 
+### Manejo de Errores
+**⚠️ SIEMPRE capturar stackTrace en catch:**
+```dart
+// MAL ❌
+catch (e) {
+  debugPrint('Error: $e');
+}
+
+// BIEN ✅
+catch (e, stackTrace) {
+  debugPrint('💥 Error en create{Feature}: $e');
+  debugPrint('📍 StackTrace: $stackTrace');
+  
+  _context.read<GQLNotifier>().errorService.showError(
+    message: 'Error al crear {feature}: ${e.toString()}',
+  );
+}
+```
+
+**Elementos Requeridos:**
+1. **stackTrace parameter** - Segunda variable en catch para debugging completo
+2. **debugPrint con emojis** - 💥 para error, 📍 para stackTrace (facilita filtrado)
+3. **ErrorService.showError()** - Feedback visual al usuario con SnackBar
+4. **Mensaje descriptivo** - "Error al [operación]" + detalles del error
+5. **Import foundation.dart** - `import 'package:flutter/foundation.dart';`
+
+**Ver:** `error_handling_pattern.chatmode.md` para documentación completa del sistema de errores.
+
 ## Checklist de Verificación - Módulo CREATE
 
 ### Presentación (/pages/{Feature}/create/)
@@ -1379,7 +1426,11 @@ Text(l10n.createThing(l10n.user))
 - [ ] `create()` crea UseCase con Mutation y FieldsBuilder
 - [ ] `create()` llama `useCase.execute(input: input)`
 - [ ] Type checking: `response is {Feature}`
-- [ ] Error handling con try-catch
+- [ ] ⚠️ **Error handling con try-catch-finally**
+- [ ] ⚠️ **catch incluye stackTrace: `catch (e, stackTrace)`**
+- [ ] ⚠️ **debugPrint con emoji 💥 para error y 📍 para stackTrace**
+- [ ] ⚠️ **ErrorService.showError() para feedback al usuario**
+- [ ] ⚠️ **Import `package:flutter/foundation.dart` para debugPrint**
 - [ ] finally apaga loading siempre
 - [ ] Retorna `false` si éxito, `true` si error
 

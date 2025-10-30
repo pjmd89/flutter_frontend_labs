@@ -15,8 +15,8 @@ ExamTemplate _$ExamTemplateFromJson(Map<String, dynamic> json) => ExamTemplate(
           ?.map((e) => ExamIndicator.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  created: json['created'] as String? ?? "",
-  updated: json['updated'] as String? ?? "",
+  created: json['created'] as num? ?? 0,
+  updated: json['updated'] as num? ?? 0,
 );
 
 Map<String, dynamic> _$ExamTemplateToJson(ExamTemplate instance) =>

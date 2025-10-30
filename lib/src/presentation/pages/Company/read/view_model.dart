@@ -81,10 +81,16 @@ class ViewModel extends ChangeNotifier {
       } else {
         debugPrint('❌ Respuesta no es EdgeCompany: $response');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       debugPrint('💥 Error en getCompanies: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       companyList = [];
+
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al cargar empresas: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }
@@ -102,9 +108,16 @@ class ViewModel extends ChangeNotifier {
         companyList = response.edges;
         pageInfo = response.pageInfo;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en search companies: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       companyList = [];
+
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al buscar empresas: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }

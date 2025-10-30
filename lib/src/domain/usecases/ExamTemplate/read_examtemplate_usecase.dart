@@ -1,21 +1,54 @@
 import 'dart:async';
 import 'package:agile_front/agile_front.dart' as af;
-
+import 'package:agile_front/infraestructure/graphql/helpers.dart';
+import '/src/domain/entities/inputs/searchinput_input.dart';
+import '/src/domain/entities/types/pageinfo/pageinfo_model.dart';
+import '/src/domain/operation/fields_builders/main.dart';
+import '/src/domain/operation/queries/getExamTemplates/getexamtemplates_query.dart';
+import '/src/domain/extensions/edgeexamtemplate_fields_builder_extension.dart';
 
 class ReadExamTemplateUsecase implements af.UseCase {
   final af.Operation _operation;
   final af.Service _conn;
+
   ReadExamTemplateUsecase({
     required af.Operation operation,
     required af.Service conn,
   }) : _operation = operation,
-      _conn = conn;
+       _conn = conn;
 
   @override
-  Future<dynamic>build() async {
-    _conn.operation(operation: _operation, callback: callback);
+  Future<dynamic> build() async {
+    return _conn.operation(operation: _operation, callback: callback);
   }
+
+  Future<dynamic> search(List<SearchInput> search, PageInfo? pageInfo) async {
+    (_operation as GetExamTemplatesQuery).declarativeArgs = {
+      "search": "[SearchInput]",
+    };
+
+    _operation.directives = [
+      Directive('search', {'input': GqlVar('search')}),
+      if (pageInfo != null)
+        Directive('paginate', {'page': pageInfo.page, 'split': pageInfo.split}),
+    ];
+    return _conn.operation(
+      operation: _operation,
+      variables: {'search': search.map((e) => e.toJson()).toList()},
+    );
+  }
+
+  Future<dynamic> readWithoutPaginate() async {
+    EdgeExamTemplateFieldsBuilder builder =
+        EdgeExamTemplateFieldsBuilder().defaultValues();
+    final response = await _conn.operation(
+      operation: GetExamTemplatesQuery(builder: builder),
+      variables: {},
+    );
+    return response;
+  }
+
   callback(Object ob) {
-    //final thisObject = ob as {YourEntityType};
+    // final thisObject = ob as EdgeExamTemplate;
   }
 }

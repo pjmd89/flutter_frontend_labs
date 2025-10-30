@@ -68,9 +68,16 @@ class ViewModel extends ChangeNotifier {
         userList = response.edges;
         pageInfo = response.pageInfo;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en getUsers: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       userList = [];
+
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al cargar usuarios: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }
@@ -87,9 +94,16 @@ class ViewModel extends ChangeNotifier {
         userList = response.edges;
         pageInfo = response.pageInfo;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en search users: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       userList = [];
+
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al buscar usuarios: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }

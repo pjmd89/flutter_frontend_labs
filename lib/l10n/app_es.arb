@@ -75,6 +75,15 @@
     "description": "Término para empresas en plural"
   },
   
+  "examTemplate": "Plantilla de Examen",
+  "@examTemplate": {
+    "description": "Término para plantilla de examen en singular"
+  },
+  "examTemplates": "Plantillas de Examen",
+  "@examTemplates": {
+    "description": "Término para plantillas de examen en plural"
+  },
+  
   "dashboard": "Panel de Control",
   "@dashboard": {
     "description": "Título del panel de control principal"
@@ -125,6 +134,10 @@
   "optional": "Opcional",
   "@optional": {
     "description": "Indica que un campo es opcional"
+  },
+  "add": "Agregar",
+  "@add": {
+    "description": "Acción de agregar elemento"
   },
   
   "companyInformation": "Información de la Empresa",
@@ -264,6 +277,16 @@
       }
     }
   },
+  "noRegisteredThings": "No hay {thing} registrados",
+  "@noRegisteredThings": {
+    "description": "Mensaje cuando no hay registros (genérico). Ej: No hay Indicadores registrados",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Indicadores"
+      }
+    }
+  },
   
   "name": "Nombre",
   "@name": {
@@ -280,6 +303,46 @@
   "email": "Correo electrónico",
   "@email": {
     "description": "Etiqueta para campo de correo electrónico"
+  },
+  "description": "Descripción",
+  "@description": {
+    "description": "Etiqueta para campo de descripción"
+  },
+  "valueType": "Tipo de Valor",
+  "@valueType": {
+    "description": "Etiqueta para campo de tipo de valor"
+  },
+  "valueTypeNumeric": "Numérico",
+  "@valueTypeNumeric": {
+    "description": "Tipo de valor numérico"
+  },
+  "valueTypeText": "Texto",
+  "@valueTypeText": {
+    "description": "Tipo de valor de texto"
+  },
+  "valueTypeBoolean": "Booleano",
+  "@valueTypeBoolean": {
+    "description": "Tipo de valor booleano"
+  },
+  "unit": "Unidad",
+  "@unit": {
+    "description": "Etiqueta para campo de unidad de medida"
+  },
+  "normalRange": "Rango Normal",
+  "@normalRange": {
+    "description": "Etiqueta para campo de rango normal"
+  },
+  "indicator": "Indicador",
+  "@indicator": {
+    "description": "Término para indicador en singular"
+  },
+  "indicators": "Indicadores",
+  "@indicators": {
+    "description": "Término para indicadores en plural"
+  },
+  "addIndicator": "Agregar Indicador",
+  "@addIndicator": {
+    "description": "Acción para agregar un indicador"
   },
   
   "loading": "Cargando...",

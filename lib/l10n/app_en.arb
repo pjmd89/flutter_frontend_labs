@@ -75,6 +75,15 @@
     "description": "Term for companies in plural form"
   },
   
+  "examTemplate": "Exam Template",
+  "@examTemplate": {
+    "description": "Term for exam template in singular form"
+  },
+  "examTemplates": "Exam Templates",
+  "@examTemplates": {
+    "description": "Term for exam templates in plural form"
+  },
+  
   "dashboard": "Dashboard",
   "@dashboard": {
     "description": "Main dashboard title"
@@ -125,6 +134,10 @@
   "optional": "Optional",
   "@optional": {
     "description": "Indicates that a field is optional"
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Action to add an element"
   },
   
   "companyInformation": "Company Information",
@@ -264,6 +277,16 @@
       }
     }
   },
+  "noRegisteredThings": "No {thing} registered",
+  "@noRegisteredThings": {
+    "description": "Message when no records exist (generic). Ex: No Indicators registered",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Indicators"
+      }
+    }
+  },
   
   "name": "Name",
   "@name": {
@@ -280,6 +303,46 @@
   "email": "Email",
   "@email": {
     "description": "Label for email field"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Label for description field"
+  },
+  "valueType": "Value Type",
+  "@valueType": {
+    "description": "Label for value type field"
+  },
+  "valueTypeNumeric": "Numeric",
+  "@valueTypeNumeric": {
+    "description": "Numeric value type"
+  },
+  "valueTypeText": "Text",
+  "@valueTypeText": {
+    "description": "Text value type"
+  },
+  "valueTypeBoolean": "Boolean",
+  "@valueTypeBoolean": {
+    "description": "Boolean value type"
+  },
+  "unit": "Unit",
+  "@unit": {
+    "description": "Label for unit of measurement field"
+  },
+  "normalRange": "Normal Range",
+  "@normalRange": {
+    "description": "Label for normal range field"
+  },
+  "indicator": "Indicator",
+  "@indicator": {
+    "description": "Term for indicator in singular form"
+  },
+  "indicators": "Indicators",
+  "@indicators": {
+    "description": "Term for indicators in plural form"
+  },
+  "addIndicator": "Add Indicator",
+  "@addIndicator": {
+    "description": "Action to add an indicator"
   },
   
   "loading": "Loading...",

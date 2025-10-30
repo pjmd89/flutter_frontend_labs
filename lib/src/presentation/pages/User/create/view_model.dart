@@ -84,8 +84,15 @@ class ViewModel extends ChangeNotifier {
       } else {
         isError = true;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en create user: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
+
+      // Mostrar error al usuario
+      _errorService.showError(
+        message: 'Error al crear usuario: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }

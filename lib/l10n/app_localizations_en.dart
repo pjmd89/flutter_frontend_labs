@@ -63,6 +63,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get companies => 'Companies';
 
   @override
+  String get examTemplate => 'Exam Template';
+
+  @override
+  String get examTemplates => 'Exam Templates';
+
+  @override
   String get dashboard => 'Dashboard';
 
   @override
@@ -97,6 +103,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get optional => 'Optional';
+
+  @override
+  String get add => 'Add';
 
   @override
   String get companyInformation => 'Company Information';
@@ -169,6 +178,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String noRegisteredThings(String thing) {
+    return 'No $thing registered';
+  }
+
+  @override
   String get name => 'Name';
 
   @override
@@ -179,6 +193,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get email => 'Email';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get valueType => 'Value Type';
+
+  @override
+  String get valueTypeNumeric => 'Numeric';
+
+  @override
+  String get valueTypeText => 'Text';
+
+  @override
+  String get valueTypeBoolean => 'Boolean';
+
+  @override
+  String get unit => 'Unit';
+
+  @override
+  String get normalRange => 'Normal Range';
+
+  @override
+  String get indicator => 'Indicator';
+
+  @override
+  String get indicators => 'Indicators';
+
+  @override
+  String get addIndicator => 'Add Indicator';
 
   @override
   String get loading => 'Loading...';

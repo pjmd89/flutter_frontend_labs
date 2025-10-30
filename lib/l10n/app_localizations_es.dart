@@ -63,6 +63,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get companies => 'Empresas';
 
   @override
+  String get examTemplate => 'Plantilla de Examen';
+
+  @override
+  String get examTemplates => 'Plantillas de Examen';
+
+  @override
   String get dashboard => 'Panel de Control';
 
   @override
@@ -97,6 +103,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get optional => 'Opcional';
+
+  @override
+  String get add => 'Agregar';
 
   @override
   String get companyInformation => 'Información de la Empresa';
@@ -169,6 +178,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String noRegisteredThings(String thing) {
+    return 'No hay $thing registrados';
+  }
+
+  @override
   String get name => 'Nombre';
 
   @override
@@ -179,6 +193,36 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get email => 'Correo electrónico';
+
+  @override
+  String get description => 'Descripción';
+
+  @override
+  String get valueType => 'Tipo de Valor';
+
+  @override
+  String get valueTypeNumeric => 'Numérico';
+
+  @override
+  String get valueTypeText => 'Texto';
+
+  @override
+  String get valueTypeBoolean => 'Booleano';
+
+  @override
+  String get unit => 'Unidad';
+
+  @override
+  String get normalRange => 'Rango Normal';
+
+  @override
+  String get indicator => 'Indicador';
+
+  @override
+  String get indicators => 'Indicadores';
+
+  @override
+  String get addIndicator => 'Agregar Indicador';
 
   @override
   String get loading => 'Cargando...';

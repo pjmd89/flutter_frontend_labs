@@ -189,6 +189,7 @@ class _FeaturePageState extends State<FeaturePage> {
 **Ejemplo Real Completo (ReadUserUsecase):**
 ```dart
 import 'package:agile_front/agile_front.dart';
+import 'package:flutter/foundation.dart'; // Para debugPrint
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
@@ -267,9 +268,16 @@ class ViewModel extends ChangeNotifier {
         userList = response.edges;
         pageInfo = response.pageInfo;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en getUsers: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       userList = [];
+      
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al cargar usuarios: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }
@@ -287,9 +295,16 @@ class ViewModel extends ChangeNotifier {
         userList = response.edges;
         pageInfo = response.pageInfo;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en search: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       userList = [];
+      
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al buscar usuarios: ${e.toString()}',
+      );
     } finally {
       loading = false;
     }
@@ -309,8 +324,11 @@ class ViewModel extends ChangeNotifier {
 3. **_init() carga datos** - Se llama automáticamente en constructor
 4. **getUsers() vs search()** - getUsers sin filtros, search con filtros
 5. **Type checking** - Verifica `response is EdgeUser` antes de asignar
-6. **Error handling** - try-catch con estado de error y lista vacía
-7. **finally** - Siempre apaga loading, incluso si hay error
+6. **⚠️ Error handling** - try-catch-finally con stackTrace
+7. **🐛 debugPrint** - Usar siempre en lugar de print (requiere import foundation.dart)
+8. **ErrorService** - Muestra SnackBar al usuario con mensaje descriptivo
+9. **Emoji prefixes** - 💥 para errores, 📍 para stackTrace (facilita filtrado en consola)
+10. **finally** - Siempre apaga loading, incluso si hay error
 
 ### 3. GraphQL Queries y FieldsBuilders (Capa de Dominio)
 
@@ -2087,6 +2105,76 @@ import './user_item.dart';  // → import './product_item.dart';
 - ❌ Callbacks triviales (ej: `() => setState()`)
 - ❌ Código que solo se usa una vez y es muy específico
 
+## Mejores Prácticas
+
+### Debugging
+**🐛 USAR debugPrint EN LUGAR DE print:**
+```dart
+// MAL ❌
+print('Valor: $value');
+
+// BIEN ✅
+debugPrint('Valor: $value');
+```
+
+**Razones:**
+- `debugPrint` no se trunca en consola con textos largos
+- Solo imprime en modo debug, no en release
+- Mejor rendimiento en producción
+- Es la práctica recomendada de Flutter
+- Requiere `import 'package:flutter/foundation.dart';`
+
+### Manejo de Errores
+**⚠️ SIEMPRE capturar stackTrace en catch:**
+```dart
+// MAL ❌
+catch (e) {
+  debugPrint('Error: $e');
+  error = true;
+  userList = [];
+}
+
+// BIEN ✅
+catch (e, stackTrace) {
+  debugPrint('💥 Error en getUsers: $e');
+  debugPrint('📍 StackTrace: $stackTrace');
+  error = true;
+  userList = [];
+  
+  _context.read<GQLNotifier>().errorService.showError(
+    message: 'Error al cargar usuarios: ${e.toString()}',
+  );
+}
+```
+
+**Elementos Requeridos:**
+1. **stackTrace parameter** - Segunda variable en catch para debugging completo
+2. **debugPrint con emojis** - 💥 para error, 📍 para stackTrace (facilita filtrado)
+3. **ErrorService.showError()** - Feedback visual al usuario con SnackBar
+4. **Mensaje descriptivo** - "Error al [operación]" + detalles del error
+5. **Estado de error** - Resetear lista a vacía y activar flag de error
+6. **Import foundation.dart** - `import 'package:flutter/foundation.dart';`
+
+**Aplicar en AMBOS métodos:**
+- `getUsers()` - "Error al cargar {entidades}"
+- `search()` - "Error al buscar {entidades}"
+
+**Ver:** `error_handling_pattern.chatmode.md` para documentación completa del sistema de errores.
+
+### Internacionalización
+**❌ NUNCA hardcodear textos:**
+```dart
+// MAL ❌
+Text("Lista de Usuarios")
+
+// BIEN ✅
+Text(l10n.users)
+```
+
+### Context Management
+- Context se pasa como parámetro, nunca se almacena en variables de instancia
+- `l10n` se obtiene con `AppLocalizations.of(context)!` y se pasa a funciones/widgets
+
 ## Checklist de Revisión - Módulo READ
 
 ### Presentación (/pages/{Feature}/read/)
@@ -2095,10 +2183,15 @@ import './user_item.dart';  // → import './product_item.dart';
 - [ ] `main.dart` obtiene `l10n` con `AppLocalizations.of(context)!`
 - [ ] `main.dart` pasa `l10n` a getSearchConfig() y buildList()
 - [ ] `view_model.dart` extiende ChangeNotifier
-- [ ] `view_model.dart` tiene estados: _loading, _error, _userList, _pageInfo
-- [ ] `view_model.dart` tiene Query con EdgeUserFieldsBuilder.defaultValues()
-- [ ] `view_model.dart` inicializa ReadUserUsecase en constructor
-- [ ] `view_model.dart` implementa: getUsers(), search(), updatePageInfo()
+- [ ] `view_model.dart` tiene estados: _loading, _error, _{feature}List, _pageInfo
+- [ ] `view_model.dart` tiene Query con Edge{Feature}FieldsBuilder.defaultValues()
+- [ ] `view_model.dart` inicializa Read{Feature}Usecase en constructor
+- [ ] `view_model.dart` implementa: get{Feature}s(), search(), updatePageInfo()
+- [ ] ⚠️ **get{Feature}s() y search() incluyen manejo de errores con stackTrace**
+- [ ] ⚠️ **catch incluye stackTrace: `catch (e, stackTrace)`**
+- [ ] ⚠️ **debugPrint con emoji 💥 para error y 📍 para stackTrace**
+- [ ] ⚠️ **ErrorService.showError() para feedback al usuario**
+- [ ] ⚠️ **Import `package:flutter/foundation.dart` para debugPrint**
 - [ ] Todos los setters llaman `notifyListeners()`
 - [ ] `search_config.dart` recibe parámetro `l10n` requerido
 - [ ] `search_config.dart` usa `l10n` para TODOS los textos (no strings hardcodeados)

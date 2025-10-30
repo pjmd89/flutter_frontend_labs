@@ -203,6 +203,18 @@ abstract class AppLocalizations {
   /// **'Empresas'**
   String get companies;
 
+  /// Término para plantilla de examen en singular
+  ///
+  /// In es, this message translates to:
+  /// **'Plantilla de Examen'**
+  String get examTemplate;
+
+  /// Término para plantillas de examen en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Plantillas de Examen'**
+  String get examTemplates;
+
   /// Título del panel de control principal
   ///
   /// In es, this message translates to:
@@ -274,6 +286,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Opcional'**
   String get optional;
+
+  /// Acción de agregar elemento
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar'**
+  String get add;
 
   /// Título de sección para datos de empresa
   ///
@@ -371,6 +389,12 @@ abstract class AppLocalizations {
   /// **'No hay {thing} registradas'**
   String noRegisteredFemaleThings(String thing);
 
+  /// Mensaje cuando no hay registros (genérico). Ej: No hay Indicadores registrados
+  ///
+  /// In es, this message translates to:
+  /// **'No hay {thing} registrados'**
+  String noRegisteredThings(String thing);
+
   /// Etiqueta para campo de nombre
   ///
   /// In es, this message translates to:
@@ -394,6 +418,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Correo electrónico'**
   String get email;
+
+  /// Etiqueta para campo de descripción
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get description;
+
+  /// Etiqueta para campo de tipo de valor
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de Valor'**
+  String get valueType;
+
+  /// Tipo de valor numérico
+  ///
+  /// In es, this message translates to:
+  /// **'Numérico'**
+  String get valueTypeNumeric;
+
+  /// Tipo de valor de texto
+  ///
+  /// In es, this message translates to:
+  /// **'Texto'**
+  String get valueTypeText;
+
+  /// Tipo de valor booleano
+  ///
+  /// In es, this message translates to:
+  /// **'Booleano'**
+  String get valueTypeBoolean;
+
+  /// Etiqueta para campo de unidad de medida
+  ///
+  /// In es, this message translates to:
+  /// **'Unidad'**
+  String get unit;
+
+  /// Etiqueta para campo de rango normal
+  ///
+  /// In es, this message translates to:
+  /// **'Rango Normal'**
+  String get normalRange;
+
+  /// Término para indicador en singular
+  ///
+  /// In es, this message translates to:
+  /// **'Indicador'**
+  String get indicator;
+
+  /// Término para indicadores en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Indicadores'**
+  String get indicators;
+
+  /// Acción para agregar un indicador
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar Indicador'**
+  String get addIndicator;
 
   /// Mensaje mostrado durante carga de datos
   ///
