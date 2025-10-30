@@ -18,10 +18,12 @@ class ExamTemplateItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          ListTile(
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 360),
+      child: Card(
+        child: Column(
+          children: [
+            ListTile(
             leading: const CircleAvatar(child: Icon(Icons.assignment_outlined)),
             title: Text(examTemplate.name),
             subtitle: Text(
@@ -88,6 +90,7 @@ class ExamTemplateItem extends StatelessWidget {
               ),
             ),
         ],
+      ),
       ),
     );
   }

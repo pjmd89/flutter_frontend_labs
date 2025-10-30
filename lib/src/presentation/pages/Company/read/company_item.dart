@@ -18,9 +18,11 @@ class CompanyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: const CircleAvatar(child: Icon(Icons.business_outlined)),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 360),
+      child: Card(
+        child: ListTile(
+          leading: const CircleAvatar(child: Icon(Icons.business_outlined)),
         title: Text(company.name),
         subtitle: Text('${l10n.taxID}: ${company.taxID}'),
         trailing: PopupMenuButton<String>(
@@ -37,6 +39,7 @@ class CompanyItem extends StatelessWidget {
                 PopupMenuItem(value: 'delete', child: Text(l10n.delete)),
               ],
         ),
+      ),
       ),
     );
   }
