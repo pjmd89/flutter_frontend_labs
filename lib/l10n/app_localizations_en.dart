@@ -442,4 +442,107 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get error053 => 'A patient with the provided DNI already exists';
+
+  @override
+  String get invoice => 'Invoice';
+
+  @override
+  String get invoices => 'Invoices';
+
+  @override
+  String get patient => 'Patient';
+
+  @override
+  String get patients => 'Patients';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get species => 'Species';
+
+  @override
+  String get speciesHuman => 'Human';
+
+  @override
+  String get speciesCanine => 'Canine';
+
+  @override
+  String get speciesFeline => 'Feline';
+
+  @override
+  String get speciesEquine => 'Equine';
+
+  @override
+  String get speciesBovine => 'Bovine';
+
+  @override
+  String get speciesOther => 'Other';
+
+  @override
+  String get birthDate => 'Birth Date';
+
+  @override
+  String get dni => 'ID Number';
+
+  @override
+  String get phone => 'Phone';
+
+  @override
+  String get referred => 'Referred by';
+
+  @override
+  String get totalAmount => 'Total';
+
+  @override
+  String get searchPatient => 'Search Patient';
+
+  @override
+  String get searchByDNI => 'Search by ID Number';
+
+  @override
+  String get patientFound => 'Patient found';
+
+  @override
+  String get patientNotFound => 'Patient not found';
+
+  @override
+  String get completePatientData => 'Complete patient data';
+
+  @override
+  String get addExam => 'Add Exam';
+
+  @override
+  String get selectedExams => 'Selected Exams';
+
+  @override
+  String get selectExams => 'Select Exams';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String years(int count) {
+    return '$count years';
+  }
+
+  @override
+  String get dniRequiredOver17 => 'ID required for patients over 17 years old';
+
+  @override
+  String get searchExam => 'Search exam...';
+
+  @override
+  String get noExamsSelected => 'No exams selected';
+
+  @override
+  String examsCount(int count) {
+    return '$count exams';
+  }
 }

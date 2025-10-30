@@ -442,4 +442,107 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get error053 => 'Ya existe un paciente con el DNI proporcionado';
+
+  @override
+  String get invoice => 'Factura';
+
+  @override
+  String get invoices => 'Facturas';
+
+  @override
+  String get patient => 'Paciente';
+
+  @override
+  String get patients => 'Pacientes';
+
+  @override
+  String get gender => 'Género';
+
+  @override
+  String get genderMale => 'Masculino';
+
+  @override
+  String get genderFemale => 'Femenino';
+
+  @override
+  String get species => 'Especie';
+
+  @override
+  String get speciesHuman => 'Humano';
+
+  @override
+  String get speciesCanine => 'Canino';
+
+  @override
+  String get speciesFeline => 'Felino';
+
+  @override
+  String get speciesEquine => 'Equino';
+
+  @override
+  String get speciesBovine => 'Bovino';
+
+  @override
+  String get speciesOther => 'Otro';
+
+  @override
+  String get birthDate => 'Fecha de Nacimiento';
+
+  @override
+  String get dni => 'Cédula';
+
+  @override
+  String get phone => 'Teléfono';
+
+  @override
+  String get referred => 'Referido por';
+
+  @override
+  String get totalAmount => 'Total';
+
+  @override
+  String get searchPatient => 'Buscar Paciente';
+
+  @override
+  String get searchByDNI => 'Buscar por Cédula/DNI';
+
+  @override
+  String get patientFound => 'Paciente encontrado';
+
+  @override
+  String get patientNotFound => 'Paciente no encontrado';
+
+  @override
+  String get completePatientData => 'Complete los datos del paciente';
+
+  @override
+  String get addExam => 'Agregar Examen';
+
+  @override
+  String get selectedExams => 'Exámenes Seleccionados';
+
+  @override
+  String get selectExams => 'Seleccionar Exámenes';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String years(int count) {
+    return '$count años';
+  }
+
+  @override
+  String get dniRequiredOver17 => 'Cédula obligatoria para mayores de 17 años';
+
+  @override
+  String get searchExam => 'Buscar examen...';
+
+  @override
+  String get noExamsSelected => 'No hay exámenes seleccionados';
+
+  @override
+  String examsCount(int count) {
+    return '$count exámenes';
+  }
 }

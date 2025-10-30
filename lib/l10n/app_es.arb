@@ -641,5 +641,149 @@
   "error050": "Paciente no encontrado",
   "error051": "Ya existe una cuenta con el número de teléfono proporcionado",
   "error052": "Error al intentar eliminar el paciente",
-  "error053": "Ya existe un paciente con el DNI proporcionado"
+  "error053": "Ya existe un paciente con el DNI proporcionado",
+  "invoice": "Factura",
+  "@invoice": {
+    "description": "Factura singular"
+  },
+  "invoices": "Facturas",
+  "@invoices": {
+    "description": "Facturas plural"
+  },
+  "patient": "Paciente",
+  "@patient": {
+    "description": "Paciente singular"
+  },
+  "patients": "Pacientes",
+  "@patients": {
+    "description": "Pacientes plural"
+  },
+  "gender": "Género",
+  "@gender": {
+    "description": "Género del paciente"
+  },
+  "genderMale": "Masculino",
+  "@genderMale": {
+    "description": "Género masculino"
+  },
+  "genderFemale": "Femenino",
+  "@genderFemale": {
+    "description": "Género femenino"
+  },
+  "species": "Especie",
+  "@species": {
+    "description": "Especie del paciente"
+  },
+  "speciesHuman": "Humano",
+  "@speciesHuman": {
+    "description": "Especie humana"
+  },
+  "speciesCanine": "Canino",
+  "@speciesCanine": {
+    "description": "Especie canina"
+  },
+  "speciesFeline": "Felino",
+  "@speciesFeline": {
+    "description": "Especie felina"
+  },
+  "speciesEquine": "Equino",
+  "@speciesEquine": {
+    "description": "Especie equina"
+  },
+  "speciesBovine": "Bovino",
+  "@speciesBovine": {
+    "description": "Especie bovina"
+  },
+  "speciesOther": "Otro",
+  "@speciesOther": {
+    "description": "Otra especie"
+  },
+  "birthDate": "Fecha de Nacimiento",
+  "@birthDate": {
+    "description": "Fecha de nacimiento del paciente"
+  },
+  "dni": "Cédula",
+  "@dni": {
+    "description": "Documento de identidad"
+  },
+  "phone": "Teléfono",
+  "@phone": {
+    "description": "Número de teléfono"
+  },
+  "referred": "Referido por",
+  "@referred": {
+    "description": "Persona o entidad que refirió al paciente"
+  },
+  "totalAmount": "Total",
+  "@totalAmount": {
+    "description": "Monto total de la factura"
+  },
+  "searchPatient": "Buscar Paciente",
+  "@searchPatient": {
+    "description": "Buscar paciente por cédula"
+  },
+  "searchByDNI": "Buscar por Cédula/DNI",
+  "@searchByDNI": {
+    "description": "Placeholder para búsqueda por documento"
+  },
+  "patientFound": "Paciente encontrado",
+  "@patientFound": {
+    "description": "Mensaje cuando se encuentra un paciente"
+  },
+  "patientNotFound": "Paciente no encontrado",
+  "@patientNotFound": {
+    "description": "Mensaje cuando no se encuentra un paciente"
+  },
+  "completePatientData": "Complete los datos del paciente",
+  "@completePatientData": {
+    "description": "Instrucción para completar formulario de paciente"
+  },
+  "addExam": "Agregar Examen",
+  "@addExam": {
+    "description": "Botón para agregar examen"
+  },
+  "selectedExams": "Exámenes Seleccionados",
+  "@selectedExams": {
+    "description": "Título de sección de exámenes"
+  },
+  "selectExams": "Seleccionar Exámenes",
+  "@selectExams": {
+    "description": "Título del modal de selección"
+  },
+  "subtotal": "Subtotal",
+  "@subtotal": {
+    "description": "Subtotal de la factura"
+  },
+  "years": "{count} años",
+  "@years": {
+    "description": "Cantidad de años de edad",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "dniRequiredOver17": "Cédula obligatoria para mayores de 17 años",
+  "@dniRequiredOver17": {
+    "description": "Mensaje de validación de cédula"
+  },
+  "searchExam": "Buscar examen...",
+  "@searchExam": {
+    "description": "Placeholder de búsqueda de exámenes"
+  },
+  "noExamsSelected": "No hay exámenes seleccionados",
+  "@noExamsSelected": {
+    "description": "Mensaje cuando no se han seleccionado exámenes"
+  },
+  "examsCount": "{count} exámenes",
+  "@examsCount": {
+    "description": "Contador de exámenes",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  }
 }

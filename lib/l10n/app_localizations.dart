@@ -916,6 +916,204 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ya existe un paciente con el DNI proporcionado'**
   String get error053;
+
+  /// Factura singular
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get invoice;
+
+  /// Facturas plural
+  ///
+  /// In es, this message translates to:
+  /// **'Facturas'**
+  String get invoices;
+
+  /// Paciente singular
+  ///
+  /// In es, this message translates to:
+  /// **'Paciente'**
+  String get patient;
+
+  /// Pacientes plural
+  ///
+  /// In es, this message translates to:
+  /// **'Pacientes'**
+  String get patients;
+
+  /// Género del paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Género'**
+  String get gender;
+
+  /// Género masculino
+  ///
+  /// In es, this message translates to:
+  /// **'Masculino'**
+  String get genderMale;
+
+  /// Género femenino
+  ///
+  /// In es, this message translates to:
+  /// **'Femenino'**
+  String get genderFemale;
+
+  /// Especie del paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Especie'**
+  String get species;
+
+  /// Especie humana
+  ///
+  /// In es, this message translates to:
+  /// **'Humano'**
+  String get speciesHuman;
+
+  /// Especie canina
+  ///
+  /// In es, this message translates to:
+  /// **'Canino'**
+  String get speciesCanine;
+
+  /// Especie felina
+  ///
+  /// In es, this message translates to:
+  /// **'Felino'**
+  String get speciesFeline;
+
+  /// Especie equina
+  ///
+  /// In es, this message translates to:
+  /// **'Equino'**
+  String get speciesEquine;
+
+  /// Especie bovina
+  ///
+  /// In es, this message translates to:
+  /// **'Bovino'**
+  String get speciesBovine;
+
+  /// Otra especie
+  ///
+  /// In es, this message translates to:
+  /// **'Otro'**
+  String get speciesOther;
+
+  /// Fecha de nacimiento del paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de Nacimiento'**
+  String get birthDate;
+
+  /// Documento de identidad
+  ///
+  /// In es, this message translates to:
+  /// **'Cédula'**
+  String get dni;
+
+  /// Número de teléfono
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get phone;
+
+  /// Persona o entidad que refirió al paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Referido por'**
+  String get referred;
+
+  /// Monto total de la factura
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get totalAmount;
+
+  /// Buscar paciente por cédula
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar Paciente'**
+  String get searchPatient;
+
+  /// Placeholder para búsqueda por documento
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar por Cédula/DNI'**
+  String get searchByDNI;
+
+  /// Mensaje cuando se encuentra un paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Paciente encontrado'**
+  String get patientFound;
+
+  /// Mensaje cuando no se encuentra un paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Paciente no encontrado'**
+  String get patientNotFound;
+
+  /// Instrucción para completar formulario de paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Complete los datos del paciente'**
+  String get completePatientData;
+
+  /// Botón para agregar examen
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar Examen'**
+  String get addExam;
+
+  /// Título de sección de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Exámenes Seleccionados'**
+  String get selectedExams;
+
+  /// Título del modal de selección
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar Exámenes'**
+  String get selectExams;
+
+  /// Subtotal de la factura
+  ///
+  /// In es, this message translates to:
+  /// **'Subtotal'**
+  String get subtotal;
+
+  /// Cantidad de años de edad
+  ///
+  /// In es, this message translates to:
+  /// **'{count} años'**
+  String years(int count);
+
+  /// Mensaje de validación de cédula
+  ///
+  /// In es, this message translates to:
+  /// **'Cédula obligatoria para mayores de 17 años'**
+  String get dniRequiredOver17;
+
+  /// Placeholder de búsqueda de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar examen...'**
+  String get searchExam;
+
+  /// Mensaje cuando no se han seleccionado exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'No hay exámenes seleccionados'**
+  String get noExamsSelected;
+
+  /// Contador de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'{count} exámenes'**
+  String examsCount(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
