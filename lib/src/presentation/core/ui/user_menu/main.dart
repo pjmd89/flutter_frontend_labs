@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
+import 'package:labs/src/domain/entities/enums/role_enum.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import 'package:labs/src/presentation/providers/locale_notifier.dart';
 import 'package:labs/src/presentation/providers/theme_brightness_notifier.dart';
@@ -44,6 +45,22 @@ class _UserMenuState extends State<UserMenu> {
             ],
           ),
     );
+  }
+
+  String _getRoleLabel(BuildContext context, Role role) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (role) {
+      case Role.root:
+        return l10n.roleRoot;
+      case Role.admin:
+        return l10n.roleAdmin;
+      case Role.owner:
+        return l10n.roleOwner;
+      case Role.technician:
+        return l10n.roleTechnician;
+      case Role.billing:
+        return l10n.roleBilling;
+    }
   }
 
   @override
@@ -97,7 +114,7 @@ class _UserMenuState extends State<UserMenu> {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    authNotifier.firstName,
+                    authNotifier.fullName,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
@@ -244,6 +261,40 @@ class _UserMenuState extends State<UserMenu> {
                     ],
                   ),
                 ),
+                // Rol del usuario (solo informativo)
+                if (authNotifier.role != null) ...[
+                  const PopupMenuDivider(),
+                  PopupMenuItem<String>(
+                    enabled: false,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 2,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.badge,
+                          size: 16,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.6),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          _getRoleLabel(context, authNotifier.role!),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(
+                            fontSize: 12,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ],
           onSelected: (value) {
             if (value == 'logout') {
