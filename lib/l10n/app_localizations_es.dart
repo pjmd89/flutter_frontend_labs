@@ -9,6 +9,9 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String get language => 'Idioma';
+
+  @override
   String get languageEnglish => 'Inglés';
 
   @override

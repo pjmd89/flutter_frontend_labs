@@ -98,6 +98,12 @@ abstract class AppLocalizations {
   ///
   ///
   /// In es, this message translates to:
+  /// **'Idioma'**
+  String get language;
+
+  ///
+  ///
+  /// In es, this message translates to:
   /// **'Inglés'**
   String get languageEnglish;
 

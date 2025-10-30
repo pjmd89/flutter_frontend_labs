@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
+import 'package:labs/src/presentation/providers/locale_notifier.dart';
+import 'package:labs/src/presentation/providers/theme_brightness_notifier.dart';
 import 'package:provider/provider.dart';
 import './view_model.dart';
 
@@ -72,7 +74,7 @@ class _UserMenuState extends State<UserMenu> {
 
         return PopupMenuButton<String>(
           offset: const Offset(0, 50),
-          tooltip: authNotifier.fullName,
+          tooltip: '',
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Row(
@@ -107,6 +109,131 @@ class _UserMenuState extends State<UserMenu> {
           ),
           itemBuilder:
               (context) => [
+                // Idioma con submenú
+                PopupMenuItem<String>(
+                  onTap: () {},
+                  child: Theme(
+                    data: Theme.of(
+                      context,
+                    ).copyWith(hoverColor: Colors.transparent),
+                    child: PopupMenuButton<AppLocale>(
+                      offset: const Offset(200, 0),
+                      tooltip: '',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.language, size: 20),
+                          const SizedBox(width: 12),
+                          Text(l10n.language),
+                          const Spacer(),
+                          const Icon(Icons.arrow_right, size: 20),
+                        ],
+                      ),
+                      itemBuilder:
+                          (context) => [
+                            PopupMenuItem<AppLocale>(
+                              value: AppLocale.es,
+                              child: Row(
+                                children: [
+                                  if (context
+                                          .read<AppLocaleNotifier>()
+                                          .locale ==
+                                      'es')
+                                    const Icon(Icons.check, size: 20)
+                                  else
+                                    const SizedBox(width: 20),
+                                  const SizedBox(width: 8),
+                                  Text(l10n.languageSpanish),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem<AppLocale>(
+                              value: AppLocale.en,
+                              child: Row(
+                                children: [
+                                  if (context
+                                          .read<AppLocaleNotifier>()
+                                          .locale ==
+                                      'en')
+                                    const Icon(Icons.check, size: 20)
+                                  else
+                                    const SizedBox(width: 20),
+                                  const SizedBox(width: 8),
+                                  Text(l10n.languageEnglish),
+                                ],
+                              ),
+                            ),
+                          ],
+                      onSelected: (locale) {
+                        context.read<AppLocaleNotifier>().setLocale(locale);
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    ),
+                  ),
+                ),
+                // Tema con submenú
+                PopupMenuItem<String>(
+                  onTap: () {},
+                  child: Theme(
+                    data: Theme.of(
+                      context,
+                    ).copyWith(hoverColor: Colors.transparent),
+                    child: PopupMenuButton<BrightnessMode>(
+                      offset: const Offset(200, 0),
+                      tooltip: '',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.palette, size: 20),
+                          const SizedBox(width: 12),
+                          Text(l10n.brightnessTheme),
+                          const Spacer(),
+                          const Icon(Icons.arrow_right, size: 20),
+                        ],
+                      ),
+                      itemBuilder:
+                          (context) => [
+                            PopupMenuItem<BrightnessMode>(
+                              value: BrightnessMode.light,
+                              child: Row(
+                                children: [
+                                  if (context
+                                          .read<ThemeBrightnessNotifier>()
+                                          .brightness ==
+                                      Brightness.light)
+                                    const Icon(Icons.check, size: 20)
+                                  else
+                                    const SizedBox(width: 20),
+                                  const SizedBox(width: 8),
+                                  Text(l10n.brightnessLight),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem<BrightnessMode>(
+                              value: BrightnessMode.dark,
+                              child: Row(
+                                children: [
+                                  if (context
+                                          .read<ThemeBrightnessNotifier>()
+                                          .brightness ==
+                                      Brightness.dark)
+                                    const Icon(Icons.check, size: 20)
+                                  else
+                                    const SizedBox(width: 20),
+                                  const SizedBox(width: 8),
+                                  Text(l10n.brightnessDark),
+                                ],
+                              ),
+                            ),
+                          ],
+                      onSelected: (mode) {
+                        context.read<ThemeBrightnessNotifier>().brightnessMode =
+                            mode;
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    ),
+                  ),
+                ),
+                const PopupMenuDivider(),
+                // Logout
                 PopupMenuItem<String>(
                   value: 'logout',
                   child: Row(

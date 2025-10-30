@@ -8,6 +8,7 @@ import '/src/presentation/core/themes/teal.dart';
 import '/src/presentation/providers/auth_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
 import '/src/presentation/providers/locale_notifier.dart';
+import '/src/presentation/providers/theme_brightness_notifier.dart';
 import '/l10n/app_localizations.dart';
 
 class Template extends StatefulWidget {
@@ -49,6 +50,7 @@ class _TemplateState extends State<Template> {
   Widget build(BuildContext context) {
     String localeCode = context.watch<AppLocaleNotifier>().locale;
     final authNotifier = context.watch<AuthNotifier>();
+    final themeBrightnessNotifier = context.watch<ThemeBrightnessNotifier>();
     final errorService = context.read<ErrorService>();
 
     GoRouter router;
@@ -79,7 +81,12 @@ class _TemplateState extends State<Template> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: TealTheme().materialTheme,
+      theme: TealTheme().lightTheme,
+      darkTheme: TealTheme().darkTheme,
+      themeMode:
+          themeBrightnessNotifier.brightness == Brightness.light
+              ? ThemeMode.light
+              : ThemeMode.dark,
       locale: Locale(localeCode),
       supportedLocales: const [Locale('es'), Locale('en')],
     );

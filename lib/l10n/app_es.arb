@@ -1,5 +1,9 @@
 {
   "@@locale": "es",
+  "language":"Idioma",
+  "@language": {
+    "description": ""
+  },
   "languageEnglish":"Inglés",
   "@languageEnglish": {
     "description": ""
