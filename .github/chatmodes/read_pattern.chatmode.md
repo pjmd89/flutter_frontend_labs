@@ -1123,6 +1123,30 @@ List<Widget> buildList({
 
 #### Ejemplo de Widget de Item ({item}_item.dart)
 
+**⚠️ IMPORTANTE: ConstrainedBox para Cards en Grilla**
+
+Cuando uses `Wrap` en el `main.dart` para mostrar items en grilla responsive, **SIEMPRE** envuelve el `Card` en un `ConstrainedBox` con `maxWidth: 360`:
+
+```dart
+return ConstrainedBox(
+  constraints: const BoxConstraints(maxWidth: 360),
+  child: Card(
+    // ... contenido del card
+  ),
+);
+```
+
+**¿Por qué?**
+- Sin `ConstrainedBox`, el Card toma todo el ancho disponible
+- Con `maxWidth: 360`, los cards tienen tamaño consistente
+- `Wrap` automáticamente distribuye los cards en columnas según el ancho de pantalla
+- Mantiene consistencia visual con otros módulos (User, Company, ExamTemplate)
+
+**¿Cuándo NO usarlo?**
+- Si usas `ListView` en lugar de `Wrap`
+- Si quieres cards de ancho completo (raro)
+- Si el item no es un `Card` (ej: ListTile simple)
+
 **Template:**
 ```dart
 import 'package:flutter/material.dart';
@@ -1146,10 +1170,12 @@ class UserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    return Card(
-      child: Column(
-        children: [
-          ListTile(
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 360),
+      child: Card(
+        child: Column(
+          children: [
+            ListTile(
             leading: const CircleAvatar(child: Icon(Icons.person_outline)),
             title: Text('${user.firstName} ${user.lastName}'),
             subtitle: Text(user.email),
@@ -1177,6 +1203,7 @@ class UserItem extends StatelessWidget {
               ],
             ),
         ],
+      ),
       ),
     );
   }
@@ -2202,6 +2229,7 @@ Text(l10n.users)
 - [ ] `{item}_item.dart` recibe `l10n` como parámetro requerido
 - [ ] `{item}_item.dart` usa `l10n` para TODOS los textos visibles
 - [ ] `{item}_item.dart` recibe entidad completa, no propiedades sueltas
+- [ ] ⚠️ **Si usa Wrap en main.dart: Card envuelto en ConstrainedBox(maxWidth: 360)**
 - [ ] Los callbacks son opcionales (`Function(String id)?`)
 
 ### Internacionalización (i18n)
