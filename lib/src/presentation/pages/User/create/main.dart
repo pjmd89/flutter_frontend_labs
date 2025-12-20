@@ -205,6 +205,8 @@ class _UserCreatePageState extends State<UserCreatePage> {
                           onChanged: (Role? newValue) {
                             setState(() {
                               selectedRole = newValue;
+                              
+                              // isAdmin solo es true cuando el rol es admin
                               viewModel.input.isAdmin = newValue == Role.admin;
 
                               // Inicializar companyInfo cuando se selecciona owner

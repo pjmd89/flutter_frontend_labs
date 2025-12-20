@@ -34,7 +34,7 @@ class CreateUserUsecase implements af.UseCase {
 
     var response = await _conn.operation(
       operation: mutation,
-      variables: {'name': input},
+      variables: {'name': input.toJson()},
     );
 
     return response;

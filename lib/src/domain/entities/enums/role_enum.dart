@@ -2,14 +2,14 @@ import "package:json_annotation/json_annotation.dart";
 part "role_enum.g.dart";
 @JsonEnum(alwaysCreate: true)
 enum Role {
-  @JsonValue("root")
+  @JsonValue("ROOT")
   root,
-  @JsonValue("admin")
+  @JsonValue("ADMIN")
   admin,
-  @JsonValue("owner")
+  @JsonValue("OWNER")
   owner,
-  @JsonValue("technician")
+  @JsonValue("TECHNICIAN")
   technician,
-  @JsonValue("billing")
+  @JsonValue("BILLING")
   billing,
 }

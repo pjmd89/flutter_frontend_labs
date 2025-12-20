@@ -31,9 +31,9 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
 };
 
 const _$RoleEnumMap = {
-  Role.root: 'root',
-  Role.admin: 'admin',
-  Role.owner: 'owner',
-  Role.technician: 'technician',
-  Role.billing: 'billing',
+  Role.root: 'ROOT',
+  Role.admin: 'ADMIN',
+  Role.owner: 'OWNER',
+  Role.technician: 'TECHNICIAN',
+  Role.billing: 'BILLING',
 };
