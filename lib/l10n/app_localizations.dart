@@ -1138,6 +1138,36 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cerrando sesión...'**
   String get loggingOut;
+
+  /// Campo de sexo
+  ///
+  /// In es, this message translates to:
+  /// **'Sexo'**
+  String get sex;
+
+  /// Sexo femenino
+  ///
+  /// In es, this message translates to:
+  /// **'Femenino'**
+  String get sexFemale;
+
+  /// Sexo masculino
+  ///
+  /// In es, this message translates to:
+  /// **'Masculino'**
+  String get sexMale;
+
+  /// Sexo intersex
+  ///
+  /// In es, this message translates to:
+  /// **'Intersex'**
+  String get sexIntersex;
+
+  /// Campo de laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'Laboratorio'**
+  String get laboratory;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

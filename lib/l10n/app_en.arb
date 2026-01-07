@@ -680,5 +680,10 @@
   "examsCount": "{count} exams",
   "logout": "Logout",
   "logoutConfirmation": "Are you sure you want to logout?",
-  "loggingOut": "Logging out..."
+  "loggingOut": "Logging out...",
+  "sex": "Sex",
+  "sexFemale": "Female",
+  "sexMale": "Male",
+  "sexIntersex": "Intersex",
+  "laboratory": "Laboratory"
 }

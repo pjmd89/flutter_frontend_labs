@@ -801,5 +801,25 @@
   "loggingOut": "Cerrando sesión...",
   "@loggingOut": {
     "description": "Mensaje durante logout"
+  },
+  "sex": "Sexo",
+  "@sex": {
+    "description": "Campo de sexo"
+  },
+  "sexFemale": "Femenino",
+  "@sexFemale": {
+    "description": "Sexo femenino"
+  },
+  "sexMale": "Masculino",
+  "@sexMale": {
+    "description": "Sexo masculino"
+  },
+  "sexIntersex": "Intersex",
+  "@sexIntersex": {
+    "description": "Sexo intersex"
+  },
+  "laboratory": "Laboratorio",
+  "@laboratory": {
+    "description": "Campo de laboratorio"
   }
 }

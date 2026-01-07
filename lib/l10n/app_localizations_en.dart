@@ -557,4 +557,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loggingOut => 'Logging out...';
+
+  @override
+  String get sex => 'Sex';
+
+  @override
+  String get sexFemale => 'Female';
+
+  @override
+  String get sexMale => 'Male';
+
+  @override
+  String get sexIntersex => 'Intersex';
+
+  @override
+  String get laboratory => 'Laboratory';
 }

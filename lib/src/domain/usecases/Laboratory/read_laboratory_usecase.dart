@@ -4,6 +4,8 @@ import 'package:agile_front/infraestructure/graphql/helpers.dart';
 import 'package:labs/src/domain/entities/inputs/searchinput_input.dart';
 import 'package:labs/src/domain/entities/types/pageinfo/pageinfo_model.dart';
 import 'package:labs/src/domain/operation/queries/getLaboratories/getlaboratories_query.dart';
+import '/src/domain/operation/fields_builders/main.dart';
+import '/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
 
 
 class ReadLaboratoryUsecase implements af.UseCase {
@@ -32,6 +34,16 @@ class ReadLaboratoryUsecase implements af.UseCase {
       operation: _operation,
       variables: {'search': search.map((e) => e.toJson()).toList()},
     );
+  }
+
+  Future<dynamic> readWithoutPaginate() async {
+    EdgeLaboratoryFieldsBuilder builder =
+        EdgeLaboratoryFieldsBuilder().defaultValues();
+    final response = await _conn.operation(
+      operation: GetLaboratoriesQuery(builder: builder),
+      variables: {},
+    );
+    return response;
   }
 
 

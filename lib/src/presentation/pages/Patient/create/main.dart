@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:labs/l10n/app_localizations.dart';
+import 'package:labs/src/domain/entities/main.dart';
+import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
+import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
 class PatientCreatePage extends StatefulWidget {
@@ -10,19 +15,352 @@ class PatientCreatePage extends StatefulWidget {
 
 class _PatientCreatePageState extends State<PatientCreatePage> {
   late ViewModel viewModel;
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final speciesController = TextEditingController();
+  final dniController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+  final birthDateController = TextEditingController();
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  Sex? selectedSex;
+  DateTime? selectedBirthDate;
+  String? selectedLaboratoryID;
+
   @override
   void initState() {
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     viewModel = ViewModel(context: context);
   }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    speciesController.dispose();
+    dniController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    birthDateController.dispose();
+    super.dispose();
+  }
+
+  String getSexLabel(BuildContext context, Sex sex) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (sex) {
+      case Sex.female:
+        return l10n.sexFemale;
+      case Sex.male:
+        return l10n.sexMale;
+      case Sex.intersex:
+        return l10n.sexIntersex;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(listenable: viewModel, builder:  (context, child) {
-      return Placeholder();
-    });
+    final l10n = AppLocalizations.of(context)!;
+
+    return ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, child) {
+        return ContentDialog(
+          icon: Icons.person_add,
+          title: l10n.createThing(l10n.patient),
+          loading: viewModel.loading,
+          maxWidth: 700,
+          minWidth: 700,
+          form: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Nombre y Apellido en la misma fila
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.firstName,
+                          controller: firstNameController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.firstName = value;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.lastName,
+                          controller: lastNameController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.lastName = value;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Sexo y Fecha de Nacimiento en la misma fila
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<Sex>(
+                          value: selectedSex,
+                          decoration: InputDecoration(
+                            labelText: l10n.sex,
+                            isDense: true,
+                            border: const OutlineInputBorder(),
+                          ),
+                          items: Sex.values.map((Sex sex) {
+                            return DropdownMenuItem<Sex>(
+                              value: sex,
+                              child: Text(getSexLabel(context, sex)),
+                            );
+                          }).toList(),
+                          onChanged: (Sex? newValue) {
+                            setState(() {
+                              selectedSex = newValue;
+                              viewModel.input.sex = newValue ?? Sex.female;
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.birthDate,
+                          controller: birthDateController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          readOnly: true,
+                          counterText: "",
+                          onTap: () async {
+                            final pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: selectedBirthDate ?? DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                            );
+
+                            if (pickedDate != null) {
+                              final dateTime = DateTime(
+                                pickedDate.year,
+                                pickedDate.month,
+                                pickedDate.day,
+                                0,
+                                0,
+                              );
+
+                              setState(() {
+                                selectedBirthDate = dateTime;
+                                final day = dateTime.day.toString().padLeft(2, '0');
+                                final month = dateTime.month.toString().padLeft(2, '0');
+                                final year = dateTime.year.toString();
+
+                                birthDateController.text = '$day/$month/$year';
+                                viewModel.input.birthDate = '$day/$month/$year 00:00';
+                              });
+                            }
+                          },
+                          onChange: (_) {},
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Especie y DNI en la misma fila
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.species,
+                          controller: speciesController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.species = value;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.dni,
+                          controller: dniController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.dni = value;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Teléfono y Email en la misma fila
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.phone,
+                          controller: phoneController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.phone = value;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.email,
+                          controller: emailController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.email,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.email = value;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Dirección - ancho completo
+                  CustomTextFormField(
+                    labelText: l10n.address,
+                    controller: addressController,
+                    isDense: true,
+                    fieldLength: FormFieldLength.email,
+                    counterText: "",
+                    onChange: (value) {
+                      viewModel.input.address = value;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  // Laboratorio (ID) - ancho completo
+                  Builder(
+                    builder: (context) {
+                      debugPrint('🎨 Renderizando selector de laboratorios...');
+                      debugPrint('   Loading: ${viewModel.loadingLaboratories}');
+                      debugPrint('   Total labs: ${viewModel.laboratories.length}');
+                      debugPrint('   Selected ID: $selectedLaboratoryID');
+                      
+                      if (viewModel.loadingLaboratories) {
+                        debugPrint('   → Mostrando loading');
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      
+                      debugPrint('   → Mostrando dropdown');
+                      for (var lab in viewModel.laboratories) {
+                        debugPrint('      Lab: ${lab.id} - ${lab.address}');
+                      }
+                      
+                      return DropdownButtonFormField<String>(
+                        value: selectedLaboratoryID,
+                        decoration: InputDecoration(
+                          labelText: l10n.laboratory,
+                          isDense: true,
+                          border: const OutlineInputBorder(),
+                        ),
+                        items: viewModel.laboratories.map((Laboratory laboratory) {
+                          final displayText = laboratory.address.isNotEmpty 
+                              ? laboratory.address 
+                              : (laboratory.company?.name ?? 'Sin dirección');
+                          return DropdownMenuItem<String>(
+                            value: laboratory.id,
+                            child: Text(displayText),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          debugPrint('🔄 Laboratorio seleccionado: $newValue');
+                          setState(() {
+                            selectedLaboratoryID = newValue;
+                            viewModel.input.laboratory = newValue ?? '';
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return l10n.emptyFieldError;
+                          }
+                          return null;
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  child: Text(l10n.cancel),
+                  onPressed: () {
+                    context.pop();
+                  },
+                ),
+                const SizedBox(width: 8),
+                FilledButton(
+                  onPressed: viewModel.loading
+                      ? null
+                      : () async {
+                          if (formKey.currentState!.validate()) {
+                            var isErr = await viewModel.create();
+
+                            if (!isErr) {
+                              if (!context.mounted) return;
+                              context.pop(true);
+                            }
+                          }
+                        },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(l10n.createThing(l10n.patient)),
+                      const SizedBox(width: 8),
+                      viewModel.loading
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.save),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 }

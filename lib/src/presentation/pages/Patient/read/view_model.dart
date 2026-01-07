@@ -1,30 +1,134 @@
 import 'package:agile_front/agile_front.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/domain/operation/fields_builders/main.dart';
+import '/src/domain/operation/queries/getPatients/getpatients_query.dart';
+import '/src/domain/extensions/edgepatient_fields_builder_extension.dart';
+import '/src/domain/usecases/Patient/read_patient_usecase.dart';
+import '/src/domain/entities/inputs/searchinput_input.dart';
+import '/src/domain/entities/types/pageinfo/pageinfo_model.dart';
 
 class ViewModel extends ChangeNotifier {
-  bool _loading = true;
+  // Estados privados
+  bool _loading = false;
   bool _error = false;
+  List<Patient>? _patientList;
+  PageInfo? _pageInfo;
+
+  // Dependencias
   late GqlConn _gqlConn;
+  late ReadPatientUsecase _readUseCase;
   final BuildContext _context;
+
+  // Query con FieldsBuilder configurado
+  final GetPatientsQuery _operation = GetPatientsQuery(
+    builder: EdgePatientFieldsBuilder().defaultValues(),
+  );
+
+  // Getters públicos
   bool get loading => _loading;
   bool get error => _error;
+  List<Patient>? get patientList => _patientList;
+  PageInfo? get pageInfo => _pageInfo;
 
+  // Setters con notificación
   set loading(bool newLoading) {
     _loading = newLoading;
     notifyListeners();
   }
+
   set error(bool value) {
     _error = value;
     notifyListeners();
   }
-  ViewModel(
-    {required BuildContext context}
-  ) : _context = context{
-    _gqlConn = _context.read<GQLNotifier>().gqlConn;
+
+  set patientList(List<Patient>? value) {
+    _patientList = value;
+    notifyListeners();
   }
 
-  read(Operation operation) async{
-    _gqlConn.operation(operation: operation);
+  set pageInfo(PageInfo? value) {
+    _pageInfo = value;
+    notifyListeners();
+  }
+
+  // Constructor - Inicializa dependencias
+  ViewModel({required BuildContext context}) : _context = context {
+    _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _readUseCase = ReadPatientUsecase(operation: _operation, conn: _gqlConn);
+    _init();
+  }
+
+  // Inicialización - Carga datos al crear el ViewModel
+  Future<void> _init() async {
+    await getPatients();
+  }
+
+  // Obtener todos los pacientes (sin filtros)
+  Future<void> getPatients() async {
+    loading = true;
+    error = false;
+
+    try {
+      debugPrint('🔍 Llamando a getPatients...');
+      final response = await _readUseCase.build();
+      debugPrint('📦 Respuesta recibida: ${response.runtimeType}');
+
+      if (response is EdgePatient) {
+        debugPrint('✅ EdgePatient detectado');
+        debugPrint('📊 Número de pacientes: ${response.edges.length}');
+        patientList = response.edges;
+        pageInfo = response.pageInfo;
+      } else {
+        debugPrint('❌ Respuesta no es EdgePatient: $response');
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en getPatients: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+      error = true;
+      patientList = [];
+
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al cargar pacientes: ${e.toString()}',
+      );
+    } finally {
+      loading = false;
+    }
+  }
+
+  // Buscar pacientes con filtros
+  Future<void> search(List<SearchInput> searchInputs) async {
+    loading = true;
+    error = false;
+
+    try {
+      final response = await _readUseCase.search(searchInputs, _pageInfo);
+
+      if (response is EdgePatient) {
+        patientList = response.edges;
+        pageInfo = response.pageInfo;
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en search patients: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+      error = true;
+      patientList = [];
+
+      // Mostrar error al usuario
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al buscar pacientes: ${e.toString()}',
+      );
+    } finally {
+      loading = false;
+    }
+  }
+
+  // Cambiar de página
+  Future<void> updatePageInfo(PageInfo newPageInfo) async {
+    _pageInfo = newPageInfo;
+    await search([]); // Recargar con la nueva página
   }
 }
