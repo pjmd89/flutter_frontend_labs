@@ -8,29 +8,29 @@ class Patient {
   final String firstName;
   final String lastName;
   final Sex? sex;
-  final String birthDate;
+  final num birthDate;
   final String species;
   final String dni;
   final String phone;
   final String email;
   final String address;
   final Laboratory? laboratory;
-  final String created;
-  final String updated;
+  final num created;
+  final num updated;
   Patient({
     this.id = "",
     this.firstName = "",
     this.lastName = "",
     this.sex,
-    this.birthDate = "",
+    this.birthDate = 0,
     this.species = "",
     this.dni = "",
     this.phone = "",
     this.email = "",
     this.address = "",
     this.laboratory,
-    this.created = "",
-    this.updated = "",
+    this.created = 0,
+    this.updated = 0,
   });
   factory Patient.fromJson(Map<String, dynamic> json) => _$PatientFromJson(json);
   Map<String, dynamic> toJson() => _$PatientToJson(this);

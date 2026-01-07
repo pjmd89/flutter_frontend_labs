@@ -10,52 +10,40 @@ List<DrawerButtonConfig> getOwnerDrawerButtonList(
   //final l10n = AppLocalizations.of(context)!;
   return [
     DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
+      buttonText: "Dashboard",
+      buttonRoute: "/home",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.dashboard),
+    ),
+    DrawerButtonConfig(
+      buttonText: "Empresas",
+      buttonRoute: "/company",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.business),
+    ),
+    DrawerButtonConfig(
+      buttonText: "Laboratorios",
+      buttonRoute: "/laboratory",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.science),
+    ),
+    DrawerButtonConfig(
+      buttonText: "Usuarios",
       buttonRoute: "/user",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.person),
     ),
     DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
-      buttonRoute: "/destinationoffice",
+      buttonText: "Lista de Exámenes",
+      buttonRoute: "/examtemplate",
       currentPath: currentPath,
-      leadingIcon: const Icon(Icons.business),
+      leadingIcon: const Icon(Icons.assignment), // icono de caja embalada
     ),
     DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
-      buttonRoute: "/regulatedproduct",
+      buttonText: "Pacientes",
+      buttonRoute: "/patient",
       currentPath: currentPath,
-      leadingIcon: const Icon(Icons.gavel),
-    ),
-    DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
-      buttonRoute: "/service",
-      currentPath: currentPath,
-      leadingIcon: const Icon(Icons.settings),
-    ),
-    DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
-      buttonRoute: "/clientpackage",
-      currentPath: currentPath,
-      leadingIcon: const Icon(Icons.inventory_2), // icono de caja embalada
-    ),
-    DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
-      buttonRoute: "/pallette",
-      currentPath: currentPath,
-      leadingIcon: const Icon(Icons.palette),
-    ),
-    DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
-      buttonRoute: "/shipment",
-      currentPath: currentPath,
-      leadingIcon: const Icon(Icons.directions_boat),
-    ),
-    DrawerButtonConfig(
-      buttonText: "hola", //l10n.user,
-      buttonRoute: "/typeaccess",
-      currentPath: currentPath,
-      leadingIcon: const Icon(Icons.vpn_key),
+      leadingIcon: const Icon(Icons.people),
     ),
     
     // DrawerButtonConfig(

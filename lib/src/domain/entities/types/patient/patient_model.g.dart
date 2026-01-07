@@ -11,7 +11,7 @@ Patient _$PatientFromJson(Map<String, dynamic> json) => Patient(
   firstName: json['firstName'] as String? ?? "",
   lastName: json['lastName'] as String? ?? "",
   sex: $enumDecodeNullable(_$SexEnumMap, json['sex']),
-  birthDate: json['birthDate'] as String? ?? "",
+  birthDate: json['birthDate'] as num? ?? 0,
   species: json['species'] as String? ?? "",
   dni: json['dni'] as String? ?? "",
   phone: json['phone'] as String? ?? "",
@@ -21,8 +21,8 @@ Patient _$PatientFromJson(Map<String, dynamic> json) => Patient(
       json['laboratory'] == null
           ? null
           : Laboratory.fromJson(json['laboratory'] as Map<String, dynamic>),
-  created: json['created'] as String? ?? "",
-  updated: json['updated'] as String? ?? "",
+  created: json['created'] as num? ?? 0,
+  updated: json['updated'] as num? ?? 0,
 );
 
 Map<String, dynamic> _$PatientToJson(Patient instance) => <String, dynamic>{

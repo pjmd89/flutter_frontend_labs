@@ -179,7 +179,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                           ),
                           const SizedBox(height: 4),
                           Text('${l10n.dni}: ${viewModel.foundPatient!.dni}'),
-                          if (viewModel.foundPatient!.birthDate.isNotEmpty)
+                         // if (viewModel.foundPatient!.birthDate.isNotEmpty)
                             Text(
                               '${l10n.birthDate}: ${viewModel.foundPatient!.birthDate}',
                             ),
