@@ -22,8 +22,8 @@ Laboratory _$LaboratoryFromJson(Map<String, dynamic> json) => Laboratory(
           ?.map((e) => e as String)
           .toList() ??
       const [],
-  created: json['created'] as String? ?? "",
-  updated: json['updated'] as String? ?? "",
+  created: json['created'] as num? ?? 0,
+  updated: json['updated'] as num? ?? 0,
 );
 
 Map<String, dynamic> _$LaboratoryToJson(Laboratory instance) =>

@@ -9,16 +9,16 @@ class Laboratory {
   final EdgeUser? employees;
   final String address;
   final List<String> contactPhoneNumbers;
-  final String created;
-  final String updated;
+  final num created;
+  final num updated;
   Laboratory({
     this.id = "",
     this.company,
     this.employees,
     this.address = "",
     this.contactPhoneNumbers = const [],
-    this.created = "",
-    this.updated = "",
+    this.created = 0,
+    this.updated = 0,
   });
   factory Laboratory.fromJson(Map<String, dynamic> json) => _$LaboratoryFromJson(json);
   Map<String, dynamic> toJson() => _$LaboratoryToJson(this);

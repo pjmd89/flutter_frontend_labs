@@ -54,43 +54,55 @@ class ViewModel extends ChangeNotifier {
 
       debugPrint('🚀 Ejecutando readWithoutPaginate...');
       var response = await readLaboratoryUsecase.readWithoutPaginate();
-      debugPrint('✅ readWithoutPaginate completado');
       
       debugPrint('📦 Respuesta recibida: ${response.runtimeType}');
-      debugPrint('📦 Respuesta toString: $response');
+      debugPrint('📦 Contenido raw: $response');
       
-      // Intentar ver el contenido si es un Map
-      if (response is Map) {
-        debugPrint('📦 Es un Map con keys: ${response.keys}');
-      }
-      
-      // Intentar parsear directamente
-      try {
-        final edgeLab = response as EdgeLaboratory;
-        debugPrint('✅ Cast directo a EdgeLaboratory exitoso');
-        _laboratories = edgeLab.edges;
-        debugPrint('📊 Número de laboratorios después del cast: ${_laboratories.length}');
-      } catch (castError) {
-        debugPrint('❌ Error en cast: $castError');
-      }
-
       if (response is EdgeLaboratory) {
-        debugPrint('✅ EdgeLaboratory detectado con is');
+        debugPrint('✅ EdgeLaboratory detectado');
         debugPrint('📊 Número de laboratorios: ${response.edges.length}');
-        _laboratories = response.edges;
         
-        // Debug: Mostrar cada laboratorio
-        for (var lab in _laboratories) {
-          debugPrint('  - Lab ID: ${lab.id}, Address: ${lab.address}, Company: ${lab.company?.name ?? "Sin empresa"}');
+        // Intentar asignar uno por uno para ver cuál falla
+        _laboratories = [];
+        for (var i = 0; i < response.edges.length; i++) {
+          try {
+            final lab = response.edges[i];
+            debugPrint('  ✅ Lab $i parseado: ID=${lab.id}, Address=${lab.address}');
+            _laboratories.add(lab);
+          } catch (e) {
+            debugPrint('  ❌ Error en lab $i: $e');
+          }
+        }
+        
+        debugPrint('📊 Total laboratorios válidos: ${_laboratories.length}');
+      } else if (response is Map) {
+        debugPrint('⚠️ Respuesta es Map, intentando parseo manual...');
+        debugPrint('   Keys: ${response.keys}');
+        
+        // Intentar parseo manual
+        try {
+          final edgeLab = EdgeLaboratory.fromJson(response as Map<String, dynamic>);
+          _laboratories = edgeLab.edges;
+          debugPrint('✅ Parseo manual exitoso: ${_laboratories.length} laboratorios');
+        } catch (e, st) {
+          debugPrint('❌ Error en parseo manual: $e');
+          debugPrint('📍 StackTrace: $st');
+          _laboratories = [];
         }
       } else {
-        debugPrint('❌ Respuesta no es EdgeLaboratory: $response');
+        debugPrint('❌ Respuesta no es EdgeLaboratory ni Map');
+        debugPrint('   Tipo recibido: ${response.runtimeType}');
         _laboratories = [];
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error al cargar laboratorios: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       _laboratories = [];
+      
+      _errorService.showError(
+        message: 'Error al cargar laboratorios: ${e.toString()}',
+        type: ErrorType.error,
+      );
     } finally {
       _loadingLaboratories = false;
       debugPrint('🏁 Carga de laboratorios finalizada. Total: ${_laboratories.length}');
