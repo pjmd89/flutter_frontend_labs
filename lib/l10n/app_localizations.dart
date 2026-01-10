@@ -287,6 +287,12 @@ abstract class AppLocalizations {
   /// **'Logo'**
   String get logo;
 
+  /// Propietario de la empresa
+  ///
+  /// In es, this message translates to:
+  /// **'Propietario'**
+  String get owner;
+
   /// Indica que un campo es opcional
   ///
   /// In es, this message translates to:

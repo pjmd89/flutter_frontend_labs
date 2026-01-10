@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logo => 'Logo';
 
   @override
+  String get owner => 'Owner';
+
+  @override
   String get optional => 'Optional';
 
   @override

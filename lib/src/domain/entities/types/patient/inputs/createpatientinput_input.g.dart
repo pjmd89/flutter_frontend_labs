@@ -23,14 +23,14 @@ CreatePatientInput _$CreatePatientInputFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CreatePatientInputToJson(CreatePatientInput instance) =>
     <String, dynamic>{
       'firstName': instance.firstName,
-      if (instance.lastName case final value?) 'lastName': value,
+      'lastName': instance.lastName,
       'sex': _$SexEnumMap[instance.sex]!,
-      if (instance.birthDate case final value?) 'birthDate': value,
-      if (instance.species case final value?) 'species': value,
-      if (instance.dni case final value?) 'dni': value,
-      if (instance.phone case final value?) 'phone': value,
-      if (instance.email case final value?) 'email': value,
-      if (instance.address case final value?) 'address': value,
+      'birthDate': instance.birthDate,
+      'species': instance.species,
+      'dni': instance.dni,
+      'phone': instance.phone,
+      'email': instance.email,
+      'address': instance.address,
       'laboratory': instance.laboratory,
     };
 

@@ -135,6 +135,11 @@
     "description": "Logotipo de la empresa"
   },
   
+  "owner": "Propietario",
+  "@owner": {
+    "description": "Propietario de la empresa"
+  },
+  
   "optional": "Opcional",
   "@optional": {
     "description": "Indica que un campo es opcional"

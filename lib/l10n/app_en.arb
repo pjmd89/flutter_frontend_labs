@@ -135,6 +135,11 @@
     "description": "Company logo"
   },
   
+  "owner": "Owner",
+  "@owner": {
+    "description": "Company owner"
+  },
+  
   "optional": "Optional",
   "@optional": {
     "description": "Indicates that a field is optional"

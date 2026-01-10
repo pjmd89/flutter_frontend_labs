@@ -22,9 +22,9 @@ class UpdatePatientInput extends ChangeNotifier {
     _lastName = value;
     notifyListeners();
   }
-  String? _birthDate;
-  String? get birthDate => _birthDate;
-  set birthDate(String? value) {
+  num? _birthDate;
+  num? get birthDate => _birthDate;
+  set birthDate(num? value) {
     _birthDate = value;
     notifyListeners();
   }
@@ -56,7 +56,7 @@ class UpdatePatientInput extends ChangeNotifier {
     String? id,
     String? firstName,
     String? lastName,
-    String? birthDate,
+    num? birthDate,
     String? dni,
     String? phone,
     String? email,
@@ -65,7 +65,7 @@ class UpdatePatientInput extends ChangeNotifier {
     this.id = id ?? "";
     this.firstName = firstName ?? "";
     this.lastName = lastName ?? "";
-    this.birthDate = birthDate ?? "";
+    this.birthDate = birthDate;
     this.dni = dni ?? "";
     this.phone = phone ?? "";
     this.email = email ?? "";

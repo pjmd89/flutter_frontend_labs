@@ -2,7 +2,7 @@ import "/src/domain/entities/main.dart";
 import "package:flutter/foundation.dart";
 import "package:json_annotation/json_annotation.dart";
 part "createpatientinput_input.g.dart";
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(includeIfNull: true)
 class CreatePatientInput extends ChangeNotifier {
   String _firstName = "";
   String get firstName => _firstName;

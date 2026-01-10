@@ -149,6 +149,20 @@ class ViewModel extends ChangeNotifier {
         input.address = null;
       }
 
+      // 🐛 DEBUG: Mostrar valores del input antes de enviar
+      debugPrint('📤 Enviando CreatePatientInput:');
+      debugPrint('   firstName: ${input.firstName}');
+      debugPrint('   lastName: ${input.lastName}');
+      debugPrint('   sex: ${input.sex}');
+      debugPrint('   birthDate: ${input.birthDate}');
+      debugPrint('   species: ${input.species}');
+      debugPrint('   dni: ${input.dni}');
+      debugPrint('   phone: ${input.phone}');
+      debugPrint('   email: ${input.email}');
+      debugPrint('   address: ${input.address}');
+      debugPrint('   laboratory: ${input.laboratory}');
+      debugPrint('📦 Input JSON: ${input.toJson()}');
+
       var response = await useCase.execute(input: input);
 
       if (response is Patient) {
