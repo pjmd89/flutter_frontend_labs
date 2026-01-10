@@ -847,5 +847,59 @@
   "laboratory": "Laboratorio",
   "@laboratory": {
     "description": "Campo de laboratorio"
+  },
+  "deleting": "Eliminando...",
+  "@deleting": {
+    "description": "Mensaje durante operación de eliminación"
+  },
+  "thingDeletedSuccessfully": "{thing} eliminado exitosamente",
+  "@thingDeletedSuccessfully": {
+    "description": "Mensaje de éxito al eliminar (masculino/neutro). Ej: Usuario eliminado exitosamente",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "femeThingDeletedSuccessfully": "{thing} eliminada exitosamente",
+  "@femeThingDeletedSuccessfully": {
+    "description": "Mensaje de éxito al eliminar (femenino). Ej: Empresa eliminada exitosamente",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Empresa"
+      }
+    }
+  },
+  "errorDeleting": "Error al eliminar {thing}",
+  "@errorDeleting": {
+    "description": "Mensaje de error al eliminar. Ej: Error al eliminar Usuario",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "actionIsIrreversible": "Esta acción es irreversible",
+  "@actionIsIrreversible": {
+    "description": "Advertencia de que la acción no se puede deshacer"
+  },
+  "cannotDeleteHasDependencies": "No se puede eliminar porque tiene registros relacionados",
+  "@cannotDeleteHasDependencies": {
+    "description": "Error cuando se intenta eliminar registro con dependencias"
+  },
+  "cannotDeleteInUse": "No se puede eliminar porque está en uso",
+  "@cannotDeleteInUse": {
+    "description": "Error cuando se intenta eliminar registro que está siendo usado"
+  },
+  "recordNotFound": "El registro no fue encontrado",
+  "@recordNotFound": {
+    "description": "Error cuando el registro no existe"
+  },
+  "permissionDenied": "No tiene permisos para realizar esta acción",
+  "@permissionDenied": {
+    "description": "Error cuando el usuario no tiene permisos"
   }
 }

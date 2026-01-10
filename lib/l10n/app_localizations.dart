@@ -1186,6 +1186,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Laboratorio'**
   String get laboratory;
+
+  /// Mensaje durante operación de eliminación
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminando...'**
+  String get deleting;
+
+  /// Mensaje de éxito al eliminar (masculino/neutro). Ej: Usuario eliminado exitosamente
+  ///
+  /// In es, this message translates to:
+  /// **'{thing} eliminado exitosamente'**
+  String thingDeletedSuccessfully(String thing);
+
+  /// Mensaje de éxito al eliminar (femenino). Ej: Empresa eliminada exitosamente
+  ///
+  /// In es, this message translates to:
+  /// **'{thing} eliminada exitosamente'**
+  String femeThingDeletedSuccessfully(String thing);
+
+  /// Mensaje de error al eliminar. Ej: Error al eliminar Usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Error al eliminar {thing}'**
+  String errorDeleting(String thing);
+
+  /// Advertencia de que la acción no se puede deshacer
+  ///
+  /// In es, this message translates to:
+  /// **'Esta acción es irreversible'**
+  String get actionIsIrreversible;
+
+  /// Error cuando se intenta eliminar registro con dependencias
+  ///
+  /// In es, this message translates to:
+  /// **'No se puede eliminar porque tiene registros relacionados'**
+  String get cannotDeleteHasDependencies;
+
+  /// Error cuando se intenta eliminar registro que está siendo usado
+  ///
+  /// In es, this message translates to:
+  /// **'No se puede eliminar porque está en uso'**
+  String get cannotDeleteInUse;
+
+  /// Error cuando el registro no existe
+  ///
+  /// In es, this message translates to:
+  /// **'El registro no fue encontrado'**
+  String get recordNotFound;
+
+  /// Error cuando el usuario no tiene permisos
+  ///
+  /// In es, this message translates to:
+  /// **'No tiene permisos para realizar esta acción'**
+  String get permissionDenied;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -585,4 +585,37 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get laboratory => 'Laboratorio';
+
+  @override
+  String get deleting => 'Eliminando...';
+
+  @override
+  String thingDeletedSuccessfully(String thing) {
+    return '$thing eliminado exitosamente';
+  }
+
+  @override
+  String femeThingDeletedSuccessfully(String thing) {
+    return '$thing eliminada exitosamente';
+  }
+
+  @override
+  String errorDeleting(String thing) {
+    return 'Error al eliminar $thing';
+  }
+
+  @override
+  String get actionIsIrreversible => 'Esta acción es irreversible';
+
+  @override
+  String get cannotDeleteHasDependencies => 'No se puede eliminar porque tiene registros relacionados';
+
+  @override
+  String get cannotDeleteInUse => 'No se puede eliminar porque está en uso';
+
+  @override
+  String get recordNotFound => 'El registro no fue encontrado';
+
+  @override
+  String get permissionDenied => 'No tiene permisos para realizar esta acción';
 }

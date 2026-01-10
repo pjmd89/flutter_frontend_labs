@@ -711,5 +711,59 @@
   "sexFemale": "Female",
   "sexMale": "Male",
   "sexIntersex": "Intersex",
-  "laboratory": "Laboratory"
+  "laboratory": "Laboratory",
+  "deleting": "Deleting...",
+  "@deleting": {
+    "description": "Message during deletion operation"
+  },
+  "thingDeletedSuccessfully": "{thing} deleted successfully",
+  "@thingDeletedSuccessfully": {
+    "description": "Success message after deleting. Ex: User deleted successfully",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "femeThingDeletedSuccessfully": "{thing} deleted successfully",
+  "@femeThingDeletedSuccessfully": {
+    "description": "Success message after deleting (same as thingDeletedSuccessfully in English). Ex: Company deleted successfully",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Company"
+      }
+    }
+  },
+  "errorDeleting": "Error deleting {thing}",
+  "@errorDeleting": {
+    "description": "Error message when deletion fails. Ex: Error deleting User",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "actionIsIrreversible": "This action is irreversible",
+  "@actionIsIrreversible": {
+    "description": "Warning that action cannot be undone"
+  },
+  "cannotDeleteHasDependencies": "Cannot delete because it has related records",
+  "@cannotDeleteHasDependencies": {
+    "description": "Error when trying to delete record with dependencies"
+  },
+  "cannotDeleteInUse": "Cannot delete because it is in use",
+  "@cannotDeleteInUse": {
+    "description": "Error when trying to delete record that is being used"
+  },
+  "recordNotFound": "Record not found",
+  "@recordNotFound": {
+    "description": "Error when record doesn't exist"
+  },
+  "permissionDenied": "You do not have permission to perform this action",
+  "@permissionDenied": {
+    "description": "Error when user doesn't have permissions"
+  }
 }

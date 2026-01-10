@@ -585,4 +585,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get laboratory => 'Laboratory';
+
+  @override
+  String get deleting => 'Deleting...';
+
+  @override
+  String thingDeletedSuccessfully(String thing) {
+    return '$thing deleted successfully';
+  }
+
+  @override
+  String femeThingDeletedSuccessfully(String thing) {
+    return '$thing deleted successfully';
+  }
+
+  @override
+  String errorDeleting(String thing) {
+    return 'Error deleting $thing';
+  }
+
+  @override
+  String get actionIsIrreversible => 'This action is irreversible';
+
+  @override
+  String get cannotDeleteHasDependencies => 'Cannot delete because it has related records';
+
+  @override
+  String get cannotDeleteInUse => 'Cannot delete because it is in use';
+
+  @override
+  String get recordNotFound => 'Record not found';
+
+  @override
+  String get permissionDenied => 'You do not have permission to perform this action';
 }
