@@ -171,6 +171,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String thingUpdatedSuccessfully(String thing) {
+    return '$thing actualizado exitosamente';
+  }
+
+  @override
+  String femeThingUpdatedSuccessfully(String thing) {
+    return '$thing actualizada exitosamente';
+  }
+
+  @override
   String noRegisteredMaleThings(String thing) {
     return 'No hay $thing registrados';
   }

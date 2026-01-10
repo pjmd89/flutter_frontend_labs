@@ -1,5 +1,6 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:go_router/go_router.dart';
+import '/src/domain/entities/main.dart';
 import '/src/presentation/pages/Laboratory/read/main.dart';
 import '/src/presentation/pages/Laboratory/create/main.dart';
 import '/src/presentation/pages/Laboratory/delete/main.dart';
@@ -23,12 +24,12 @@ final List<GoRoute> laboratoryRoutes = [
         ),
       ),
       GoRoute(
-        path: 'update/:id',
+        path: 'update',
         pageBuilder: (context, state) => CustomDialogPage(
           context: context, 
           state: state, 
           child: LaboratoryUpdatePage(
-            id: state.pathParameters['id']!
+            laboratory: state.extra as Laboratory
           )
         )
       ),

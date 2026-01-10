@@ -261,6 +261,27 @@
     }
   },
   
+  "thingUpdatedSuccessfully": "{thing} actualizado exitosamente",
+  "@thingUpdatedSuccessfully": {
+    "description": "Mensaje de éxito al actualizar (masculino/neutro). Ej: Usuario actualizado exitosamente",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Usuario"
+      }
+    }
+  },
+  "femeThingUpdatedSuccessfully": "{thing} actualizada exitosamente",
+  "@femeThingUpdatedSuccessfully": {
+    "description": "Mensaje de éxito al actualizar (femenino). Ej: Empresa actualizada exitosamente",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Empresa"
+      }
+    }
+  },
+  
   "noRegisteredMaleThings": "No hay {thing} registrados",
   "@noRegisteredMaleThings": {
     "description": "Mensaje cuando no hay registros (masculino/neutro). Ej: No hay Usuarios registrados",

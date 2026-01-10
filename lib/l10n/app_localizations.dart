@@ -383,6 +383,18 @@ abstract class AppLocalizations {
   /// **'{thing} creada exitosamente'**
   String femeThingCreatedSuccessfully(String thing);
 
+  /// Mensaje de éxito al actualizar (masculino/neutro). Ej: Usuario actualizado exitosamente
+  ///
+  /// In es, this message translates to:
+  /// **'{thing} actualizado exitosamente'**
+  String thingUpdatedSuccessfully(String thing);
+
+  /// Mensaje de éxito al actualizar (femenino). Ej: Empresa actualizada exitosamente
+  ///
+  /// In es, this message translates to:
+  /// **'{thing} actualizada exitosamente'**
+  String femeThingUpdatedSuccessfully(String thing);
+
   /// Mensaje cuando no hay registros (masculino/neutro). Ej: No hay Usuarios registrados
   ///
   /// In es, this message translates to:

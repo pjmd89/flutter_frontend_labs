@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:labs/l10n/app_localizations.dart';
+import 'package:labs/src/domain/entities/main.dart';
+import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
+import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
 class UserUpdatePage extends StatefulWidget {
@@ -11,19 +16,281 @@ class UserUpdatePage extends StatefulWidget {
 
 class _UserUpdatePageState extends State<UserUpdatePage> {
   late ViewModel viewModel;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  
+  // Controllers para campos editables
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController emailController;
+  
+  // Variables para campos opcionales
+  Role? selectedRole;
+  
+  bool _controllersInitialized = false;
+
   @override
   void initState() {
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    viewModel = ViewModel(context: context);
+    viewModel = ViewModel(context: context, userId: widget.id);
+    
+    // Escuchar cambios del ViewModel para inicializar controllers
+    viewModel.addListener(_updateControllers);
   }
+  
+  void _updateControllers() {
+    // Inicializar controllers cuando los datos se carguen
+    if (viewModel.currentUser != null && !viewModel.loading && !_controllersInitialized) {
+      setState(() {
+        firstNameController = TextEditingController(
+          text: viewModel.currentUser!.firstName
+        );
+        lastNameController = TextEditingController(
+          text: viewModel.currentUser!.lastName
+        );
+        emailController = TextEditingController(
+          text: viewModel.currentUser!.email
+        );
+        selectedRole = viewModel.currentUser!.role;
+        _controllersInitialized = true;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    viewModel.removeListener(_updateControllers);
+    if (_controllersInitialized) {
+      firstNameController.dispose();
+      lastNameController.dispose();
+      emailController.dispose();
+    }
+    super.dispose();
+  }
+  
+  String getRoleLabel(BuildContext context, Role role) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (role) {
+      case Role.root:
+        return l10n.roleRoot;
+      case Role.admin:
+        return l10n.roleAdmin;
+      case Role.owner:
+        return l10n.roleOwner;
+      case Role.technician:
+        return l10n.roleTechnician;
+      case Role.billing:
+        return l10n.roleBilling;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(listenable: viewModel, builder:  (context, child) {
-      return Placeholder();
-    });
+    final l10n = AppLocalizations.of(context)!;
+    
+    return ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, child) {
+        // Mostrar error si ocurrió
+        if (viewModel.error && !viewModel.loading) {
+          return ContentDialog(
+            icon: Icons.error_outline,
+            title: l10n.somethingWentWrong,
+            loading: false,
+            form: Form(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(l10n.somethingWentWrong),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: () => context.pop(false),
+                      child: Text(l10n.cancel),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [],
+          );
+        }
+        
+        // Mostrar loading mientras carga datos iniciales
+        if (!_controllersInitialized || viewModel.currentUser == null) {
+          return ContentDialog(
+            icon: Icons.person,
+            title: l10n.updateThing(l10n.user),
+            loading: true,
+            form: Form(child: const Center(child: CircularProgressIndicator())),
+            actions: [],
+          );
+        }
+        
+        // Formulario con datos prellenados
+        return ContentDialog(
+          icon: Icons.person,
+          title: l10n.updateThing(l10n.user),
+          loading: viewModel.loading,
+          maxWidth: 600,
+          form: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Nombre y Apellido en la misma fila
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.firstName,
+                          controller: firstNameController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.firstName = value;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: l10n.lastName,
+                          controller: lastNameController,
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          onChange: (value) {
+                            viewModel.input.lastName = value;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  // Email
+                  CustomTextFormField(
+                    labelText: l10n.email,
+                    controller: emailController,
+                    isDense: true,
+                    fieldLength: FormFieldLength.email,
+                    counterText: "",
+                    onChange: (value) {
+                      viewModel.input.email = value;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  // Campos de solo lectura (no están en UpdateUserInput)
+                  Card(
+                    color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Información no editable',
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          const SizedBox(height: 12),
+                          _buildReadOnlyField(
+                            l10n.role,
+                            selectedRole != null 
+                              ? getRoleLabel(context, selectedRole!)
+                              : '-'
+                          ),
+                          const SizedBox(height: 8),
+                          _buildReadOnlyField(
+                            l10n.cutOffDate, 
+                            viewModel.currentUser!.cutOffDate.toString()
+                          ),
+                          const SizedBox(height: 8),
+                          _buildReadOnlyField(
+                            l10n.fee, 
+                            viewModel.currentUser!.fee.toString()
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  child: Text(l10n.cancel),
+                  onPressed: () => context.pop(false),
+                ),
+                const SizedBox(width: 8),
+                FilledButton(
+                  onPressed: viewModel.loading ? null : () async {
+                    if (formKey.currentState!.validate()) {
+                      var isErr = await viewModel.update();
+                      
+                      if (!isErr) {
+                        if (!context.mounted) return;
+                        context.pop(true);
+                      }
+                    }
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(l10n.save),
+                      if (viewModel.loading) ...[
+                        const SizedBox(width: 8),
+                        const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ] else ...[
+                        const SizedBox(width: 8),
+                        const Icon(Icons.save, size: 18),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+  Widget _buildReadOnlyField(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 120,
+          child: Text(
+            '$label:',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+      ],
+    );
   }
 }

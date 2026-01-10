@@ -261,6 +261,27 @@
     }
   },
   
+  "thingUpdatedSuccessfully": "{thing} updated successfully",
+  "@thingUpdatedSuccessfully": {
+    "description": "Success message after updating. Ex: User updated successfully",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
+  "femeThingUpdatedSuccessfully": "{thing} updated successfully",
+  "@femeThingUpdatedSuccessfully": {
+    "description": "Success message after updating (same as thingUpdatedSuccessfully in English). Ex: Company updated successfully",
+    "placeholders": {
+      "thing": {
+        "type": "String",
+        "example": "Company"
+      }
+    }
+  },
+  
   "noRegisteredMaleThings": "No {thing} registered",
   "@noRegisteredMaleThings": {
     "description": "Message when no records exist. Ex: No Users registered",
