@@ -27,6 +27,7 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Sex? selectedSex;
+  PatientType? selectedPatientType;
   DateTime? selectedBirthDate;
   String? selectedLaboratoryID;
 
@@ -63,6 +64,16 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
         return l10n.sexMale;
       case Sex.intersex:
         return l10n.sexIntersex;
+    }
+  }
+
+  String getPatientTypeLabel(BuildContext context, PatientType type) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (type) {
+      case PatientType.human:
+        return l10n.patientTypeHuman;
+      case PatientType.animal:
+        return l10n.patientTypeAnimal;
     }
   }
 
@@ -116,27 +127,33 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // Sexo y Fecha de Nacimiento en la misma fila
+                  // Tipo de Paciente y Fecha de Nacimiento en la misma fila
                   Row(
                     children: [
                       Expanded(
-                        child: DropdownButtonFormField<Sex>(
-                          value: selectedSex,
+                        child: DropdownButtonFormField<PatientType>(
+                          value: selectedPatientType,
                           decoration: InputDecoration(
-                            labelText: l10n.sex,
+                            labelText: l10n.patientType,
                             isDense: true,
                             border: const OutlineInputBorder(),
                           ),
-                          items: Sex.values.map((Sex sex) {
-                            return DropdownMenuItem<Sex>(
-                              value: sex,
-                              child: Text(getSexLabel(context, sex)),
+                          items: PatientType.values.map((PatientType type) {
+                            return DropdownMenuItem<PatientType>(
+                              value: type,
+                              child: Text(getPatientTypeLabel(context, type)),
                             );
                           }).toList(),
-                          onChanged: (Sex? newValue) {
+                          onChanged: (PatientType? newValue) {
                             setState(() {
-                              selectedSex = newValue;
-                              viewModel.input.sex = newValue ?? Sex.female;
+                              selectedPatientType = newValue;
+                              viewModel.input.patientType = newValue ?? PatientType.human;
+                              
+                              // Si cambia a HUMAN, limpiar campo species
+                              if (newValue == PatientType.human) {
+                                speciesController.clear();
+                                viewModel.input.species = null;
+                              }
                             });
                           },
                         ),
@@ -184,135 +201,167 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // Especie y DNI en la misma fila
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.species,
-                          controller: speciesController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.species = value;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.dni,
-                          controller: dniController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.dni = value;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // Teléfono y Email en la misma fila
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.phone,
-                          controller: phoneController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.phone = value;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.email,
-                          controller: emailController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.email,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.email = value;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // Dirección - ancho completo
-                  CustomTextFormField(
-                    labelText: l10n.address,
-                    controller: addressController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.email,
-                    counterText: "",
-                    onChange: (value) {
-                      viewModel.input.address = value;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  // Laboratorio (ID) - ancho completo
-                  Builder(
-                    builder: (context) {
-                      debugPrint('🎨 Renderizando selector de laboratorios...');
-                      debugPrint('   Loading: ${viewModel.loadingLaboratories}');
-                      debugPrint('   Total labs: ${viewModel.laboratories.length}');
-                      debugPrint('   Selected ID: $selectedLaboratoryID');
-                      
-                      if (viewModel.loadingLaboratories) {
-                        debugPrint('   → Mostrando loading');
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      
-                      debugPrint('   → Mostrando dropdown');
-                      for (var lab in viewModel.laboratories) {
-                        debugPrint('      Lab: ${lab.id} - ${lab.address}');
-                      }
-                      
-                      return DropdownButtonFormField<String>(
-                        value: selectedLaboratoryID,
-                        decoration: InputDecoration(
-                          labelText: l10n.laboratory,
-                          isDense: true,
-                          border: const OutlineInputBorder(),
-                        ),
-                        items: viewModel.laboratories.map((Laboratory laboratory) {
-                          final displayText = laboratory.address.isNotEmpty 
-                              ? laboratory.address 
-                              : (laboratory.company?.name ?? 'Sin dirección');
-                          return DropdownMenuItem<String>(
-                            value: laboratory.id,
-                            child: Text(displayText),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          debugPrint('🔄 Laboratorio seleccionado: $newValue');
-                          setState(() {
-                            selectedLaboratoryID = newValue;
-                            viewModel.input.laboratory = newValue ?? '';
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.emptyFieldError;
-                          }
-                          return null;
-                        },
+                  // Sexo
+                  DropdownButtonFormField<Sex>(
+                    value: selectedSex,
+                    decoration: InputDecoration(
+                      labelText: l10n.sex,
+                      isDense: true,
+                      border: const OutlineInputBorder(),
+                    ),
+                    items: Sex.values.map((Sex sex) {
+                      return DropdownMenuItem<Sex>(
+                        value: sex,
+                        child: Text(getSexLabel(context, sex)),
                       );
+                    }).toList(),
+                    onChanged: (Sex? newValue) {
+                      setState(() {
+                        selectedSex = newValue;
+                        viewModel.input.sex = newValue!;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return l10n.emptyFieldError;
+                      }
+                      return null;
                     },
                   ),
+                  
+                  // Campos condicionales según tipo de paciente
+                  if (selectedPatientType == PatientType.human) ...[
+                    const SizedBox(height: 16),
+                    // DNI, Teléfono, Email para HUMAN
+                    CustomTextFormField(
+                      labelText: l10n.dni,
+                      controller: dniController,
+                      isDense: true,
+                      fieldLength: FormFieldLength.name,
+                      counterText: "",
+                      onChange: (value) {
+                        viewModel.input.dni = value;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            labelText: l10n.phone,
+                            controller: phoneController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.name,
+                            counterText: "",
+                            onChange: (value) {
+                              viewModel.input.phone = value;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: CustomTextFormField(
+                            labelText: l10n.email,
+                            controller: emailController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.email,
+                            counterText: "",
+                            onChange: (value) {
+                              viewModel.input.email = value;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextFormField(
+                      labelText: l10n.address,
+                      controller: addressController,
+                      isDense: true,
+                      fieldLength: FormFieldLength.email,
+                      counterText: "",
+                      onChange: (value) {
+                        viewModel.input.address = value;
+                      },
+                    ),
+                  ] else if (selectedPatientType == PatientType.animal) ...[
+                    const SizedBox(height: 16),
+                    // Species para ANIMAL
+                    CustomTextFormField(
+                      labelText: l10n.species,
+                      controller: speciesController,
+                      isDense: true,
+                      fieldLength: FormFieldLength.name,
+                      counterText: "",
+                      onChange: (value) {
+                        viewModel.input.species = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.emptyFieldError;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextFormField(
+                      labelText: l10n.address,
+                      controller: addressController,
+                      isDense: true,
+                      fieldLength: FormFieldLength.email,
+                      counterText: "",
+                      onChange: (value) {
+                        viewModel.input.address = value;
+                      },
+                    ),
+                  ],
+                  
+                  // Laboratorio requerido para AMBOS tipos
+                  if (selectedPatientType != null) ...[
+                    const SizedBox(height: 16),
+                    Builder(
+                      builder: (context) {
+                        if (viewModel.loadingLaboratories) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                        
+                        return DropdownButtonFormField<String>(
+                          value: selectedLaboratoryID,
+                          decoration: InputDecoration(
+                            labelText: l10n.laboratory,
+                            isDense: true,
+                            border: const OutlineInputBorder(),
+                          ),
+                          items: viewModel.laboratories.map((Laboratory laboratory) {
+                            final displayText = laboratory.address.isNotEmpty 
+                                ? laboratory.address 
+                                : (laboratory.company?.name ?? 'Sin dirección');
+                            return DropdownMenuItem<String>(
+                              value: laboratory.id,
+                              child: Text(displayText),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedLaboratoryID = newValue;
+                              viewModel.input.laboratory = newValue ?? '';
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return l10n.emptyFieldError;
+                            }
+                            return null;
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 ],
               ),
             ),

@@ -844,6 +844,18 @@
   "@sexIntersex": {
     "description": "Sexo intersex"
   },
+  "patientType": "Tipo de paciente",
+  "@patientType": {
+    "description": "Tipo de paciente"
+  },
+  "patientTypeHuman": "Humano",
+  "@patientTypeHuman": {
+    "description": "Tipo de paciente humano"
+  },
+  "patientTypeAnimal": "Animal",
+  "@patientTypeAnimal": {
+    "description": "Tipo de paciente animal"
+  },
   "laboratory": "Laboratorio",
   "@laboratory": {
     "description": "Campo de laboratorio"

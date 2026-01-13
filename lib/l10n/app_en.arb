@@ -711,6 +711,9 @@
   "sexFemale": "Female",
   "sexMale": "Male",
   "sexIntersex": "Intersex",
+  "patientType": "Patient Type",
+  "patientTypeHuman": "Human",
+  "patientTypeAnimal": "Animal",
   "laboratory": "Laboratory",
   "deleting": "Deleting...",
   "@deleting": {

@@ -16,6 +16,7 @@ export './inputs/coordinatesinput_input.dart';
 export './inputs/modinput_input.dart';
 export './inputs/sortinput_input.dart';
 export './enums/sex_enum.dart';
+export './enums/patienttype_enum.dart';
 export './enums/geometrytypeenum_enum.dart';
 export './enums/resultstatus_enum.dart';
 export './enums/distanceoperatorenum_enum.dart';

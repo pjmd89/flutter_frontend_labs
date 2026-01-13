@@ -11,6 +11,10 @@ CreatePatientInput _$CreatePatientInputFromJson(Map<String, dynamic> json) =>
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
       sex: $enumDecodeNullable(_$SexEnumMap, json['sex']),
+      patientType: $enumDecodeNullable(
+        _$PatientTypeEnumMap,
+        json['patientType'],
+      ),
       birthDate: json['birthDate'] as String?,
       species: json['species'] as String?,
       dni: json['dni'] as String?,
@@ -25,6 +29,7 @@ Map<String, dynamic> _$CreatePatientInputToJson(CreatePatientInput instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'sex': _$SexEnumMap[instance.sex]!,
+      'patientType': _$PatientTypeEnumMap[instance.patientType]!,
       'birthDate': instance.birthDate,
       'species': instance.species,
       'dni': instance.dni,
@@ -35,7 +40,12 @@ Map<String, dynamic> _$CreatePatientInputToJson(CreatePatientInput instance) =>
     };
 
 const _$SexEnumMap = {
-  Sex.female: 'female',
-  Sex.male: 'male',
-  Sex.intersex: 'intersex',
+  Sex.female: 'FEMALE',
+  Sex.male: 'MALE',
+  Sex.intersex: 'INTERSEX',
+};
+
+const _$PatientTypeEnumMap = {
+  PatientType.human: 'HUMAN',
+  PatientType.animal: 'ANIMAL',
 };

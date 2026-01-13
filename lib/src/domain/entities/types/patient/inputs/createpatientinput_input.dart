@@ -22,6 +22,12 @@ class CreatePatientInput extends ChangeNotifier {
     _sex = value;
     notifyListeners();
   }
+  PatientType _patientType = PatientType.human;
+  PatientType get patientType => _patientType;
+  set patientType(PatientType value) {
+    _patientType = value;
+    notifyListeners();
+  }
   String? _birthDate;
   String? get birthDate => _birthDate;
   set birthDate(String? value) {
@@ -68,6 +74,7 @@ class CreatePatientInput extends ChangeNotifier {
     String? firstName,
     String? lastName,
     Sex? sex,
+    PatientType? patientType,
     String? birthDate,
     String? species,
     String? dni,
@@ -79,6 +86,7 @@ class CreatePatientInput extends ChangeNotifier {
     this.firstName = firstName ?? "";
     this.lastName = lastName ?? "";
     this.sex = sex ?? Sex.values.first;
+    this.patientType = patientType ?? PatientType.human;
     this.birthDate = birthDate ?? "";
     this.species = species ?? "";
     this.dni = dni ?? "";

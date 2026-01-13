@@ -1181,6 +1181,24 @@ abstract class AppLocalizations {
   /// **'Intersex'**
   String get sexIntersex;
 
+  /// Tipo de paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de paciente'**
+  String get patientType;
+
+  /// Tipo de paciente humano
+  ///
+  /// In es, this message translates to:
+  /// **'Humano'**
+  String get patientTypeHuman;
+
+  /// Tipo de paciente animal
+  ///
+  /// In es, this message translates to:
+  /// **'Animal'**
+  String get patientTypeAnimal;
+
   /// Campo de laboratorio
   ///
   /// In es, this message translates to:

@@ -7,9 +7,11 @@ class Patient {
   final String id;
   final String firstName;
   final String lastName;
+  @JsonKey(fromJson: sexFromJson)
   final Sex? sex;
   final num birthDate;
   final String species;
+  final PatientType? patientType;
   final String dni;
   final String phone;
   final String email;
@@ -24,6 +26,7 @@ class Patient {
     this.sex,
     this.birthDate = 0,
     this.species = "",
+    this.patientType,
     this.dni = "",
     this.phone = "",
     this.email = "",

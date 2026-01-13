@@ -584,6 +584,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sexIntersex => 'Intersex';
 
   @override
+  String get patientType => 'Tipo de paciente';
+
+  @override
+  String get patientTypeHuman => 'Humano';
+
+  @override
+  String get patientTypeAnimal => 'Animal';
+
+  @override
   String get laboratory => 'Laboratorio';
 
   @override
