@@ -13,6 +13,10 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
           ? null
           : Patient.fromJson(json['patient'] as Map<String, dynamic>),
   totalAmount: json['totalAmount'] as num? ?? 0,
+  orderID: json['orderID'] as String? ?? "",
+  paymentStatus:
+      $enumDecodeNullable(_$PaymentStatusEnumMap, json['paymentStatus']) ??
+      PaymentStatus.paid,
   laboratory:
       json['laboratory'] == null
           ? null
@@ -23,16 +27,23 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
           : EvaluationPackage.fromJson(
             json['evaluationPackage'] as Map<String, dynamic>,
           ),
-  created: json['created'] as String? ?? "",
-  updated: json['updated'] as String? ?? "",
+  created: json['created'] as num?,
+  updated: json['updated'] as num?,
 );
 
 Map<String, dynamic> _$InvoiceToJson(Invoice instance) => <String, dynamic>{
   '_id': instance.id,
   if (instance.patient case final value?) 'patient': value,
   'totalAmount': instance.totalAmount,
+  'orderID': instance.orderID,
+  'paymentStatus': _$PaymentStatusEnumMap[instance.paymentStatus]!,
   if (instance.laboratory case final value?) 'laboratory': value,
   if (instance.evaluationPackage case final value?) 'evaluationPackage': value,
-  'created': instance.created,
-  'updated': instance.updated,
+  if (instance.created case final value?) 'created': value,
+  if (instance.updated case final value?) 'updated': value,
+};
+
+const _$PaymentStatusEnumMap = {
+  PaymentStatus.paid: 'PAID',
+  PaymentStatus.canceled: 'CANCELED',
 };

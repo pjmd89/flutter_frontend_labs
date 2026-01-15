@@ -23,8 +23,8 @@ EvaluationPackage _$EvaluationPackageFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      created: json['created'] as String? ?? "",
-      updated: json['updated'] as String? ?? "",
+      created: json['created'] as num?,
+      updated: json['updated'] as num?,
     );
 
 Map<String, dynamic> _$EvaluationPackageToJson(
@@ -37,8 +37,8 @@ Map<String, dynamic> _$EvaluationPackageToJson(
   'completedAt': instance.completedAt,
   'referred': instance.referred,
   'observations': instance.observations,
-  'created': instance.created,
-  'updated': instance.updated,
+  if (instance.created case final value?) 'created': value,
+  if (instance.updated case final value?) 'updated': value,
 };
 
 const _$ResultStatusEnumMap = {

@@ -45,6 +45,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tryAgain => 'Inténtalo de nuevo';
 
   @override
+  String get invoice => 'Invoice';
+
+  @override
+  String get invoices => 'Invoices';
+
+  @override
+  String get laboratory => 'Laboratory';
+
+  @override
+  String get selectExams => 'Select Exams';
+
+  @override
+  String get selectedExams => 'Selected Exams';
+
+  @override
+  String get noExamsSelected => 'No exams selected';
+
+  @override
+  String get searchExams => 'Search exams';
+
+  @override
+  String get selectAtLeastOneExam => 'Select at least one exam';
+
+  @override
+  String get referred => 'Referred by';
+
+  @override
+  String get cancelPayment => 'Cancel Payment';
+
+  @override
+  String get cancelPaymentQuestion => 'Cancel payment for this invoice?';
+
+  @override
+  String get paymentStatus => 'Payment Status';
+
+  @override
+  String get paid => 'Paid';
+
+  @override
+  String get canceled => 'Canceled';
+
+  @override
+  String get totalAmount => 'Total Amount';
+
+  @override
+  String get orderID => 'Order ID';
+
+  @override
+  String get noData => 'No data available';
+
+  @override
   String get undefinedError => 'Undefined error';
 
   @override
@@ -66,10 +117,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get companies => 'Companies';
 
   @override
+  String get exam => 'Exam';
+
+  @override
+  String get exams => 'Exams';
+
+  @override
   String get examTemplate => 'Exam Template';
 
   @override
   String get examTemplates => 'Exam Templates';
+
+  @override
+  String get template => 'Template';
+
+  @override
+  String get baseCost => 'Base Cost';
 
   @override
   String get dashboard => 'Dashboard';
@@ -460,12 +523,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error053 => 'A patient with the provided DNI already exists';
 
   @override
-  String get invoice => 'Invoice';
-
-  @override
-  String get invoices => 'Invoices';
-
-  @override
   String get patient => 'Patient';
 
   @override
@@ -511,12 +568,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phone => 'Phone';
 
   @override
-  String get referred => 'Referred by';
-
-  @override
-  String get totalAmount => 'Total';
-
-  @override
   String get searchPatient => 'Search Patient';
 
   @override
@@ -529,16 +580,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get patientNotFound => 'Patient not found';
 
   @override
+  String get patientNotFoundCreateFirst => 'Patient not found. Please create it first in the Patients module.';
+
+  @override
+  String get patientRequired => 'You must select a patient to create the invoice';
+
+  @override
   String get completePatientData => 'Complete patient data';
 
   @override
   String get addExam => 'Add Exam';
-
-  @override
-  String get selectedExams => 'Selected Exams';
-
-  @override
-  String get selectExams => 'Select Exams';
 
   @override
   String get subtotal => 'Subtotal';
@@ -553,9 +604,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchExam => 'Search exam...';
-
-  @override
-  String get noExamsSelected => 'No exams selected';
 
   @override
   String examsCount(int count) {
@@ -591,9 +639,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get patientTypeAnimal => 'Animal';
-
-  @override
-  String get laboratory => 'Laboratory';
 
   @override
   String get deleting => 'Deleting...';

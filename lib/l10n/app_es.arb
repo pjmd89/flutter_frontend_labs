@@ -48,6 +48,74 @@
   "@tryAgain": {
     "description": ""
   },
+  "invoice": "Factura",
+  "@invoice": {
+    "description": "Entidad factura singular"
+  },
+  "invoices": "Facturas",
+  "@invoices": {
+    "description": "Múltiples facturas"
+  },
+  "laboratory": "Laboratorio",
+  "@laboratory": {
+    "description": "Entidad laboratorio"
+  },
+  "selectExams": "Seleccionar Exámenes",
+  "@selectExams": {
+    "description": "Etiqueta para selección de exámenes"
+  },
+  "selectedExams": "Exámenes Seleccionados",
+  "@selectedExams": {
+    "description": "Etiqueta para mostrar exámenes seleccionados"
+  },
+  "noExamsSelected": "No hay exámenes seleccionados",
+  "@noExamsSelected": {
+    "description": "Mensaje cuando no hay exámenes seleccionados"
+  },
+  "searchExams": "Buscar exámenes",
+  "@searchExams": {
+    "description": "Placeholder para campo de búsqueda de exámenes"
+  },
+  "selectAtLeastOneExam": "Seleccione al menos un examen",
+  "@selectAtLeastOneExam": {
+    "description": "Mensaje de validación para selección de exámenes"
+  },
+  "referred": "Referido por",
+  "@referred": {
+    "description": "Etiqueta para campo referido"
+  },
+  "cancelPayment": "Cancelar Pago",
+  "@cancelPayment": {
+    "description": "Acción para cancelar pago"
+  },
+  "cancelPaymentQuestion": "¿Cancelar el pago de esta factura?",
+  "@cancelPaymentQuestion": {
+    "description": "Pregunta de confirmación para cancelación de pago"
+  },
+  "paymentStatus": "Estado de Pago",
+  "@paymentStatus": {
+    "description": "Etiqueta para campo de estado de pago"
+  },
+  "paid": "Pagado",
+  "@paid": {
+    "description": "Estado de pago: pagado"
+  },
+  "canceled": "Cancelado",
+  "@canceled": {
+    "description": "Estado de pago: cancelado"
+  },
+  "totalAmount": "Monto Total",
+  "@totalAmount": {
+    "description": "Etiqueta para monto total"
+  },
+  "orderID": "ID de Orden",
+  "@orderID": {
+    "description": "Etiqueta para ID de orden"
+  },
+  "noData": "No hay datos disponibles",
+  "@noData": {
+    "description": "Mensaje cuando no hay datos para mostrar"
+  },
   "undefinedError":"Undefined error",
   "@undefinedError": {
     "description": ""
@@ -79,6 +147,15 @@
     "description": "Término para empresas en plural"
   },
   
+  "exam": "Examen",
+  "@exam": {
+    "description": "Término para examen en singular"
+  },
+  "exams": "Exámenes",
+  "@exams": {
+    "description": "Término para exámenes en plural"
+  },
+  
   "examTemplate": "Plantilla de Examen",
   "@examTemplate": {
     "description": "Término para plantilla de examen en singular"
@@ -86,6 +163,16 @@
   "examTemplates": "Plantillas de Examen",
   "@examTemplates": {
     "description": "Término para plantillas de examen en plural"
+  },
+  
+  "template": "Plantilla",
+  "@template": {
+    "description": "Campo template"
+  },
+  
+  "baseCost": "Costo Base",
+  "@baseCost": {
+    "description": "Campo baseCost para el costo base de un examen"
   },
   
   "dashboard": "Panel de Control",
@@ -763,6 +850,14 @@
   "patientNotFound": "Paciente no encontrado",
   "@patientNotFound": {
     "description": "Mensaje cuando no se encuentra un paciente"
+  },
+  "patientNotFoundCreateFirst": "Paciente no encontrado. Por favor, créelo primero en el módulo de Pacientes.",
+  "@patientNotFoundCreateFirst": {
+    "description": "Mensaje cuando no se encuentra un paciente y debe crearlo primero"
+  },
+  "patientRequired": "Debe seleccionar un paciente para crear la factura",
+  "@patientRequired": {
+    "description": "Mensaje de validación cuando no se ha seleccionado un paciente"
   },
   "completePatientData": "Complete los datos del paciente",
   "@completePatientData": {

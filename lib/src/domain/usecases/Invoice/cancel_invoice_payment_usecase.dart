@@ -1,42 +1,38 @@
 import 'dart:async';
 import 'package:agile_front/agile_front.dart' as af;
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
-import '/src/domain/entities/main.dart';
 import '/src/domain/extensions/invoice_fields_builder_extension.dart';
 import '/src/domain/operation/fields_builders/main.dart';
-import '/src/domain/operation/mutations/createInvoice/createinvoice_mutation.dart';
+import '/src/domain/operation/mutations/cancelInvoicePayment/cancel_invoice_payment_mutation.dart';
 
-class CreateInvoiceUsecase implements af.UseCase {
-  final af.Operation _operation;
+class CancelInvoicePaymentUsecase implements af.UseCase {
   final af.Service _conn;
 
-  CreateInvoiceUsecase({
-    required af.Operation operation,
+  CancelInvoicePaymentUsecase({
     required af.Service conn,
-  }) : _operation = operation,
-       _conn = conn;
+  }) : _conn = conn;
 
   @override
   Future<dynamic> build() async {
-    _conn.operation(operation: _operation, callback: callback);
+    throw UnimplementedError('Use execute method instead');
   }
 
   callback(Object ob) {
     // final thisObject = ob as Invoice;
   }
 
-  Future<dynamic> execute({required CreateInvoiceInput input}) async {
+  Future<dynamic> execute({required String invoiceID}) async {
     InvoiceFieldsBuilder fieldsBuilder = InvoiceFieldsBuilder().defaultValues();
 
-    CreateInvoiceMutation mutation = CreateInvoiceMutation(
-      declarativeArgs: {"name": 'CreateInvoiceInput!'},
+    CancelInvoicePaymentMutation mutation = CancelInvoicePaymentMutation(
+      declarativeArgs: {"invoiceID": 'ID!'},
       builder: fieldsBuilder,
-      opArgs: {"input": GqlVar("name")},
+      opArgs: {"invoiceID": GqlVar("invoiceID")},
     );
 
     var response = await _conn.operation(
       operation: mutation,
-      variables: {'name': input.toJson()},
+      variables: {'invoiceID': invoiceID},
     );
 
     return response;

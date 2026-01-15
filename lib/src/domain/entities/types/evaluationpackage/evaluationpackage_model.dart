@@ -11,8 +11,8 @@ class EvaluationPackage {
   final String completedAt;
   final String referred;
   final List<String> observations;
-  final String created;
-  final String updated;
+  final num? created;
+  final num? updated;
   EvaluationPackage({
     this.id = "",
     this.valuesByExam = const [],
@@ -21,8 +21,8 @@ class EvaluationPackage {
     this.completedAt = "",
     this.referred = "",
     this.observations = const [],
-    this.created = "",
-    this.updated = "",
+    this.created,
+    this.updated,
   });
   factory EvaluationPackage.fromJson(Map<String, dynamic> json) => _$EvaluationPackageFromJson(json);
   Map<String, dynamic> toJson() => _$EvaluationPackageToJson(this);

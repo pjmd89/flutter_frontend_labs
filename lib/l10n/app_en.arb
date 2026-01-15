@@ -79,6 +79,15 @@
     "description": "Term for companies in plural form"
   },
   
+  "exam": "Exam",
+  "@exam": {
+    "description": "Term for exam in singular form"
+  },
+  "exams": "Exams",
+  "@exams": {
+    "description": "Term for exams in plural form"
+  },
+  
   "examTemplate": "Exam Template",
   "@examTemplate": {
     "description": "Term for exam template in singular form"
@@ -86,6 +95,16 @@
   "examTemplates": "Exam Templates",
   "@examTemplates": {
     "description": "Term for exam templates in plural form"
+  },
+  
+  "template": "Template",
+  "@template": {
+    "description": "Template field"
+  },
+  
+  "baseCost": "Base Cost",
+  "@baseCost": {
+    "description": "Base cost field for an exam"
   },
   
   "dashboard": "Dashboard",
@@ -694,6 +713,8 @@
   "searchByDNI": "Search by ID Number",
   "patientFound": "Patient found",
   "patientNotFound": "Patient not found",
+  "patientNotFoundCreateFirst": "Patient not found. Please create it first in the Patients module.",
+  "patientRequired": "You must select a patient to create the invoice",
   "completePatientData": "Complete patient data",
   "addExam": "Add Exam",
   "selectedExams": "Selected Exams",
@@ -768,5 +789,73 @@
   "permissionDenied": "You do not have permission to perform this action",
   "@permissionDenied": {
     "description": "Error when user doesn't have permissions"
+  },
+  "invoice": "Invoice",
+  "@invoice": {
+    "description": "Single invoice entity"
+  },
+  "invoices": "Invoices",
+  "@invoices": {
+    "description": "Multiple invoices"
+  },
+  "laboratory": "Laboratory",
+  "@laboratory": {
+    "description": "Laboratory entity"
+  },
+  "selectExams": "Select Exams",
+  "@selectExams": {
+    "description": "Label for exam selection"
+  },
+  "selectedExams": "Selected Exams",
+  "@selectedExams": {
+    "description": "Label for showing selected exams"
+  },
+  "noExamsSelected": "No exams selected",
+  "@noExamsSelected": {
+    "description": "Message when no exams are selected"
+  },
+  "searchExams": "Search exams",
+  "@searchExams": {
+    "description": "Placeholder for exam search field"
+  },
+  "selectAtLeastOneExam": "Select at least one exam",
+  "@selectAtLeastOneExam": {
+    "description": "Validation message for exam selection"
+  },
+  "referred": "Referred by",
+  "@referred": {
+    "description": "Label for referred field"
+  },
+  "cancelPayment": "Cancel Payment",
+  "@cancelPayment": {
+    "description": "Action to cancel payment"
+  },
+  "cancelPaymentQuestion": "Cancel payment for this invoice?",
+  "@cancelPaymentQuestion": {
+    "description": "Confirmation question for payment cancellation"
+  },
+  "paymentStatus": "Payment Status",
+  "@paymentStatus": {
+    "description": "Label for payment status field"
+  },
+  "paid": "Paid",
+  "@paid": {
+    "description": "Payment status: paid"
+  },
+  "canceled": "Canceled",
+  "@canceled": {
+    "description": "Payment status: canceled"
+  },
+  "totalAmount": "Total Amount",
+  "@totalAmount": {
+    "description": "Label for total amount"
+  },
+  "orderID": "Order ID",
+  "@orderID": {
+    "description": "Label for order ID"
+  },
+  "noData": "No data available",
+  "@noData": {
+    "description": "Message when there is no data to display"
   }
 }

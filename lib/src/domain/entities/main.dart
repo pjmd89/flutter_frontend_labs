@@ -25,6 +25,7 @@ export './enums/kindenum_enum.dart';
 export './enums/operatorenum_enum.dart';
 export './enums/optionsregexenum_enum.dart';
 export './enums/role_enum.dart';
+export './enums/paymentstatus_enum.dart';
 export './enums/sortenum_enum.dart';
 export './types/exam/inputs/updateexaminput_input.dart';
 export './types/exam/inputs/examresultinput_input.dart';

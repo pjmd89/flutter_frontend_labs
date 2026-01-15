@@ -20,6 +20,19 @@ extension InvoiceFieldsBuilderExtension on InvoiceFieldsBuilder {
         },
       )
       ..totalAmount()
+      ..laboratory(
+        builder: (laboratoryBuilder) {
+          laboratoryBuilder
+            ..id()
+            ..address();
+        },
+      )
+      ..evaluationPackage(
+        builder: (packageBuilder) {
+          packageBuilder
+            ..id();
+        },
+      )
       ..created()
       ..updated();
   }

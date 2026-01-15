@@ -3,6 +3,8 @@ import 'package:agile_front/agile_front.dart' as af;
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
 import '/src/domain/entities/inputs/searchinput_input.dart';
 import '/src/domain/entities/types/pageinfo/pageinfo_model.dart';
+import '/src/domain/operation/fields_builders/main.dart';
+import '/src/domain/extensions/edgepatient_fields_builder_extension.dart';
 import '/src/domain/operation/queries/getPatients/getpatients_query.dart';
 
 class ReadPatientUsecase implements af.UseCase {
@@ -38,5 +40,15 @@ class ReadPatientUsecase implements af.UseCase {
 
   callback(Object ob) {
     //final thisObject = ob as EdgePatient;
+  }
+
+  Future<dynamic> readWithoutPaginate() async {
+    EdgePatientFieldsBuilder builder =
+        EdgePatientFieldsBuilder().defaultValues();
+    final response = await _conn.operation(
+      operation: GetPatientsQuery(builder: builder),
+      variables: {},
+    );
+    return response;
   }
 }

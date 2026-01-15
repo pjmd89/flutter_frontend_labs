@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:labs/l10n/app_localizations.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/presentation/core/ui/custom_drawer/drawer_config.dart';
 
 
@@ -7,13 +7,19 @@ List<DrawerButtonConfig> getTechnicianDrawerButtonList(
   BuildContext context,
   String currentPath,
 ) {
-  //final l10n = AppLocalizations.of(context)!;
+  final l10n = AppLocalizations.of(context)!;
   return [
     DrawerButtonConfig(
       buttonText: "Exámenes", //l10n.user,
       buttonRoute: "/exams",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.science),
+    ),
+    DrawerButtonConfig(
+      buttonText: l10n.invoices,
+      buttonRoute: "/invoice",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.receipt),
     ),
     
     // DrawerButtonConfig(

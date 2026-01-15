@@ -8,7 +8,7 @@ part of 'createinvoiceinput_input.dart';
 
 CreateInvoiceInput _$CreateInvoiceInputFromJson(Map<String, dynamic> json) =>
     CreateInvoiceInput(
-      patientID: json['patientID'] as String?,
+      patient: json['patient'] as String?,
       examIDs:
           (json['examIDs'] as List<dynamic>?)?.map((e) => e as String).toList(),
       referred: json['referred'] as String?,
@@ -16,7 +16,7 @@ CreateInvoiceInput _$CreateInvoiceInputFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CreateInvoiceInputToJson(CreateInvoiceInput instance) =>
     <String, dynamic>{
-      'patientID': instance.patientID,
+      'patient': instance.patient,
       'examIDs': instance.examIDs,
       if (instance.referred case final value?) 'referred': value,
     };

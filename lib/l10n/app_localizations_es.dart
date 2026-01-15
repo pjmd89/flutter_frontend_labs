@@ -45,6 +45,57 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tryAgain => 'Inténtalo de nuevo';
 
   @override
+  String get invoice => 'Factura';
+
+  @override
+  String get invoices => 'Facturas';
+
+  @override
+  String get laboratory => 'Laboratorio';
+
+  @override
+  String get selectExams => 'Seleccionar Exámenes';
+
+  @override
+  String get selectedExams => 'Exámenes Seleccionados';
+
+  @override
+  String get noExamsSelected => 'No hay exámenes seleccionados';
+
+  @override
+  String get searchExams => 'Buscar exámenes';
+
+  @override
+  String get selectAtLeastOneExam => 'Seleccione al menos un examen';
+
+  @override
+  String get referred => 'Referido por';
+
+  @override
+  String get cancelPayment => 'Cancelar Pago';
+
+  @override
+  String get cancelPaymentQuestion => '¿Cancelar el pago de esta factura?';
+
+  @override
+  String get paymentStatus => 'Estado de Pago';
+
+  @override
+  String get paid => 'Pagado';
+
+  @override
+  String get canceled => 'Cancelado';
+
+  @override
+  String get totalAmount => 'Total';
+
+  @override
+  String get orderID => 'ID de Orden';
+
+  @override
+  String get noData => 'No hay datos disponibles';
+
+  @override
   String get undefinedError => 'Undefined error';
 
   @override
@@ -66,10 +117,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get companies => 'Empresas';
 
   @override
+  String get exam => 'Examen';
+
+  @override
+  String get exams => 'Exámenes';
+
+  @override
   String get examTemplate => 'Plantilla de Examen';
 
   @override
   String get examTemplates => 'Plantillas de Examen';
+
+  @override
+  String get template => 'Plantilla';
+
+  @override
+  String get baseCost => 'Costo Base';
 
   @override
   String get dashboard => 'Panel de Control';
@@ -460,12 +523,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error053 => 'Ya existe un paciente con el DNI proporcionado';
 
   @override
-  String get invoice => 'Factura';
-
-  @override
-  String get invoices => 'Facturas';
-
-  @override
   String get patient => 'Paciente';
 
   @override
@@ -511,12 +568,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get phone => 'Teléfono';
 
   @override
-  String get referred => 'Referido por';
-
-  @override
-  String get totalAmount => 'Total';
-
-  @override
   String get searchPatient => 'Buscar Paciente';
 
   @override
@@ -529,16 +580,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get patientNotFound => 'Paciente no encontrado';
 
   @override
+  String get patientNotFoundCreateFirst => 'Paciente no encontrado. Por favor, créelo primero en el módulo de Pacientes.';
+
+  @override
+  String get patientRequired => 'Debe seleccionar un paciente para crear la factura';
+
+  @override
   String get completePatientData => 'Complete los datos del paciente';
 
   @override
   String get addExam => 'Agregar Examen';
-
-  @override
-  String get selectedExams => 'Exámenes Seleccionados';
-
-  @override
-  String get selectExams => 'Seleccionar Exámenes';
 
   @override
   String get subtotal => 'Subtotal';
@@ -553,9 +604,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get searchExam => 'Buscar examen...';
-
-  @override
-  String get noExamsSelected => 'No hay exámenes seleccionados';
 
   @override
   String examsCount(int count) {
@@ -591,9 +639,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get patientTypeAnimal => 'Animal';
-
-  @override
-  String get laboratory => 'Laboratorio';
 
   @override
   String get deleting => 'Eliminando...';

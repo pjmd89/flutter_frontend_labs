@@ -1,17 +1,14 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/domain/extensions/patient_fields_builder_extension.dart';
-import 'package:labs/src/domain/extensions/edgepatient_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/invoice_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/edgeexam_fields_builder_extension.dart';
+import 'package:labs/src/domain/extensions/edgepatient_fields_builder_extension.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/createInvoice/createinvoice_mutation.dart';
-import 'package:labs/src/domain/operation/mutations/createPatient/createpatient_mutation.dart';
 import 'package:labs/src/domain/operation/queries/getPatients/getpatients_query.dart';
 import 'package:labs/src/domain/operation/queries/getExams/getexams_query.dart';
 import 'package:labs/src/domain/usecases/Invoice/create_invoice_usecase.dart';
-import 'package:labs/src/domain/usecases/Patient/create_patient_usecase.dart';
 import 'package:labs/src/domain/usecases/Patient/read_patient_usecase.dart';
 import 'package:labs/src/domain/usecases/Exam/read_exam_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
@@ -22,23 +19,12 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _searching = false;
 
-  // Estados del paciente
+  // Estado del paciente
   Patient? _foundPatient;
-  final CreatePatientInput patientInput = CreatePatientInput(
-    firstName: '',
-    lastName: '',
-    sex: Sex.male,
-    birthDate: '',
-    species: 'Humano',
-    dni: '',
-    phone: '',
-    email: '',
-    address: '',
-  );
 
   // Estados de factura
   final CreateInvoiceInput invoiceInput = CreateInvoiceInput(
-    patientID: '',
+    patient: '',
     examIDs: [],
     referred: '',
   );
@@ -150,68 +136,6 @@ class ViewModel extends ChangeNotifier {
     }
   }
 
-  // Calcular edad desde fecha de nacimiento
-  int? calculateAge(String? birthDate) {
-    if (birthDate == null || birthDate.isEmpty) return null;
-
-    try {
-      final birth = DateTime.parse(birthDate);
-      final now = DateTime.now();
-      int age = now.year - birth.year;
-      if (now.month < birth.month ||
-          (now.month == birth.month && now.day < birth.day)) {
-        age--;
-      }
-      return age;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // Validar si DNI es requerido (> 17 años)
-  bool isDNIRequired() {
-    final age = calculateAge(patientInput.birthDate);
-    return age != null && age > 17;
-  }
-
-  // Formatear teléfono: +584120612443 → +58 412-061-2443
-  String formatPhoneDisplay(String phone) {
-    if (phone.isEmpty) return '';
-
-    // Remover espacios y guiones
-    String cleaned = phone.replaceAll(RegExp(r'[\s-]'), '');
-
-    // Si no empieza con +58, agregarlo
-    if (!cleaned.startsWith('+58')) {
-      // Remover 0 inicial si existe
-      if (cleaned.startsWith('0')) {
-        cleaned = cleaned.substring(1);
-      }
-      cleaned = '+58$cleaned';
-    }
-
-    // Formato: +58 412-061-2443
-    if (cleaned.length >= 13) {
-      return '${cleaned.substring(0, 3)} ${cleaned.substring(3, 6)}-${cleaned.substring(6, 9)}-${cleaned.substring(9)}';
-    }
-
-    return cleaned;
-  }
-
-  // Limpiar teléfono para enviar: +58 412-061-2443 → +584120612443
-  String cleanPhoneForSubmit(String phone) {
-    String cleaned = phone.replaceAll(RegExp(r'[\s-]'), '');
-
-    if (!cleaned.startsWith('+58')) {
-      if (cleaned.startsWith('0')) {
-        cleaned = cleaned.substring(1);
-      }
-      cleaned = '+58$cleaned';
-    }
-
-    return cleaned;
-  }
-
   // Calcular total
   num get totalAmount {
     return _selectedExams.fold(0, (sum, exam) => sum + exam.baseCost);
@@ -236,43 +160,22 @@ class ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Crear factura (y paciente si es necesario)
+  // Crear factura
   Future<bool> createInvoice() async {
     bool isError = true;
     loading = true;
 
     try {
-      String patientID;
-
-      // Si no existe paciente, crearlo primero
+      // Validar que exista paciente seleccionado
       if (foundPatient == null) {
-        // Limpiar teléfono antes de enviar
-        patientInput.phone = cleanPhoneForSubmit(patientInput.phone ?? '');
-
-        final createPatientUseCase = CreatePatientUsecase(
-          operation: CreatePatientMutation(
-            builder: PatientFieldsBuilder().defaultValues(),
-          ),
-          conn: _gqlConn,
-        );
-
-        final patientResponse = await createPatientUseCase.execute(
-          input: patientInput,
-        );
-
-        if (patientResponse is Patient) {
-          patientID = patientResponse.id;
-        } else {
-          throw Exception('Error al crear paciente');
-        }
-      } else {
-        patientID = foundPatient!.id;
+        throw Exception('No se ha seleccionado un paciente');
       }
 
-      // Crear factura
-      invoiceInput.patientID = patientID;
+      // Preparar datos de la factura
+      invoiceInput.patient = foundPatient!.id;
       invoiceInput.examIDs = _selectedExams.map((e) => e.id).toList();
 
+      // Crear factura
       final createInvoiceUseCase = CreateInvoiceUsecase(
         operation: CreateInvoiceMutation(
           builder: InvoiceFieldsBuilder().defaultValues(),

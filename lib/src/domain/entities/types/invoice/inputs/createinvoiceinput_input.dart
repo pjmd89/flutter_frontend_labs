@@ -3,10 +3,10 @@ import "package:json_annotation/json_annotation.dart";
 part "createinvoiceinput_input.g.dart";
 @JsonSerializable(includeIfNull: false)
 class CreateInvoiceInput extends ChangeNotifier {
-  String _patientID = "";
-  String get patientID => _patientID;
-  set patientID(String value) {
-    _patientID = value;
+  String _patient = "";
+  String get patient => _patient;
+  set patient(String value) {
+    _patient = value;
     notifyListeners();
   }
   List<String> _examIDs = const [];
@@ -22,11 +22,11 @@ class CreateInvoiceInput extends ChangeNotifier {
     notifyListeners();
   }
   CreateInvoiceInput({
-    String? patientID,
+    String? patient,
     List<String>? examIDs,
     String? referred,
   }) {
-    this.patientID = patientID ?? "";
+    this.patient = patient ?? "";
     this.examIDs = examIDs ?? const [];
     this.referred = referred ?? "";
   }

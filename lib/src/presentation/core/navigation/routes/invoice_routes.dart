@@ -2,8 +2,7 @@ import 'package:agile_front/agile_front.dart';
 import 'package:go_router/go_router.dart';
 import '/src/presentation/pages/Invoice/read/main.dart';
 import '/src/presentation/pages/Invoice/create/main.dart';
-import '/src/presentation/pages/Invoice/delete/main.dart';
-import '/src/presentation/pages/Invoice/update/main.dart';
+import '/src/presentation/pages/Invoice/cancel_payment/main.dart';
 
 final List<GoRoute> invoiceRoutes = [
   GoRoute(
@@ -23,25 +22,15 @@ final List<GoRoute> invoiceRoutes = [
         ),
       ),
       GoRoute(
-        path: 'update/:id',
+        path: 'cancel-payment/:id',
         pageBuilder: (context, state) => CustomDialogPage(
           context: context, 
           state: state, 
-          child: InvoiceUpdatePage(
+          child: InvoiceCancelPaymentPage(
             id: state.pathParameters['id']!
           )
         )
       ),
-      GoRoute(
-        path: 'delete/:id',
-        pageBuilder: (context, state) => CustomDialogPage(
-          context: context, 
-          state: state, 
-          child: InvoiceDeletePage(
-            id: state.pathParameters['id']!
-          )
-        )
-      )
     ]
   )
 ];

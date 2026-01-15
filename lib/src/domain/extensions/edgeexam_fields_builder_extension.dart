@@ -15,6 +15,13 @@ extension EdgeExamFieldsBuilderExtension on EdgeExamFieldsBuilder {
                   ..description();
               },
             )
+            ..laboratory(
+              builder: (laboratoryBuilder) {
+                laboratoryBuilder
+                  ..id()
+                  ..address();
+              },
+            )
             ..baseCost()
             ..created()
             ..updated();

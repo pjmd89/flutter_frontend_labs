@@ -8,15 +8,15 @@ class Exam {
   final ExamTemplate? template;
   final Laboratory? laboratory;
   final num baseCost;
-  final String created;
-  final String updated;
+  final num created;
+  final num updated;
   Exam({
     this.id = "",
     this.template,
     this.laboratory,
     this.baseCost = 0,
-    this.created = "",
-    this.updated = "",
+    this.created = 0,
+    this.updated = 0,
   });
   factory Exam.fromJson(Map<String, dynamic> json) => _$ExamFromJson(json);
   Map<String, dynamic> toJson() => _$ExamToJson(this);

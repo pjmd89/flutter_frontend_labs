@@ -25,7 +25,7 @@ ShellRoute ownerShellRoute = ShellRoute(
     ...laboratoryRoutes,
     ...evaluationpackageRoutes,
     ...userRoutes,
-    ...examindicatorRoutes,
+    ...examRoutes,
     ...invoiceRoutes,
     ...patientRoutes,
   ],

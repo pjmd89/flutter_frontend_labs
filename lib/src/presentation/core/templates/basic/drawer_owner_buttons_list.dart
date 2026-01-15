@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:labs/l10n/app_localizations.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/presentation/core/ui/custom_drawer/drawer_config.dart';
 
 
@@ -35,7 +35,7 @@ List<DrawerButtonConfig> getOwnerDrawerButtonList(
     ),
     DrawerButtonConfig(
       buttonText: "Lista de Exámenes",
-      buttonRoute: "/examtemplate",
+      buttonRoute: "/exam",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.assignment), // icono de caja embalada
     ),
@@ -44,6 +44,12 @@ List<DrawerButtonConfig> getOwnerDrawerButtonList(
       buttonRoute: "/patient",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.people),
+    ),
+    DrawerButtonConfig(
+      buttonText: AppLocalizations.of(context)!.invoices,
+      buttonRoute: "/invoice",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.receipt),
     ),
     
     // DrawerButtonConfig(

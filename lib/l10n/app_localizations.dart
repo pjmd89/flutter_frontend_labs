@@ -167,6 +167,108 @@ abstract class AppLocalizations {
   /// **'Inténtalo de nuevo'**
   String get tryAgain;
 
+  /// Factura singular
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get invoice;
+
+  /// Facturas plural
+  ///
+  /// In es, this message translates to:
+  /// **'Facturas'**
+  String get invoices;
+
+  /// Campo de laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'Laboratorio'**
+  String get laboratory;
+
+  /// Título del modal de selección
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar Exámenes'**
+  String get selectExams;
+
+  /// Título de sección de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Exámenes Seleccionados'**
+  String get selectedExams;
+
+  /// Mensaje cuando no se han seleccionado exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'No hay exámenes seleccionados'**
+  String get noExamsSelected;
+
+  /// Placeholder para campo de búsqueda de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar exámenes'**
+  String get searchExams;
+
+  /// Mensaje de validación para selección de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccione al menos un examen'**
+  String get selectAtLeastOneExam;
+
+  /// Persona o entidad que refirió al paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Referido por'**
+  String get referred;
+
+  /// Acción para cancelar pago
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar Pago'**
+  String get cancelPayment;
+
+  /// Pregunta de confirmación para cancelación de pago
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cancelar el pago de esta factura?'**
+  String get cancelPaymentQuestion;
+
+  /// Etiqueta para campo de estado de pago
+  ///
+  /// In es, this message translates to:
+  /// **'Estado de Pago'**
+  String get paymentStatus;
+
+  /// Estado de pago: pagado
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get paid;
+
+  /// Estado de pago: cancelado
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelado'**
+  String get canceled;
+
+  /// Monto total de la factura
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get totalAmount;
+
+  /// Etiqueta para ID de orden
+  ///
+  /// In es, this message translates to:
+  /// **'ID de Orden'**
+  String get orderID;
+
+  /// Mensaje cuando no hay datos para mostrar
+  ///
+  /// In es, this message translates to:
+  /// **'No hay datos disponibles'**
+  String get noData;
+
   ///
   ///
   /// In es, this message translates to:
@@ -209,6 +311,18 @@ abstract class AppLocalizations {
   /// **'Empresas'**
   String get companies;
 
+  /// Término para examen en singular
+  ///
+  /// In es, this message translates to:
+  /// **'Examen'**
+  String get exam;
+
+  /// Término para exámenes en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Exámenes'**
+  String get exams;
+
   /// Término para plantilla de examen en singular
   ///
   /// In es, this message translates to:
@@ -220,6 +334,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Plantillas de Examen'**
   String get examTemplates;
+
+  /// Campo template
+  ///
+  /// In es, this message translates to:
+  /// **'Plantilla'**
+  String get template;
+
+  /// Campo baseCost para el costo base de un examen
+  ///
+  /// In es, this message translates to:
+  /// **'Costo Base'**
+  String get baseCost;
 
   /// Título del panel de control principal
   ///
@@ -941,18 +1067,6 @@ abstract class AppLocalizations {
   /// **'Ya existe un paciente con el DNI proporcionado'**
   String get error053;
 
-  /// Factura singular
-  ///
-  /// In es, this message translates to:
-  /// **'Factura'**
-  String get invoice;
-
-  /// Facturas plural
-  ///
-  /// In es, this message translates to:
-  /// **'Facturas'**
-  String get invoices;
-
   /// Paciente singular
   ///
   /// In es, this message translates to:
@@ -1043,18 +1157,6 @@ abstract class AppLocalizations {
   /// **'Teléfono'**
   String get phone;
 
-  /// Persona o entidad que refirió al paciente
-  ///
-  /// In es, this message translates to:
-  /// **'Referido por'**
-  String get referred;
-
-  /// Monto total de la factura
-  ///
-  /// In es, this message translates to:
-  /// **'Total'**
-  String get totalAmount;
-
   /// Buscar paciente por cédula
   ///
   /// In es, this message translates to:
@@ -1079,6 +1181,18 @@ abstract class AppLocalizations {
   /// **'Paciente no encontrado'**
   String get patientNotFound;
 
+  /// Mensaje cuando no se encuentra un paciente y debe crearlo primero
+  ///
+  /// In es, this message translates to:
+  /// **'Paciente no encontrado. Por favor, créelo primero en el módulo de Pacientes.'**
+  String get patientNotFoundCreateFirst;
+
+  /// Mensaje de validación cuando no se ha seleccionado un paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Debe seleccionar un paciente para crear la factura'**
+  String get patientRequired;
+
   /// Instrucción para completar formulario de paciente
   ///
   /// In es, this message translates to:
@@ -1090,18 +1204,6 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Agregar Examen'**
   String get addExam;
-
-  /// Título de sección de exámenes
-  ///
-  /// In es, this message translates to:
-  /// **'Exámenes Seleccionados'**
-  String get selectedExams;
-
-  /// Título del modal de selección
-  ///
-  /// In es, this message translates to:
-  /// **'Seleccionar Exámenes'**
-  String get selectExams;
 
   /// Subtotal de la factura
   ///
@@ -1126,12 +1228,6 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Buscar examen...'**
   String get searchExam;
-
-  /// Mensaje cuando no se han seleccionado exámenes
-  ///
-  /// In es, this message translates to:
-  /// **'No hay exámenes seleccionados'**
-  String get noExamsSelected;
 
   /// Contador de exámenes
   ///
@@ -1198,12 +1294,6 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Animal'**
   String get patientTypeAnimal;
-
-  /// Campo de laboratorio
-  ///
-  /// In es, this message translates to:
-  /// **'Laboratorio'**
-  String get laboratory;
 
   /// Mensaje durante operación de eliminación
   ///
