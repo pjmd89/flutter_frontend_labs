@@ -51,6 +51,12 @@ List<DrawerButtonConfig> getOwnerDrawerButtonList(
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.receipt),
     ),
+    DrawerButtonConfig(
+      buttonText: "Paquetes de evaluación",
+      buttonRoute: "/evaluationpackage",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.folder_special),
+    ),
     
     // DrawerButtonConfig(
     //   buttonText: AppLocalizations.of(context)!.logout,

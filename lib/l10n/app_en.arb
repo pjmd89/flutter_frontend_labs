@@ -97,6 +97,35 @@
     "description": "Term for exam templates in plural form"
   },
   
+  "evaluationPackage": "Evaluation Package",
+  "@evaluationPackage": {
+    "description": "Term for evaluation package in singular form"
+  },
+  "evaluationPackages": "Evaluation Packages",
+  "@evaluationPackages": {
+    "description": "Term for evaluation packages in plural form"
+  },
+  
+  "status": "Status",
+  "@status": {
+    "description": "General status field"
+  },
+  
+  "observations": "Observations",
+  "@observations": {
+    "description": "Observations or notes field"
+  },
+  
+  "pdfFilepath": "PDF Filepath",
+  "@pdfFilepath": {
+    "description": "PDF file path field"
+  },
+  
+  "completedAt": "Completed At",
+  "@completedAt": {
+    "description": "Completion date"
+  },
+  
   "template": "Template",
   "@template": {
     "description": "Template field"

@@ -335,6 +335,42 @@ abstract class AppLocalizations {
   /// **'Plantillas de Examen'**
   String get examTemplates;
 
+  /// Término para paquete de evaluación en singular
+  ///
+  /// In es, this message translates to:
+  /// **'Paquete de Evaluación'**
+  String get evaluationPackage;
+
+  /// Término para paquetes de evaluación en plural
+  ///
+  /// In es, this message translates to:
+  /// **'Paquetes de Evaluación'**
+  String get evaluationPackages;
+
+  /// Campo de estado general
+  ///
+  /// In es, this message translates to:
+  /// **'Estado'**
+  String get status;
+
+  /// Campo de observaciones o notas
+  ///
+  /// In es, this message translates to:
+  /// **'Observaciones'**
+  String get observations;
+
+  /// Campo de ruta del archivo PDF
+  ///
+  /// In es, this message translates to:
+  /// **'Ruta de PDF'**
+  String get pdfFilepath;
+
+  /// Fecha de completado
+  ///
+  /// In es, this message translates to:
+  /// **'Completado el'**
+  String get completedAt;
+
   /// Campo template
   ///
   /// In es, this message translates to:

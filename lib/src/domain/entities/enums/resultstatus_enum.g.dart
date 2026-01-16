@@ -7,7 +7,7 @@ part of 'resultstatus_enum.dart';
 // **************************************************************************
 
 const _$ResultStatusEnumMap = {
-  ResultStatus.pending: 'pending',
-  ResultStatus.inProgress: 'inProgress',
-  ResultStatus.completed: 'completed',
+  ResultStatus.pending: 'PENDING',
+  ResultStatus.inProgress: 'INPROGRESS',
+  ResultStatus.completed: 'COMPLETED',
 };

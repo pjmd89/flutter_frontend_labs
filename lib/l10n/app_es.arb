@@ -165,6 +165,35 @@
     "description": "Término para plantillas de examen en plural"
   },
   
+  "evaluationPackage": "Paquete de Evaluación",
+  "@evaluationPackage": {
+    "description": "Término para paquete de evaluación en singular"
+  },
+  "evaluationPackages": "Paquetes de Evaluación",
+  "@evaluationPackages": {
+    "description": "Término para paquetes de evaluación en plural"
+  },
+  
+  "status": "Estado",
+  "@status": {
+    "description": "Campo de estado general"
+  },
+  
+  "observations": "Observaciones",
+  "@observations": {
+    "description": "Campo de observaciones o notas"
+  },
+  
+  "pdfFilepath": "Ruta de PDF",
+  "@pdfFilepath": {
+    "description": "Campo de ruta del archivo PDF"
+  },
+  
+  "completedAt": "Completado el",
+  "@completedAt": {
+    "description": "Fecha de completado"
+  },
+  
   "template": "Plantilla",
   "@template": {
     "description": "Campo template"

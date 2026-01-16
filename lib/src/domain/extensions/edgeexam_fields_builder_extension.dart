@@ -19,7 +19,14 @@ extension EdgeExamFieldsBuilderExtension on EdgeExamFieldsBuilder {
               builder: (laboratoryBuilder) {
                 laboratoryBuilder
                   ..id()
-                  ..address();
+                  ..address()
+                  ..company(
+                    builder: (companyBuilder) {
+                      companyBuilder
+                        ..id()
+                        ..name();
+                    },
+                  );
               },
             )
             ..baseCost()

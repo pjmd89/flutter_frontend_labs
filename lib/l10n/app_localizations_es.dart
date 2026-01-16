@@ -129,6 +129,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get examTemplates => 'Plantillas de Examen';
 
   @override
+  String get evaluationPackage => 'Paquete de Evaluación';
+
+  @override
+  String get evaluationPackages => 'Paquetes de Evaluación';
+
+  @override
+  String get status => 'Estado';
+
+  @override
+  String get observations => 'Observaciones';
+
+  @override
+  String get pdfFilepath => 'Ruta de PDF';
+
+  @override
+  String get completedAt => 'Completado el';
+
+  @override
   String get template => 'Plantilla';
 
   @override

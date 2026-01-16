@@ -2,10 +2,10 @@ import "package:json_annotation/json_annotation.dart";
 part "resultstatus_enum.g.dart";
 @JsonEnum(alwaysCreate: true)
 enum ResultStatus {
-  @JsonValue("pending")
+  @JsonValue("PENDING")
   pending,
-  @JsonValue("inProgress")
+  @JsonValue("INPROGRESS")
   inProgress,
-  @JsonValue("completed")
+  @JsonValue("COMPLETED")
   completed,
 }

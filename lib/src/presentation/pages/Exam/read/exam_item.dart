@@ -32,7 +32,7 @@ class ExamItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (exam.laboratory != null)
-                    Text('${l10n.laboratory}: ${exam.laboratory!.id}'),
+                    Text('${l10n.laboratory}: ${exam.laboratory!.company?.name ?? l10n.noDataAvailable}'),
                   Text('${l10n.baseCost}: \$${exam.baseCost}'),
                 ],
               ),
