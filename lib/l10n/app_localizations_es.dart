@@ -319,7 +319,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get indicators => 'Indicadores';
 
   @override
-  String get addIndicator => 'Agregar Indicador';
+  String get addIndicator => 'Agregar indicador';
 
   @override
   String get loading => 'Cargando...';
@@ -624,9 +624,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get searchExam => 'Buscar examen...';
 
   @override
-  String examsCount(int count) {
-    return '$count exámenes';
-  }
+  String get examsCount => 'Cantidad de exámenes';
 
   @override
   String get logout => 'Cerrar sesión';
@@ -690,4 +688,40 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get permissionDenied => 'No tiene permisos para realizar esta acción';
+
+  @override
+  String get nonEditableInformation => 'Información no editable';
+
+  @override
+  String get allResultsCompleted => 'Todos los resultados completados';
+
+  @override
+  String get allResultsCompletedDescription => 'Marcar si todos los resultados del examen han sido completados';
+
+  @override
+  String get addObservation => 'Agregar observación';
+
+  @override
+  String get noObservations => 'No hay observaciones registradas';
+
+  @override
+  String get observation => 'Observación';
+
+  @override
+  String get examResultsNote => 'Nota: Los resultados de exámenes se editan en su módulo correspondiente';
+
+  @override
+  String get examResults => 'Resultados de exámenes';
+
+  @override
+  String get fieldRequired => 'Este campo es requerido';
+
+  @override
+  String get remove => 'Eliminar';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get close => 'Cerrar';
 }

@@ -11,26 +11,34 @@ class UpdateEvaluationInput extends ChangeNotifier {
     _id = value;
     notifyListeners();
   }
-  List<String?>? _observations;
-  List<String?>? get observations => _observations;
-  set observations(List<String?>? value) {
+  List<String>? _observations;
+  List<String>? get observations => _observations;
+  set observations(List<String>? value) {
     _observations = value;
     notifyListeners();
   }
-  List<ExamResultInput>? _resultsByExam;
-  List<ExamResultInput>? get resultsByExam => _resultsByExam;
-  set resultsByExam(List<ExamResultInput>? value) {
-    _resultsByExam = value;
+  List<ExamResultInput>? _valuesByExam;
+  List<ExamResultInput>? get valuesByExam => _valuesByExam;
+  set valuesByExam(List<ExamResultInput>? value) {
+    _valuesByExam = value;
+    notifyListeners();
+  }
+  bool? _allResultsCompleted;
+  bool? get allResultsCompleted => _allResultsCompleted;
+  set allResultsCompleted(bool? value) {
+    _allResultsCompleted = value;
     notifyListeners();
   }
   UpdateEvaluationInput({
     String? id,
     List<String>? observations,
-    List<ExamResultInput>? resultsByExam,
+    List<ExamResultInput>? valuesByExam,
+    bool? allResultsCompleted,
   }) {
     this.id = id ?? "";
     this.observations = observations;
-    this.resultsByExam = resultsByExam;
+    this.valuesByExam = valuesByExam;
+    this.allResultsCompleted = allResultsCompleted;
   }
   factory UpdateEvaluationInput.fromJson(Map<String, dynamic> json) => _$UpdateEvaluationInputFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateEvaluationInputToJson(this);

@@ -659,10 +659,10 @@ abstract class AppLocalizations {
   /// **'Indicadores'**
   String get indicators;
 
-  /// Acción para agregar un indicador
+  /// Botón para agregar nuevo indicador
   ///
   /// In es, this message translates to:
-  /// **'Agregar Indicador'**
+  /// **'Agregar indicador'**
   String get addIndicator;
 
   /// Mensaje mostrado durante carga de datos
@@ -671,7 +671,7 @@ abstract class AppLocalizations {
   /// **'Cargando...'**
   String get loading;
 
-  /// Mensaje de error cuando falla la carga de datos
+  /// Mensaje de error al cargar datos
   ///
   /// In es, this message translates to:
   /// **'Error al cargar los datos'**
@@ -1265,11 +1265,11 @@ abstract class AppLocalizations {
   /// **'Buscar examen...'**
   String get searchExam;
 
-  /// Contador de exámenes
+  /// Label para mostrar cantidad de exámenes
   ///
   /// In es, this message translates to:
-  /// **'{count} exámenes'**
-  String examsCount(int count);
+  /// **'Cantidad de exámenes'**
+  String get examsCount;
 
   /// Cerrar sesión
   ///
@@ -1384,6 +1384,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No tiene permisos para realizar esta acción'**
   String get permissionDenied;
+
+  /// Título para sección de campos de solo lectura
+  ///
+  /// In es, this message translates to:
+  /// **'Información no editable'**
+  String get nonEditableInformation;
+
+  /// Label para switch de completitud de resultados
+  ///
+  /// In es, this message translates to:
+  /// **'Todos los resultados completados'**
+  String get allResultsCompleted;
+
+  /// Descripción para switch de completitud
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar si todos los resultados del examen han sido completados'**
+  String get allResultsCompletedDescription;
+
+  /// Botón para agregar nueva observación
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar observación'**
+  String get addObservation;
+
+  /// Mensaje cuando no hay observaciones
+  ///
+  /// In es, this message translates to:
+  /// **'No hay observaciones registradas'**
+  String get noObservations;
+
+  /// Label para campo de observación
+  ///
+  /// In es, this message translates to:
+  /// **'Observación'**
+  String get observation;
+
+  /// Nota informativa sobre resultados de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Nota: Los resultados de exámenes se editan en su módulo correspondiente'**
+  String get examResultsNote;
+
+  /// Título de sección de resultados
+  ///
+  /// In es, this message translates to:
+  /// **'Resultados de exámenes'**
+  String get examResults;
+
+  /// Mensaje de validación de campo requerido
+  ///
+  /// In es, this message translates to:
+  /// **'Este campo es requerido'**
+  String get fieldRequired;
+
+  /// Botón para eliminar
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get remove;
+
+  /// Palabra genérica para error
+  ///
+  /// In es, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// Botón para cerrar
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get close;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

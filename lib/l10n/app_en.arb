@@ -886,5 +886,65 @@
   "noData": "No data available",
   "@noData": {
     "description": "Message when there is no data to display"
+  },
+  "nonEditableInformation": "Non-editable information",
+  "@nonEditableInformation": {
+    "description": "Title for read-only fields section"
+  },
+  "allResultsCompleted": "All results completed",
+  "@allResultsCompleted": {
+    "description": "Label for results completion switch"
+  },
+  "allResultsCompletedDescription": "Check if all exam results have been completed",
+  "@allResultsCompletedDescription": {
+    "description": "Description for completion switch"
+  },
+  "addObservation": "Add observation",
+  "@addObservation": {
+    "description": "Button to add new observation"
+  },
+  "noObservations": "No observations recorded",
+  "@noObservations": {
+    "description": "Message when there are no observations"
+  },
+  "observation": "Observation",
+  "@observation": {
+    "description": "Label for observation field"
+  },
+  "examResultsNote": "Note: Exam results are edited in their corresponding module",
+  "@examResultsNote": {
+    "description": "Informative note about exam results"
+  },
+  "examsCount": "Number of exams",
+  "@examsCount": {
+    "description": "Label for displaying exam count"
+  },
+  "errorLoadingData": "Error loading data",
+  "@errorLoadingData": {
+    "description": "Error message when loading data fails"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic word for error"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Button to close"
+  },
+  "examResults": "Exam results",
+  "@examResults": {
+    "description": "Section title for exam results"
+  },
+  "fieldRequired": "This field is required",
+  "@fieldRequired": {
+    "description": "Required field validation message"
+  },
+  "addIndicator": "Add indicator",
+  "@addIndicator": {
+    "description": "Button to add new indicator"
+  },
+  "remove": "Remove",
+  "@remove": {
+    "description": "Button to remove"
   }
 }

@@ -35,7 +35,7 @@ List<Widget> buildList({
       evaluationPackage: evaluationPackage,
       l10n: l10n,
       onUpdate: (id) async {
-        final result = await context.push('/evaluationpackage/update/$id');
+        final result = await context.push('/evaluationpackage/update', extra: evaluationPackage);
         if (result == true) {
           viewModel.getEvaluationPackages();
         }

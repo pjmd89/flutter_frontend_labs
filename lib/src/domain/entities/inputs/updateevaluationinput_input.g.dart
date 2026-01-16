@@ -14,10 +14,11 @@ UpdateEvaluationInput _$UpdateEvaluationInputFromJson(
       (json['observations'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-  resultsByExam:
-      (json['resultsByExam'] as List<dynamic>?)
+  valuesByExam:
+      (json['valuesByExam'] as List<dynamic>?)
           ?.map((e) => ExamResultInput.fromJson(e as Map<String, dynamic>))
           .toList(),
+  allResultsCompleted: json['allResultsCompleted'] as bool?,
 );
 
 Map<String, dynamic> _$UpdateEvaluationInputToJson(
@@ -25,5 +26,7 @@ Map<String, dynamic> _$UpdateEvaluationInputToJson(
 ) => <String, dynamic>{
   '_id': instance.id,
   if (instance.observations case final value?) 'observations': value,
-  if (instance.resultsByExam case final value?) 'resultsByExam': value,
+  if (instance.valuesByExam case final value?) 'valuesByExam': value,
+  if (instance.allResultsCompleted case final value?)
+    'allResultsCompleted': value,
 };

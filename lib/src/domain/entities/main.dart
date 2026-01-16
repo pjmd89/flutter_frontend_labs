@@ -2,6 +2,7 @@
 // Exporta todos los modelos, inputs y enums
 
 export './inputs/updateevaluationinput_input.dart';
+export './inputs/setindicatorvalue_input.dart';
 export './inputs/boxoperatorinput_input.dart';
 export './inputs/geometryoperatorinput_input.dart';
 export './inputs/centeroperatorinput_input.dart';
@@ -28,7 +29,6 @@ export './enums/role_enum.dart';
 export './enums/paymentstatus_enum.dart';
 export './enums/sortenum_enum.dart';
 export './types/exam/inputs/updateexaminput_input.dart';
-export './types/exam/inputs/examresultinput_input.dart';
 export './types/exam/inputs/updateexamtemplateinput_input.dart';
 export './types/exam/inputs/createexaminput_input.dart';
 export './types/exam/inputs/createexamtemplateinput_input.dart';
@@ -48,6 +48,7 @@ export './types/pageinfo/pageinfo_model.dart';
 export './types/query/query_model.dart';
 export './types/evaluationpackage/evaluationpackage_model.dart';
 export './types/examresult/examresult_model.dart';
+export './types/examresult/inputs/examresultinput_input.dart';
 export './types/changelog/inputs/addchangeloginput_input.dart';
 export './types/changelog/changelog_model.dart';
 export './types/edgecompany/edgecompany_model.dart';

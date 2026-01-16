@@ -1,27 +1,33 @@
+import "/src/domain/entities/main.dart";
 import "package:flutter/foundation.dart";
 import "package:json_annotation/json_annotation.dart";
 part "examresultinput_input.g.dart";
+
 @JsonSerializable(includeIfNull: false)
 class ExamResultInput extends ChangeNotifier {
-  String _examID = "";
-  String get examID => _examID;
-  set examID(String value) {
-    _examID = value;
+  String _exam = "";
+  String get exam => _exam;
+  set exam(String value) {
+    _exam = value;
     notifyListeners();
   }
-  List<String> _resultValues = const [];
-  List<String> get resultValues => _resultValues;
-  set resultValues(List<String> value) {
-    _resultValues = value;
+
+  List<SetIndicatorValue> _indicatorValues = const [];
+  List<SetIndicatorValue> get indicatorValues => _indicatorValues;
+  set indicatorValues(List<SetIndicatorValue> value) {
+    _indicatorValues = value;
     notifyListeners();
   }
+
   ExamResultInput({
-    String? examID,
-    List<String>? resultValues,
+    String? exam,
+    List<SetIndicatorValue>? indicatorValues,
   }) {
-    this.examID = examID ?? "";
-    this.resultValues = resultValues ?? const [];
+    this.exam = exam ?? "";
+    this.indicatorValues = indicatorValues ?? const [];
   }
+
   factory ExamResultInput.fromJson(Map<String, dynamic> json) => _$ExamResultInputFromJson(json);
   Map<String, dynamic> toJson() => _$ExamResultInputToJson(this);
 }
+

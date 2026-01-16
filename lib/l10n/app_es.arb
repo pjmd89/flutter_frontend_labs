@@ -1037,5 +1037,65 @@
   "permissionDenied": "No tiene permisos para realizar esta acción",
   "@permissionDenied": {
     "description": "Error cuando el usuario no tiene permisos"
+  },
+  "nonEditableInformation": "Información no editable",
+  "@nonEditableInformation": {
+    "description": "Título para sección de campos de solo lectura"
+  },
+  "allResultsCompleted": "Todos los resultados completados",
+  "@allResultsCompleted": {
+    "description": "Label para switch de completitud de resultados"
+  },
+  "allResultsCompletedDescription": "Marcar si todos los resultados del examen han sido completados",
+  "@allResultsCompletedDescription": {
+    "description": "Descripción para switch de completitud"
+  },
+  "addObservation": "Agregar observación",
+  "@addObservation": {
+    "description": "Botón para agregar nueva observación"
+  },
+  "noObservations": "No hay observaciones registradas",
+  "@noObservations": {
+    "description": "Mensaje cuando no hay observaciones"
+  },
+  "observation": "Observación",
+  "@observation": {
+    "description": "Label para campo de observación"
+  },
+  "examResultsNote": "Nota: Los resultados de exámenes se editan en su módulo correspondiente",
+  "@examResultsNote": {
+    "description": "Nota informativa sobre resultados de exámenes"
+  },
+  "examsCount": "Cantidad de exámenes",
+  "@examsCount": {
+    "description": "Label para mostrar cantidad de exámenes"
+  },
+  "examResults": "Resultados de exámenes",
+  "@examResults": {
+    "description": "Título de sección de resultados"
+  },
+  "fieldRequired": "Este campo es requerido",
+  "@fieldRequired": {
+    "description": "Mensaje de validación de campo requerido"
+  },
+  "addIndicator": "Agregar indicador",
+  "@addIndicator": {
+    "description": "Botón para agregar nuevo indicador"
+  },
+  "remove": "Eliminar",
+  "@remove": {
+    "description": "Botón para eliminar"
+  },
+  "errorLoadingData": "Error al cargar los datos",
+  "@errorLoadingData": {
+    "description": "Mensaje de error al cargar datos"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Palabra genérica para error"
+  },
+  "close": "Cerrar",
+  "@close": {
+    "description": "Botón para cerrar"
   }
 }

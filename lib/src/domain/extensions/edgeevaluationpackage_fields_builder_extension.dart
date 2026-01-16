@@ -10,6 +10,39 @@ extension EdgeEvaluationPackageFieldsBuilderExtension on EdgeEvaluationPackageFi
             ..status()
             ..referred()
             ..observations()
+            ..valuesByExam(
+              builder: (examResultBuilder) {
+                examResultBuilder
+                  ..exam(
+                    builder: (examBuilder) {
+                      examBuilder
+                        ..id()
+                        ..template(
+                          builder: (templateBuilder) {
+                            templateBuilder
+                              ..id()
+                              ..name();
+                          },
+                        );
+                    },
+                  )
+                  ..cost()
+                  ..indicatorValues(
+                    builder: (indicatorValueBuilder) {
+                      indicatorValueBuilder
+                        ..value()
+                        ..indicator(
+                          builder: (indicatorBuilder) {
+                            indicatorBuilder
+                              ..name()
+                              ..unit()
+                              ..valueType();
+                          },
+                        );
+                    },
+                  );
+              },
+            )
             ..created()
             ..updated();
         },

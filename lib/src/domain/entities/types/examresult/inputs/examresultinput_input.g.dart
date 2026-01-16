@@ -8,15 +8,17 @@ part of 'examresultinput_input.dart';
 
 ExamResultInput _$ExamResultInputFromJson(Map<String, dynamic> json) =>
     ExamResultInput(
-      examID: json['examID'] as String?,
-      resultValues:
-          (json['resultValues'] as List<dynamic>?)
-              ?.map((e) => e as String)
+      exam: json['exam'] as String?,
+      indicatorValues:
+          (json['indicatorValues'] as List<dynamic>?)
+              ?.map(
+                (e) => SetIndicatorValue.fromJson(e as Map<String, dynamic>),
+              )
               .toList(),
     );
 
 Map<String, dynamic> _$ExamResultInputToJson(ExamResultInput instance) =>
     <String, dynamic>{
-      'examID': instance.examID,
-      'resultValues': instance.resultValues,
+      'exam': instance.exam,
+      'indicatorValues': instance.indicatorValues,
     };
