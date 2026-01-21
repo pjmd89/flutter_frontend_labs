@@ -7,6 +7,13 @@ extension CompanyFieldsBuilderExtension on CompanyFieldsBuilder {
       ..name()
       ..logo()
       ..taxID()
+      ..owner(builder: (userBuilder) {
+        userBuilder
+          ..id()
+          ..firstName()
+          ..lastName()
+          ..email();
+      })
       ..created()
       ..updated();
   }

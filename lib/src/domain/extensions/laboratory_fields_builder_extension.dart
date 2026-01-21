@@ -9,6 +9,13 @@ extension LaboratoryFieldsBuilderExtension on LaboratoryFieldsBuilder {
       ..company(builder: (companyBuilder) {
         companyBuilder
           ..id()
+          ..owner(builder: (userBuilder) {
+            userBuilder
+              ..id()
+              ..firstName()
+              ..lastName()
+              ..email();
+          })
           .name();
       });
   }

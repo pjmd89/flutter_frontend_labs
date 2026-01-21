@@ -20,6 +20,13 @@ extension EdgeLaboratoryFieldsBuilderExtension on EdgeLaboratoryFieldsBuilder {
             ..company(builder: (companyBuilder) {
               companyBuilder
                 ..id()
+                ..owner(builder: (userBuilder) {
+                  userBuilder
+                    ..id()
+                    ..firstName()
+                    ..lastName()
+                    ..email();
+                })
                 ..name();
             })
             ..contactPhoneNumbers();           

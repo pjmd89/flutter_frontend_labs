@@ -4,6 +4,7 @@ import '/src/presentation/pages/User/read/main.dart';
 import '/src/presentation/pages/User/create/main.dart';
 import '/src/presentation/pages/User/delete/main.dart';
 import '/src/presentation/pages/User/update/main.dart';
+import '/src/presentation/pages/User/laboratories/main.dart';
 
 final List<GoRoute> userRoutes = [
   GoRoute(
@@ -23,7 +24,7 @@ final List<GoRoute> userRoutes = [
         ),
       ),
       GoRoute(
-        path: ':id',
+        path: '/:id',
         pageBuilder: (context, state) => CustomDialogPage(
           context: context, 
           state: state, 
@@ -47,6 +48,16 @@ final List<GoRoute> userRoutes = [
           state: state, 
           child: UserDeletePage(
             id: state.pathParameters['id']!
+          )
+        )
+      ),
+      GoRoute(
+        path: ':id/laboratories',
+        pageBuilder: (context, state) => CustomDialogPage(
+          context: context, 
+          state: state, 
+          child: UserLaboratoriesPage(
+            userId: state.pathParameters['id']!
           )
         )
       )

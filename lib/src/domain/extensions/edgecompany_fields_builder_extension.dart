@@ -10,6 +10,13 @@ extension EdgeCompanyFieldsBuilderExtension on EdgeCompanyFieldsBuilder {
             ..name()
             ..logo()
             ..taxID()
+            ..owner(builder: (userBuilder) {
+              userBuilder
+                ..id()
+                ..firstName()
+                ..lastName()
+                ..email();
+            })
             ..created()
             ..updated();
         },

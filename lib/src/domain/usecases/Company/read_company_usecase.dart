@@ -41,10 +41,18 @@ class ReadCompanyUsecase implements af.UseCase {
       if (pageInfo != null)
         Directive('paginate', {'page': pageInfo.page, 'split': pageInfo.split}),
     ];
-    return _conn.operation(
+    
+    debugPrint('🔧 Query GraphQL con filtro:');
+    debugPrint(_operation.build());
+    debugPrint('📤 Variables: ${{'search': search.map((e) => e.toJson()).toList()}}');
+    
+    final result = await _conn.operation(
       operation: _operation,
       variables: {'search': search.map((e) => e.toJson()).toList()},
     );
+    
+    debugPrint('📥 Resultado de search: $result');
+    return result;
   }
 
   Future<dynamic> readWithoutPaginate() async {
