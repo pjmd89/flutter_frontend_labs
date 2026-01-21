@@ -724,4 +724,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get close => 'Cerrar';
+
+  @override
+  String get invalidNumber => 'Número inválido';
+
+  @override
+  String get mustBePositive => 'Debe ser un número positivo';
+
+  @override
+  String get templateDescription => 'Descripción de la plantilla';
 }

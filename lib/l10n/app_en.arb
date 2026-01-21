@@ -946,5 +946,21 @@
   "remove": "Remove",
   "@remove": {
     "description": "Button to remove"
+  },
+  "invalidNumber": "Invalid number",
+  "@invalidNumber": {
+    "description": "Validation message for invalid number"
+  },
+  "mustBePositive": "Must be a positive number",
+  "@mustBePositive": {
+    "description": "Validation message for positive number"
+  },
+  "templateDescription": "Template description",
+  "@templateDescription": {
+    "description": "Label for template description"
+  },
+  "nonEditableInformation": "Non-editable information",
+  "@nonEditableInformation": {
+    "description": "Label for non-editable information section"
   }
 }

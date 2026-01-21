@@ -1456,6 +1456,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cerrar'**
   String get close;
+
+  /// Mensaje de validación para número inválido
+  ///
+  /// In es, this message translates to:
+  /// **'Número inválido'**
+  String get invalidNumber;
+
+  /// Mensaje de validación para número positivo
+  ///
+  /// In es, this message translates to:
+  /// **'Debe ser un número positivo'**
+  String get mustBePositive;
+
+  /// Label para descripción de plantilla
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción de la plantilla'**
+  String get templateDescription;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

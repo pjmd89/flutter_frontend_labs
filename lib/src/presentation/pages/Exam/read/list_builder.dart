@@ -38,7 +38,8 @@ List<Widget> buildList({
       exam: exam,
       l10n: l10n,
       onUpdate: (id) async {
-        final result = await context.push('/exam/update/$id');
+        // Pasar objeto completo en lugar de solo ID (Opción A del patrón UPDATE)
+        final result = await context.push('/exam/update', extra: exam);
         if (result == true) {
           viewModel.getExams();
         }

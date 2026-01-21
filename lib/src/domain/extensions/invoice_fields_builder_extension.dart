@@ -16,21 +16,43 @@ extension InvoiceFieldsBuilderExtension on InvoiceFieldsBuilder {
             ..dni()
             ..phone()
             ..email()
-            ..address();
+            ..address()
+            ..laboratory(
+              builder: (labBuilder) {
+                labBuilder
+                  ..id()
+                  ..address();
+              },
+            );
         },
       )
       ..totalAmount()
+      ..orderID()
+      ..paymentStatus()
       ..laboratory(
         builder: (laboratoryBuilder) {
           laboratoryBuilder
             ..id()
-            ..address();
+            ..address()
+            ..contactPhoneNumbers()
+            ..company(
+              builder: (companyBuilder) {
+                companyBuilder
+                  ..id()
+                  ..name();
+              },
+            );
         },
       )
       ..evaluationPackage(
         builder: (packageBuilder) {
           packageBuilder
-            ..id();
+            ..id()
+            ..status()
+            ..pdfFilepath()
+            //..completedAt()
+            ..referred()
+            ..observations();
         },
       )
       ..created()

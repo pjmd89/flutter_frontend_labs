@@ -16,7 +16,7 @@ EvaluationPackage _$EvaluationPackageFromJson(Map<String, dynamic> json) =>
           const [],
       status: $enumDecodeNullable(_$ResultStatusEnumMap, json['status']),
       pdfFilepath: json['pdfFilepath'] as String? ?? "",
-      completedAt: json['completedAt'] as String? ?? "",
+      completedAt: json['completedAt'] as num? ?? 0,
       referred: json['referred'] as String? ?? "",
       observations:
           (json['observations'] as List<dynamic>?)

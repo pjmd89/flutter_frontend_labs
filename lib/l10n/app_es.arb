@@ -1097,5 +1097,17 @@
   "close": "Cerrar",
   "@close": {
     "description": "Botón para cerrar"
+  },
+  "invalidNumber": "Número inválido",
+  "@invalidNumber": {
+    "description": "Mensaje de validación para número inválido"
+  },
+  "mustBePositive": "Debe ser un número positivo",
+  "@mustBePositive": {
+    "description": "Mensaje de validación para número positivo"
+  },
+  "templateDescription": "Descripción de la plantilla",
+  "@templateDescription": {
+    "description": "Label para descripción de plantilla"
   }
 }

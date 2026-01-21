@@ -1,5 +1,6 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:go_router/go_router.dart';
+import '/src/domain/entities/main.dart';
 import '/src/presentation/pages/Exam/read/main.dart';
 import '/src/presentation/pages/Exam/create/main.dart';
 import '/src/presentation/pages/Exam/delete/main.dart';
@@ -23,12 +24,12 @@ final List<GoRoute> examRoutes = [
         ),
       ),
       GoRoute(
-        path: 'update/:id',
+        path: 'update',
         pageBuilder: (context, state) => CustomDialogPage(
           context: context, 
           state: state, 
           child: ExamUpdatePage(
-            id: state.pathParameters['id']!
+            exam: state.extra as Exam
           )
         )
       ),

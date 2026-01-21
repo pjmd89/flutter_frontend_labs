@@ -8,7 +8,7 @@ class EvaluationPackage {
   final List<ExamResult> valuesByExam;
   final ResultStatus? status;
   final String pdfFilepath;
-  final String completedAt;
+  final num completedAt;
   final String referred;
   final List<String> observations;
   final num? created;
@@ -18,7 +18,7 @@ class EvaluationPackage {
     this.valuesByExam = const [],
     this.status,
     this.pdfFilepath = "",
-    this.completedAt = "",
+    this.completedAt = 0,
     this.referred = "",
     this.observations = const [],
     this.created,
