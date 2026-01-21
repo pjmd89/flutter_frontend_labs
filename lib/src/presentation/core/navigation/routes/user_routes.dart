@@ -23,6 +23,14 @@ final List<GoRoute> userRoutes = [
         ),
       ),
       GoRoute(
+        path: ':id',
+        pageBuilder: (context, state) => CustomDialogPage(
+          context: context, 
+          state: state, 
+          child: const UserCreatePage()
+        ),
+      ),
+      GoRoute(
         path: 'update/:id',
         pageBuilder: (context, state) => CustomDialogPage(
           context: context, 
