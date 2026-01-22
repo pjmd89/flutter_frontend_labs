@@ -16,7 +16,12 @@ extension EvaluationPackageFieldsBuilderExtension on EvaluationPackageFieldsBuil
               builder: (examBuilder) {
                 examBuilder
                   ..id()
-                  
+                  ..template(
+                    builder: (templateBuilder) {
+                      templateBuilder
+                        ..name();
+                    },
+                  )
                   ..baseCost();
               },
             )

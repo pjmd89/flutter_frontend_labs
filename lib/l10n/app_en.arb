@@ -448,6 +448,10 @@
   "@edit": {
     "description": "Action to edit record"
   },
+  "view": "View",
+  "@view": {
+    "description": "Action to view record details"
+  },
   "delete": "Delete",
   "@delete": {
     "description": "Action to delete record"

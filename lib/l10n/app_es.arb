@@ -516,6 +516,10 @@
   "@edit": {
     "description": "Acción para editar registro"
   },
+  "view": "Ver",
+  "@view": {
+    "description": "Acción para ver detalles de registro"
+  },
   "delete": "Eliminar",
   "@delete": {
     "description": "Acción para eliminar registro"

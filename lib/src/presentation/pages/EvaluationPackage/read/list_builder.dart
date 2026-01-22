@@ -34,6 +34,9 @@ List<Widget> buildList({
     return EvaluationPackageItem(
       evaluationPackage: evaluationPackage,
       l10n: l10n,
+      onView: (id) async {
+        await context.push('/evaluationpackage/view/$id');
+      },
       onUpdate: (id) async {
         final result = await context.push('/evaluationpackage/update', extra: evaluationPackage);
         if (result == true) {

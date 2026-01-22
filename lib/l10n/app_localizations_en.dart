@@ -340,6 +340,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit => 'Edit';
 
   @override
+  String get view => 'View';
+
+  @override
   String get delete => 'Delete';
 
   @override

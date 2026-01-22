@@ -5,6 +5,7 @@ import 'package:labs/src/domain/entities/main.dart';
 class EvaluationPackageItem extends StatelessWidget {
   final EvaluationPackage evaluationPackage;
   final AppLocalizations l10n;
+  final Function(String id)? onView;
   final Function(String id)? onUpdate;
   final Function(String id)? onDelete;
 
@@ -12,6 +13,7 @@ class EvaluationPackageItem extends StatelessWidget {
     super.key,
     required this.evaluationPackage,
     required this.l10n,
+    this.onView,
     this.onUpdate,
     this.onDelete,
   });
@@ -112,6 +114,25 @@ class EvaluationPackageItem extends StatelessWidget {
                       ],
                     ),
                   ],
+                  const SizedBox(height: 16),
+                  // Botón "Ver"
+                  if (onView != null)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton(
+                        onPressed: () => onView!(evaluationPackage.id),
+                        style: FilledButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        ),
+                        child: Text(
+                          l10n.view,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

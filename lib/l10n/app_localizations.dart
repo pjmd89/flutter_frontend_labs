@@ -701,6 +701,12 @@ abstract class AppLocalizations {
   /// **'Editar'**
   String get edit;
 
+  /// Acción para ver detalles de registro
+  ///
+  /// In es, this message translates to:
+  /// **'Ver'**
+  String get view;
+
   /// Acción para eliminar registro
   ///
   /// In es, this message translates to:
