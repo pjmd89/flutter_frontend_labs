@@ -5,6 +5,7 @@ import '/src/presentation/pages/User/create/main.dart';
 import '/src/presentation/pages/User/delete/main.dart';
 import '/src/presentation/pages/User/update/main.dart';
 import '/src/presentation/pages/User/laboratories/main.dart';
+import '/src/presentation/pages/User/billing/main.dart';
 
 final List<GoRoute> userRoutes = [
   GoRoute(
@@ -57,6 +58,16 @@ final List<GoRoute> userRoutes = [
           context: context, 
           state: state, 
           child: UserLaboratoriesPage(
+            userId: state.pathParameters['id']!
+          )
+        )
+      ),
+      GoRoute(
+        path: ':id/billing',
+        pageBuilder: (context, state) => CustomDialogPage(
+          context: context, 
+          state: state, 
+          child: UserBillingPage(
             userId: state.pathParameters['id']!
           )
         )

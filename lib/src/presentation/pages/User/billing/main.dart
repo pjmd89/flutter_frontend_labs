@@ -5,22 +5,22 @@ import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import './view_model.dart';
 
-class UserLaboratoriesPage extends StatefulWidget {
-  const UserLaboratoriesPage({super.key, required this.userId});
+class UserBillingPage extends StatefulWidget {
+  const UserBillingPage({super.key, required this.userId});
   final String userId;
 
   @override
-  State<UserLaboratoriesPage> createState() => _UserLaboratoriesPageState();
+  State<UserBillingPage> createState() => _UserBillingPageState();
 }
 
-class _UserLaboratoriesPageState extends State<UserLaboratoriesPage> {
+class _UserBillingPageState extends State<UserBillingPage> {
   late ViewModel viewModel;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     viewModel = ViewModel(context: context, userId: widget.userId);
-    viewModel.loadLaboratories();
+    viewModel.loadInvoices();
   }
 
   @override
@@ -31,8 +31,8 @@ class _UserLaboratoriesPageState extends State<UserLaboratoriesPage> {
       listenable: viewModel,
       builder: (context, child) {
         return ContentDialog(
-          icon: Icons.science_outlined,
-          title: l10n.viewLaboratories,
+          icon: Icons.receipt_long_outlined,
+          title: l10n.viewBilling,
           loading: viewModel.loading,
           form: Form(
             child: SingleChildScrollView(
@@ -52,11 +52,11 @@ class _UserLaboratoriesPageState extends State<UserLaboratoriesPage> {
                         ),
                       ),
                     )
-                  else if (viewModel.laboratoryList == null || viewModel.laboratoryList!.isEmpty)
+                  else if (viewModel.invoiceList == null || viewModel.invoiceList!.isEmpty)
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text(l10n.noRegisteredMaleThings('Laboratorios')),
+                        child: Text(l10n.noRegisteredFemaleThings('Facturas')),
                       ),
                     )
                   else
@@ -65,10 +65,10 @@ class _UserLaboratoriesPageState extends State<UserLaboratoriesPage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: viewModel.laboratoryList!.length,
+                        itemCount: viewModel.invoiceList!.length,
                         itemBuilder: (context, index) {
-                          final laboratory = viewModel.laboratoryList![index];
-                          return _buildLaboratoryCard(context, laboratory, l10n);
+                          final invoice = viewModel.invoiceList![index];
+                          return _buildInvoiceCard(context, invoice, l10n);
                         },
                       ),
                     ),
@@ -87,21 +87,27 @@ class _UserLaboratoriesPageState extends State<UserLaboratoriesPage> {
     );
   }
 
-  Widget _buildLaboratoryCard(BuildContext context, Laboratory laboratory, AppLocalizations l10n) {
+  Widget _buildInvoiceCard(BuildContext context, Invoice invoice, AppLocalizations l10n) {
+    // Debug: verificar el valor del address
+    final labAddress = invoice.laboratory?.address ?? '';
+    print('🏥 Building card - Lab: ${invoice.laboratory?.company?.name}, Address: "$labAddress", isEmpty: ${labAddress.isEmpty}');
+    
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        leading: const Icon(Icons.science),
-        title: Text(laboratory.company?.name ?? 'Sin nombre'),
+        leading: const Icon(Icons.receipt),
+        title: Text('Order: ${invoice.orderID}'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (laboratory.address.isNotEmpty)
-              Text('${l10n.address}: ${laboratory.address}'),
-            if (laboratory.contactPhoneNumbers.isNotEmpty)
-              Text('${l10n.phoneNumber}: ${laboratory.contactPhoneNumbers.first}'),
-            if (laboratory.company?.owner != null)
-              Text('${l10n.owner}: ${laboratory.company?.owner?.firstName ?? ''} ${laboratory.company?.owner?.lastName ?? ''}'),
+            Text('${l10n.totalAmount}: \$${invoice.totalAmount}'),
+            Text('${l10n.status}: ${invoice.paymentStatus.toString().split('.').last}'),
+            if (invoice.laboratory?.company?.name != null)
+              Text('${l10n.laboratory}: ${invoice.laboratory!.company!.name}'),
+            if (invoice.laboratory?.address != null && invoice.laboratory!.address.isNotEmpty)
+              Text('${l10n.address}: ${invoice.laboratory!.address}'),
+            if (invoice.patient != null)
+              Text('${l10n.patient}: ${invoice.patient!.firstName} ${invoice.patient!.lastName}'),
           ],
         ),
       ),

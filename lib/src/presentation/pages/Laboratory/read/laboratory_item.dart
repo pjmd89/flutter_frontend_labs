@@ -98,8 +98,36 @@ class LaboratoryItem extends StatelessWidget {
                 _getContactName(),
                 style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  
                 ),
+              ),
+              
+              const SizedBox(height: 8),
+              
+              // Dirección del laboratorio
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.location_on,
+                    size: 16,
+                    
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      laboratory.address.isNotEmpty 
+                        ? laboratory.address 
+                        : 'Sin dirección',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
               
               const SizedBox(height: 16),
