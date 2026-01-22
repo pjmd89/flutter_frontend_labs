@@ -696,7 +696,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allResultsCompleted => 'All results completed';
 
   @override
-  String get allResultsCompletedDescription => 'Check if all exam results have been completed';
+  String get allResultsCompletedDescription => 'Check if all exam results have been completed and verified correctly';
 
   @override
   String get addObservation => 'Add observation';

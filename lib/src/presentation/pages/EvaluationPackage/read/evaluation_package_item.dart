@@ -41,16 +41,10 @@ class EvaluationPackageItem extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'ID: ${evaluationPackage.id.substring(0, 8)}...',
+                '${l10n.status}: $statusText',
                 style: theme.textTheme.titleMedium,
               ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${l10n.status}: $statusText'),
-                  Text('${l10n.exams}: $examCount'),
-                ],
-              ),
+              subtitle: Text('${l10n.exams}: $examCount'),
               trailing: PopupMenuButton<String>(
                 icon: const Icon(Icons.more_vert),
                 onSelected: (value) {

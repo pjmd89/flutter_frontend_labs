@@ -1400,7 +1400,7 @@ abstract class AppLocalizations {
   /// Descripción para switch de completitud
   ///
   /// In es, this message translates to:
-  /// **'Marcar si todos los resultados del examen han sido completados'**
+  /// **'Marcar si todos los resultados del examen han sido completados y verificados correctamente'**
   String get allResultsCompletedDescription;
 
   /// Botón para agregar nueva observación

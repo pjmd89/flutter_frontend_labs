@@ -4,6 +4,8 @@ import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import 'package:labs/src/presentation/core/ui/main.dart';
+import 'package:labs/src/presentation/providers/auth_notifier.dart';
+import 'package:provider/provider.dart';
 import './view_model.dart';
 
 class UserCreatePage extends StatefulWidget {
@@ -103,6 +105,28 @@ class _UserCreatePageState extends State<UserCreatePage> {
     });
   }
 
+  // Obtener roles permitidos según el rol del usuario loggeado
+  List<Role> getAvailableRoles(BuildContext context) {
+    final authNotifier = context.read<AuthNotifier>();
+    final currentUserRole = authNotifier.role;
+
+    // Lista de todos los roles
+    final allRoles = Role.values.toList();
+
+    // Filtrar según las reglas:
+    // 1. Nadie puede crear usuarios root
+    // 2. Solo root puede crear admins
+    return allRoles.where((role) {
+      if (role == Role.root) {
+        return false; // Nadie puede crear root
+      }
+      if (role == Role.admin && currentUserRole != Role.root) {
+        return false; // Solo root puede crear admin
+      }
+      return true;
+    }).toList();
+  }
+
   String getRoleLabel(BuildContext context, Role role) {
     final l10n = AppLocalizations.of(context)!;
     switch (role) {
@@ -197,7 +221,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
                             border: const OutlineInputBorder(),
                           ),
                           items:
-                              Role.values.map((Role role) {
+                              getAvailableRoles(context).map((Role role) {
                                 return DropdownMenuItem<Role>(
                                   value: role,
                                   child: Text(getRoleLabel(context, role)),

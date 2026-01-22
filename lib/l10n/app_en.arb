@@ -895,7 +895,7 @@
   "@allResultsCompleted": {
     "description": "Label for results completion switch"
   },
-  "allResultsCompletedDescription": "Check if all exam results have been completed",
+  "allResultsCompletedDescription": "Check if all exam results have been completed and verified correctly",
   "@allResultsCompletedDescription": {
     "description": "Description for completion switch"
   },

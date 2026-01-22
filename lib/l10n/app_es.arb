@@ -1046,7 +1046,7 @@
   "@allResultsCompleted": {
     "description": "Label para switch de completitud de resultados"
   },
-  "allResultsCompletedDescription": "Marcar si todos los resultados del examen han sido completados",
+  "allResultsCompletedDescription": "Marcar si todos los resultados del examen han sido completados y verificados correctamente",
   "@allResultsCompletedDescription": {
     "description": "Descripción para switch de completitud"
   },
