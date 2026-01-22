@@ -32,6 +32,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
 
   Role? selectedRole;
   DateTime? selectedCutOffDate;
+  String? selectedLaboratoryID; // Para técnicos y facturación
 
   // Lista para teléfonos múltiples del laboratorio
   List<String> phoneNumbers = [];
@@ -209,6 +210,12 @@ class _UserCreatePageState extends State<UserCreatePage> {
                               // isAdmin solo es true cuando el rol es admin
                               viewModel.input.isAdmin = newValue == Role.admin;
 
+                              // Limpiar laboratoryID cuando se cambia de rol
+                              if (newValue != Role.technician && newValue != Role.billing) {
+                                selectedLaboratoryID = null;
+                                viewModel.input.laboratoryID = null;
+                              }
+
                               // Inicializar companyInfo cuando se selecciona owner
                               if (newValue == Role.owner) {
                                 viewModel.input.companyInfo ??=
@@ -229,6 +236,45 @@ class _UserCreatePageState extends State<UserCreatePage> {
                       ),
                     ],
                   ),
+                  // Dropdown de laboratorio para técnicos y facturación
+                  if (selectedRole == Role.technician || selectedRole == Role.billing) ...[
+                    const SizedBox(height: 16),
+                    viewModel.loadingLaboratories
+                        ? const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : DropdownButtonFormField<String>(
+                            value: selectedLaboratoryID,
+                            decoration: InputDecoration(
+                              labelText: l10n.laboratory,
+                              isDense: true,
+                              border: const OutlineInputBorder(),
+                            ),
+                            items: viewModel.laboratories.map((Laboratory lab) {
+                              return DropdownMenuItem<String>(
+                                value: lab.id,
+                                child: Text(
+                                  lab.company?.name ?? '${l10n.laboratory} ${lab.id}',
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedLaboratoryID = newValue;
+                                viewModel.input.laboratoryID = newValue;
+                              });
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return l10n.fieldRequired;
+                              }
+                              return null;
+                            },
+                          ),
+                  ],
                   if (selectedRole == Role.owner) ...[
                     const SizedBox(height: 16),
                     // CutOffDate y Fee en la misma fila
