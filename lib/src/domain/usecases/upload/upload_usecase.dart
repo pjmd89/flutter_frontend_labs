@@ -102,7 +102,12 @@ class UploadFileUseCase {
     
     // Generar nombre único para el archivo
     String fileID = const Uuid().v4();
-    String finalFileName = "${userId}_${fileID}_$fileDestinyName.$fileExtension";
+    // Limpiar extensión duplicada si existe
+    String cleanDestinyName = fileDestinyName;
+    if (cleanDestinyName.endsWith('.$fileExtension')) {
+      cleanDestinyName = cleanDestinyName.substring(0, cleanDestinyName.length - fileExtension.length - 1);
+    }
+    String finalFileName = "${userId}_${fileID}_$cleanDestinyName.$fileExtension";
     
     try {
       // Subir archivo en fragmentos
@@ -146,7 +151,8 @@ class UploadFileUseCase {
     // Extraer fragmento y codificar en base64
     final fragment = fileBytes.sublist(sizeUploaded, endFile);
     final base64Fragment = base64Encode(fragment);
-    final fileData = 'data:image/jpeg;base64,$base64Fragment';
+    // Backend espera solo el base64 puro, sin prefijo
+    final fileData = base64Fragment;
     
     // Crear input para este fragmento
     final input = UploadFileInput(
@@ -155,12 +161,11 @@ class UploadFileUseCase {
       type: type,
       folder: folder,
       file: fileData,
-      sizeUploaded: sizeUploaded,
     );
     
     // Crear mutation
     final mutation = UploadMutation(
-      declarativeArgs: {"input": "UploadFileInput!"},
+      declarativeArgs: {"input": "uploadInput!"},
       opArgs: {"input": GqlVar("input")},
     );
     

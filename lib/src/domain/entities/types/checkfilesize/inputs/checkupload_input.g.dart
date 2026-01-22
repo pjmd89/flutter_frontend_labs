@@ -1,27 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'uploadfile_input.dart';
+part of 'checkupload_input.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UploadFileInput _$UploadFileInputFromJson(Map<String, dynamic> json) =>
-    UploadFileInput(
+CheckUploadInput _$CheckUploadInputFromJson(Map<String, dynamic> json) =>
+    CheckUploadInput(
       name: json['name'] as String,
-      size: (json['size'] as num).toInt(),
+      size: (json['size'] as num).toDouble(),
       type: json['type'] as String,
       folder: json['folder'] as String,
-      file: json['file'] as String,
-      isThumb: json['isThumb'] as bool?,
     );
 
-Map<String, dynamic> _$UploadFileInputToJson(UploadFileInput instance) =>
+Map<String, dynamic> _$CheckUploadInputToJson(CheckUploadInput instance) =>
     <String, dynamic>{
       'name': instance.name,
       'size': instance.size,
       'type': instance.type,
       'folder': instance.folder,
-      'file': instance.file,
-      if (instance.isThumb case final value?) 'isThumb': value,
     };

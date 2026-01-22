@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'uploadfile_input.dart';
+part of 'checkfilesize_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UploadFileInput _$UploadFileInputFromJson(Map<String, dynamic> json) =>
-    UploadFileInput(
+CheckFileSize _$CheckFileSizeFromJson(Map<String, dynamic> json) =>
+    CheckFileSize(
       name: json['name'] as String,
-      size: (json['size'] as num).toInt(),
+      size: (json['size'] as num).toDouble(),
       type: json['type'] as String,
       folder: json['folder'] as String,
-      file: json['file'] as String,
-      isThumb: json['isThumb'] as bool?,
+      sizeUploaded: (json['sizeUploaded'] as num).toDouble(),
+      display: json['display'] as String,
     );
 
-Map<String, dynamic> _$UploadFileInputToJson(UploadFileInput instance) =>
+Map<String, dynamic> _$CheckFileSizeToJson(CheckFileSize instance) =>
     <String, dynamic>{
       'name': instance.name,
       'size': instance.size,
       'type': instance.type,
       'folder': instance.folder,
-      'file': instance.file,
-      if (instance.isThumb case final value?) 'isThumb': value,
+      'sizeUploaded': instance.sizeUploaded,
+      'display': instance.display,
     };
