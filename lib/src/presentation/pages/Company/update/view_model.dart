@@ -1,4 +1,6 @@
+import 'dart:typed_data';
 import 'package:agile_front/agile_front.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
@@ -6,6 +8,7 @@ import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/updateCompany/updatecompany_mutation.dart';
 import 'package:labs/src/domain/usecases/Company/update_company_usecase.dart';
 import 'package:labs/src/domain/usecases/Company/read_company_usecase.dart';
+import 'package:labs/src/domain/usecases/upload/upload_usecase.dart';
 import 'package:labs/src/domain/operation/queries/getCompanies/getcompanies_query.dart';
 import 'package:labs/src/domain/extensions/edgecompany_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
@@ -16,13 +19,17 @@ class ViewModel extends ChangeNotifier {
   final BuildContext _context;
   bool _loading = false;
   bool _error = false;
+  bool _uploading = false;
 
   final UpdateCompanyInput input = UpdateCompanyInput();
   Company? _currentCompany;
+  String? _uploadedLogoPath;
 
   Company? get currentCompany => _currentCompany;
   bool get loading => _loading;
   bool get error => _error;
+  bool get uploading => _uploading;
+  String? get uploadedLogoPath => _uploadedLogoPath;
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -31,6 +38,11 @@ class ViewModel extends ChangeNotifier {
 
   set error(bool newError) {
     _error = newError;
+    notifyListeners();
+  }
+
+  set uploading(bool newUploading) {
+    _uploading = newUploading;
     notifyListeners();
   }
 
@@ -148,5 +160,81 @@ class ViewModel extends ChangeNotifier {
     }
 
     return isError;
+  }
+
+  /// Sube el logo de la compañía
+  Future<bool> uploadCompanyLogo({
+    required Uint8List fileBytes,
+    required String fileName,
+    required String userId,
+  }) async {
+    uploading = true;
+
+    try {
+      final uploadUseCase = UploadFileUseCase(conn: _gqlConn);
+
+      final result = await uploadUseCase.uploadFile(
+        fileOriginalName: fileName,
+        fileDestinyName: 'company_logo',
+        fileBytes: fileBytes,
+        destinyDirectory: 'companies/logos',
+        userId: userId,
+        onlyXlsx: false,
+      );
+
+      if (result.success && result.uploadedFile != null) {
+        // Construir path del archivo subido
+        _uploadedLogoPath = result.uploadedFile!['folder'] +
+            '/' +
+            result.uploadedFile!['name'];
+
+        // Actualizar input con el nuevo logo
+        input.logo = _uploadedLogoPath;
+
+        debugPrint('✅ Logo subido exitosamente: $_uploadedLogoPath');
+
+        _context.read<GQLNotifier>().errorService.showError(
+          message: '${l10n.logo} subido exitosamente',
+          type: ErrorType.success,
+        );
+
+        return true;
+      } else {
+        String errorMessage;
+        switch (result.code) {
+          case UploadFileUseCase.codeNoExtension:
+            errorMessage = 'El archivo no tiene extensión';
+            break;
+          case UploadFileUseCase.codeInvalidExtension:
+            errorMessage =
+                'Extensión no válida. Use: pdf, jpeg, jpg, png, xlsx';
+            break;
+          case UploadFileUseCase.codeUploadError:
+            errorMessage = 'Error al subir el archivo';
+            break;
+          default:
+            errorMessage = 'Error desconocido';
+        }
+
+        debugPrint('❌ Error al subir logo: $errorMessage');
+
+        _context.read<GQLNotifier>().errorService.showError(
+          message: errorMessage,
+        );
+
+        return false;
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al subir logo: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+
+      _context.read<GQLNotifier>().errorService.showError(
+        message: 'Error al subir logo: ${e.toString()}',
+      );
+
+      return false;
+    } finally {
+      uploading = false;
+    }
   }
 }

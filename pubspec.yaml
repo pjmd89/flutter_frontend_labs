@@ -24,6 +24,8 @@ dependencies:
   intl: any
   web: ^1.1.1
   shared_preferences: ^2.3.3
+  uuid: ^4.5.1
+  file_picker: ^8.0.0
 
 dev_dependencies:
   flutter_test:
