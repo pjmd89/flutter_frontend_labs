@@ -117,10 +117,10 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
             userId: 'company_update',
           );
 
-          // Actualizar controller con el nuevo path
-          if (success && viewModel.uploadedLogoPath != null) {
+          // Actualizar controller con el nombre original del archivo
+          if (success && viewModel.displayFileName != null) {
             setState(() {
-              logoController.text = viewModel.uploadedLogoPath!;
+              logoController.text = viewModel.displayFileName!;
             });
           }
         } else {
@@ -271,16 +271,22 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                       ),
                     ],
                   ),
-                  if (viewModel.uploadedLogoPath != null) ...[
-                    const SizedBox(height: 8),
+                  // ✅ Información del logo (sin vista previa)
+                  if (viewModel.hasLogo) ...[
+                    const SizedBox(height: 12),
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
-                        ).colorScheme.primaryContainer,
+                        ).colorScheme.primaryContainer.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withOpacity(0.5),
+                        ),
                       ),
                       child: Row(
                         children: [
@@ -289,19 +295,38 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                             color: Theme.of(
                               context,
                             ).colorScheme.primary,
-                            size: 16,
+                            size: 20,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 12),
                           Expanded(
-                            child: Text(
-                              'Logo subido: ${viewModel.uploadedLogoPath}',
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimaryContainer,
-                                fontSize: 12,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  viewModel.logoImageBytes != null
+                                      ? 'Logo seleccionado'
+                                      : 'Logo actual',
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  viewModel.displayFileName ?? '',
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                    fontSize: 12,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
                             ),
                           ),
                         ],

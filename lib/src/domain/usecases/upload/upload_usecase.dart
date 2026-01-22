@@ -72,7 +72,7 @@ class UploadFileUseCase {
     
     // Validar extensiones permitidas
     bool isValidExtension = RegExp(
-      r'(pdf|jpeg|jpg|png|xlsx)$',
+      r'(pdf|jpeg|jpg|png|gif|xlsx)$',
       caseSensitive: false,
     ).hasMatch(fileExtension);
     
@@ -89,6 +89,7 @@ class UploadFileUseCase {
       'jpeg': 'image/jpeg',
       'jpg': 'image/jpeg',
       'png': 'image/png',
+      'gif': 'image/gif',
       'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     };
     
@@ -175,11 +176,18 @@ class UploadFileUseCase {
       variables: {'input': input.toJson()},
     );
     
+    debugPrint('📨 Response completa del servidor: $response');
+    debugPrint('📨 Tipo de response: ${response.runtimeType}');
+    
     if (response is! Map<String, dynamic>) {
+      debugPrint('❌ Respuesta no es Map<String, dynamic>');
       throw Exception('Respuesta inesperada del servidor');
     }
     
-    final uploadData = response['upload'] as Map<String, dynamic>;
+    debugPrint('📨 Keys disponibles en response: ${response.keys}');
+    
+    // ✅ Los datos vienen directamente en response, no en response['upload']
+    final uploadData = response;
     final newSizeUploaded = uploadData['sizeUploaded'] as int;
     
     // Si aún falta contenido, continuar recursivamente

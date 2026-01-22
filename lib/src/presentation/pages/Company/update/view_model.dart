@@ -24,12 +24,24 @@ class ViewModel extends ChangeNotifier {
   final UpdateCompanyInput input = UpdateCompanyInput();
   Company? _currentCompany;
   String? _uploadedLogoPath;
+  String? _originalFileName;
+  Uint8List? _logoImageBytes;
 
   Company? get currentCompany => _currentCompany;
   bool get loading => _loading;
   bool get error => _error;
   bool get uploading => _uploading;
   String? get uploadedLogoPath => _uploadedLogoPath;
+  Uint8List? get logoImageBytes => _logoImageBytes;
+  
+  // ✅ Getter para saber si hay un logo (existente o nuevo)
+  bool get hasLogo => _logoImageBytes != null || (_currentCompany?.logo != null && _currentCompany!.logo!.isNotEmpty);
+  
+  // ✅ Getter para obtener la URL del logo existente
+  String? get existingLogoUrl => _currentCompany?.logo;
+  
+  // ✅ Getter para mostrar el nombre del archivo en el campo
+  String? get displayFileName => _originalFileName ?? _currentCompany?.logo;
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -173,6 +185,8 @@ class ViewModel extends ChangeNotifier {
     try {
       final uploadUseCase = UploadFileUseCase(conn: _gqlConn);
 
+      debugPrint('📤 Iniciando upload: $fileName, ${fileBytes.length} bytes');
+
       final result = await uploadUseCase.uploadFile(
         fileOriginalName: fileName,
         fileDestinyName: 'company_logo',
@@ -182,11 +196,20 @@ class ViewModel extends ChangeNotifier {
         onlyXlsx: false,
       );
 
+      debugPrint('📦 Resultado upload - success: ${result.success}, code: ${result.code}');
+      debugPrint('📦 uploadedFile: ${result.uploadedFile}');
+
       if (result.success && result.uploadedFile != null) {
         // Construir path del archivo subido
         _uploadedLogoPath = result.uploadedFile!['folder'] +
             '/' +
             result.uploadedFile!['name'];
+
+        // Guardar nombre original del archivo
+        _originalFileName = fileName;
+
+        // Guardar bytes de la imagen para vista previa
+        _logoImageBytes = fileBytes;
 
         // Actualizar input con el nuevo logo
         input.logo = _uploadedLogoPath;
@@ -207,7 +230,7 @@ class ViewModel extends ChangeNotifier {
             break;
           case UploadFileUseCase.codeInvalidExtension:
             errorMessage =
-                'Extensión no válida. Use: pdf, jpeg, jpg, png, xlsx';
+                'Extensión no válida. Use: jpeg, jpg, png, gif';
             break;
           case UploadFileUseCase.codeUploadError:
             errorMessage = 'Error al subir el archivo';
