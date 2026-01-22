@@ -8,6 +8,7 @@ class LaboratoryItem extends StatelessWidget {
   final AppLocalizations l10n;
   final Function(String id)? onUpdate;
   final Function(String id)? onDelete;
+  final Function(String id)? onViewBilling;
 
   const LaboratoryItem({
     super.key,
@@ -15,6 +16,7 @@ class LaboratoryItem extends StatelessWidget {
     required this.l10n,
     this.onUpdate,
     this.onDelete,
+    this.onViewBilling,
   });
 
   String _getContactName() {
@@ -162,21 +164,20 @@ class LaboratoryItem extends StatelessWidget {
                   ),
                   
                   // Botón "Ver facturación"
-                  ElevatedButton(
-                    onPressed: () {
-                      // Acción para ver facturación
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  if (onViewBilling != null)
+                    FilledButton(
+                      onPressed: () => onViewBilling!(laboratory.id),
+                      style: FilledButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      child: Text(
+                        l10n.viewBilling,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    child: const Text(
-                      'Ver facturación',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
                 ],
               ),
             ],

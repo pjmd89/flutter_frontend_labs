@@ -45,10 +45,6 @@ List<Widget> buildList({
         // TODO: Implementar navegación a laboratorios
          context.push('/user/$id/laboratories');
       },
-      onViewBilling: (id) {
-        // TODO: Implementar navegación a facturación
-         context.push('/user/$id/billing');
-      },
     );
   }).toList();
 }

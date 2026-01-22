@@ -5,6 +5,7 @@ import '/src/presentation/pages/Laboratory/read/main.dart';
 import '/src/presentation/pages/Laboratory/create/main.dart';
 import '/src/presentation/pages/Laboratory/delete/main.dart';
 import '/src/presentation/pages/Laboratory/update/main.dart';
+import '/src/presentation/pages/Laboratory/billing/main.dart';
 
 final List<GoRoute> laboratoryRoutes = [
   GoRoute(
@@ -17,6 +18,14 @@ final List<GoRoute> laboratoryRoutes = [
     routes: [
       GoRoute(
         path: 'create',
+        pageBuilder: (context, state) => CustomDialogPage(
+          context: context, 
+          state: state, 
+          child: const LaboratoryCreatePage()
+        ),
+      ),
+      GoRoute(
+        path: '/:id',
         pageBuilder: (context, state) => CustomDialogPage(
           context: context, 
           state: state, 
@@ -40,6 +49,16 @@ final List<GoRoute> laboratoryRoutes = [
           state: state, 
           child: LaboratoryDeletePage(
             id: state.pathParameters['id']!
+          )
+        )
+      ),
+      GoRoute(
+        path: ':id/billing',
+        pageBuilder: (context, state) => CustomDialogPage(
+          context: context, 
+          state: state, 
+          child: LaboratoryBillingPage(
+            laboratoryId: state.pathParameters['id']!
           )
         )
       )

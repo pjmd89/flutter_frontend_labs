@@ -42,6 +42,9 @@ List<Widget> buildList({
           viewModel.getLaboratory();
         }
       },
+      onViewBilling: (id) {
+        context.push('/laboratory/$id/billing');
+      },
     );
   }).toList();
 }

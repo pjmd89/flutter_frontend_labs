@@ -6,7 +6,6 @@ class UserItem extends StatelessWidget {
   final User user;
   final AppLocalizations l10n;
   final Function(String id)? onViewLabs;
-  final Function(String id)? onViewBilling;
   final Function(String id)? onUpdate;
   final Function(String id)? onDelete;
 
@@ -15,7 +14,6 @@ class UserItem extends StatelessWidget {
     required this.user,
     required this.l10n,
     this.onViewLabs,
-    this.onViewBilling,
     this.onUpdate,
     this.onDelete,
   });
@@ -81,12 +79,6 @@ class UserItem extends StatelessWidget {
                     OutlinedButton(
                       onPressed: () => onViewLabs!(user.id),
                       child: Text(l10n.viewLaboratories),
-                    ),
-                  if (onViewLabs != null) const SizedBox(width: 8),
-                  if (onViewBilling != null)
-                    FilledButton(
-                      onPressed: () => onViewBilling!(user.id),
-                      child: Text(l10n.viewBilling),
                     ),
                 ],
               ),
