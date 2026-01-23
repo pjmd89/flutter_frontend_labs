@@ -54,7 +54,7 @@ class ViewModel extends ChangeNotifier {
     // Prellenar input con datos existentes
     input.id = evaluationPackage.id;
     input.observations = List.from(evaluationPackage.observations);
-    input.allResultsCompleted = evaluationPackage.status == ResultStatus.completed;
+    input.allResultsCompleted = evaluationPackage.status == ResultStatus.cOMPLETED;
     
     // Prellenar valuesByExam (estructura compleja)
     input.valuesByExam = evaluationPackage.valuesByExam.map((examResult) {

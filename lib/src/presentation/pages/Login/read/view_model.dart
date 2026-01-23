@@ -1,7 +1,7 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
-import 'package:labs/src/domain/entities/types/user/user_model.dart';
-import 'package:labs/src/domain/operation/fields_builders/fields_builders.dart';
+import 'package:labs/src/domain/entities/main.dart';
+import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/queries/getLoggedUser/getloggeduser_query.dart';
 import 'package:labs/src/domain/extensions/user_logged_builder/main.dart';
 import 'package:labs/src/domain/usecases/User/read_user_logged_usecase.dart';
@@ -14,7 +14,7 @@ class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
   final BuildContext _context;
   final GetLoggedUserQuery _loggedQuery =  GetLoggedUserQuery(
-    builder: UserFieldsBuilder().defaultValues()
+    builder: LoggedUserFieldsBuilder().defaultValues()
   );
   bool get loading => _loading;
   bool get error => _error;
@@ -38,14 +38,14 @@ class ViewModel extends ChangeNotifier {
     await authNotifier.signIn(user: user);
 
   }
-  Future<User?> loggedUser() async{
+  Future<LoggedUser?> loggedUser() async{
     loading = true;
     final response = await ReadUserLoggedUsecase(
       operation: _loggedQuery,
       conn: _gqlConn,
     ).build();
 
-    return response as User;
+    return response as LoggedUser;
   }
 
   read(Operation operation) async{

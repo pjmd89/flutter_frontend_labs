@@ -1,7 +1,7 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/domain/extensions/laboratory_fields_builder.dart';
+import 'package:labs/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
 import 'package:labs/src/domain/operation/queries/getLaboratories/getlaboratories_query.dart';
 import 'package:labs/src/domain/usecases/Laboratory/read_laboratory_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';

@@ -54,25 +54,24 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
           text: viewModel.currentPatient!.lastName
         );
         dniController = TextEditingController(
-          text: viewModel.currentPatient!.dni
+          text: viewModel.currentPatient!.dni ?? ''
         );
         phoneController = TextEditingController(
-          text: viewModel.currentPatient!.phone
+          text: viewModel.currentPatient!.phone ?? ''
         );
         emailController = TextEditingController(
-          text: viewModel.currentPatient!.email
+          text: viewModel.currentPatient!.email ?? ''
         );
         addressController = TextEditingController(
-          text: viewModel.currentPatient!.address
+          text: viewModel.currentPatient!.address ?? ''
         );
         
-        // Formatear birthDate (timestamp a fecha legible)
+        // Formatear birthDate (timestamp int a fecha legible)
         String formattedDate = '';
-        if (viewModel.currentPatient!.birthDate > 0) {
+        if (viewModel.currentPatient!.birthDate != null && viewModel.currentPatient!.birthDate! > 0) {
           try {
-            final date = DateTime.fromMillisecondsSinceEpoch(
-              viewModel.currentPatient!.birthDate.toInt()
-            );
+            // Convertir timestamp (segundos) a DateTime
+            final date = DateTime.fromMillisecondsSinceEpoch(viewModel.currentPatient!.birthDate! * 1000);
             formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
           } catch (e) {
             formattedDate = '';
@@ -105,11 +104,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
     if (sex == null) return '-';
     
     switch (sex) {
-      case Sex.female:
+      case Sex.fEMALE:
         return l10n.sexFemale;
-      case Sex.male:
+      case Sex.mALE:
         return l10n.sexMale;
-      case Sex.intersex:
+      case Sex.iNTERSEX:
         return l10n.sexIntersex;
     }
   }
@@ -287,7 +286,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                       if (date != null) {
                         final formatted = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
                         birthDateController.text = formatted;
-                        viewModel.input.birthDate = date.millisecondsSinceEpoch;
+                        // Formatear al formato esperado por el servidor (DD/MM/YYYY HH:MM)
+                        final day = date.day.toString().padLeft(2, '0');
+                        final month = date.month.toString().padLeft(2, '0');
+                        final year = date.year.toString();
+                        viewModel.input.birthDate = '$day/$month/$year 00:00';
                       }
                     },
                   ),

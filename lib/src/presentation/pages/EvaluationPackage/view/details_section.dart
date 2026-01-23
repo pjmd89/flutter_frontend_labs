@@ -15,24 +15,24 @@ class DetailsSection extends StatelessWidget {
 
   String _getStatusText(ResultStatus? status) {
     switch (status) {
-      case ResultStatus.completed:
-        return 'Completado';
-      case ResultStatus.inProgress:
-        return 'En Progreso';
-      case ResultStatus.pending:
-        return 'Pendiente';
+      case ResultStatus.cOMPLETED:
+        return l10n.statusCompleted;
+      case ResultStatus.iNPROGRESS:
+        return l10n.statusInProgress;
+      case ResultStatus.pENDING:
+        return l10n.statusPending;
       default:
-        return 'Desconocido';
+        return l10n.statusUnknown;
     }
   }
 
   Color _getStatusColor(ResultStatus? status) {
     switch (status) {
-      case ResultStatus.completed:
+      case ResultStatus.cOMPLETED:
         return Colors.green;
-      case ResultStatus.inProgress:
+      case ResultStatus.iNPROGRESS:
         return Colors.orange;
-      case ResultStatus.pending:
+      case ResultStatus.pENDING:
         return Colors.blue;
       default:
         return Colors.grey;
@@ -41,21 +41,32 @@ class DetailsSection extends StatelessWidget {
 
   IconData _getStatusIcon(ResultStatus? status) {
     switch (status) {
-      case ResultStatus.completed:
+      case ResultStatus.cOMPLETED:
         return Icons.check_circle;
-      case ResultStatus.inProgress:
+      case ResultStatus.iNPROGRESS:
         return Icons.pending;
-      case ResultStatus.pending:
+      case ResultStatus.pENDING:
         return Icons.access_time;
       default:
         return Icons.help_outline;
     }
   }
 
-  String _formatDate(num? timestamp) {
-    if (timestamp == null || timestamp == 0) return 'N/A';
+  String _formatDate(dynamic timestamp) {
+    if (timestamp == null) return 'N/A';
     try {
-      final date = DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000);
+      int timestampNum;
+      if (timestamp is String) {
+        if (timestamp.isEmpty) return 'N/A';
+        timestampNum = int.tryParse(timestamp) ?? 0;
+      } else if (timestamp is int) {
+        timestampNum = timestamp;
+      } else {
+        return 'N/A';
+      }
+      
+      if (timestampNum == 0) return 'N/A';
+      final date = DateTime.fromMillisecondsSinceEpoch(timestampNum * 1000);
       return DateFormat('dd/MM/yyyy HH:mm').format(date);
     } catch (e) {
       return 'N/A';
@@ -77,7 +88,7 @@ class DetailsSection extends StatelessWidget {
           children: [
             // Título de la sección
             Text(
-              'Información General',
+              l10n.generalInformation,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -153,7 +164,7 @@ class DetailsSection extends StatelessWidget {
             _buildInfoRow(
               context: context,
               icon: Icons.calendar_today_outlined,
-              label: 'Fecha de creación',
+              label: l10n.creationDate,
               value: _formatDate(evaluationPackage.created),
             ),
             
@@ -162,7 +173,7 @@ class DetailsSection extends StatelessWidget {
               _buildInfoRow(
                 context: context,
                 icon: Icons.event_available_outlined,
-                label: 'Completado el',
+                label: l10n.completedAt,
                 value: _formatDate(evaluationPackage.completedAt),
               ),
             ],

@@ -3,13 +3,9 @@ part "role_enum.g.dart";
 @JsonEnum(alwaysCreate: true)
 enum Role {
   @JsonValue("ROOT")
-  root,
+  rOOT,
   @JsonValue("ADMIN")
-  admin,
-  @JsonValue("OWNER")
-  owner,
-  @JsonValue("TECHNICIAN")
-  technician,
-  @JsonValue("BILLING")
-  billing,
+  aDMIN,
+  @JsonValue("USER")
+  uSER,
 }

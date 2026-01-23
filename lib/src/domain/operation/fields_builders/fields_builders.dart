@@ -13,6 +13,7 @@ export './laboratory_fields_builder.dart';
 export './evaluationpackage_fields_builder.dart';
 export './edgeexamtemplate_fields_builder.dart';
 export './user_fields_builder.dart';
+export './loggeduser_fields_builder.dart';
 export './edgeuser_fields_builder.dart';
 export './examtemplate_fields_builder.dart';
 export './examresult_fields_builder.dart';

@@ -11,7 +11,7 @@ UpdatePatientInput _$UpdatePatientInputFromJson(Map<String, dynamic> json) =>
       id: json['_id'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
-      birthDate: json['birthDate'] as num?,
+      birthDate: json['birthDate'] as String?,
       dni: json['dni'] as String?,
       phone: json['phone'] as String?,
       email: json['email'] as String?,

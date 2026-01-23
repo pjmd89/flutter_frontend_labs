@@ -20,7 +20,7 @@ UpdateLaboratoryInput _$UpdateLaboratoryInputFromJson(
 Map<String, dynamic> _$UpdateLaboratoryInputToJson(
   UpdateLaboratoryInput instance,
 ) => <String, dynamic>{
-  '_id': instance.id,
+  if (instance.id case final value?) '_id': value,
   if (instance.address case final value?) 'address': value,
   if (instance.contactPhoneNumbers case final value?)
     'contactPhoneNumbers': value,

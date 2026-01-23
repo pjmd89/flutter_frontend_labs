@@ -3,9 +3,9 @@ part "resultstatus_enum.g.dart";
 @JsonEnum(alwaysCreate: true)
 enum ResultStatus {
   @JsonValue("PENDING")
-  pending,
+  pENDING,
   @JsonValue("INPROGRESS")
-  inProgress,
+  iNPROGRESS,
   @JsonValue("COMPLETED")
-  completed,
+  cOMPLETED,
 }

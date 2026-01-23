@@ -1,0 +1,23 @@
+// GENERATED. NO EDITAR MANUALMENTE.
+import 'dart:core';
+import 'package:agile_front/infraestructure/graphql/helpers.dart';
+import 'package:labs/src/domain/operation/fields_builders/labmembershipinfo_fields_builder.dart';
+import 'main.dart';
+class EdgeLabMembershipInfoFieldsBuilder {
+  final List<String> _fields = [];
+  EdgeLabMembershipInfoFieldsBuilder edges({String? alias, Map<String, dynamic>? args, List<Directive>? directives, void Function(LabMembershipInfoFieldsBuilder)? builder}) {
+    final child = LabMembershipInfoFieldsBuilder();
+    if (builder != null) builder(child);
+    final fieldStr = formatField("edges", alias: alias, args: args, directives: directives, selection: child.build());
+    _fields.add(fieldStr);
+    return this;
+  }
+  EdgeLabMembershipInfoFieldsBuilder pageInfo({String? alias, Map<String, dynamic>? args, List<Directive>? directives, void Function(PageInfoFieldsBuilder)? builder}) {
+    final child = PageInfoFieldsBuilder();
+    if (builder != null) builder(child);
+    final fieldStr = formatField("pageInfo", alias: alias, args: args, directives: directives, selection: child.build());
+    _fields.add(fieldStr);
+    return this;
+  }
+  String build() => _fields.join(" ");
+}

@@ -112,11 +112,7 @@ class ViewModel extends ChangeNotifier {
 
     try {
       // Limpiar campos opcionales vacíos antes de enviar
-      // laboratoryID se mantiene si fue seleccionado para técnico o facturación
-      if (input.laboratoryID == null || input.laboratoryID!.isEmpty) {
-        input.laboratoryID = null;
-      }
-
+      
       // Si cutOffDate está vacío, nulificarlo
       if (input.cutOffDate == null || input.cutOffDate!.isEmpty) {
         input.cutOffDate = null;

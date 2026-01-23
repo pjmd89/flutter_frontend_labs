@@ -11,6 +11,7 @@ export './examindicator_fields_builder.dart';
 export './edgeexamtemplate_fields_builder.dart';
 export './invoice_fields_builder.dart';
 export './user_fields_builder.dart';
+export './loggeduser_fields_builder.dart';
 export './laboratory_fields_builder.dart';
 export './pageinfo_fields_builder.dart';
 export './changelog_fields_builder.dart';

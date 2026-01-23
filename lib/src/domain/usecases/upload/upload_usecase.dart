@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:agile_front/agile_front.dart';
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
+import 'package:labs/src/domain/entities/types/upload/inputs/uploadinput_input.dart';
 import 'package:uuid/uuid.dart';
-import '/src/domain/entities/types/upload/inputs/uploadfile_input.dart';
 import '/src/domain/operation/mutations/upload/upload_mutation.dart';
 
 /// Resultado de la operación de subida de archivo
@@ -156,12 +156,13 @@ class UploadFileUseCase {
     final fileData = base64Fragment;
     
     // Crear input para este fragmento
-    final input = UploadFileInput(
+    final input = uploadInput(
       name: name,
       size: totalSize,
       type: type,
       folder: folder,
       file: fileData,
+      isThumb: false, //este lo agregue yo, se puede borrar si da error
     );
     
     // Crear mutation

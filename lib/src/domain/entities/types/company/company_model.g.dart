@@ -15,8 +15,8 @@ Company _$CompanyFromJson(Map<String, dynamic> json) => Company(
       json['owner'] == null
           ? null
           : User.fromJson(json['owner'] as Map<String, dynamic>),
-  created: json['created'] as num? ?? 0,
-  updated: json['updated'] as num? ?? 0,
+  created: json['created'] as String? ?? "",
+  updated: json['updated'] as String? ?? "",
 );
 
 Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{

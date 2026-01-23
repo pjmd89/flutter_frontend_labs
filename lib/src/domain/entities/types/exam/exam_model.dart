@@ -8,8 +8,8 @@ class Exam {
   final ExamTemplate? template;
   final Laboratory? laboratory;
   final num baseCost;
-  final num created;
-  final num updated;
+  final int created;
+  final int updated;
   Exam({
     this.id = "",
     this.template,

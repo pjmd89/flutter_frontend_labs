@@ -3,7 +3,7 @@ part "patienttype_enum.g.dart";
 @JsonEnum(alwaysCreate: true)
 enum PatientType {
   @JsonValue("HUMAN")
-  human,
+  hUMAN,
   @JsonValue("ANIMAL")
-  animal,
+  aNIMAL,
 }

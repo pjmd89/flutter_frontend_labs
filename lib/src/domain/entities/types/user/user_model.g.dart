@@ -12,10 +12,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
   lastName: json['lastName'] as String? ?? "",
   role: $enumDecodeNullable(_$RoleEnumMap, json['role']),
   email: json['email'] as String? ?? "",
-  cutOffDate: json['cutOffDate'] as num? ?? 0,
+  cutOffDate: (json['cutOffDate'] as num?)?.toInt() ?? 0,
   fee: json['fee'] as num? ?? 0,
-  created: json['created'] as num? ?? 0,
-  updated: json['updated'] as num? ?? 0,
+  created: (json['created'] as num?)?.toInt() ?? 0,
+  updated: (json['updated'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -31,9 +31,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
 };
 
 const _$RoleEnumMap = {
-  Role.root: 'ROOT',
-  Role.admin: 'ADMIN',
-  Role.owner: 'OWNER',
-  Role.technician: 'TECHNICIAN',
-  Role.billing: 'BILLING',
+  Role.rOOT: 'ROOT',
+  Role.aDMIN: 'ADMIN',
+  Role.uSER: 'USER',
 };

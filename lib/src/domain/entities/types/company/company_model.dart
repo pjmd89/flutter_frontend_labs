@@ -1,7 +1,6 @@
 import "/src/domain/entities/main.dart";
 import "package:json_annotation/json_annotation.dart";
 part "company_model.g.dart";
-
 @JsonSerializable(includeIfNull: false)
 class Company {
   @JsonKey(name: "_id")
@@ -10,18 +9,17 @@ class Company {
   final String logo;
   final String taxID;
   final User? owner;
-  final num created;
-  final num updated;
+  final String created;
+  final String updated;
   Company({
     this.id = "",
     this.name = "",
     this.logo = "",
     this.taxID = "",
     this.owner,
-    this.created = 0,
-    this.updated = 0,
+    this.created = "",
+    this.updated = "",
   });
-  factory Company.fromJson(Map<String, dynamic> json) =>
-      _$CompanyFromJson(json);
+  factory Company.fromJson(Map<String, dynamic> json) => _$CompanyFromJson(json);
   Map<String, dynamic> toJson() => _$CompanyToJson(this);
 }

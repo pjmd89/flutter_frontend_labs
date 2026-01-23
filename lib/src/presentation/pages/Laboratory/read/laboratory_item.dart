@@ -39,10 +39,8 @@ class LaboratoryItem extends StatelessWidget {
     try {
       if (laboratory.created == 0) return 'Sin fecha';
       
-      // Convertir timestamp Unix a DateTime
-      final date = DateTime.fromMillisecondsSinceEpoch(
-        laboratory.created.toInt() * 1000,
-      );
+      // created es un timestamp Unix (int)
+      final date = DateTime.fromMillisecondsSinceEpoch(laboratory.created * 1000);
       return DateFormat('dd/MM/yyyy').format(date);
     } catch (e) {
       return 'Sin fecha';

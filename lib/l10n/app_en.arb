@@ -111,6 +111,71 @@
     "description": "General status field"
   },
   
+  "statusCompleted": "Completed",
+  "@statusCompleted": {
+    "description": "Completed status"
+  },
+  
+  "statusInProgress": "In Progress",
+  "@statusInProgress": {
+    "description": "In progress status"
+  },
+  
+  "statusPending": "Pending",
+  "@statusPending": {
+    "description": "Pending status"
+  },
+  
+  "statusUnknown": "Unknown",
+  "@statusUnknown": {
+    "description": "Unknown status"
+  },
+  
+  "generalInformation": "General Information",
+  "@generalInformation": {
+    "description": "General information section title"
+  },
+  
+  "creationDate": "Creation Date",
+  "@creationDate": {
+    "description": "Label for creation date"
+  },
+  
+  "viewPdf": "View PDF",
+  "@viewPdf": {
+    "description": "Tooltip to view PDF"
+  },
+  
+  "noExamsRegistered": "No exams registered",
+  "@noExamsRegistered": {
+    "description": "Message when there are no exams"
+  },
+  
+  "indicatorValues": "Indicator Values",
+  "@indicatorValues": {
+    "description": "Indicator values section title"
+  },
+  
+  "noIndicatorValues": "No indicator values registered",
+  "@noIndicatorValues": {
+    "description": "Message when there are no indicator values"
+  },
+  
+  "cost": "Cost",
+  "@cost": {
+    "description": "Cost label"
+  },
+  
+  "examWithoutName": "Exam without name",
+  "@examWithoutName": {
+    "description": "Text for exam without name"
+  },
+  
+  "indicator": "Indicator",
+  "@indicator": {
+    "description": "Term for indicator in singular form"
+  },
+  
   "observations": "Observations",
   "@observations": {
     "description": "Observations or notes field"
@@ -476,6 +541,10 @@
   "roleAdmin": "Administrator",
   "@roleAdmin": {
     "description": "Administrator role"
+  },
+  "roleUser": "User",
+  "@roleUser": {
+    "description": "User role"
   },
   "roleOwner": "Owner",
   "@roleOwner": {

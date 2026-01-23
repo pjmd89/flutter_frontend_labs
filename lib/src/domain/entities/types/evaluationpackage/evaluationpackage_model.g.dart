@@ -9,6 +9,10 @@ part of 'evaluationpackage_model.dart';
 EvaluationPackage _$EvaluationPackageFromJson(Map<String, dynamic> json) =>
     EvaluationPackage(
       id: json['_id'] as String? ?? "",
+      patient:
+          json['patient'] == null
+              ? null
+              : Patient.fromJson(json['patient'] as Map<String, dynamic>),
       valuesByExam:
           (json['valuesByExam'] as List<dynamic>?)
               ?.map((e) => ExamResult.fromJson(e as Map<String, dynamic>))
@@ -16,33 +20,43 @@ EvaluationPackage _$EvaluationPackageFromJson(Map<String, dynamic> json) =>
           const [],
       status: $enumDecodeNullable(_$ResultStatusEnumMap, json['status']),
       pdfFilepath: json['pdfFilepath'] as String? ?? "",
-      completedAt: json['completedAt'] as num? ?? 0,
+      completedAt: (json['completedAt'] as num?)?.toInt() ?? 0,
       referred: json['referred'] as String? ?? "",
       observations:
           (json['observations'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      created: json['created'] as num?,
-      updated: json['updated'] as num?,
+      isApproved: json['isApproved'] as bool? ?? false,
+      bioanalystReview:
+          json['bioanalystReview'] == null
+              ? null
+              : BioanalystReview.fromJson(
+                json['bioanalystReview'] as Map<String, dynamic>,
+              ),
+      created: (json['created'] as num?)?.toInt() ?? 0,
+      updated: (json['updated'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$EvaluationPackageToJson(
   EvaluationPackage instance,
 ) => <String, dynamic>{
   '_id': instance.id,
+  if (instance.patient case final value?) 'patient': value,
   'valuesByExam': instance.valuesByExam,
   if (_$ResultStatusEnumMap[instance.status] case final value?) 'status': value,
   'pdfFilepath': instance.pdfFilepath,
   'completedAt': instance.completedAt,
   'referred': instance.referred,
   'observations': instance.observations,
-  if (instance.created case final value?) 'created': value,
-  if (instance.updated case final value?) 'updated': value,
+  'isApproved': instance.isApproved,
+  if (instance.bioanalystReview case final value?) 'bioanalystReview': value,
+  'created': instance.created,
+  'updated': instance.updated,
 };
 
 const _$ResultStatusEnumMap = {
-  ResultStatus.pending: 'PENDING',
-  ResultStatus.inProgress: 'INPROGRESS',
-  ResultStatus.completed: 'COMPLETED',
+  ResultStatus.pENDING: 'PENDING',
+  ResultStatus.iNPROGRESS: 'INPROGRESS',
+  ResultStatus.cOMPLETED: 'COMPLETED',
 };

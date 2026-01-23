@@ -35,24 +35,38 @@ Query _$QueryFromJson(Map<String, dynamic> json) => Query(
       json['getInvoices'] == null
           ? null
           : EdgeInvoice.fromJson(json['getInvoices'] as Map<String, dynamic>),
+  getLabMemberships:
+      json['getLabMemberships'] == null
+          ? null
+          : EdgeLabMembershipInfo.fromJson(
+            json['getLabMemberships'] as Map<String, dynamic>,
+          ),
   getLaboratories:
       json['getLaboratories'] == null
           ? null
           : EdgeLaboratory.fromJson(
             json['getLaboratories'] as Map<String, dynamic>,
           ),
+  getLoggedUser:
+      json['getLoggedUser'] == null
+          ? null
+          : LoggedUser.fromJson(json['getLoggedUser'] as Map<String, dynamic>),
   getPatients:
       json['getPatients'] == null
           ? null
           : EdgePatient.fromJson(json['getPatients'] as Map<String, dynamic>),
+  getAccess:
+      json['getAccess'] == null
+          ? null
+          : EdgeTypeAccess.fromJson(json['getAccess'] as Map<String, dynamic>),
+  checkFileSize:
+      json['checkFileSize'] == null
+          ? null
+          : Upload.fromJson(json['checkFileSize'] as Map<String, dynamic>),
   getUsers:
       json['getUsers'] == null
           ? null
           : EdgeUser.fromJson(json['getUsers'] as Map<String, dynamic>),
-  getLoggedUser:
-      json['getLoggedUser'] == null
-          ? null
-          : User.fromJson(json['getLoggedUser'] as Map<String, dynamic>),
   logout:
       json['logout'] == null
           ? null
@@ -66,9 +80,12 @@ Map<String, dynamic> _$QueryToJson(Query instance) => <String, dynamic>{
   if (instance.getExams case final value?) 'getExams': value,
   if (instance.getExamTemplates case final value?) 'getExamTemplates': value,
   if (instance.getInvoices case final value?) 'getInvoices': value,
+  if (instance.getLabMemberships case final value?) 'getLabMemberships': value,
   if (instance.getLaboratories case final value?) 'getLaboratories': value,
-  if (instance.getPatients case final value?) 'getPatients': value,
-  if (instance.getUsers case final value?) 'getUsers': value,
   if (instance.getLoggedUser case final value?) 'getLoggedUser': value,
+  if (instance.getPatients case final value?) 'getPatients': value,
+  if (instance.getAccess case final value?) 'getAccess': value,
+  if (instance.checkFileSize case final value?) 'checkFileSize': value,
+  if (instance.getUsers case final value?) 'getUsers': value,
   if (instance.logout case final value?) 'logout': value,
 };

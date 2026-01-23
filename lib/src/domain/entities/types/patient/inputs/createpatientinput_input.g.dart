@@ -11,12 +11,12 @@ CreatePatientInput _$CreatePatientInputFromJson(Map<String, dynamic> json) =>
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
       sex: $enumDecodeNullable(_$SexEnumMap, json['sex']),
+      birthDate: json['birthDate'] as String?,
+      species: json['species'] as String?,
       patientType: $enumDecodeNullable(
         _$PatientTypeEnumMap,
         json['patientType'],
       ),
-      birthDate: json['birthDate'] as String?,
-      species: json['species'] as String?,
       dni: json['dni'] as String?,
       phone: json['phone'] as String?,
       email: json['email'] as String?,
@@ -27,25 +27,25 @@ CreatePatientInput _$CreatePatientInputFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CreatePatientInputToJson(CreatePatientInput instance) =>
     <String, dynamic>{
       'firstName': instance.firstName,
-      'lastName': instance.lastName,
+      if (instance.lastName case final value?) 'lastName': value,
       'sex': _$SexEnumMap[instance.sex]!,
+      if (instance.birthDate case final value?) 'birthDate': value,
+      if (instance.species case final value?) 'species': value,
       'patientType': _$PatientTypeEnumMap[instance.patientType]!,
-      'birthDate': instance.birthDate,
-      'species': instance.species,
-      'dni': instance.dni,
-      'phone': instance.phone,
-      'email': instance.email,
-      'address': instance.address,
-      'laboratory': instance.laboratory,
+      if (instance.dni case final value?) 'dni': value,
+      if (instance.phone case final value?) 'phone': value,
+      if (instance.email case final value?) 'email': value,
+      if (instance.address case final value?) 'address': value,
+      if (instance.laboratory case final value?) 'laboratory': value,
     };
 
 const _$SexEnumMap = {
-  Sex.female: 'FEMALE',
-  Sex.male: 'MALE',
-  Sex.intersex: 'INTERSEX',
+  Sex.fEMALE: 'FEMALE',
+  Sex.mALE: 'MALE',
+  Sex.iNTERSEX: 'INTERSEX',
 };
 
 const _$PatientTypeEnumMap = {
-  PatientType.human: 'HUMAN',
-  PatientType.animal: 'ANIMAL',
+  PatientType.hUMAN: 'HUMAN',
+  PatientType.aNIMAL: 'ANIMAL',
 };

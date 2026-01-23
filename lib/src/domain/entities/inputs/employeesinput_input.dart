@@ -3,10 +3,10 @@ import "package:json_annotation/json_annotation.dart";
 part "employeesinput_input.g.dart";
 @JsonSerializable(includeIfNull: false)
 class EmployeesInput extends ChangeNotifier {
-  String _id = "";
+  String? _id;
   @JsonKey(name: "_id")
-  String get id => _id;
-  set id(String value) {
+  String? get id => _id;
+  set id(String? value) {
     _id = value;
     notifyListeners();
   }

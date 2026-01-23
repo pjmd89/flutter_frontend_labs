@@ -3,7 +3,7 @@ import '/src/domain/entities/main.dart';
 import 'package:agile_front/infraestructure/operation.dart';
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
 class GetLoggedUserQuery implements Operation{
-  final UserFieldsBuilder builder;
+  final LoggedUserFieldsBuilder builder;
   final String _name = 'getLoggedUser';
   Map<String,String>? declarativeArgs;
   final String? alias;
@@ -35,10 +35,10 @@ class GetLoggedUserQuery implements Operation{
     ''';
   }
   @override
-  User result(Map<String, dynamic> data) {
+  LoggedUser result(Map<String, dynamic> data) {
     String name;
     name = alias ?? _name;
-    return User.fromJson(data[name]);
+    return LoggedUser.fromJson(data[name]);
   }
 
 }

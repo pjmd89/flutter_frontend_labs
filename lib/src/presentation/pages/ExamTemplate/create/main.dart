@@ -40,11 +40,11 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
   String getValueTypeLabel(BuildContext context, ValueType valueType) {
     final l10n = AppLocalizations.of(context)!;
     switch (valueType) {
-      case ValueType.numeric:
+      case ValueType.nUMERIC:
         return l10n.valueTypeNumeric;
-      case ValueType.text:
+      case ValueType.tEXT:
         return l10n.valueTypeText;
-      case ValueType.boolean:
+      case ValueType.bOOLEAN:
         return l10n.valueTypeBoolean;
     }
   }
@@ -54,7 +54,7 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
     final indicatorNameController = TextEditingController();
     final indicatorUnitController = TextEditingController();
     final indicatorRangeController = TextEditingController();
-    ValueType selectedValueType = ValueType.numeric;
+    ValueType selectedValueType = ValueType.nUMERIC;
 
     showDialog(
       context: context,

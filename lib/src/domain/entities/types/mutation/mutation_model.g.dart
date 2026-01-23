@@ -21,6 +21,12 @@ Mutation _$MutationFromJson(Map<String, dynamic> json) => Mutation(
           : EvaluationPackage.fromJson(
             json['updateEvaluationPackage'] as Map<String, dynamic>,
           ),
+  approveEvaluationPackage:
+      json['approveEvaluationPackage'] == null
+          ? null
+          : EvaluationPackage.fromJson(
+            json['approveEvaluationPackage'] as Map<String, dynamic>,
+          ),
   createExam:
       json['createExam'] == null
           ? null
@@ -55,6 +61,16 @@ Mutation _$MutationFromJson(Map<String, dynamic> json) => Mutation(
       json['createInvoice'] == null
           ? null
           : Invoice.fromJson(json['createInvoice'] as Map<String, dynamic>),
+  cancelInvoicePayment:
+      json['cancelInvoicePayment'] == null
+          ? null
+          : Invoice.fromJson(
+            json['cancelInvoicePayment'] as Map<String, dynamic>,
+          ),
+  markInvoiceAsPaid:
+      json['markInvoiceAsPaid'] == null
+          ? null
+          : Invoice.fromJson(json['markInvoiceAsPaid'] as Map<String, dynamic>),
   createLaboratory:
       json['createLaboratory'] == null
           ? null
@@ -79,6 +95,12 @@ Mutation _$MutationFromJson(Map<String, dynamic> json) => Mutation(
           : Laboratory.fromJson(
             json['manageLaboratoryEmployees'] as Map<String, dynamic>,
           ),
+  setCurrentLaboratory:
+      json['setCurrentLaboratory'] == null
+          ? null
+          : LoggedUser.fromJson(
+            json['setCurrentLaboratory'] as Map<String, dynamic>,
+          ),
   createPatient:
       json['createPatient'] == null
           ? null
@@ -91,6 +113,14 @@ Mutation _$MutationFromJson(Map<String, dynamic> json) => Mutation(
       json['deletePatient'] == null
           ? null
           : Patient.fromJson(json['deletePatient'] as Map<String, dynamic>),
+  upload:
+      json['upload'] == null
+          ? null
+          : Upload.fromJson(json['upload'] as Map<String, dynamic>),
+  cancelUpload:
+      json['cancelUpload'] == null
+          ? null
+          : Upload.fromJson(json['cancelUpload'] as Map<String, dynamic>),
   createUser:
       json['createUser'] == null
           ? null
@@ -110,6 +140,8 @@ Map<String, dynamic> _$MutationToJson(Mutation instance) => <String, dynamic>{
   if (instance.updateCompany case final value?) 'updateCompany': value,
   if (instance.updateEvaluationPackage case final value?)
     'updateEvaluationPackage': value,
+  if (instance.approveEvaluationPackage case final value?)
+    'approveEvaluationPackage': value,
   if (instance.createExam case final value?) 'createExam': value,
   if (instance.updateExam case final value?) 'updateExam': value,
   if (instance.deleteExam case final value?) 'deleteExam': value,
@@ -120,14 +152,21 @@ Map<String, dynamic> _$MutationToJson(Mutation instance) => <String, dynamic>{
   if (instance.deleteExamTemplate case final value?)
     'deleteExamTemplate': value,
   if (instance.createInvoice case final value?) 'createInvoice': value,
+  if (instance.cancelInvoicePayment case final value?)
+    'cancelInvoicePayment': value,
+  if (instance.markInvoiceAsPaid case final value?) 'markInvoiceAsPaid': value,
   if (instance.createLaboratory case final value?) 'createLaboratory': value,
   if (instance.updateLaboratory case final value?) 'updateLaboratory': value,
   if (instance.deleteLaboratory case final value?) 'deleteLaboratory': value,
   if (instance.manageLaboratoryEmployees case final value?)
     'manageLaboratoryEmployees': value,
+  if (instance.setCurrentLaboratory case final value?)
+    'setCurrentLaboratory': value,
   if (instance.createPatient case final value?) 'createPatient': value,
   if (instance.updatePatient case final value?) 'updatePatient': value,
   if (instance.deletePatient case final value?) 'deletePatient': value,
+  if (instance.upload case final value?) 'upload': value,
+  if (instance.cancelUpload case final value?) 'cancelUpload': value,
   if (instance.createUser case final value?) 'createUser': value,
   if (instance.updateUser case final value?) 'updateUser': value,
   if (instance.deleteUser case final value?) 'deleteUser': value,

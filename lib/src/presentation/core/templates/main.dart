@@ -55,17 +55,14 @@ class _TemplateState extends State<Template> {
 
     GoRouter router;
     switch (authNotifier.role) {
-      case Role.owner:
+      case Role.rOOT:
+        router = rootRouter;
+        break;
+      case Role.aDMIN:
         router = ownerRouter;
         break;
-      case Role.billing:
-        router = billingRouter;
-        break;
-      case Role.technician:
+      case Role.uSER:
         router = technicianRouter;
-        break;
-      case Role.root:
-        router = rootRouter;
         break;
       default:
         router = loginRouter;

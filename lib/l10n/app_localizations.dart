@@ -353,6 +353,84 @@ abstract class AppLocalizations {
   /// **'Estado'**
   String get status;
 
+  /// Estado completado
+  ///
+  /// In es, this message translates to:
+  /// **'Completado'**
+  String get statusCompleted;
+
+  /// Estado en progreso
+  ///
+  /// In es, this message translates to:
+  /// **'En Progreso'**
+  String get statusInProgress;
+
+  /// Estado pendiente
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get statusPending;
+
+  /// Estado desconocido
+  ///
+  /// In es, this message translates to:
+  /// **'Desconocido'**
+  String get statusUnknown;
+
+  /// Título de sección de información general
+  ///
+  /// In es, this message translates to:
+  /// **'Información General'**
+  String get generalInformation;
+
+  /// Etiqueta para fecha de creación
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de creación'**
+  String get creationDate;
+
+  /// Tooltip para ver PDF
+  ///
+  /// In es, this message translates to:
+  /// **'Ver PDF'**
+  String get viewPdf;
+
+  /// Mensaje cuando no hay exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'No hay exámenes registrados'**
+  String get noExamsRegistered;
+
+  /// Título de sección de valores de indicadores
+  ///
+  /// In es, this message translates to:
+  /// **'Valores de Indicadores'**
+  String get indicatorValues;
+
+  /// Mensaje cuando no hay valores de indicadores
+  ///
+  /// In es, this message translates to:
+  /// **'No hay valores de indicadores registrados'**
+  String get noIndicatorValues;
+
+  /// Etiqueta de costo
+  ///
+  /// In es, this message translates to:
+  /// **'Costo'**
+  String get cost;
+
+  /// Texto para examen sin nombre
+  ///
+  /// In es, this message translates to:
+  /// **'Examen sin nombre'**
+  String get examWithoutName;
+
+  /// Término para indicador en singular
+  ///
+  /// In es, this message translates to:
+  /// **'Indicador'**
+  String get indicator;
+
   /// Campo de observaciones o notas
   ///
   /// In es, this message translates to:
@@ -647,12 +725,6 @@ abstract class AppLocalizations {
   /// **'Rango Normal'**
   String get normalRange;
 
-  /// Término para indicador en singular
-  ///
-  /// In es, this message translates to:
-  /// **'Indicador'**
-  String get indicator;
-
   /// Término para indicadores en plural
   ///
   /// In es, this message translates to:
@@ -742,6 +814,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Administrador'**
   String get roleAdmin;
+
+  /// Rol usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Usuario'**
+  String get roleUser;
 
   /// Rol propietario
   ///

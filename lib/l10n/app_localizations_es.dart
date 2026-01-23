@@ -138,6 +138,45 @@ class AppLocalizationsEs extends AppLocalizations {
   String get status => 'Estado';
 
   @override
+  String get statusCompleted => 'Completado';
+
+  @override
+  String get statusInProgress => 'En Progreso';
+
+  @override
+  String get statusPending => 'Pendiente';
+
+  @override
+  String get statusUnknown => 'Desconocido';
+
+  @override
+  String get generalInformation => 'Información General';
+
+  @override
+  String get creationDate => 'Fecha de creación';
+
+  @override
+  String get viewPdf => 'Ver PDF';
+
+  @override
+  String get noExamsRegistered => 'No hay exámenes registrados';
+
+  @override
+  String get indicatorValues => 'Valores de Indicadores';
+
+  @override
+  String get noIndicatorValues => 'No hay valores de indicadores registrados';
+
+  @override
+  String get cost => 'Costo';
+
+  @override
+  String get examWithoutName => 'Examen sin nombre';
+
+  @override
+  String get indicator => 'Indicador';
+
+  @override
   String get observations => 'Observaciones';
 
   @override
@@ -313,9 +352,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get normalRange => 'Rango Normal';
 
   @override
-  String get indicator => 'Indicador';
-
-  @override
   String get indicators => 'Indicadores';
 
   @override
@@ -359,6 +395,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get roleAdmin => 'Administrador';
+
+  @override
+  String get roleUser => 'Usuario';
 
   @override
   String get roleOwner => 'Propietario';

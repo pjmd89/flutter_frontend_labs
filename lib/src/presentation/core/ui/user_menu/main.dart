@@ -50,16 +50,12 @@ class _UserMenuState extends State<UserMenu> {
   String _getRoleLabel(BuildContext context, Role role) {
     final l10n = AppLocalizations.of(context)!;
     switch (role) {
-      case Role.root:
+      case Role.rOOT:
         return l10n.roleRoot;
-      case Role.admin:
+      case Role.aDMIN:
         return l10n.roleAdmin;
-      case Role.owner:
-        return l10n.roleOwner;
-      case Role.technician:
-        return l10n.roleTechnician;
-      case Role.billing:
-        return l10n.roleBilling;
+      case Role.uSER:
+        return l10n.roleUser;
     }
   }
 

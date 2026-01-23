@@ -7,7 +7,7 @@ part of 'valuetype_enum.dart';
 // **************************************************************************
 
 const _$ValueTypeEnumMap = {
-  ValueType.numeric: 'numeric',
-  ValueType.text: 'text',
-  ValueType.boolean: 'boolean',
+  ValueType.nUMERIC: 'NUMERIC',
+  ValueType.tEXT: 'TEXT',
+  ValueType.bOOLEAN: 'BOOLEAN',
 };

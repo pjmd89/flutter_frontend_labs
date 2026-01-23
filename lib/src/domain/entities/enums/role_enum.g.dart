@@ -7,9 +7,7 @@ part of 'role_enum.dart';
 // **************************************************************************
 
 const _$RoleEnumMap = {
-  Role.root: 'ROOT',
-  Role.admin: 'ADMIN',
-  Role.owner: 'OWNER',
-  Role.technician: 'TECHNICIAN',
-  Role.billing: 'BILLING',
+  Role.rOOT: 'ROOT',
+  Role.aDMIN: 'ADMIN',
+  Role.uSER: 'USER',
 };

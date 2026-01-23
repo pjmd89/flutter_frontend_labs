@@ -7,6 +7,6 @@ part of 'patienttype_enum.dart';
 // **************************************************************************
 
 const _$PatientTypeEnumMap = {
-  PatientType.human: 'HUMAN',
-  PatientType.animal: 'ANIMAL',
+  PatientType.hUMAN: 'HUMAN',
+  PatientType.aNIMAL: 'ANIMAL',
 };

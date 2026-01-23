@@ -7,6 +7,7 @@ part of 'paymentstatus_enum.dart';
 // **************************************************************************
 
 const _$PaymentStatusEnumMap = {
-  PaymentStatus.paid: 'PAID',
-  PaymentStatus.canceled: 'CANCELED',
+  PaymentStatus.pAID: 'PAID',
+  PaymentStatus.pENDING: 'PENDING',
+  PaymentStatus.cANCELED: 'CANCELED',
 };

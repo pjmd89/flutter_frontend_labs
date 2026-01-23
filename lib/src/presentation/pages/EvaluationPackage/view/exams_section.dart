@@ -32,7 +32,7 @@ class ExamsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No hay exámenes registrados',
+                  l10n.noExamsRegistered,
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -91,7 +91,7 @@ class _ExamCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final examName = examResult.exam?.template?.name ?? 'Examen sin nombre';
+    final examName = examResult.exam?.template?.name ?? l10n.examWithoutName;
     final hasIndicators = examResult.indicatorValues.isNotEmpty;
 
     return Card(
@@ -123,7 +123,7 @@ class _ExamCard extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              'Costo: \$${examResult.cost.toStringAsFixed(2)}',
+              '${l10n.cost}: \$${examResult.cost.toStringAsFixed(2)}',
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(width: 16),
@@ -134,7 +134,7 @@ class _ExamCard extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              '${examResult.indicatorValues.length} indicadores',
+              '${examResult.indicatorValues.length} ${l10n.indicators}',
               style: theme.textTheme.bodySmall,
             ),
           ],
@@ -144,7 +144,7 @@ class _ExamCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                'No hay valores de indicadores registrados',
+                l10n.noIndicatorValues,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                   fontStyle: FontStyle.italic,
@@ -158,7 +158,7 @@ class _ExamCard extends StatelessWidget {
                 const Divider(height: 1),
                 const SizedBox(height: 16),
                 Text(
-                  'Valores de Indicadores',
+                  l10n.indicatorValues,
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -168,6 +168,7 @@ class _ExamCard extends StatelessWidget {
                   return _IndicatorValueItem(
                     indicatorValue: indicatorValue,
                     theme: theme,
+                    l10n: l10n,
                   );
                 }).toList(),
               ],
@@ -181,15 +182,17 @@ class _ExamCard extends StatelessWidget {
 class _IndicatorValueItem extends StatelessWidget {
   final IndicatorValue indicatorValue;
   final ThemeData theme;
+  final AppLocalizations l10n;
 
   const _IndicatorValueItem({
     required this.indicatorValue,
     required this.theme,
+    required this.l10n,
   });
 
   @override
   Widget build(BuildContext context) {
-    final indicatorName = indicatorValue.indicator?.name ?? 'Indicador';
+    final indicatorName = indicatorValue.indicator?.name ?? l10n.indicator;
     final value = indicatorValue.value;
     final unit = indicatorValue.indicator?.unit ?? '';
     

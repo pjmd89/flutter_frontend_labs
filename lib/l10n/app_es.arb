@@ -179,6 +179,71 @@
     "description": "Campo de estado general"
   },
   
+  "statusCompleted": "Completado",
+  "@statusCompleted": {
+    "description": "Estado completado"
+  },
+  
+  "statusInProgress": "En Progreso",
+  "@statusInProgress": {
+    "description": "Estado en progreso"
+  },
+  
+  "statusPending": "Pendiente",
+  "@statusPending": {
+    "description": "Estado pendiente"
+  },
+  
+  "statusUnknown": "Desconocido",
+  "@statusUnknown": {
+    "description": "Estado desconocido"
+  },
+  
+  "generalInformation": "Información General",
+  "@generalInformation": {
+    "description": "Título de sección de información general"
+  },
+  
+  "creationDate": "Fecha de creación",
+  "@creationDate": {
+    "description": "Etiqueta para fecha de creación"
+  },
+  
+  "viewPdf": "Ver PDF",
+  "@viewPdf": {
+    "description": "Tooltip para ver PDF"
+  },
+  
+  "noExamsRegistered": "No hay exámenes registrados",
+  "@noExamsRegistered": {
+    "description": "Mensaje cuando no hay exámenes"
+  },
+  
+  "indicatorValues": "Valores de Indicadores",
+  "@indicatorValues": {
+    "description": "Título de sección de valores de indicadores"
+  },
+  
+  "noIndicatorValues": "No hay valores de indicadores registrados",
+  "@noIndicatorValues": {
+    "description": "Mensaje cuando no hay valores de indicadores"
+  },
+  
+  "cost": "Costo",
+  "@cost": {
+    "description": "Etiqueta de costo"
+  },
+  
+  "examWithoutName": "Examen sin nombre",
+  "@examWithoutName": {
+    "description": "Texto para examen sin nombre"
+  },
+  
+  "indicator": "Indicador",
+  "@indicator": {
+    "description": "Término para indicador en singular"
+  },
+  
   "observations": "Observaciones",
   "@observations": {
     "description": "Campo de observaciones o notas"
@@ -544,6 +609,10 @@
   "roleAdmin": "Administrador",
   "@roleAdmin": {
     "description": "Rol administrador"
+  },
+  "roleUser": "Usuario",
+  "@roleUser": {
+    "description": "Rol usuario"
   },
   "roleOwner": "Propietario",
   "@roleOwner": {

@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
@@ -79,7 +78,11 @@ class ViewModel extends ChangeNotifier {
           input.phone = _currentPatient!.phone;
           input.email = _currentPatient!.email;
           input.address = _currentPatient!.address;
-          input.birthDate = _currentPatient!.birthDate;
+          // Convertir birthDate de timestamp (int) a String en formato ISO
+          if (_currentPatient!.birthDate != null && _currentPatient!.birthDate! > 0) {
+            final date = DateTime.fromMillisecondsSinceEpoch(_currentPatient!.birthDate! * 1000);
+            input.birthDate = date.toIso8601String();
+          }
         } else {
           debugPrint('⚠️ No se encontró paciente con ID: $id en la lista');
           error = true;

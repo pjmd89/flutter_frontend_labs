@@ -144,11 +144,11 @@ class EvaluationPackageItem extends StatelessWidget {
 
   IconData _getStatusIcon(ResultStatus? status) {
     switch (status) {
-      case ResultStatus.completed:
+      case ResultStatus.cOMPLETED:
         return Icons.check_circle_outline;
-      case ResultStatus.inProgress:
+      case ResultStatus.iNPROGRESS:
         return Icons.pending_outlined;
-      case ResultStatus.pending:
+      case ResultStatus.pENDING:
         return Icons.access_time_outlined;
       default:
         return Icons.help_outline;
@@ -157,11 +157,11 @@ class EvaluationPackageItem extends StatelessWidget {
 
   Color _getStatusColor(ResultStatus? status) {
     switch (status) {
-      case ResultStatus.completed:
+      case ResultStatus.cOMPLETED:
         return Colors.green;
-      case ResultStatus.inProgress:
+      case ResultStatus.iNPROGRESS:
         return Colors.orange;
-      case ResultStatus.pending:
+      case ResultStatus.pENDING:
         return Colors.blue;
       default:
         return Colors.grey;

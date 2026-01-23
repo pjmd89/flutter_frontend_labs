@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:labs/src/domain/entities/types/user/user_model.dart';
+import 'package:labs/src/domain/entities/main.dart';
 import './view_model.dart';
 
 class AuthCallbackPage extends StatefulWidget {
@@ -29,9 +29,9 @@ class _AuthCallbackPageState extends State<AuthCallbackPage> {
   }
 
   Future<void> _handleCallback() async {
-    final User? user = await viewModel.loggedUser();
+    final LoggedUser? loggedUser = await viewModel.loggedUser();
     
-    if(user == null){
+    if(loggedUser == null){
       setState(() {
         _status = 'Error al validar las credenciales.';
         _success = false;
@@ -39,14 +39,14 @@ class _AuthCallbackPageState extends State<AuthCallbackPage> {
       });
     }
 
-    if(user != null){
+    if(loggedUser != null && loggedUser.user != null){
 
       setState(() {
         _status = 'Inicio de sesión exitoso. Redirigiendo…';
         _success = true;
         _loading = false;
       });
-      _scheduleRedirect(user);
+      _scheduleRedirect(loggedUser.user!);
     }
   }
 

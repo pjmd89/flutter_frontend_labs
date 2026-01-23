@@ -24,7 +24,7 @@ class PatientItem extends StatelessWidget {
         child: ListTile(
           leading: const CircleAvatar(child: Icon(Icons.person_outline)),
           title: Text('${patient.firstName} ${patient.lastName}'),
-          subtitle: Text('${l10n.dni}: ${patient.dni}'),
+          subtitle: Text('${l10n.dni}: ${patient.dni ?? "-"}'),
           trailing: PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'edit' && onUpdate != null) {

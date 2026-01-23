@@ -58,11 +58,11 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
   String getSexLabel(BuildContext context, Sex sex) {
     final l10n = AppLocalizations.of(context)!;
     switch (sex) {
-      case Sex.female:
+      case Sex.fEMALE:
         return l10n.sexFemale;
-      case Sex.male:
+      case Sex.mALE:
         return l10n.sexMale;
-      case Sex.intersex:
+      case Sex.iNTERSEX:
         return l10n.sexIntersex;
     }
   }
@@ -70,9 +70,9 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
   String getPatientTypeLabel(BuildContext context, PatientType type) {
     final l10n = AppLocalizations.of(context)!;
     switch (type) {
-      case PatientType.human:
+      case PatientType.hUMAN:
         return l10n.patientTypeHuman;
-      case PatientType.animal:
+      case PatientType.aNIMAL:
         return l10n.patientTypeAnimal;
     }
   }
@@ -147,10 +147,10 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
                           onChanged: (PatientType? newValue) {
                             setState(() {
                               selectedPatientType = newValue;
-                              viewModel.input.patientType = newValue ?? PatientType.human;
+                              viewModel.input.patientType = newValue ?? PatientType.hUMAN;
                               
                               // Si cambia a HUMAN, limpiar campo species
-                              if (newValue == PatientType.human) {
+                              if (newValue == PatientType.hUMAN) {
                                 speciesController.clear();
                                 viewModel.input.species = null;
                               }
@@ -230,7 +230,7 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
                   ),
                   
                   // Campos condicionales según tipo de paciente
-                  if (selectedPatientType == PatientType.human) ...[
+                  if (selectedPatientType == PatientType.hUMAN) ...[
                     const SizedBox(height: 16),
                     // DNI, Teléfono, Email para HUMAN
                     CustomTextFormField(
@@ -284,7 +284,7 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
                         viewModel.input.address = value;
                       },
                     ),
-                  ] else if (selectedPatientType == PatientType.animal) ...[
+                  ] else if (selectedPatientType == PatientType.aNIMAL) ...[
                     const SizedBox(height: 16),
                     // Species para ANIMAL
                     CustomTextFormField(

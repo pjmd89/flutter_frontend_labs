@@ -9,9 +9,9 @@ class CreateExamInput extends ChangeNotifier {
     _template = value;
     notifyListeners();
   }
-  String _laboratory = "";
-  String get laboratory => _laboratory;
-  set laboratory(String value) {
+  String? _laboratory;
+  String? get laboratory => _laboratory;
+  set laboratory(String? value) {
     _laboratory = value;
     notifyListeners();
   }

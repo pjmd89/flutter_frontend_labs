@@ -7,7 +7,7 @@ part of 'sex_enum.dart';
 // **************************************************************************
 
 const _$SexEnumMap = {
-  Sex.female: 'FEMALE',
-  Sex.male: 'MALE',
-  Sex.intersex: 'INTERSEX',
+  Sex.fEMALE: 'FEMALE',
+  Sex.mALE: 'MALE',
+  Sex.iNTERSEX: 'INTERSEX',
 };

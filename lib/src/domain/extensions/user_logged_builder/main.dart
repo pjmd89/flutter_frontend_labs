@@ -1,13 +1,22 @@
-import 'package:labs/src/domain/operation/fields_builders/user_fields_builder.dart';
+import 'package:labs/src/domain/operation/fields_builders/fields_builders.dart';
 
-extension UserLoggedBuilder on UserFieldsBuilder {
-  UserFieldsBuilder defaultValues() {
-    this
-      ..id()
-      ..firstName()
-      ..lastName()
-      ..role()
-      ..email();
-    return this;
+extension LoggedUserDefaultBuilder on LoggedUserFieldsBuilder {
+  LoggedUserFieldsBuilder defaultValues() {
+    return this
+      ..user(builder: (userBuilder) {
+        userBuilder
+          ..id()
+          ..firstName()
+          ..lastName()
+          ..role()
+          ..email();
+      })
+      ..currentLaboratory(builder: (labBuilder) {
+        labBuilder
+          ..id()
+          ..address();
+      })
+      ..labRole()
+      ..userIsLabOwner();
   }
 }

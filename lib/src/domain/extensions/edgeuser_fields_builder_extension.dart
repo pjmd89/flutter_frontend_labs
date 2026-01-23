@@ -12,7 +12,9 @@ extension EdgeUserFieldsBuilderExtension on EdgeUserFieldsBuilder {
             ..role()
             ..email()
             ..cutOffDate()
-            ..fee();
+            ..fee()
+            ..created()
+            ..updated();
         },
       )
       ..pageInfo(

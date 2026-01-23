@@ -3,12 +3,12 @@ import "package:json_annotation/json_annotation.dart";
 part "systeminfo_model.g.dart";
 @JsonSerializable(includeIfNull: false)
 class SystemInfo {
-  final String version;
-  final String name;
-  final String description;
-  final List<ChangeLog> changeLog;
-  final String created;
-  final String updated;
+   String version;
+   String name;
+   String description;
+   List<ChangeLog> changeLog;
+   String created;
+   String updated;
   SystemInfo({
     this.version = "",
     this.name = "",

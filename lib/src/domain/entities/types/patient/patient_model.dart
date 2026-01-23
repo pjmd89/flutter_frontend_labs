@@ -7,30 +7,29 @@ class Patient {
   final String id;
   final String firstName;
   final String lastName;
-  @JsonKey(fromJson: sexFromJson)
   final Sex? sex;
-  final num birthDate;
-  final String species;
   final PatientType? patientType;
-  final String dni;
-  final String phone;
-  final String email;
-  final String address;
+  final int? birthDate;
+  final String species;
+  final String? dni;
+  final String? phone;
+  final String? email;
+  final String? address;
   final Laboratory? laboratory;
-  final num created;
-  final num updated;
+  final int created;
+  final int updated;
   Patient({
     this.id = "",
     this.firstName = "",
     this.lastName = "",
     this.sex,
+    this.patientType,
     this.birthDate = 0,
     this.species = "",
-    this.patientType,
-    this.dni = "",
-    this.phone = "",
-    this.email = "",
-    this.address = "",
+    this.dni,
+    this.phone,
+    this.email,
+    this.address,
     this.laboratory,
     this.created = 0,
     this.updated = 0,

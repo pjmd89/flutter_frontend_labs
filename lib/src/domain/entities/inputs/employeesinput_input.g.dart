@@ -18,7 +18,7 @@ EmployeesInput _$EmployeesInputFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$EmployeesInputToJson(EmployeesInput instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      if (instance.id case final value?) '_id': value,
       'employees': instance.employees,
       'remove': instance.remove,
     };

@@ -13,7 +13,7 @@ SearchTemplateConfig getSearchConfig({
   return SearchTemplateConfig(
     rightWidget: FilledButton.icon(
       icon: const Icon(Icons.add),
-      label: Text(l10n.newThing("laboratorio")), //l10n.laboratory
+      label: Text(l10n.newThing(l10n.laboratory)),
       onPressed: () async {
         final pushResult = await context.push('/laboratory/create');
         if (pushResult == true) {
@@ -21,7 +21,10 @@ SearchTemplateConfig getSearchConfig({
         }
       },
     ),
-    searchFields: [SearchFields(field: 'name'), SearchFields(field: 'email')],
+    searchFields: [
+      SearchFields(field: 'name'),
+      SearchFields(field: 'email'),
+    ],
     pageInfo: viewModel.pageInfo,
     onSearchChanged: (search) {
       viewModel.search(search);

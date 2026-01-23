@@ -12,6 +12,21 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 // Importación condicional para web
 import 'dart:html' as html show FileUploadInputElement, FileReader;
 
+// Clase wrapper para combinar Role y LabMemberRole
+class UserRoleOption {
+  final String id;
+  final String label;
+  final bool isAdmin;
+  final LabMemberRole? employeeRole;
+  
+  UserRoleOption({
+    required this.id,
+    required this.label,
+    required this.isAdmin,
+    this.employeeRole,
+  });
+}
+
 class UserCreatePage extends StatefulWidget {
   const UserCreatePage({super.key});
 
@@ -36,9 +51,9 @@ class _UserCreatePageState extends State<UserCreatePage> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Role? selectedRole;
+  UserRoleOption? selectedRole;
   DateTime? selectedCutOffDate;
-  String? selectedLaboratoryID; // Para técnicos y facturación
+  // selectedLaboratoryID se eliminó porque CreateUserInput no tiene ese campo
 
   // Lista para teléfonos múltiples del laboratorio
   List<String> phoneNumbers = [];
@@ -166,41 +181,45 @@ class _UserCreatePageState extends State<UserCreatePage> {
   }
 
   // Obtener roles permitidos según el rol del usuario loggeado
-  List<Role> getAvailableRoles(BuildContext context) {
+  List<UserRoleOption> getAvailableRoles(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final authNotifier = context.read<AuthNotifier>();
     final currentUserRole = authNotifier.role;
 
-    // Lista de todos los roles
-    final allRoles = Role.values.toList();
-
-    // Filtrar según las reglas:
-    // 1. Nadie puede crear usuarios root
-    // 2. Solo root puede crear admins
-    return allRoles.where((role) {
-      if (role == Role.root) {
-        return false; // Nadie puede crear root
-      }
-      if (role == Role.admin && currentUserRole != Role.root) {
-        return false; // Solo root puede crear admin
-      }
-      return true;
-    }).toList();
-  }
-
-  String getRoleLabel(BuildContext context, Role role) {
-    final l10n = AppLocalizations.of(context)!;
-    switch (role) {
-      case Role.root:
-        return l10n.roleRoot;
-      case Role.admin:
-        return l10n.roleAdmin;
-      case Role.owner:
-        return l10n.roleOwner;
-      case Role.technician:
-        return l10n.roleTechnician;
-      case Role.billing:
-        return l10n.roleBilling;
+    List<UserRoleOption> options = [];
+    
+    // Solo ROOT puede crear ADMIN
+    if (currentUserRole == Role.rOOT) {
+      options.add(UserRoleOption(
+        id: 'admin',
+        label: l10n.roleAdmin,
+        isAdmin: true,
+      ));
     }
+    
+    // Todos pueden crear roles de laboratorio (excepto ROOT)
+    options.addAll([
+      UserRoleOption(
+        id: 'owner',
+        label: l10n.roleOwner,
+        isAdmin: false,
+        employeeRole: LabMemberRole.oWNER,
+      ),
+      UserRoleOption(
+        id: 'technician',
+        label: l10n.roleTechnician,
+        isAdmin: false,
+        employeeRole: LabMemberRole.tECHNICIAN,
+      ),
+      UserRoleOption(
+        id: 'billing',
+        label: l10n.roleBilling,
+        isAdmin: false,
+        employeeRole: LabMemberRole.bILLING,
+      ),
+    ]);
+    
+    return options;
   }
 
   @override
@@ -273,66 +292,51 @@ class _UserCreatePageState extends State<UserCreatePage> {
                       const SizedBox(width: 16),
                       Expanded(
                         flex: 1,
-                        child: DropdownButtonFormField<Role>(
+                        child: DropdownButtonFormField<UserRoleOption>(
                           value: selectedRole,
                           decoration: InputDecoration(
                             labelText: l10n.role,
                             isDense: true,
                             border: const OutlineInputBorder(),
                           ),
-                          items:
-                              getAvailableRoles(context).map((Role role) {
-                                return DropdownMenuItem<Role>(
-                                  value: role,
-                                  child: Text(getRoleLabel(context, role)),
-                                );
-                              }).toList(),
-                          onChanged: (Role? newValue) {
+                          items: getAvailableRoles(context).map((UserRoleOption option) {
+                            return DropdownMenuItem<UserRoleOption>(
+                              value: option,
+                              child: Text(option.label),
+                            );
+                          }).toList(),
+                          onChanged: (UserRoleOption? newValue) {
                             setState(() {
                               selectedRole = newValue;
                               
-                              // Asignar el rol seleccionado al input
-                              viewModel.input.role = newValue;
-                              
-                              // isAdmin solo es true cuando el rol es admin
-                              // Para otros roles debe ser explícitamente false
-                              if (newValue == Role.admin) {
-                                viewModel.input.isAdmin = true;
-                              } else {
-                                viewModel.input.isAdmin = false;
-                              }
-
-                              // Limpiar laboratoryID cuando no es technician/billing
-                              if (newValue != Role.technician && newValue != Role.billing) {
-                                selectedLaboratoryID = null;
-                                viewModel.input.laboratoryID = null;
-                              } else {
-                                // Limpiar companyInfo, cutOffDate y fee cuando es technician/billing
-                                viewModel.input.companyInfo = null;
-                                viewModel.input.cutOffDate = null;
-                                viewModel.input.fee = null;
-                              }
-
-                              // Inicializar companyInfo cuando se selecciona owner
-                              if (newValue == Role.owner) {
-                                viewModel.input.companyInfo ??=
-                                    CreateCompanyInput();
-                                // Limpiar laboratoryID cuando es owner
-                                selectedLaboratoryID = null;
-                                viewModel.input.laboratoryID = null;
-                              } else if (newValue != Role.technician && newValue != Role.billing) {
-                                // Limpiar companyInfo cuando no es owner/technician/billing (es admin)
-                                viewModel.input.companyInfo = null;
-                                viewModel.input.cutOffDate = null;
-                                viewModel.input.fee = null;
-                                phoneNumbers.clear();
-                                companyNameController.clear();
-                                companyTaxIDController.clear();
-                                companyLogoController.clear();
-                                labAddressController.clear();
-                                phoneController.clear();
-                                cutOffDateController.clear();
-                                feeController.clear();
+                              if (newValue != null) {
+                                // Asignar isAdmin y employeeRole según el rol seleccionado
+                                viewModel.input.isAdmin = newValue.isAdmin;
+                                viewModel.input.employeeRole = newValue.employeeRole;
+                                
+                                // Limpiar campos según el rol
+                                if (newValue.id == 'owner') {
+                                  // Owner: inicializar companyInfo
+                                  viewModel.input.companyInfo ??= CreateCompanyInput();
+                                } else if (newValue.id == 'technician' || newValue.id == 'billing') {
+                                  // Technician/Billing: limpiar companyInfo
+                                  viewModel.input.companyInfo = null;
+                                  viewModel.input.cutOffDate = null;
+                                  viewModel.input.fee = null;
+                                } else {
+                                  // Admin: limpiar todo
+                                  viewModel.input.companyInfo = null;
+                                  viewModel.input.cutOffDate = null;
+                                  viewModel.input.fee = null;
+                                  phoneNumbers.clear();
+                                  companyNameController.clear();
+                                  companyTaxIDController.clear();
+                                  companyLogoController.clear();
+                                  labAddressController.clear();
+                                  phoneController.clear();
+                                  cutOffDateController.clear();
+                                  feeController.clear();
+                                }
                               }
                             });
                           },
@@ -340,49 +344,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
                       ),
                     ],
                   ),
-                  // Dropdown de laboratorio para técnicos y facturación
-                  if (selectedRole == Role.technician || selectedRole == Role.billing) ...[
-                    const SizedBox(height: 16),
-                    viewModel.loadingLaboratories
-                        ? const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : DropdownButtonFormField<String>(
-                            value: selectedLaboratoryID,
-                            decoration: InputDecoration(
-                              labelText: l10n.laboratory,
-                              isDense: true,
-                              border: const OutlineInputBorder(),
-                            ),
-                            items: viewModel.laboratories.map((Laboratory lab) {
-                              return DropdownMenuItem<String>(
-                                value: lab.id,
-                                child: Text(
-                                  lab.company?.name ?? '${l10n.laboratory} ${lab.id}',
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedLaboratoryID = newValue;
-                                viewModel.input.laboratoryID = newValue;
-                              });
-                            },
-                            validator: (value) {
-                              // Solo validar si el rol es technician o billing
-                              if (selectedRole == Role.technician || selectedRole == Role.billing) {
-                                if (value == null || value.isEmpty) {
-                                  return l10n.fieldRequired;
-                                }
-                              }
-                              return null;
-                            },
-                          ),
-                  ],
-                  if (selectedRole == Role.owner) ...[
+                  if (selectedRole?.id == 'owner') ...[
                     const SizedBox(height: 16),
                     // CutOffDate y Fee en la misma fila
                     Row(
@@ -715,7 +677,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
                           : () async {
                             if (formKey.currentState!.validate()) {
                               // Validar teléfonos para Owner
-                              if (selectedRole == Role.owner && phoneNumbers.isEmpty) {
+                              if (selectedRole?.id == 'owner' && phoneNumbers.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(l10n.atLeastOnePhoneRequired),
@@ -726,7 +688,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
                               }
 
                               // Asignar cutOffDate como string en formato dd/MM/yyyy HH:mm
-                              if (selectedRole == Role.owner &&
+                              if (selectedRole?.id == 'owner' &&
                                   selectedCutOffDate != null) {
                                 final day = selectedCutOffDate!.day
                                     .toString()
@@ -740,7 +702,7 @@ class _UserCreatePageState extends State<UserCreatePage> {
                                 // Formato: dd/MM/yyyy 00:00
                                 viewModel.input.cutOffDate =
                                     '$day/$month/$year 00:00';
-                              } else if (selectedRole == Role.owner) {
+                              } else if (selectedRole?.id == 'owner') {
                                 viewModel.input.cutOffDate = null;
                               }
                               var isErr = await viewModel.create();

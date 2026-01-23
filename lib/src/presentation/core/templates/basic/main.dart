@@ -2,7 +2,6 @@ import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/src/domain/entities/enums/role_enum.dart';
-import 'package:labs/src/presentation/core/templates/basic/drawer_billing_buttons_list.dart';
 import 'package:labs/src/presentation/core/templates/basic/drawer_header_buttons_list.dart';
 import 'package:labs/src/presentation/core/templates/basic/drawer_owner_buttons_list.dart';
 import 'package:labs/src/presentation/core/templates/basic/drawer_root_buttons_list.dart';
@@ -24,20 +23,17 @@ class BasicTemplate extends StatelessWidget {
     String fullPath = GoRouterState.of(context).fullPath ?? "";
     List<DrawerButtonConfig> drawerButtonConfigList = [];
     switch (authNotifier.role) {
-      case Role.owner:
+      case Role.rOOT:
+        drawerButtonConfigList = getRootDrawerButtonList(context, fullPath);
+        break;
+      case Role.aDMIN:
         drawerButtonConfigList = getOwnerDrawerButtonList(context, fullPath);
         break;
-      case Role.billing:
-        drawerButtonConfigList = getBillingDrawerButtonList(context, fullPath);
-        break;
-      case Role.technician:
+      case Role.uSER:
         drawerButtonConfigList = getTechnicianDrawerButtonList(
           context,
           fullPath,
         );
-        break;
-      case Role.root:
-        drawerButtonConfigList = getRootDrawerButtonList(context, fullPath);
         break;
       default:
         fullPath = "/login";

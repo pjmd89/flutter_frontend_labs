@@ -16,6 +16,6 @@ CreateExamInput _$CreateExamInputFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CreateExamInputToJson(CreateExamInput instance) =>
     <String, dynamic>{
       'template': instance.template,
-      'laboratory': instance.laboratory,
+      if (instance.laboratory case final value?) 'laboratory': value,
       'baseCost': instance.baseCost,
     };

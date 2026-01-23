@@ -17,8 +17,8 @@ Exam _$ExamFromJson(Map<String, dynamic> json) => Exam(
           ? null
           : Laboratory.fromJson(json['laboratory'] as Map<String, dynamic>),
   baseCost: json['baseCost'] as num? ?? 0,
-  created: json['created'] as num? ?? 0,
-  updated: json['updated'] as num? ?? 0,
+  created: (json['created'] as num?)?.toInt() ?? 0,
+  updated: (json['updated'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$ExamToJson(Exam instance) => <String, dynamic>{

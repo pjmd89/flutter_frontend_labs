@@ -35,7 +35,7 @@ class ViewModel extends ChangeNotifier {
   Uint8List? get logoImageBytes => _logoImageBytes;
   
   // ✅ Getter para saber si hay un logo (existente o nuevo)
-  bool get hasLogo => _logoImageBytes != null || (_currentCompany?.logo != null && _currentCompany!.logo!.isNotEmpty);
+  bool get hasLogo => _logoImageBytes != null || (_currentCompany?.logo != null && _currentCompany!.logo.isNotEmpty);
   
   // ✅ Getter para obtener la URL del logo existente
   String? get existingLogoUrl => _currentCompany?.logo;

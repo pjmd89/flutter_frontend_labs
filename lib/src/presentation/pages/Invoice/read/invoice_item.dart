@@ -16,7 +16,7 @@ class InvoiceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPaid = invoice.paymentStatus == PaymentStatus.paid;
+    final isPaid = invoice.paymentStatus == PaymentStatus.pENDING;
     final theme = Theme.of(context);
 
     return ConstrainedBox(

@@ -9,8 +9,8 @@ class Laboratory {
   final EdgeUser? employees;
   final String address;
   final List<String> contactPhoneNumbers;
-  final num created;
-  final num updated;
+  final int created;
+  final int updated;
   Laboratory({
     this.id = "",
     this.company,

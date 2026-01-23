@@ -21,7 +21,7 @@ List<Widget> buildList({
 
   // Estado: Sin datos
   if (viewModel.laboratoryList == null || viewModel.laboratoryList!.isEmpty) {
-    return [Center(child: Text(l10n.noRegisteredMaleThings('Laboratorios')))];
+    return [Center(child: Text(l10n.noRegisteredMaleThings(l10n.laboratories)))];
   }
 
   // Estado: Con datos - mapea cada item a su widget

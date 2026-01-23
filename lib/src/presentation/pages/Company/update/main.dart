@@ -7,7 +7,7 @@ import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 // Importación condicional para web
-import 'dart:html' as html show FileUploadInputElement, File, FileReader;
+import 'dart:html' as html show FileUploadInputElement, FileReader;
 
 class CompanyUpdatePage extends StatefulWidget {
   const CompanyUpdatePage({super.key, required this.id});
@@ -372,7 +372,7 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                             _buildReadOnlyField(
                               'Fecha de creación',
                               DateTime.fromMillisecondsSinceEpoch(
-                                viewModel.currentCompany!.created.toInt(),
+                                int.parse(viewModel.currentCompany!.created),
                               ).toString().split('.')[0],
                             ),
                           ],

@@ -5,24 +5,30 @@ part "evaluationpackage_model.g.dart";
 class EvaluationPackage {
   @JsonKey(name: "_id")
   final String id;
+  final Patient? patient;
   final List<ExamResult> valuesByExam;
   final ResultStatus? status;
   final String pdfFilepath;
-  final num completedAt;
+  final int completedAt;
   final String referred;
   final List<String> observations;
-  final num? created;
-  final num? updated;
+  final bool isApproved;
+  final BioanalystReview? bioanalystReview;
+  final int created;
+  final int updated;
   EvaluationPackage({
     this.id = "",
+    this.patient,
     this.valuesByExam = const [],
     this.status,
     this.pdfFilepath = "",
     this.completedAt = 0,
     this.referred = "",
     this.observations = const [],
-    this.created,
-    this.updated,
+    this.isApproved = false,
+    this.bioanalystReview,
+    this.created = 0,
+    this.updated = 0,
   });
   factory EvaluationPackage.fromJson(Map<String, dynamic> json) => _$EvaluationPackageFromJson(json);
   Map<String, dynamic> toJson() => _$EvaluationPackageToJson(this);

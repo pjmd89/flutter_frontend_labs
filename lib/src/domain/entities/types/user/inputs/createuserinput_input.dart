@@ -2,7 +2,6 @@ import "/src/domain/entities/main.dart";
 import "package:flutter/foundation.dart";
 import "package:json_annotation/json_annotation.dart";
 part "createuserinput_input.g.dart";
-
 @JsonSerializable(includeIfNull: false)
 class CreateUserInput extends ChangeNotifier {
   String _firstName = "";
@@ -11,72 +10,54 @@ class CreateUserInput extends ChangeNotifier {
     _firstName = value;
     notifyListeners();
   }
-
   String _lastName = "";
   String get lastName => _lastName;
   set lastName(String value) {
     _lastName = value;
     notifyListeners();
   }
-
   String _email = "";
   String get email => _email;
   set email(String value) {
     _email = value;
     notifyListeners();
   }
-
   bool? _isAdmin;
   bool? get isAdmin => _isAdmin;
   set isAdmin(bool? value) {
     _isAdmin = value;
     notifyListeners();
   }
-
-  Role? _role;
-  
-  @JsonKey(includeToJson: false)
-  Role? get role => _role;
-  set role(Role? value) {
-    _role = value;
+  LabMemberRole? _employeeRole;
+  LabMemberRole? get employeeRole => _employeeRole;
+  set employeeRole(LabMemberRole? value) {
+    _employeeRole = value;
     notifyListeners();
   }
-
-  String? _laboratoryID;
-  String? get laboratoryID => _laboratoryID;
-  set laboratoryID(String? value) {
-    _laboratoryID = value;
-    notifyListeners();
-  }
-
   CreateCompanyInput? _companyInfo;
   CreateCompanyInput? get companyInfo => _companyInfo;
   set companyInfo(CreateCompanyInput? value) {
     _companyInfo = value;
     notifyListeners();
   }
-
   String? _cutOffDate;
   String? get cutOffDate => _cutOffDate;
   set cutOffDate(String? value) {
     _cutOffDate = value;
     notifyListeners();
   }
-
   num? _fee;
   num? get fee => _fee;
   set fee(num? value) {
     _fee = value;
     notifyListeners();
   }
-
   CreateUserInput({
     String? firstName,
     String? lastName,
     String? email,
     bool? isAdmin,
-    Role? role,
-    String? laboratoryID,
+    LabMemberRole? employeeRole,
     CreateCompanyInput? companyInfo,
     String? cutOffDate,
     num? fee,
@@ -85,13 +66,11 @@ class CreateUserInput extends ChangeNotifier {
     this.lastName = lastName ?? "";
     this.email = email ?? "";
     this.isAdmin = isAdmin ?? false;
-    this.role = role;
-    this.laboratoryID = laboratoryID;
+    this.employeeRole = employeeRole;
     this.companyInfo = companyInfo;
-    this.cutOffDate = cutOffDate;
-    this.fee = fee;
+    this.cutOffDate = cutOffDate ?? "";
+    this.fee = fee ?? 0;
   }
-  factory CreateUserInput.fromJson(Map<String, dynamic> json) =>
-      _$CreateUserInputFromJson(json);
+  factory CreateUserInput.fromJson(Map<String, dynamic> json) => _$CreateUserInputFromJson(json);
   Map<String, dynamic> toJson() => _$CreateUserInputToJson(this);
 }

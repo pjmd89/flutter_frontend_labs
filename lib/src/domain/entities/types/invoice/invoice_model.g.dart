@@ -14,9 +14,11 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
           : Patient.fromJson(json['patient'] as Map<String, dynamic>),
   totalAmount: json['totalAmount'] as num? ?? 0,
   orderID: json['orderID'] as String? ?? "",
-  paymentStatus:
-      $enumDecodeNullable(_$PaymentStatusEnumMap, json['paymentStatus']) ??
-      PaymentStatus.paid,
+  paymentStatus: $enumDecodeNullable(
+    _$PaymentStatusEnumMap,
+    json['paymentStatus'],
+  ),
+  kind: $enumDecodeNullable(_$InvoiceKindEnumMap, json['kind']),
   laboratory:
       json['laboratory'] == null
           ? null
@@ -27,8 +29,8 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
           : EvaluationPackage.fromJson(
             json['evaluationPackage'] as Map<String, dynamic>,
           ),
-  created: json['created'] as num?,
-  updated: json['updated'] as num?,
+  created: (json['created'] as num?)?.toInt() ?? 0,
+  updated: (json['updated'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$InvoiceToJson(Invoice instance) => <String, dynamic>{
@@ -36,14 +38,22 @@ Map<String, dynamic> _$InvoiceToJson(Invoice instance) => <String, dynamic>{
   if (instance.patient case final value?) 'patient': value,
   'totalAmount': instance.totalAmount,
   'orderID': instance.orderID,
-  'paymentStatus': _$PaymentStatusEnumMap[instance.paymentStatus]!,
+  if (_$PaymentStatusEnumMap[instance.paymentStatus] case final value?)
+    'paymentStatus': value,
+  if (_$InvoiceKindEnumMap[instance.kind] case final value?) 'kind': value,
   if (instance.laboratory case final value?) 'laboratory': value,
   if (instance.evaluationPackage case final value?) 'evaluationPackage': value,
-  if (instance.created case final value?) 'created': value,
-  if (instance.updated case final value?) 'updated': value,
+  'created': instance.created,
+  'updated': instance.updated,
 };
 
 const _$PaymentStatusEnumMap = {
-  PaymentStatus.paid: 'PAID',
-  PaymentStatus.canceled: 'CANCELED',
+  PaymentStatus.pAID: 'PAID',
+  PaymentStatus.pENDING: 'PENDING',
+  PaymentStatus.cANCELED: 'CANCELED',
+};
+
+const _$InvoiceKindEnumMap = {
+  InvoiceKind.iNVOICE: 'INVOICE',
+  InvoiceKind.cREDIT_NOTE: 'CREDIT_NOTE',
 };

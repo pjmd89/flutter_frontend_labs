@@ -38,7 +38,7 @@ class UpdateEvaluationInput extends ChangeNotifier {
     this.id = id ?? "";
     this.observations = observations;
     this.valuesByExam = valuesByExam;
-    this.allResultsCompleted = allResultsCompleted;
+    this.allResultsCompleted = allResultsCompleted ?? false;
   }
   factory UpdateEvaluationInput.fromJson(Map<String, dynamic> json) => _$UpdateEvaluationInputFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateEvaluationInputToJson(this);

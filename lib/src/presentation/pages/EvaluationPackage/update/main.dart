@@ -58,7 +58,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     }
     
     // Prellenar estado de completitud
-    allResultsCompleted = widget.evaluationPackage.status == ResultStatus.completed;
+    allResultsCompleted = widget.evaluationPackage.status == ResultStatus.cOMPLETED;
   }
   
   @override
@@ -125,11 +125,11 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     final l10n = AppLocalizations.of(context)!;
     if (status == null) return l10n.status;
     switch (status) {
-      case ResultStatus.pending:
+      case ResultStatus.pENDING:
         return 'Pendiente';
-      case ResultStatus.inProgress:
+      case ResultStatus.iNPROGRESS:
         return 'En Progreso';
-      case ResultStatus.completed:
+      case ResultStatus.cOMPLETED:
         return 'Completado';
     }
   }

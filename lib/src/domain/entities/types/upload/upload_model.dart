@@ -1,30 +1,21 @@
-import 'dart:convert';
-import 'package:json_annotation/json_annotation.dart';
-
-part 'upload_model.g.dart';
-
-/// Modelo para representar un archivo subido al servidor
-/// Compatible con el sistema de upload por fragmentos
-@JsonSerializable()
-class UploadModel {
+import "package:json_annotation/json_annotation.dart";
+part "upload_model.g.dart";
+@JsonSerializable(includeIfNull: false)
+class Upload {
   final String name;
-  final int size;
+  final num size;
   final String type;
   final String folder;
-  final int sizeUploaded;
-  
-  String get filePath => "$folder/$name";
-  
-  UploadModel({
-    required this.name,
-    required this.size,
-    required this.type,
-    required this.folder,
-    required this.sizeUploaded,
+  final num sizeUploaded;
+  final String display;
+  Upload({
+    this.name = "",
+    this.size = 0,
+    this.type = "",
+    this.folder = "",
+    this.sizeUploaded = 0,
+    this.display = "",
   });
-
-  factory UploadModel.fromJson(Map<String, dynamic> json) =>
-      _$UploadModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UploadModelToJson(this);
+  factory Upload.fromJson(Map<String, dynamic> json) => _$UploadFromJson(json);
+  Map<String, dynamic> toJson() => _$UploadToJson(this);
 }

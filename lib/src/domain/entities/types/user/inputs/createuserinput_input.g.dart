@@ -12,8 +12,10 @@ CreateUserInput _$CreateUserInputFromJson(Map<String, dynamic> json) =>
       lastName: json['lastName'] as String?,
       email: json['email'] as String?,
       isAdmin: json['isAdmin'] as bool?,
-      role: $enumDecodeNullable(_$RoleEnumMap, json['role']),
-      laboratoryID: json['laboratoryID'] as String?,
+      employeeRole: $enumDecodeNullable(
+        _$LabMemberRoleEnumMap,
+        json['employeeRole'],
+      ),
       companyInfo:
           json['companyInfo'] == null
               ? null
@@ -30,16 +32,16 @@ Map<String, dynamic> _$CreateUserInputToJson(CreateUserInput instance) =>
       'lastName': instance.lastName,
       'email': instance.email,
       if (instance.isAdmin case final value?) 'isAdmin': value,
-      if (instance.laboratoryID case final value?) 'laboratoryID': value,
+      if (_$LabMemberRoleEnumMap[instance.employeeRole] case final value?)
+        'employeeRole': value,
       if (instance.companyInfo case final value?) 'companyInfo': value,
       if (instance.cutOffDate case final value?) 'cutOffDate': value,
       if (instance.fee case final value?) 'fee': value,
     };
 
-const _$RoleEnumMap = {
-  Role.root: 'ROOT',
-  Role.admin: 'ADMIN',
-  Role.owner: 'OWNER',
-  Role.technician: 'TECHNICIAN',
-  Role.billing: 'BILLING',
+const _$LabMemberRoleEnumMap = {
+  LabMemberRole.oWNER: 'OWNER',
+  LabMemberRole.tECHNICIAN: 'TECHNICIAN',
+  LabMemberRole.bILLING: 'BILLING',
+  LabMemberRole.bIOANALYST: 'BIOANALYST',
 };
