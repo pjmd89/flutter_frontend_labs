@@ -12,6 +12,7 @@ CreateUserInput _$CreateUserInputFromJson(Map<String, dynamic> json) =>
       lastName: json['lastName'] as String?,
       email: json['email'] as String?,
       isAdmin: json['isAdmin'] as bool?,
+      role: $enumDecodeNullable(_$RoleEnumMap, json['role']),
       laboratoryID: json['laboratoryID'] as String?,
       companyInfo:
           json['companyInfo'] == null
@@ -34,3 +35,11 @@ Map<String, dynamic> _$CreateUserInputToJson(CreateUserInput instance) =>
       if (instance.cutOffDate case final value?) 'cutOffDate': value,
       if (instance.fee case final value?) 'fee': value,
     };
+
+const _$RoleEnumMap = {
+  Role.root: 'ROOT',
+  Role.admin: 'ADMIN',
+  Role.owner: 'OWNER',
+  Role.technician: 'TECHNICIAN',
+  Role.billing: 'BILLING',
+};

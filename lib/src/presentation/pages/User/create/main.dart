@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
@@ -7,6 +8,9 @@ import 'package:labs/src/presentation/core/ui/main.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import 'package:provider/provider.dart';
 import './view_model.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+// Importación condicional para web
+import 'dart:html' as html show FileUploadInputElement, FileReader;
 
 class UserCreatePage extends StatefulWidget {
   const UserCreatePage({super.key});
@@ -67,42 +71,98 @@ class _UserCreatePageState extends State<UserCreatePage> {
 
   void _addPhoneNumber() {
     final phoneText = phoneController.text.trim();
-    debugPrint('Intentando agregar teléfono: "$phoneText"');
-
     if (phoneText.isNotEmpty) {
       setState(() {
         phoneNumbers.add(phoneText);
         phoneController.clear();
 
-        // Inicializar companyInfo si no existe
         viewModel.input.companyInfo ??= CreateCompanyInput();
-
-        // Actualizar la lista de teléfonos
-        viewModel
-            .input
-            .companyInfo!
-            .laboratoryInfo
-            .contactPhoneNumbers = List<String>.from(phoneNumbers);
-
-        debugPrint('Teléfono agregado. Total: ${phoneNumbers.length}');
+        viewModel.input.companyInfo!.laboratoryInfo.contactPhoneNumbers = 
+            List<String>.from(phoneNumbers);
       });
-    } else {
-      debugPrint('Campo de teléfono vacío');
     }
   }
 
   void _removePhoneNumber(int index) {
     setState(() {
       phoneNumbers.removeAt(index);
-
       if (viewModel.input.companyInfo != null) {
-        viewModel
-            .input
-            .companyInfo!
-            .laboratoryInfo
-            .contactPhoneNumbers = List<String>.from(phoneNumbers);
+        viewModel.input.companyInfo!.laboratoryInfo.contactPhoneNumbers = 
+            List<String>.from(phoneNumbers);
       }
     });
+  }
+
+  Future<void> _pickAndUploadLogo(BuildContext context) async {
+    try {
+      debugPrint('🔧 Iniciando selección de archivo... (kIsWeb: $kIsWeb)');
+      
+      if (kIsWeb) {
+        // Implementación específica para web usando dart:html
+        debugPrint('🌐 Usando implementación web nativa');
+        
+        final uploadInput = html.FileUploadInputElement();
+        uploadInput.accept = 'image/jpeg,image/jpg,image/png,image/gif';
+        uploadInput.click();
+
+        await uploadInput.onChange.first;
+
+        final files = uploadInput.files;
+        if (files != null && files.isNotEmpty) {
+          final file = files[0];
+          final reader = html.FileReader();
+          
+          reader.readAsArrayBuffer(file);
+          await reader.onLoad.first;
+
+          final Uint8List fileBytes = reader.result as Uint8List;
+          final String fileName = file.name;
+
+          debugPrint('📄 Archivo web: $fileName, Bytes: ${fileBytes.length}');
+
+          // Validar extensión
+          final extension = fileName.split('.').last.toLowerCase();
+          if (!['jpg', 'jpeg', 'png', 'gif'].contains(extension)) {
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Formato no válido. Usa JPG, JPEG, PNG o GIF')),
+            );
+            return;
+          }
+
+          // Subir archivo
+          final success = await viewModel.uploadCompanyLogo(
+            fileBytes: fileBytes,
+            fileName: fileName,
+            userId: 'user_create',
+          );
+
+          // Actualizar controller con el nombre original del archivo
+          if (success && viewModel.displayFileName != null) {
+            setState(() {
+              companyLogoController.text = viewModel.displayFileName!;
+            });
+          }
+        } else {
+          debugPrint('ℹ️ Selección de archivo cancelada');
+        }
+      } else {
+        // Para plataformas nativas (mobile/desktop) - no debería llegar aquí en web
+        debugPrint('⚠️ Esta ruta solo funciona en web');
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Funcionalidad solo disponible en web')),
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al seleccionar archivo: $e');
+      debugPrint('💥 Tipo de error: ${e.runtimeType}');
+      debugPrint('📍 StackTrace: $stackTrace');
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 
   // Obtener roles permitidos según el rol del usuario loggeado
@@ -231,28 +291,48 @@ class _UserCreatePageState extends State<UserCreatePage> {
                             setState(() {
                               selectedRole = newValue;
                               
+                              // Asignar el rol seleccionado al input
+                              viewModel.input.role = newValue;
+                              
                               // isAdmin solo es true cuando el rol es admin
-                              viewModel.input.isAdmin = newValue == Role.admin;
+                              // Para otros roles debe ser explícitamente false
+                              if (newValue == Role.admin) {
+                                viewModel.input.isAdmin = true;
+                              } else {
+                                viewModel.input.isAdmin = false;
+                              }
 
-                              // Limpiar laboratoryID cuando se cambia de rol
+                              // Limpiar laboratoryID cuando no es technician/billing
                               if (newValue != Role.technician && newValue != Role.billing) {
                                 selectedLaboratoryID = null;
                                 viewModel.input.laboratoryID = null;
+                              } else {
+                                // Limpiar companyInfo, cutOffDate y fee cuando es technician/billing
+                                viewModel.input.companyInfo = null;
+                                viewModel.input.cutOffDate = null;
+                                viewModel.input.fee = null;
                               }
 
                               // Inicializar companyInfo cuando se selecciona owner
                               if (newValue == Role.owner) {
                                 viewModel.input.companyInfo ??=
                                     CreateCompanyInput();
-                              } else {
-                                // Limpiar companyInfo cuando no es owner
+                                // Limpiar laboratoryID cuando es owner
+                                selectedLaboratoryID = null;
+                                viewModel.input.laboratoryID = null;
+                              } else if (newValue != Role.technician && newValue != Role.billing) {
+                                // Limpiar companyInfo cuando no es owner/technician/billing (es admin)
                                 viewModel.input.companyInfo = null;
+                                viewModel.input.cutOffDate = null;
+                                viewModel.input.fee = null;
                                 phoneNumbers.clear();
                                 companyNameController.clear();
                                 companyTaxIDController.clear();
                                 companyLogoController.clear();
                                 labAddressController.clear();
                                 phoneController.clear();
+                                cutOffDateController.clear();
+                                feeController.clear();
                               }
                             });
                           },
@@ -292,8 +372,11 @@ class _UserCreatePageState extends State<UserCreatePage> {
                               });
                             },
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.fieldRequired;
+                              // Solo validar si el rol es technician o billing
+                              if (selectedRole == Role.technician || selectedRole == Role.billing) {
+                                if (value == null || value.isEmpty) {
+                                  return l10n.fieldRequired;
+                                }
                               }
                               return null;
                             },
@@ -312,6 +395,12 @@ class _UserCreatePageState extends State<UserCreatePage> {
                             fieldLength: FormFieldLength.password,
                             readOnly: true,
                             counterText: "",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return l10n.fieldRequired;
+                              }
+                              return null;
+                            },
                             onTap: () async {
                               final pickedDate = await showDatePicker(
                                 context: context,
@@ -359,6 +448,15 @@ class _UserCreatePageState extends State<UserCreatePage> {
                             isDense: true,
                             fieldLength: FormFieldLength.password,
                             counterText: "",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return l10n.fieldRequired;
+                              }
+                              if (num.tryParse(value) == null) {
+                                return l10n.invalidNumber;
+                              }
+                              return null;
+                            },
                             onChange: (value) {
                               viewModel.input.fee = num.tryParse(value);
                             },
@@ -411,18 +509,125 @@ class _UserCreatePageState extends State<UserCreatePage> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    // Logo (opcional) - ancho completo
-                    CustomTextFormField(
-                      labelText: '${l10n.logo} (${l10n.optional})',
-                      controller: companyLogoController,
-                      isDense: true,
-                      fieldLength: FormFieldLength.email,
-                      counterText: "",
-                      onChange: (value) {
-                        viewModel.input.companyInfo ??= CreateCompanyInput();
-                        viewModel.input.companyInfo!.logo = value;
-                      },
+                    // Logo con botón de upload
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            labelText: '${l10n.logo} (${l10n.optional})',
+                            controller: companyLogoController,
+                            isDense: true,
+                            fieldLength: FormFieldLength.email,
+                            counterText: "",
+                            readOnly: true,
+                            onTap: viewModel.uploading
+                                ? null
+                                : () => _pickAndUploadLogo(context),
+                            suffixIcon: viewModel.uploading
+                                ? const Padding(
+                                    padding: EdgeInsets.all(12),
+                                    child: SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                  )
+                                : const Icon(Icons.upload_file),
+                            onChange: (value) {
+                              viewModel.input.companyInfo ??= CreateCompanyInput();
+                              viewModel.input.companyInfo!.logo = value;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: FilledButton.icon(
+                            onPressed:
+                                viewModel.uploading
+                                    ? null
+                                    : () => _pickAndUploadLogo(context),
+                            icon: viewModel.uploading
+                                ? const SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Icon(Icons.upload_file),
+                            label: Text(
+                              viewModel.uploading
+                                  ? 'Subiendo...'
+                                  : 'Subir',
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    // Información del logo
+                    if (viewModel.hasLogo)
+                      const SizedBox(height: 12),
+                    if (viewModel.hasLogo)
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withOpacity(0.5),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Logo seleccionado',
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    viewModel.displayFileName ?? '',
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurfaceVariant,
+                                      fontSize: 12,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     const SizedBox(height: 24),
 
                     // Sección: Información del Laboratorio
@@ -437,10 +642,15 @@ class _UserCreatePageState extends State<UserCreatePage> {
                       isDense: true,
                       fieldLength: FormFieldLength.email,
                       counterText: "",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.fieldRequired;
+                        }
+                        return null;
+                      },
                       onChange: (value) {
                         viewModel.input.companyInfo ??= CreateCompanyInput();
-                        viewModel.input.companyInfo!.laboratoryInfo.address =
-                            value;
+                        viewModel.input.companyInfo!.laboratoryInfo.address = value;
                       },
                     ),
                     const SizedBox(height: 16),
@@ -473,14 +683,13 @@ class _UserCreatePageState extends State<UserCreatePage> {
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
-                        children:
-                            phoneNumbers.asMap().entries.map((entry) {
-                              return Chip(
-                                label: Text(entry.value),
-                                onDeleted: () => _removePhoneNumber(entry.key),
-                                deleteIcon: const Icon(Icons.close, size: 18),
-                              );
-                            }).toList(),
+                        children: phoneNumbers.asMap().entries.map((entry) {
+                          return Chip(
+                            label: Text(entry.value),
+                            onDeleted: () => _removePhoneNumber(entry.key),
+                            deleteIcon: const Icon(Icons.close, size: 18),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ],
@@ -505,6 +714,17 @@ class _UserCreatePageState extends State<UserCreatePage> {
                           ? null
                           : () async {
                             if (formKey.currentState!.validate()) {
+                              // Validar teléfonos para Owner
+                              if (selectedRole == Role.owner && phoneNumbers.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(l10n.atLeastOnePhoneRequired),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                                return;
+                              }
+
                               // Asignar cutOffDate como string en formato dd/MM/yyyy HH:mm
                               if (selectedRole == Role.owner &&
                                   selectedCutOffDate != null) {

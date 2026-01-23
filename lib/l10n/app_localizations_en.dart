@@ -736,4 +736,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get templateDescription => 'Template description';
+
+  @override
+  String get atLeastOnePhoneRequired => 'You must add at least one contact phone';
 }

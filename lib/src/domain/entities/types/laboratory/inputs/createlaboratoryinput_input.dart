@@ -26,7 +26,7 @@ class CreateLaboratoryInput extends ChangeNotifier {
     String? address,
     List<String>? contactPhoneNumbers,
   }) {
-    this.companyID = companyID ?? "";
+    this.companyID = companyID;
     this.address = address ?? "";
     this.contactPhoneNumbers = contactPhoneNumbers;
   }

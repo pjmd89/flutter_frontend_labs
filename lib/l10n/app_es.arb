@@ -1113,5 +1113,14 @@
   "templateDescription": "Descripción de la plantilla",
   "@templateDescription": {
     "description": "Label para descripción de plantilla"
+  },
+  "atLeastOnePhoneRequired": "Debe agregar al menos un teléfono de contacto",
+  "@atLeastOnePhoneRequired": {
+    "description": "Mensaje de validación cuando no se agregan teléfonos para laboratorio"
+  }
+,
+  "atLeastOnePhoneRequired": "Debe agregar al menos un teléfono de contacto",
+  "@atLeastOnePhoneRequired": {
+    "description": "Mensaje de validación cuando no se agregan teléfonos para laboratorio"
   }
 }

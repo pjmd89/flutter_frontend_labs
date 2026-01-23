@@ -33,6 +33,15 @@ class CreateUserInput extends ChangeNotifier {
     notifyListeners();
   }
 
+  Role? _role;
+  
+  @JsonKey(includeToJson: false)
+  Role? get role => _role;
+  set role(Role? value) {
+    _role = value;
+    notifyListeners();
+  }
+
   String? _laboratoryID;
   String? get laboratoryID => _laboratoryID;
   set laboratoryID(String? value) {
@@ -66,6 +75,7 @@ class CreateUserInput extends ChangeNotifier {
     String? lastName,
     String? email,
     bool? isAdmin,
+    Role? role,
     String? laboratoryID,
     CreateCompanyInput? companyInfo,
     String? cutOffDate,
@@ -75,10 +85,11 @@ class CreateUserInput extends ChangeNotifier {
     this.lastName = lastName ?? "";
     this.email = email ?? "";
     this.isAdmin = isAdmin ?? false;
-    this.laboratoryID = laboratoryID ?? "";
+    this.role = role;
+    this.laboratoryID = laboratoryID;
     this.companyInfo = companyInfo;
     this.cutOffDate = cutOffDate;
-    this.fee = fee ?? 0;
+    this.fee = fee;
   }
   factory CreateUserInput.fromJson(Map<String, dynamic> json) =>
       _$CreateUserInputFromJson(json);

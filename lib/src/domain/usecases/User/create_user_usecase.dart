@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:agile_front/agile_front.dart' as af;
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
+import 'package:flutter/foundation.dart';
 import '/src/domain/entities/main.dart';
 import '/src/domain/extensions/user_fields_builder_extension.dart';
 import '/src/domain/operation/fields_builders/main.dart';
@@ -32,9 +34,12 @@ class CreateUserUsecase implements af.UseCase {
       opArgs: {"input": GqlVar("name")},
     );
 
+    final inputJson = input.toJson();
+    debugPrint('🔍 CreateUserInput JSON: ${jsonEncode(inputJson)}');
+
     var response = await _conn.operation(
       operation: mutation,
-      variables: {'name': input.toJson()},
+      variables: {'name': inputJson},
     );
 
     return response;

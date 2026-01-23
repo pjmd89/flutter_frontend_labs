@@ -966,5 +966,14 @@
   "nonEditableInformation": "Non-editable information",
   "@nonEditableInformation": {
     "description": "Label for non-editable information section"
+  },
+  "atLeastOnePhoneRequired": "You must add at least one contact phone",
+  "@atLeastOnePhoneRequired": {
+    "description": "Validation message when no phones are added for laboratory"
+  }
+,
+  "atLeastOnePhoneRequired": "You must add at least one contact phone",
+  "@atLeastOnePhoneRequired": {
+    "description": "Validation message when no phones are added for laboratory"
   }
 }

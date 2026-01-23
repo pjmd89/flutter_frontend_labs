@@ -1480,6 +1480,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Descripción de la plantilla'**
   String get templateDescription;
+
+  /// Mensaje de validación cuando no se agregan teléfonos para laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'Debe agregar al menos un teléfono de contacto'**
+  String get atLeastOnePhoneRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
