@@ -23,7 +23,8 @@ class ExamItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
-    final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
+    final userRole = loggedUser?.labRole;
+    final shouldHideMenu = userRole == LabMemberRole.bILLING || userRole == LabMemberRole.tECHNICIAN;
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360),
@@ -43,8 +44,8 @@ class ExamItem extends StatelessWidget {
                   Text('${l10n.baseCost}: \$${exam.baseCost}'),
                 ],
               ),
-              trailing: isBilling
-                  ? null // Ocultar el menú si es billing
+              trailing: shouldHideMenu
+                  ? null // Ocultar el menú si es billing o technician
                   : PopupMenuButton<String>(
                       onSelected: (value) {
                         if (value == 'edit' && onUpdate != null) {

@@ -9,12 +9,12 @@ List<DrawerButtonConfig> getTechnicianDrawerButtonList(
 ) {
   final l10n = AppLocalizations.of(context)!;
   return [
-    //DrawerButtonConfig(
-    //  buttonText: l10n.exams,
-    //  buttonRoute: "/exam",
-    //  currentPath: currentPath,
-    //  leadingIcon: const Icon(Icons.science),
-    //),
+    DrawerButtonConfig(
+      buttonText: l10n.exams,
+      buttonRoute: "/exam",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.science),
+    ),
     DrawerButtonConfig(
       buttonText: l10n.patients,
       buttonRoute: "/patient",

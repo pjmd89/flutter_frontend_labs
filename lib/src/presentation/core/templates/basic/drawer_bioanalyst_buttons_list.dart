@@ -15,23 +15,23 @@ List<DrawerButtonConfig> getBioanalystDrawerButtonList(
     //  currentPath: currentPath,
     //  leadingIcon: const Icon(Icons.dashboard),
     //),
-    DrawerButtonConfig(
-      buttonText: l10n.patients,
-      buttonRoute: "/patient",
-      currentPath: currentPath,
-      leadingIcon: const Icon(Icons.people),
-    ),
+    //DrawerButtonConfig(
+    //  buttonText: l10n.patients,
+    //  buttonRoute: "/patient",
+    //  currentPath: currentPath,
+    //  leadingIcon: const Icon(Icons.people),
+    //),
     DrawerButtonConfig(
       buttonText: l10n.evaluationPackages,
       buttonRoute: "/evaluationpackage",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.inventory_2),
     ),
-    DrawerButtonConfig(
-      buttonText: l10n.laboratories,
-      buttonRoute: "/laboratory",
-      currentPath: currentPath,
-      leadingIcon: const Icon(Icons.science),
-    ),
+    //DrawerButtonConfig(
+    //  buttonText: l10n.laboratories,
+    //  buttonRoute: "/laboratory",
+    //  currentPath: currentPath,
+    //  leadingIcon: const Icon(Icons.science),
+    //),
   ];
 }
