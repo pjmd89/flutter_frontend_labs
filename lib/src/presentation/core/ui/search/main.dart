@@ -85,8 +85,9 @@ class _SearchTemplateState extends State<SearchTemplate> {
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {
-                              if (_debounce?.isActive ?? false)
+                              if (_debounce?.isActive ?? false) {
                                 _debounce!.cancel();
+                              }
                               _debounce = Timer(
                                 const Duration(milliseconds: 800),
                                 () {

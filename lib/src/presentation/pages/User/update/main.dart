@@ -186,7 +186,7 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
                   
                   // Campos de solo lectura (no están en UpdateUserInput)
                   Card(
-                    color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(

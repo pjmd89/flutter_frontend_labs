@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '/src/domain/entities/main.dart';
 import '/src/domain/operation/fields_builders/main.dart';
@@ -10,7 +9,7 @@ import '/src/domain/usecases/Laboratory/read_laboratory_usecase.dart';
 import '/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
-import '/l10n/app_localizations.dart';
+
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
@@ -169,11 +168,7 @@ class ViewModel extends ChangeNotifier {
         isError = false;
 
         // Mostrar mensaje de éxito
-        final l10n = AppLocalizations.of(_context)!;
-        _errorService.showError(
-          message: l10n.thingCreatedSuccessfully(l10n.patient),
-          type: ErrorType.success,
-        );
+      
       } else {
         isError = true;
       }

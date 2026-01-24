@@ -11,7 +11,7 @@ import '/src/domain/usecases/upload/upload_usecase.dart';
 import '/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
-import '/l10n/app_localizations.dart';
+
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
@@ -153,11 +153,7 @@ class ViewModel extends ChangeNotifier {
         isError = false;
 
         // Mostrar mensaje de éxito
-        final l10n = AppLocalizations.of(_context)!;
-        _errorService.showError(
-          message: l10n.thingCreatedSuccessfully(l10n.user),
-          type: ErrorType.success,
-        );
+        
       } else {
         isError = true;
       }
@@ -204,9 +200,7 @@ class ViewModel extends ChangeNotifier {
 
       if (result.success && result.uploadedFile != null) {
         // Construir path del archivo subido
-        _uploadedLogoPath = result.uploadedFile!['folder'] +
-            '/' +
-            result.uploadedFile!['name'];
+        _uploadedLogoPath = '${result.uploadedFile!['folder']}/${result.uploadedFile!['name']}';
 
         // Guardar nombre original del archivo
         _originalFileName = fileName;
@@ -220,11 +214,7 @@ class ViewModel extends ChangeNotifier {
 
         debugPrint('✅ Logo subido exitosamente: $_uploadedLogoPath');
 
-        final l10n = AppLocalizations.of(_context)!;
-        _errorService.showError(
-          message: '${l10n.logo} subido exitosamente',
-          type: ErrorType.success,
-        );
+        
 
         return true;
       } else {

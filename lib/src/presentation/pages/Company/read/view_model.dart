@@ -107,9 +107,7 @@ class ViewModel extends ChangeNotifier {
       companyList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar empresas: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }
@@ -134,9 +132,7 @@ class ViewModel extends ChangeNotifier {
       companyList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al buscar empresas: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }

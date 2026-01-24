@@ -77,9 +77,7 @@ class ViewModel extends ChangeNotifier {
       laboratoryList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar laboratorios: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }
@@ -103,9 +101,7 @@ class ViewModel extends ChangeNotifier {
       laboratoryList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al buscar laboratorios: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }

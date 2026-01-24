@@ -41,12 +41,14 @@ class ViewModel extends ChangeNotifier {
         isError = false;
 
         // Limpiar sesión local
-        final authNotifier = _context.read<AuthNotifier>();
-        await authNotifier.signOut();
-
-        // Redireccionar a login
         if (_context.mounted) {
-          _context.go('/login');
+          final authNotifier = _context.read<AuthNotifier>();
+          await authNotifier.signOut();
+
+          // Redireccionar a login
+          if (_context.mounted) {
+            _context.go('/login');
+          }
         }
       } else {
         isError = true;
@@ -56,9 +58,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
 
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cerrar sesión: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }

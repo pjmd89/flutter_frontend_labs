@@ -10,7 +10,7 @@ import 'package:labs/src/domain/operation/queries/getPatients/getpatients_query.
 import 'package:labs/src/domain/extensions/edgepatient_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/patient_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
-import '/src/infraestructure/services/error_service.dart';
+
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
@@ -83,31 +83,23 @@ class ViewModel extends ChangeNotifier {
         } else {
           debugPrint('⚠️ No se encontró paciente con ID: $id en la lista');
           error = true;
-          _context.read<GQLNotifier>().errorService.showError(
-            message: 'No se encontró el paciente con ID: $id',
-          );
+         
         }
       } else if (response is EdgePatient && response.edges.isEmpty) {
         debugPrint('⚠️ EdgePatient sin datos - edges está vacío');
         error = true;
-        _context.read<GQLNotifier>().errorService.showError(
-          message: 'No hay pacientes en el sistema',
-        );
+        
       } else {
         debugPrint('⚠️ Response no es EdgePatient. Tipo: ${response.runtimeType}');
         error = true;
-        _context.read<GQLNotifier>().errorService.showError(
-          message: 'Error al procesar respuesta del servidor',
-        );
+        
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en loadData: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar paciente: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }
@@ -132,19 +124,14 @@ class ViewModel extends ChangeNotifier {
         _currentPatient = response;
         debugPrint('✅ Paciente actualizado exitosamente');
         
-        _context.read<GQLNotifier>().errorService.showError(
-          message: '${l10n.patient} actualizado exitosamente',
-          type: ErrorType.success,
-        );
+       
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en updatePatient: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al actualizar paciente: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }

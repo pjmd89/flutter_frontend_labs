@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
@@ -8,8 +7,6 @@ import '/src/domain/operation/fields_builders/main.dart';
 import '/src/domain/operation/queries/getPatients/getpatients_query.dart';
 import '/src/domain/extensions/edgepatient_fields_builder_extension.dart';
 import '/src/domain/usecases/Patient/read_patient_usecase.dart';
-import '/src/domain/entities/inputs/searchinput_input.dart';
-import '/src/domain/entities/types/pageinfo/pageinfo_model.dart';
 
 class ViewModel extends ChangeNotifier {
   // Estados privados
@@ -110,9 +107,7 @@ class ViewModel extends ChangeNotifier {
       patientList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar pacientes: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }
@@ -137,9 +132,7 @@ class ViewModel extends ChangeNotifier {
       patientList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al buscar pacientes: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }

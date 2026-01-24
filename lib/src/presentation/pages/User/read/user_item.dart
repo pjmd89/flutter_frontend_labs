@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/domain/entities/enums/labmemberrole_enum.dart';
+
 import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -21,11 +21,24 @@ class UserItem extends StatelessWidget {
     this.onDelete,
   });
 
+  String _getRoleText() {
+    if (user.role == null) return l10n.roleUnknown;
+    
+    switch (user.role!) {
+      case Role.rOOT:
+        return l10n.roleRoot;
+      case Role.aDMIN:
+        return l10n.roleAdmin;
+      case Role.uSER:
+        return l10n.roleUser;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fullName = '${user.firstName} ${user.lastName}'.trim();
-    final roleText = user.role?.toString().split('.').last ?? 'Sin rol';
+    final roleText = _getRoleText();
     
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;

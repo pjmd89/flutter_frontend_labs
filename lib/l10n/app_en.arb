@@ -642,6 +642,10 @@
   "@roleBioanalyst": {
     "description": "Bioanalyst role"
   },
+  "roleUnknown": "No role",
+  "@roleUnknown": {
+    "description": "Unknown or unassigned role"
+  },
   "isAdmin": "Is administrator",
   "@isAdmin": {
     "description": "Label for boolean administrator field"

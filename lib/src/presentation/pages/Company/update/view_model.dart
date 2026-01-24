@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:labs/src/domain/usecases/upload/upload_usecase.dart';
 import 'package:labs/src/domain/operation/queries/getCompanies/getcompanies_query.dart';
 import 'package:labs/src/domain/extensions/edgecompany_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
-import '/src/infraestructure/services/error_service.dart';
+
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
@@ -103,33 +103,25 @@ class ViewModel extends ChangeNotifier {
         } else {
           debugPrint('⚠️ No se encontró empresa con ID: $id en la lista');
           error = true;
-          _context.read<GQLNotifier>().errorService.showError(
-            message: 'No se encontró la empresa con ID: $id',
-          );
+          
         }
       } else if (response is EdgeCompany && response.edges.isEmpty) {
         debugPrint('⚠️ EdgeCompany sin datos - edges está vacío');
         error = true;
-        _context.read<GQLNotifier>().errorService.showError(
-          message: 'No hay empresas en el sistema',
-        );
+        
       } else {
         debugPrint(
           '⚠️ Response no es EdgeCompany. Tipo: ${response.runtimeType}',
         );
         error = true;
-        _context.read<GQLNotifier>().errorService.showError(
-          message: 'Error al procesar respuesta del servidor',
-        );
+        
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en loadData: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       error = true;
 
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar empresa: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }
@@ -154,19 +146,14 @@ class ViewModel extends ChangeNotifier {
         _currentCompany = response;
         debugPrint('✅ Empresa actualizada exitosamente');
 
-        _context.read<GQLNotifier>().errorService.showError(
-          message: '${l10n.company} actualizada exitosamente',
-          type: ErrorType.success,
-        );
+        
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en updateCompany: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
 
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al actualizar empresa: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }
@@ -201,9 +188,7 @@ class ViewModel extends ChangeNotifier {
 
       if (result.success && result.uploadedFile != null) {
         // Construir path del archivo subido
-        _uploadedLogoPath = result.uploadedFile!['folder'] +
-            '/' +
-            result.uploadedFile!['name'];
+        _uploadedLogoPath = '${result.uploadedFile!['folder']}/${result.uploadedFile!['name']}';
 
         // Guardar nombre original del archivo
         _originalFileName = fileName;
@@ -216,10 +201,7 @@ class ViewModel extends ChangeNotifier {
 
         debugPrint('✅ Logo subido exitosamente: $_uploadedLogoPath');
 
-        _context.read<GQLNotifier>().errorService.showError(
-          message: '${l10n.logo} subido exitosamente',
-          type: ErrorType.success,
-        );
+        
 
         return true;
       } else {
@@ -241,9 +223,7 @@ class ViewModel extends ChangeNotifier {
 
         debugPrint('❌ Error al subir logo: $errorMessage');
 
-        _context.read<GQLNotifier>().errorService.showError(
-          message: errorMessage,
-        );
+        
 
         return false;
       }
@@ -251,9 +231,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('💥 Error al subir logo: $e');
       debugPrint('📍 StackTrace: $stackTrace');
 
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al subir logo: ${e.toString()}',
-      );
+     
 
       return false;
     } finally {

@@ -129,9 +129,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('📍 StackTrace: $stackTrace');
       foundPatient = null;
 
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al buscar paciente: ${e.toString()}',
-      );
+     
     } finally {
       searching = false;
     }
@@ -198,9 +196,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
 
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al crear factura: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }

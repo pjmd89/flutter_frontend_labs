@@ -35,7 +35,7 @@ extension EvaluationPackageFieldsBuilderExtension on EvaluationPackageFieldsBuil
                   ..template(
                     builder: (templateBuilder) {
                       templateBuilder
-                        ..name();
+                        .name();
                     },
                   )
                   ..baseCost();

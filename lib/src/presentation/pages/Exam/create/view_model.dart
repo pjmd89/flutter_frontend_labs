@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
@@ -96,9 +95,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('💥 Error cargando datos iniciales: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar datos: ${e.toString()}',
-      );
+     
     } finally {
       loadingData = false;
     }
@@ -128,9 +125,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al crear examen: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }

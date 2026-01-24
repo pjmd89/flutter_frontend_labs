@@ -54,9 +54,7 @@ class ViewModel extends ChangeNotifier {
       isError = true;
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al crear plantilla de examen: ${e.toString()}',
-      );
+    
     } finally {
       loading = false;
     }

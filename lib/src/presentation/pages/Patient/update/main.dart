@@ -299,7 +299,7 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                   
                   // Campos de solo lectura (no están en UpdatePatientInput)
                   Card(
-                    color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(

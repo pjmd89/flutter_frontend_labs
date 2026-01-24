@@ -232,7 +232,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                           ),
                         ),
                       );
-                    }).toList(),
+                    }),
 
                   const SizedBox(height: 16),
 

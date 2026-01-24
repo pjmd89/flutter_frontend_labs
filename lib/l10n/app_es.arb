@@ -717,6 +717,10 @@
   "@roleBioanalyst": {
     "description": "Rol de bioanalista"
   },
+  "roleUnknown": "Sin rol",
+  "@roleUnknown": {
+    "description": "Rol desconocido o no asignado"
+  },
   "isAdmin": "Es administrador",
   "@isAdmin": {
     "description": "Etiqueta para campo booleano de administrador"

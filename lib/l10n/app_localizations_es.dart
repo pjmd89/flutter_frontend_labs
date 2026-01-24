@@ -472,6 +472,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get roleBioanalyst => 'Bioanalista';
 
   @override
+  String get roleUnknown => 'Sin rol';
+
+  @override
   String get isAdmin => 'Es administrador';
 
   @override

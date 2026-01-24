@@ -40,7 +40,7 @@ class CheckFileSizeQuery implements Operation {
     // Construir declaración de variables GraphQL
     final variableDecl = declarativeArgs ?? this.declarativeArgs ?? {};
     final variablesStr = variableDecl.isNotEmpty
-        ? '(' + variableDecl.entries.map((e) => '\$${e.key}:${e.value}').join(',') + ')'
+        ? '(${variableDecl.entries.map((e) => '\$${e.key}:${e.value}').join(',')})'
         : '';
 
     final body = formatField(

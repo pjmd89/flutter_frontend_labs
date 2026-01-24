@@ -9,7 +9,6 @@ import 'package:labs/src/domain/usecases/User/read_user_usecase.dart';
 import 'package:labs/src/domain/operation/queries/getUsers/getusers_query.dart';
 import 'package:labs/src/domain/extensions/edgeuser_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
-import '/src/infraestructure/services/error_service.dart';
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
@@ -78,31 +77,23 @@ class ViewModel extends ChangeNotifier {
         } else {
           debugPrint('⚠️ No se encontró usuario con ID: $id en la lista');
           error = true;
-          _context.read<GQLNotifier>().errorService.showError(
-            message: 'No se encontró el usuario con ID: $id',
-          );
+          
         }
       } else if (response is EdgeUser && response.edges.isEmpty) {
         debugPrint('⚠️ EdgeUser sin datos - edges está vacío');
         error = true;
-        _context.read<GQLNotifier>().errorService.showError(
-          message: 'No hay usuarios en el sistema',
-        );
+        
       } else {
         debugPrint('⚠️ Response no es EdgeUser. Tipo: ${response.runtimeType}');
         error = true;
-        _context.read<GQLNotifier>().errorService.showError(
-          message: 'Error al procesar respuesta del servidor',
-        );
+       
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en loadData: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       error = true;
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar usuario: ${e.toString()}',
-      );
+     
     } finally {
       loading = false;
     }
@@ -127,19 +118,14 @@ class ViewModel extends ChangeNotifier {
         _currentUser = response;
         debugPrint('✅ Usuario actualizado exitosamente');
         
-        _context.read<GQLNotifier>().errorService.showError(
-          message: '${l10n.user} actualizado exitosamente',
-          type: ErrorType.success,
-        );
+       
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en updateUser: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al actualizar usuario: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }

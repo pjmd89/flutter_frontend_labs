@@ -181,7 +181,7 @@ class _LaboratorySelectorDialogState extends State<LaboratorySelectorDialog> {
       margin: const EdgeInsets.only(bottom: 12),
       elevation: isSelected ? 4 : 1,
       color: isSelected
-          ? theme.colorScheme.primaryContainer.withOpacity(0.3)
+          ? theme.colorScheme.primaryContainer
           : null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),

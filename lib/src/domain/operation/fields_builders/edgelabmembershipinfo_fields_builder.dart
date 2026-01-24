@@ -1,7 +1,6 @@
 // GENERATED. NO EDITAR MANUALMENTE.
 import 'dart:core';
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
-import 'package:labs/src/domain/operation/fields_builders/labmembershipinfo_fields_builder.dart';
 import 'main.dart';
 class EdgeLabMembershipInfoFieldsBuilder {
   final List<String> _fields = [];

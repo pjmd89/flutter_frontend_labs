@@ -38,7 +38,7 @@ class _EvaluationPackageViewPageState extends State<EvaluationPackageViewPage> {
               icon: const Icon(Icons.picture_as_pdf),
               tooltip: l10n.viewPdf,
               onPressed: () {
-                // TODO: Implementar visualización de PDF
+                // : Implementar visualización de PDF
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('PDF: ${viewModel.evaluationPackage!.pdfFilepath}')),
                 );

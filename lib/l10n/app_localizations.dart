@@ -965,6 +965,12 @@ abstract class AppLocalizations {
   /// **'Bioanalista'**
   String get roleBioanalyst;
 
+  /// Rol desconocido o no asignado
+  ///
+  /// In es, this message translates to:
+  /// **'Sin rol'**
+  String get roleUnknown;
+
   /// Etiqueta para campo booleano de administrador
   ///
   /// In es, this message translates to:

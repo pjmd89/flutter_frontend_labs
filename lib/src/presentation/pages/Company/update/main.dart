@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
@@ -6,8 +7,9 @@ import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart
 import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-// Importación condicional para web
-import 'dart:html' as html show FileUploadInputElement, FileReader;
+// Importación para web (package:web reemplaza dart:html)
+import 'package:web/web.dart' show HTMLInputElement, FileReader;
+import 'dart:js_interop';
 
 class CompanyUpdatePage extends StatefulWidget {
   const CompanyUpdatePage({super.key, required this.id});
@@ -78,24 +80,41 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
       debugPrint('🔧 Iniciando selección de archivo... (kIsWeb: $kIsWeb)');
       
       if (kIsWeb) {
-        // Implementación específica para web usando dart:html
+        // Implementación específica para web usando package:web
         debugPrint('🌐 Usando implementación web nativa');
         
-        final uploadInput = html.FileUploadInputElement();
+        final uploadInput = HTMLInputElement();
+        uploadInput.type = 'file';
         uploadInput.accept = 'image/jpeg,image/jpg,image/png,image/gif';
         uploadInput.click();
 
-        await uploadInput.onChange.first;
+        // Esperar a que se seleccione un archivo
+        await Future.delayed(const Duration(milliseconds: 100));
+        
+        // Usar completer para manejar el evento de cambio
+        final completer = Completer<void>();
+        uploadInput.addEventListener('change', (event) {
+          completer.complete();
+        }.toJS);
+        
+        await completer.future;
 
         final files = uploadInput.files;
-        if (files != null && files.isNotEmpty) {
-          final file = files[0];
-          final reader = html.FileReader();
+        if (files != null && files.length > 0) {
+          final file = files.item(0)!;
+          final reader = FileReader();
+          
+          // Usar completer para el evento onload
+          final loadCompleter = Completer<void>();
+          reader.addEventListener('load', (event) {
+            loadCompleter.complete();
+          }.toJS);
           
           reader.readAsArrayBuffer(file);
-          await reader.onLoad.first;
+          await loadCompleter.future;
 
-          final Uint8List fileBytes = reader.result as Uint8List;
+          final result = reader.result;
+          final Uint8List fileBytes = (result as JSArrayBuffer).toDart.asUint8List();
           final String fileName = file.name;
 
           debugPrint('📄 Archivo web: $fileName, Bytes: ${fileBytes.length}');
@@ -280,12 +299,12 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
-                        ).colorScheme.primaryContainer.withOpacity(0.3),
+                        ).colorScheme.primaryContainer,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: Theme.of(
                             context,
-                          ).colorScheme.primary.withOpacity(0.5),
+                          ).colorScheme.primary
                         ),
                       ),
                       child: Row(
@@ -320,7 +339,7 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                                   style: TextStyle(
                                     color: Theme.of(
                                       context,
-                                    ).colorScheme.onSurfaceVariant,
+                                    ).colorScheme.onSurface,
                                     fontSize: 12,
                                   ),
                                   maxLines: 2,
@@ -353,7 +372,7 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                     Card(
                       color: Theme.of(
                         context,
-                      ).colorScheme.surfaceVariant.withOpacity(0.3),
+                      ).colorScheme.surfaceContainerHighest,
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Column(

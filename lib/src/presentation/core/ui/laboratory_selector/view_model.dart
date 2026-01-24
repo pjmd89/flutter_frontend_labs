@@ -105,7 +105,7 @@ class LaboratorySelectorViewModel extends ChangeNotifier {
           debugPrint('📦 Total laboratorios encontrados: ${allLaboratories.length}');
           
           // Por ahora, mostrar TODOS los laboratorios como workaround
-          // TODO: El backend debería filtrar por membresía del usuario
+          // 
           laboratoryList = allLaboratories;
           
           debugPrint('✅ Laboratorios disponibles: ${laboratoryList?.length ?? 0}');
@@ -121,9 +121,9 @@ class LaboratorySelectorViewModel extends ChangeNotifier {
       error = true;
       laboratoryList = [];
 
-      _context.read<GQLNotifier>().errorService.showError(
-            message: 'Error al cargar laboratorios: ${e.toString()}',
-          );
+      //_context.read<GQLNotifier>().errorService.showError(
+      //      message: 'Error al cargar laboratorios: ${e.toString()}',
+      //    );
     } finally {
       loading = false;
     }

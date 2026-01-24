@@ -89,8 +89,6 @@ class _UserBillingPageState extends State<UserBillingPage> {
 
   Widget _buildInvoiceCard(BuildContext context, Invoice invoice, AppLocalizations l10n) {
     // Debug: verificar el valor del address
-    final labAddress = invoice.laboratory?.address ?? '';
-    print('🏥 Building card - Lab: ${invoice.laboratory?.company?.name}, Address: "$labAddress", isEmpty: ${labAddress.isEmpty}');
     
     return Card(
       margin: const EdgeInsets.only(bottom: 12),

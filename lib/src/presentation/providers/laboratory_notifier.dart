@@ -10,7 +10,6 @@ import 'package:labs/src/domain/extensions/user_logged_builder/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import 'package:agile_front/agile_front.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -86,7 +85,7 @@ class LaboratoryNotifier extends ChangeNotifier {
 
         final loggedUser = await useCase.execute(laboratoryId: laboratory.id);
         
-        if (loggedUser != null) {
+        if (loggedUser != null && context.mounted) {
           _loggedUser = loggedUser;
           
           // Actualizar labRole en AuthNotifier

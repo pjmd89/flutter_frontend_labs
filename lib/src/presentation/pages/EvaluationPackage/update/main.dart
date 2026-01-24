@@ -217,7 +217,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                   // Sección de información no editable
                   if (viewModel.currentEvaluationPackage != null) ...[
                     Card(
-                      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(

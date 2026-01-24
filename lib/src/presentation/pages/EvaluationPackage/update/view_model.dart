@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
@@ -112,7 +111,7 @@ class ViewModel extends ChangeNotifier {
               examResultBuilder
                 ..exam(
                   builder: (examBuilder) {
-                    examBuilder..id();
+                    examBuilder.id();
                   },
                 )
                 ..indicatorValues(

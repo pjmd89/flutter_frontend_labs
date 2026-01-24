@@ -1,6 +1,6 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/extensions/edgeinvoice_fields_builder_extension.dart';
 import 'package:labs/src/domain/operation/queries/getInvoices/getinvoices_query.dart';
@@ -66,9 +66,7 @@ class ViewModel extends ChangeNotifier {
       _invoiceList = [];
       notifyListeners();
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar facturación: ${e.toString()}',
-      );
+     
     }
   }
 }

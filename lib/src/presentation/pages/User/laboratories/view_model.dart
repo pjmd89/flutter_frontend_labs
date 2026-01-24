@@ -1,7 +1,5 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'dart:convert';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/edgecompany_fields_builder_extension.dart';
@@ -20,6 +18,7 @@ class ViewModel extends ChangeNotifier {
 
   late GqlConn _gqlConn;
   late ReadLaboratoryUsecase _readLaboratoryUseCase;
+  // ignore: unused_field
   late ReadCompanyUsecase _readCompanyUseCase;
   final BuildContext _context;
 
@@ -77,9 +76,9 @@ class ViewModel extends ChangeNotifier {
       _laboratoryList = [];
       notifyListeners();
       
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar laboratorios: ${e.toString()}',
-      );
+      //_context.read<GQLNotifier>().errorService.showError(
+      //  message: 'Error al cargar laboratorios: ${e.toString()}',
+      //);
     }
   }
 }

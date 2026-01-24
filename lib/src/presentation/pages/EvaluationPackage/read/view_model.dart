@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
@@ -110,9 +109,7 @@ class ViewModel extends ChangeNotifier {
       evaluationPackageList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-            message: 'Error al cargar paquetes de evaluación: ${e.toString()}',
-          );
+      
     } finally {
       loading = false;
     }
@@ -137,9 +134,7 @@ class ViewModel extends ChangeNotifier {
       evaluationPackageList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-            message: 'Error al buscar paquetes de evaluación: ${e.toString()}',
-          );
+      
     } finally {
       loading = false;
     }

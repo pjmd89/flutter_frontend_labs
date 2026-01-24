@@ -28,7 +28,7 @@ class ExamsSection extends StatelessWidget {
                 Icon(
                   Icons.assignment_outlined,
                   size: 64,
-                  color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -71,7 +71,7 @@ class ExamsSection extends StatelessWidget {
               l10n: l10n,
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }
@@ -170,7 +170,7 @@ class _ExamCard extends StatelessWidget {
                     theme: theme,
                     l10n: l10n,
                   );
-                }).toList(),
+                }),
               ],
             ),
         ],
@@ -200,10 +200,10 @@ class _IndicatorValueItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+        color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: theme.colorScheme.outline.withOpacity(0.2),
+          color: theme.colorScheme.outline,
         ),
       ),
       child: Row(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/domain/entities/enums/labmemberrole_enum.dart';
+
 import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
 import 'package:provider/provider.dart';
 

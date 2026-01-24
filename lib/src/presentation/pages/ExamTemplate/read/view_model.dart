@@ -112,9 +112,7 @@ class ViewModel extends ChangeNotifier {
       examTemplateList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al cargar plantillas de examen: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }
@@ -139,9 +137,7 @@ class ViewModel extends ChangeNotifier {
       examTemplateList = [];
 
       // Mostrar error al usuario
-      _context.read<GQLNotifier>().errorService.showError(
-        message: 'Error al buscar plantillas de examen: ${e.toString()}',
-      );
+      
     } finally {
       loading = false;
     }
