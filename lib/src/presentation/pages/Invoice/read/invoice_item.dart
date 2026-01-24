@@ -5,19 +5,58 @@ import 'package:labs/src/domain/entities/main.dart';
 class InvoiceItem extends StatelessWidget {
   final Invoice invoice;
   final AppLocalizations l10n;
-  final Function(String id)? onCancelPayment;
+  final Function(String id, PaymentStatus newStatus)? onUpdatePaymentStatus;
 
   const InvoiceItem({
     super.key,
     required this.invoice,
     required this.l10n,
-    this.onCancelPayment,
+    this.onUpdatePaymentStatus,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isPaid = invoice.paymentStatus == PaymentStatus.pENDING;
     final theme = Theme.of(context);
+    
+    // Determinar label, color e icono del estado de pago
+    String paymentStatusLabel;
+    Color paymentStatusColor;
+    IconData paymentStatusIcon;
+    
+    switch (invoice.paymentStatus) {
+      case PaymentStatus.pAID:
+        paymentStatusLabel = l10n.paid;
+        paymentStatusColor = Colors.green;
+        paymentStatusIcon = Icons.check_circle;
+        break;
+      case PaymentStatus.pENDING:
+        paymentStatusLabel = l10n.pending;
+        paymentStatusColor = Colors.orange;
+        paymentStatusIcon = Icons.schedule;
+        break;
+      case PaymentStatus.cANCELED:
+        paymentStatusLabel = l10n.canceled;
+        paymentStatusColor = Colors.red;
+        paymentStatusIcon = Icons.cancel;
+        break;
+      case null:
+        paymentStatusLabel = 'N/A';
+        paymentStatusColor = Colors.grey;
+        paymentStatusIcon = Icons.help_outline;
+        break;
+    }
+    
+    // Determinar label y color del tipo de factura
+    String invoiceTypeLabel;
+    Color invoiceTypeColor;
+    
+    if (invoice.kind == InvoiceKind.cREDIT_NOTE) {
+      invoiceTypeLabel = l10n.invoiceTypeCreditNote;
+      invoiceTypeColor = Colors.orange;
+    } else {
+      invoiceTypeLabel = l10n.invoiceTypeInvoice;
+      invoiceTypeColor = Colors.blue;
+    }
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360),
@@ -42,22 +81,48 @@ class InvoiceItem extends StatelessWidget {
                   ),
                   Chip(
                     avatar: Icon(
-                      isPaid ? Icons.check_circle : Icons.cancel,
-                      color: isPaid ? Colors.green : Colors.red,
+                      paymentStatusIcon,
+                      color: paymentStatusColor,
                       size: 18,
                     ),
                     label: Text(
-                      isPaid ? l10n.paid : l10n.canceled,
+                      paymentStatusLabel,
                       style: TextStyle(
-                        color: isPaid ? Colors.green : Colors.red,
+                        color: paymentStatusColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),
                     ),
-                    backgroundColor: isPaid
-                        ? Colors.green.withOpacity(0.1)
-                        : Colors.red.withOpacity(0.1),
+                    backgroundColor: paymentStatusColor.withOpacity(0.1),
                     padding: const EdgeInsets.symmetric(horizontal: 4),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              
+              // Tipo de Factura
+              Row(
+                children: [
+                  Icon(Icons.description, size: 16, color: theme.colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${l10n.invoiceType}: ',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Chip(
+                    label: Text(
+                      invoiceTypeLabel,
+                      style: TextStyle(
+                        color: invoiceTypeColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                      ),
+                    ),
+                    backgroundColor: invoiceTypeColor.withOpacity(0.1),
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    visualDensity: VisualDensity.compact,
                   ),
                 ],
               ),
@@ -151,21 +216,44 @@ class InvoiceItem extends StatelessWidget {
                 ],
               ),
               
-              // Cancel Payment Button (solo si está pagado)
-              if (isPaid && onCancelPayment != null) ...[
+              // Botones de actualización de estado de pago
+              if (onUpdatePaymentStatus != null && invoice.paymentStatus != null) ...[
                 const SizedBox(height: 12),
                 const Divider(height: 1),
                 const SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.block, size: 18),
-                    label: Text(l10n.cancelPayment),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.red,
-                    ),
-                    onPressed: () => onCancelPayment!(invoice.id),
-                  ),
+                Row(
+                  children: [
+                    // Botón Marcar como Pagado (si está pending o canceled)
+                    if (invoice.paymentStatus != PaymentStatus.pAID)
+                      Expanded(
+                        child: TextButton.icon(
+                          icon: const Icon(Icons.check_circle, size: 18),
+                          label: Text(l10n.markAsPaid),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.green,
+                          ),
+                          onPressed: () => onUpdatePaymentStatus!(invoice.id, PaymentStatus.pAID),
+                        ),
+                      ),
+                    
+                    // Espaciador si hay dos botones
+                    if (invoice.paymentStatus != PaymentStatus.pAID && 
+                        invoice.paymentStatus != PaymentStatus.cANCELED)
+                      const SizedBox(width: 8),
+                    
+                    // Botón Cancelar Pago (si está paid o pending)
+                    if (invoice.paymentStatus != PaymentStatus.cANCELED)
+                      Expanded(
+                        child: TextButton.icon(
+                          icon: const Icon(Icons.block, size: 18),
+                          label: Text(l10n.cancelPayment),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.red,
+                          ),
+                          onPressed: () => onUpdatePaymentStatus!(invoice.id, PaymentStatus.cANCELED),
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ],

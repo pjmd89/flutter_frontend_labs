@@ -121,4 +121,45 @@ class ViewModel extends ChangeNotifier {
     _pageInfo = newPageInfo;
     await search([]);
   }
+  
+  // Actualizar estado de pago de una factura
+  Future<void> updatePaymentStatus(String invoiceId, PaymentStatus newStatus) async {
+    loading = true;
+    
+    try {
+      // Aquí irá la llamada a la mutation cuando esté implementada
+      // Por ahora solo simulamos la actualización en la lista local
+      if (_invoiceList != null) {
+        final index = _invoiceList!.indexWhere((inv) => inv.id == invoiceId);
+        if (index != -1) {
+          // Actualizar el estado en la lista local
+          _invoiceList![index] = Invoice(
+            id: _invoiceList![index].id,
+            patient: _invoiceList![index].patient,
+            totalAmount: _invoiceList![index].totalAmount,
+            orderID: _invoiceList![index].orderID,
+            paymentStatus: newStatus,
+            kind: _invoiceList![index].kind,
+            laboratory: _invoiceList![index].laboratory,
+            evaluationPackage: _invoiceList![index].evaluationPackage,
+            created: _invoiceList![index].created,
+            updated: _invoiceList![index].updated,
+          );
+          notifyListeners();
+        }
+      }
+      
+      // Mensaje de éxito (por ahora usando showError)
+      debugPrint('✅ Estado de pago actualizado correctamente');
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al actualizar estado de pago: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+      
+      _errorService.showError(
+        message: 'Error al actualizar estado de pago: ${e.toString()}',
+      );
+    } finally {
+      loading = false;
+    }
+  }
 }

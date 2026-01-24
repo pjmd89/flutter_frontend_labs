@@ -78,10 +78,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cancelPaymentQuestion => '¿Cancelar el pago de esta factura?';
 
   @override
+  String get markAsPaid => 'Marcar como Pagado';
+
+  @override
+  String get markAsPaidQuestion => '¿Marcar esta factura como pagada?';
+
+  @override
+  String get updatePaymentStatus => 'Actualizar Estado de Pago';
+
+  @override
   String get paymentStatus => 'Estado de Pago';
 
   @override
   String get paid => 'Pagado';
+
+  @override
+  String get pending => 'Pendiente';
 
   @override
   String get canceled => 'Cancelado';
@@ -91,6 +103,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get orderID => 'ID de Orden';
+
+  @override
+  String get invoiceType => 'Tipo de Factura';
+
+  @override
+  String get invoiceTypeInvoice => 'Factura';
+
+  @override
+  String get invoiceTypeCreditNote => 'Nota de Crédito';
 
   @override
   String get noData => 'No hay datos disponibles';

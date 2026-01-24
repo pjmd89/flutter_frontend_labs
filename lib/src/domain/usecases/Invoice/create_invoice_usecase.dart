@@ -36,7 +36,7 @@ class CreateInvoiceUsecase implements af.UseCase {
 
     var response = await _conn.operation(
       operation: mutation,
-      variables: {'name': input.toJson()},
+      variables: {'name': input},
     );
 
     return response;

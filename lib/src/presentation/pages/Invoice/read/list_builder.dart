@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import './view_model.dart';
 import './invoice_item.dart';
@@ -43,11 +42,8 @@ List<Widget> buildList({
     return InvoiceItem(
       invoice: invoice,
       l10n: l10n,
-      onCancelPayment: (id) async {
-        final result = await context.push('/invoice/cancel-payment/$id');
-        if (result == true) {
-          viewModel.getInvoices();
-        }
+      onUpdatePaymentStatus: (id, newStatus) async {
+        await viewModel.updatePaymentStatus(id, newStatus);
       },
     );
   }).toList();

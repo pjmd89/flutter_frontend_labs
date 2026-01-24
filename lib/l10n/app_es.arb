@@ -92,6 +92,18 @@
   "@cancelPaymentQuestion": {
     "description": "Pregunta de confirmación para cancelación de pago"
   },
+  "markAsPaid": "Marcar como Pagado",
+  "@markAsPaid": {
+    "description": "Acción para marcar factura como pagada"
+  },
+  "markAsPaidQuestion": "¿Marcar esta factura como pagada?",
+  "@markAsPaidQuestion": {
+    "description": "Pregunta de confirmación para marcar como pagado"
+  },
+  "updatePaymentStatus": "Actualizar Estado de Pago",
+  "@updatePaymentStatus": {
+    "description": "Acción para actualizar estado de pago"
+  },
   "paymentStatus": "Estado de Pago",
   "@paymentStatus": {
     "description": "Etiqueta para campo de estado de pago"
@@ -99,6 +111,10 @@
   "paid": "Pagado",
   "@paid": {
     "description": "Estado de pago: pagado"
+  },
+  "pending": "Pendiente",
+  "@pending": {
+    "description": "Estado de pago: pendiente"
   },
   "canceled": "Cancelado",
   "@canceled": {
@@ -111,6 +127,18 @@
   "orderID": "ID de Orden",
   "@orderID": {
     "description": "Etiqueta para ID de orden"
+  },
+  "invoiceType": "Tipo de Factura",
+  "@invoiceType": {
+    "description": "Etiqueta para tipo de factura"
+  },
+  "invoiceTypeInvoice": "Factura",
+  "@invoiceTypeInvoice": {
+    "description": "Tipo de documento: Factura"
+  },
+  "invoiceTypeCreditNote": "Nota de Crédito",
+  "@invoiceTypeCreditNote": {
+    "description": "Tipo de documento: Nota de crédito"
   },
   "noData": "No hay datos disponibles",
   "@noData": {

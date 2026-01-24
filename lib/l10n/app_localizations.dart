@@ -233,6 +233,24 @@ abstract class AppLocalizations {
   /// **'¿Cancelar el pago de esta factura?'**
   String get cancelPaymentQuestion;
 
+  /// Acción para marcar factura como pagada
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar como Pagado'**
+  String get markAsPaid;
+
+  /// Pregunta de confirmación para marcar como pagado
+  ///
+  /// In es, this message translates to:
+  /// **'¿Marcar esta factura como pagada?'**
+  String get markAsPaidQuestion;
+
+  /// Acción para actualizar estado de pago
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar Estado de Pago'**
+  String get updatePaymentStatus;
+
   /// Etiqueta para campo de estado de pago
   ///
   /// In es, this message translates to:
@@ -244,6 +262,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Pagado'**
   String get paid;
+
+  /// Estado de pago: pendiente
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get pending;
 
   /// Estado de pago: cancelado
   ///
@@ -262,6 +286,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'ID de Orden'**
   String get orderID;
+
+  /// Etiqueta para tipo de factura
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de Factura'**
+  String get invoiceType;
+
+  /// Tipo de documento: Factura
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get invoiceTypeInvoice;
+
+  /// Tipo de documento: Nota de crédito
+  ///
+  /// In es, this message translates to:
+  /// **'Nota de Crédito'**
+  String get invoiceTypeCreditNote;
 
   /// Mensaje cuando no hay datos para mostrar
   ///

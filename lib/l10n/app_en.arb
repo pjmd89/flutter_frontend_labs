@@ -131,6 +131,27 @@
     "description": "Unknown status"
   },
   
+  "cancelPayment": "Cancel Payment",
+  "@cancelPayment": {
+    "description": "Action to cancel payment"
+  },
+  "cancelPaymentQuestion": "Cancel payment for this invoice?",
+  "@cancelPaymentQuestion": {
+    "description": "Confirmation question for payment cancellation"
+  },
+  "markAsPaid": "Mark as Paid",
+  "@markAsPaid": {
+    "description": "Action to mark invoice as paid"
+  },
+  "markAsPaidQuestion": "Mark this invoice as paid?",
+  "@markAsPaidQuestion": {
+    "description": "Confirmation question for marking as paid"
+  },
+  "updatePaymentStatus": "Update Payment Status",
+  "@updatePaymentStatus": {
+    "description": "Unknown status"
+  },
+  
   "generalInformation": "General Information",
   "@generalInformation": {
     "description": "General information section title"
@@ -948,6 +969,10 @@
   "@paid": {
     "description": "Payment status: paid"
   },
+  "pending": "Pending",
+  "@pending": {
+    "description": "Payment status: pending"
+  },
   "canceled": "Canceled",
   "@canceled": {
     "description": "Payment status: canceled"
@@ -959,6 +984,18 @@
   "orderID": "Order ID",
   "@orderID": {
     "description": "Label for order ID"
+  },
+  "invoiceType": "Invoice Type",
+  "@invoiceType": {
+    "description": "Label for invoice type"
+  },
+  "invoiceTypeInvoice": "Invoice",
+  "@invoiceTypeInvoice": {
+    "description": "Document type: Invoice"
+  },
+  "invoiceTypeCreditNote": "Credit Note",
+  "@invoiceTypeCreditNote": {
+    "description": "Document type: Credit Note"
   },
   "noData": "No data available",
   "@noData": {

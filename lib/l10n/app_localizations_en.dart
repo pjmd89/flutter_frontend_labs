@@ -78,10 +78,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelPaymentQuestion => 'Cancel payment for this invoice?';
 
   @override
+  String get markAsPaid => 'Mark as Paid';
+
+  @override
+  String get markAsPaidQuestion => 'Mark this invoice as paid?';
+
+  @override
+  String get updatePaymentStatus => 'Update Payment Status';
+
+  @override
   String get paymentStatus => 'Payment Status';
 
   @override
   String get paid => 'Paid';
+
+  @override
+  String get pending => 'Pending';
 
   @override
   String get canceled => 'Canceled';
@@ -91,6 +103,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderID => 'Order ID';
+
+  @override
+  String get invoiceType => 'Invoice Type';
+
+  @override
+  String get invoiceTypeInvoice => 'Invoice';
+
+  @override
+  String get invoiceTypeCreditNote => 'Credit Note';
 
   @override
   String get noData => 'No data available';

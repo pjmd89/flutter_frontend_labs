@@ -29,6 +29,7 @@ extension InvoiceFieldsBuilderExtension on InvoiceFieldsBuilder {
       ..totalAmount()
       ..orderID()
       ..paymentStatus()
+      ..kind()
       ..laboratory(
         builder: (laboratoryBuilder) {
           laboratoryBuilder

@@ -27,6 +27,7 @@ class ViewModel extends ChangeNotifier {
     patient: '',
     examIDs: [],
     referred: '',
+    kind: InvoiceKind.iNVOICE,
   );
 
   // Exámenes

@@ -20,6 +20,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   // Controllers
   final dniSearchController = TextEditingController();
   final referredController = TextEditingController();
+  
+  // Estado para InvoiceKind
+  InvoiceKind? selectedInvoiceKind;
 
   @override
   void initState() {
@@ -37,6 +40,16 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
     dniSearchController.dispose();
     referredController.dispose();
     super.dispose();
+  }
+  
+  String getInvoiceKindLabel(BuildContext context, InvoiceKind kind) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (kind) {
+      case InvoiceKind.iNVOICE:
+        return l10n.invoiceTypeInvoice;
+      case InvoiceKind.cREDIT_NOTE:
+        return l10n.invoiceTypeCreditNote;
+    }
   }
 
   @override
@@ -261,6 +274,30 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                     fieldLength: FormFieldLength.name,
                     counterText: "",
                     onChange: (value) => viewModel.invoiceInput.referred = value,
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Tipo de Factura (REQUERIDO)
+                  DropdownButtonFormField<InvoiceKind>(
+                    value: selectedInvoiceKind ?? InvoiceKind.iNVOICE,
+                    decoration: InputDecoration(
+                      labelText: l10n.invoiceType,
+                      isDense: true,
+                      border: const OutlineInputBorder(),
+                    ),
+                    items: InvoiceKind.values.map((InvoiceKind kind) {
+                      return DropdownMenuItem<InvoiceKind>(
+                        value: kind,
+                        child: Text(getInvoiceKindLabel(context, kind)),
+                      );
+                    }).toList(),
+                    onChanged: (InvoiceKind? newValue) {
+                      setState(() {
+                        selectedInvoiceKind = newValue;
+                        viewModel.invoiceInput.kind = newValue ?? InvoiceKind.iNVOICE;
+                      });
+                    },
                   ),
                 ],
               ),

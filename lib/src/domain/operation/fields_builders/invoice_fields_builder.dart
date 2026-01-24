@@ -31,6 +31,11 @@ class InvoiceFieldsBuilder {
     _fields.add(fieldStr);
     return this;
   }
+  InvoiceFieldsBuilder kind({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
+    final fieldStr = formatField("kind", alias: alias, args: args, directives: directives);
+    _fields.add(fieldStr);
+    return this;
+  }
   InvoiceFieldsBuilder laboratory({String? alias, Map<String, dynamic>? args, List<Directive>? directives, void Function(LaboratoryFieldsBuilder)? builder}) {
     final child = LaboratoryFieldsBuilder();
     if (builder != null) builder(child);
