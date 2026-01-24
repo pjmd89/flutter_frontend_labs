@@ -2,6 +2,7 @@ import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/presentation/providers/laboratory_notifier.dart';
 import '/src/domain/operation/fields_builders/main.dart';
 import '/src/domain/operation/queries/getCompanies/getcompanies_query.dart';
 import '/src/domain/extensions/edgecompany_fields_builder_extension.dart';
@@ -17,6 +18,7 @@ class ViewModel extends ChangeNotifier {
   // Dependencias
   late GqlConn _gqlConn;
   late ReadCompanyUsecase _readUseCase;
+  late LaboratoryNotifier _laboratoryNotifier;
   final BuildContext _context;
 
   // Query con FieldsBuilder configurado
@@ -54,8 +56,25 @@ class ViewModel extends ChangeNotifier {
   // Constructor - Inicializa dependencias
   ViewModel({required BuildContext context}) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _laboratoryNotifier = _context.read<LaboratoryNotifier>();
     _readUseCase = ReadCompanyUsecase(operation: _operation, conn: _gqlConn);
+    
+    // Escuchar cambios en el laboratorio seleccionado
+    _laboratoryNotifier.addListener(_onLaboratoryChanged);
+    
     _init();
+  }
+
+  /// Se ejecuta cuando cambia el laboratorio seleccionado
+  void _onLaboratoryChanged() {
+    debugPrint('🔄 Laboratorio cambiado, recargando empresas...');
+    getCompanies();
+  }
+  
+  @override
+  void dispose() {
+    _laboratoryNotifier.removeListener(_onLaboratoryChanged);
+    super.dispose();
   }
 
   // Inicialización - Carga datos al crear el ViewModel

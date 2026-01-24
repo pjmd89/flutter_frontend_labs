@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:agile_front/agile_front.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/extensions/edgeinvoice_fields_builder_extension.dart';
+import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/queries/getInvoices/getinvoices_query.dart';
 import 'package:labs/src/domain/usecases/Invoice/read_invoice_usecase.dart';
@@ -20,6 +21,7 @@ class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
   late ErrorService _errorService;
   late ReadInvoiceUsecase _readUseCase;
+  late LaboratoryNotifier _laboratoryNotifier;
   final BuildContext _context;
 
   // Query con FieldsBuilder configurado
@@ -58,11 +60,28 @@ class ViewModel extends ChangeNotifier {
   ViewModel({required BuildContext context}) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
     _errorService = _context.read<ErrorService>();
+    _laboratoryNotifier = _context.read<LaboratoryNotifier>();
     _readUseCase = ReadInvoiceUsecase(
       operation: _operation,
       conn: _gqlConn,
     );
+    
+    // Escuchar cambios en el laboratorio seleccionado
+    _laboratoryNotifier.addListener(_onLaboratoryChanged);
+    
     _init();
+  }
+
+  /// Se ejecuta cuando cambia el laboratorio seleccionado
+  void _onLaboratoryChanged() {
+    debugPrint('🔄 Laboratorio cambiado, recargando facturas...');
+    getInvoices();
+  }
+  
+  @override
+  void dispose() {
+    _laboratoryNotifier.removeListener(_onLaboratoryChanged);
+    super.dispose();
   }
 
   // Inicialización - Carga datos al crear el ViewModel
