@@ -286,7 +286,8 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                       if (date != null) {
                         final formatted = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
                         birthDateController.text = formatted;
-                        // Formatear al formato esperado por el servidor (DD/MM/YYYY HH:MM)
+                        // ✅ Formatear al formato esperado por el servidor (DD/MM/YYYY HH:MM)
+                        // Solo se asigna cuando el usuario selecciona una fecha (validación diferencial)
                         final day = date.day.toString().padLeft(2, '0');
                         final month = date.month.toString().padLeft(2, '0');
                         final year = date.year.toString();

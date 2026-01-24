@@ -63,13 +63,15 @@ class UpdatePatientInput extends ChangeNotifier {
     String? address,
   }) {
     this.id = id ?? "";
-    this.firstName = firstName ?? "";
-    this.lastName = lastName ?? "";
-    this.birthDate = birthDate ?? "";
-    this.dni = dni ?? "";
-    this.phone = phone ?? "";
-    this.email = email ?? "";
-    this.address = address ?? "";
+    // ✅ Usar null en lugar de "" para campos opcionales
+    // Esto permite que @JsonSerializable(includeIfNull: false) funcione correctamente
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.birthDate = birthDate;
+    this.dni = dni;
+    this.phone = phone;
+    this.email = email;
+    this.address = address;
   }
   factory UpdatePatientInput.fromJson(Map<String, dynamic> json) => _$UpdatePatientInputFromJson(json);
   Map<String, dynamic> toJson() => _$UpdatePatientInputToJson(this);

@@ -78,11 +78,8 @@ class ViewModel extends ChangeNotifier {
           input.phone = _currentPatient!.phone;
           input.email = _currentPatient!.email;
           input.address = _currentPatient!.address;
-          // Convertir birthDate de timestamp (int) a String en formato ISO
-          if (_currentPatient!.birthDate != null && _currentPatient!.birthDate! > 0) {
-            final date = DateTime.fromMillisecondsSinceEpoch(_currentPatient!.birthDate! * 1000);
-            input.birthDate = date.toIso8601String();
-          }
+          // ✅ NO asignar birthDate aquí - solo se asignará si el usuario la modifica
+          // Esto permite validación diferencial: si no se toca, no se envía al servidor
         } else {
           debugPrint('⚠️ No se encontró paciente con ID: $id en la lista');
           error = true;
