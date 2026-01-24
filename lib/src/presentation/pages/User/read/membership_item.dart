@@ -52,18 +52,12 @@ class MembershipItem extends StatelessWidget {
                       onSelected: (value) {
                         if (value == 'edit' && onUpdate != null) {
                           onUpdate!(membership.id);
-                        } else if (value == 'delete' && onDelete != null) {
-                          onDelete!(membership.id);
                         }
                       },
                       itemBuilder: (context) => [
                         PopupMenuItem(
                           value: 'edit',
                           child: Text(l10n.edit),
-                        ),
-                        PopupMenuItem(
-                          value: 'delete',
-                          child: Text(l10n.delete),
                         ),
                       ],
                     ),

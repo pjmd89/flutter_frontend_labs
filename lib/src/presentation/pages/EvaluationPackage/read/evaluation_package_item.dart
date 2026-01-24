@@ -52,8 +52,6 @@ class EvaluationPackageItem extends StatelessWidget {
                 onSelected: (value) {
                   if (value == 'edit' && onUpdate != null) {
                     onUpdate!(evaluationPackage.id);
-                  } else if (value == 'delete' && onDelete != null) {
-                    onDelete!(evaluationPackage.id);
                   }
                 },
                 itemBuilder: (context) => [
@@ -64,16 +62,6 @@ class EvaluationPackageItem extends StatelessWidget {
                         const Icon(Icons.edit),
                         const SizedBox(width: 8),
                         Text(l10n.edit),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        const Icon(Icons.delete),
-                        const SizedBox(width: 8),
-                        Text(l10n.delete),
                       ],
                     ),
                   ),

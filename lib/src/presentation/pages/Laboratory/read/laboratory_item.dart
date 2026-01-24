@@ -79,13 +79,10 @@ class LaboratoryItem extends StatelessWidget {
                     onSelected: (value) {
                       if (value == 'edit' && onUpdate != null) {
                         onUpdate!(laboratory.id);
-                      } else if (value == 'delete' && onDelete != null) {
-                        onDelete!(laboratory.id);
                       }
                     },
                     itemBuilder: (context) => [
                       PopupMenuItem(value: 'edit', child: Text(l10n.edit)),
-                      PopupMenuItem(value: 'delete', child: Text(l10n.delete)),
                     ],
                   ),
                 ],
