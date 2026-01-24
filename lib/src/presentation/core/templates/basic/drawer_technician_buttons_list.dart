@@ -9,17 +9,23 @@ List<DrawerButtonConfig> getTechnicianDrawerButtonList(
 ) {
   final l10n = AppLocalizations.of(context)!;
   return [
+    //DrawerButtonConfig(
+    //  buttonText: l10n.exams,
+    //  buttonRoute: "/exam",
+    //  currentPath: currentPath,
+    //  leadingIcon: const Icon(Icons.science),
+    //),
     DrawerButtonConfig(
-      buttonText: "Exámenes", //l10n.user,
-      buttonRoute: "/exams",
+      buttonText: l10n.patients,
+      buttonRoute: "/patient",
       currentPath: currentPath,
-      leadingIcon: const Icon(Icons.science),
+      leadingIcon: const Icon(Icons.people),
     ),
     DrawerButtonConfig(
-      buttonText: l10n.invoices,
-      buttonRoute: "/invoice",
+      buttonText: l10n.evaluationPackages,
+      buttonRoute: "/evaluationpackage",
       currentPath: currentPath,
-      leadingIcon: const Icon(Icons.receipt),
+      leadingIcon: const Icon(Icons.inventory_2),
     ),
     
     // DrawerButtonConfig(

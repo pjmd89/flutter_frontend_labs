@@ -60,7 +60,11 @@ ShellRoute technicianShellRoute = ShellRoute(
   builder: (context, state, child) {
     return BasicTemplate(child: child);
   },
-  routes: [...examRoutes, ...evaluationpackageRoutes],
+  routes: [
+    ...examRoutes,
+    ...patientRoutes,
+    ...evaluationpackageRoutes,
+  ],
 );
 ShellRoute bioanalystShellRoute = ShellRoute(
   builder: (context, state, child) {

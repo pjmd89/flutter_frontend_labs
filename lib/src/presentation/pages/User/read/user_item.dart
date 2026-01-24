@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
+import 'package:labs/src/domain/entities/enums/labmemberrole_enum.dart';
+import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
+import 'package:provider/provider.dart';
 
 class UserItem extends StatelessWidget {
   final User user;
@@ -23,6 +26,10 @@ class UserItem extends StatelessWidget {
     final theme = Theme.of(context);
     final fullName = '${user.firstName} ${user.lastName}'.trim();
     final roleText = user.role?.toString().split('.').last ?? 'Sin rol';
+    
+    // Obtener el rol del usuario logueado
+    final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
+    final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360, maxHeight: 150),
@@ -35,39 +42,41 @@ class UserItem extends StatelessWidget {
               leading: const CircleAvatar(child: Icon(Icons.person_outline)),
               title: Text(fullName, style: theme.textTheme.titleMedium),
               subtitle: Text(roleText),
-              trailing: PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert),
-                onSelected: (value) {
-                  if (value == 'edit' && onUpdate != null) {
-                    onUpdate!(user.id);
-                  } else if (value == 'delete' && onDelete != null) {
-                    onDelete!(user.id);
-                  }
-                },
-                itemBuilder:
-                    (context) => [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            const Icon(Icons.edit),
-                            const SizedBox(width: 8),
-                            Text(l10n.edit),
+              trailing: isBilling
+                  ? null // Ocultar el menú si es billing
+                  : PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_vert),
+                      onSelected: (value) {
+                        if (value == 'edit' && onUpdate != null) {
+                          onUpdate!(user.id);
+                        } else if (value == 'delete' && onDelete != null) {
+                          onDelete!(user.id);
+                        }
+                      },
+                      itemBuilder:
+                          (context) => [
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.edit),
+                                  const SizedBox(width: 8),
+                                  Text(l10n.edit),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.delete),
+                                  const SizedBox(width: 8),
+                                  Text(l10n.delete),
+                                ],
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            const Icon(Icons.delete),
-                            const SizedBox(width: 8),
-                            Text(l10n.delete),
-                          ],
-                        ),
-                      ),
-                    ],
-              ),
+                    ),
             ),
             const Divider(height: 1),
             Padding(

@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/infraestructure/utils/search_fields.dart';
 import 'package:labs/src/presentation/core/ui/search/main.dart';
+import 'package:labs/src/domain/entities/enums/labmemberrole_enum.dart';
+import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
+import 'package:provider/provider.dart';
 import './view_model.dart';
 
 SearchTemplateConfig getSearchConfig({
@@ -10,17 +13,23 @@ SearchTemplateConfig getSearchConfig({
   required ViewModel viewModel,
   required AppLocalizations l10n,
 }) {
+  // Obtener el rol del usuario logueado
+  final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
+  final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
+
   return SearchTemplateConfig(
-    rightWidget: FilledButton.icon(
-      icon: const Icon(Icons.add),
-      label: Text(l10n.createThing(l10n.exam)),
-      onPressed: () async {
-        final result = await context.push('/exam/create');
-        if (result == true) {
-          viewModel.getExams();
-        }
-      },
-    ),
+    rightWidget: isBilling 
+        ? const SizedBox.shrink() // Ocultar botón si es billing
+        : FilledButton.icon(
+            icon: const Icon(Icons.add),
+            label: Text(l10n.createThing(l10n.exam)),
+            onPressed: () async {
+              final result = await context.push('/exam/create');
+              if (result == true) {
+                viewModel.getExams();
+              }
+            },
+          ),
     searchFields: [
       SearchFields(field: 'template.name'),
       SearchFields(field: 'baseCost'),

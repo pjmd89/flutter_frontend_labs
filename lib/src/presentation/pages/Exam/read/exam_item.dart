@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
+import 'package:labs/src/domain/entities/enums/labmemberrole_enum.dart';
+import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
+import 'package:provider/provider.dart';
 
 class ExamItem extends StatelessWidget {
   final Exam exam;
@@ -18,6 +21,10 @@ class ExamItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el rol del usuario logueado
+    final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
+    final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
+
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360),
       child: Card(
@@ -36,25 +43,27 @@ class ExamItem extends StatelessWidget {
                   Text('${l10n.baseCost}: \$${exam.baseCost}'),
                 ],
               ),
-              trailing: PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'edit' && onUpdate != null) {
-                    onUpdate!(exam.id);
-                  } else if (value == 'delete' && onDelete != null) {
-                    onDelete!(exam.id);
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 'edit',
-                    child: Text(l10n.edit),
-                  ),
-                  PopupMenuItem(
-                    value: 'delete',
-                    child: Text(l10n.delete),
-                  ),
-                ],
-              ),
+              trailing: isBilling
+                  ? null // Ocultar el menú si es billing
+                  : PopupMenuButton<String>(
+                      onSelected: (value) {
+                        if (value == 'edit' && onUpdate != null) {
+                          onUpdate!(exam.id);
+                        } else if (value == 'delete' && onDelete != null) {
+                          onDelete!(exam.id);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Text(l10n.edit),
+                        ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Text(l10n.delete),
+                        ),
+                      ],
+                    ),
             ),
           ],
         ),

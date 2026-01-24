@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:labs/l10n/app_localizations.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/presentation/core/ui/custom_drawer/drawer_config.dart';
 
 
@@ -9,7 +9,7 @@ List<DrawerButtonConfig> getRootDrawerButtonList(
 ) {
   //final l10n = AppLocalizations.of(context)!;
   return [
-    DrawerButtonConfig(
+    DrawerButtonConfig( 
       buttonText: "Dashboard",
       buttonRoute: "/home",
       currentPath: currentPath,
@@ -45,7 +45,18 @@ List<DrawerButtonConfig> getRootDrawerButtonList(
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.people),
     ),
-    
+    DrawerButtonConfig(
+      buttonText: AppLocalizations.of(context)!.invoices,
+      buttonRoute: "/invoice",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.receipt),
+    ),
+    DrawerButtonConfig(
+      buttonText: "Paquetes de evaluación",
+      buttonRoute: "/evaluationpackage",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.folder_special),
+    ),
     
     // DrawerButtonConfig(
     //   buttonText: AppLocalizations.of(context)!.logout,
