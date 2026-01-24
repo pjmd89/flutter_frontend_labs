@@ -626,6 +626,10 @@
   "@roleBilling": {
     "description": "Rol de facturación"
   },
+  "roleBioanalyst": "Bioanalista",
+  "@roleBioanalyst": {
+    "description": "Rol de bioanalista"
+  },
   "isAdmin": "Es administrador",
   "@isAdmin": {
     "description": "Etiqueta para campo booleano de administrador"
@@ -1186,10 +1190,9 @@
   "atLeastOnePhoneRequired": "Debe agregar al menos un teléfono de contacto",
   "@atLeastOnePhoneRequired": {
     "description": "Mensaje de validación cuando no se agregan teléfonos para laboratorio"
-  }
-,
-  "atLeastOnePhoneRequired": "Debe agregar al menos un teléfono de contacto",
-  "@atLeastOnePhoneRequired": {
-    "description": "Mensaje de validación cuando no se agregan teléfonos para laboratorio"
+  },
+  "selectLaboratory": "Seleccionar Laboratorio",
+  "@selectLaboratory": {
+    "description": "Título del diálogo de selección de laboratorio"
   }
 }

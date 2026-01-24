@@ -26,3 +26,5 @@ export './query_fields_builder.dart';
 export './systeminfo_fields_builder.dart';
 export './examresult_fields_builder.dart';
 export './edgeevaluationpackage_fields_builder.dart';
+export './edgelabmembershipinfo_fields_builder.dart';
+export './labmembershipinfo_fields_builder.dart';

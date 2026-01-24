@@ -7,6 +7,7 @@ import '/src/presentation/providers/gql_notifier.dart';
 import '/src/presentation/providers/locale_notifier.dart';
 import '/src/presentation/providers/theme_brightness_notifier.dart';
 import '/src/presentation/providers/loading_notifier.dart';
+import '/src/presentation/providers/laboratory_notifier.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,6 +40,13 @@ class MyApp extends StatelessWidget {
                     authNotifier: authNotifier,
                     errorService: errorService,
                   ),
+        ),
+        af.ChangeNotifierProxyProvider<GQLNotifier, LaboratoryNotifier>(
+          create: (context) => LaboratoryNotifier(
+            gqlConn: context.read<GQLNotifier>().gqlConn,
+          ),
+          update: (context, gqlNotifier, previous) =>
+              previous ?? LaboratoryNotifier(gqlConn: gqlNotifier.gqlConn),
         ),
         af.ChangeNotifierProvider(create: (_) => ThemeBrightnessNotifier()),
         af.ChangeNotifierProvider(create: (_) => LoadingNotifier()),

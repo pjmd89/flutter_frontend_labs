@@ -839,6 +839,12 @@ abstract class AppLocalizations {
   /// **'Facturación'**
   String get roleBilling;
 
+  /// Rol de bioanalista
+  ///
+  /// In es, this message translates to:
+  /// **'Bioanalista'**
+  String get roleBioanalyst;
+
   /// Etiqueta para campo booleano de administrador
   ///
   /// In es, this message translates to:
@@ -1564,6 +1570,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Debe agregar al menos un teléfono de contacto'**
   String get atLeastOnePhoneRequired;
+
+  /// Título del diálogo de selección de laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar Laboratorio'**
+  String get selectLaboratory;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

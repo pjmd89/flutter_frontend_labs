@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:agile_front/agile_front.dart' as af;
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
 import 'package:flutter/foundation.dart';
@@ -34,13 +33,16 @@ class CreateUserUsecase implements af.UseCase {
       opArgs: {"input": GqlVar("name")},
     );
 
-    final inputJson = input.toJson();
-    debugPrint('🔍 CreateUserInput JSON: ${jsonEncode(inputJson)}');
+    // Debug: Log antes de enviar al backend
+    debugPrint('🚀 CreateUserUsecase - Enviando mutation con variables:');
+    debugPrint('   input.toJson(): ${input.toJson()}');
 
     var response = await _conn.operation(
       operation: mutation,
-      variables: {'name': inputJson},
+      variables: {'name': input},
     );
+
+    debugPrint('✅ CreateUserUsecase - Respuesta recibida: ${response.runtimeType}');
 
     return response;
   }

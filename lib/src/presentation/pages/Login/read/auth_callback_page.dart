@@ -46,15 +46,15 @@ class _AuthCallbackPageState extends State<AuthCallbackPage> {
         _success = true;
         _loading = false;
       });
-      _scheduleRedirect(loggedUser.user!);
+      _scheduleRedirect(loggedUser);
     }
   }
 
-  void _scheduleRedirect(User user) {
+  void _scheduleRedirect(LoggedUser loggedUser) {
     final router = GoRouter.of(context);
     Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
-      viewModel.setLoginUser(user);
+      viewModel.setLoginUser(loggedUser);
       router.go('/home');
     });
   }

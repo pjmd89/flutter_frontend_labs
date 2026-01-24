@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/src/domain/entities/enums/role_enum.dart';
+import 'package:labs/src/domain/entities/enums/labmemberrole_enum.dart';
 import 'package:provider/provider.dart';
 import '/src/presentation/core/navigation/routes/main.dart';
 import '/src/presentation/core/themes/teal.dart';
@@ -62,7 +63,24 @@ class _TemplateState extends State<Template> {
         router = ownerRouter;
         break;
       case Role.uSER:
-        router = technicianRouter;
+        // Determinar router según labRole del laboratorio actual
+        if (authNotifier.labRole != null) {
+          switch (authNotifier.labRole!) {
+            case LabMemberRole.oWNER:
+              router = ownerRouter;
+              break;
+            case LabMemberRole.tECHNICIAN:
+            case LabMemberRole.bIOANALYST:
+              router = technicianRouter;
+              break;
+            case LabMemberRole.bILLING:
+              router = billingRouter;
+              break;
+          }
+        } else {
+          // Si no tiene labRole, usar userIsLabOwner como fallback
+          router = authNotifier.userIsLabOwner ? ownerRouter : technicianRouter;
+        }
         break;
       default:
         router = loginRouter;

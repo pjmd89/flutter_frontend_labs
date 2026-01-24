@@ -135,6 +135,18 @@ class ViewModel extends ChangeNotifier {
         input.companyInfo!.laboratoryInfo.companyID = null;
       }
 
+      // Debug: Imprimir el input antes de enviarlo
+      debugPrint('🔍 CreateUserInput antes de enviar:');
+      debugPrint('   firstName: ${input.firstName}');
+      debugPrint('   lastName: ${input.lastName}');
+      debugPrint('   email: ${input.email}');
+      debugPrint('   isAdmin: ${input.isAdmin}');
+      debugPrint('   employeeRole: ${input.employeeRole}');
+      debugPrint('   companyInfo: ${input.companyInfo != null ? "presente" : "null"}');
+      debugPrint('   cutOffDate: ${input.cutOffDate}');
+      debugPrint('   fee: ${input.fee}');
+      debugPrint('📦 Input toJson: ${input.toJson()}');
+
       var response = await useCase.execute(input: input);
 
       if (response is User) {

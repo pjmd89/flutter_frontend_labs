@@ -6,8 +6,7 @@ extension UserFieldsBuilderExtension on UserFieldsBuilder {
       ..id()
       ..firstName()
       ..lastName()
-      ..role()
-      ..email()
+      ..role()    
       ..cutOffDate()
       ..fee();
   }

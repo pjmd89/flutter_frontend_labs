@@ -372,7 +372,7 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                             _buildReadOnlyField(
                               'Fecha de creación',
                               DateTime.fromMillisecondsSinceEpoch(
-                                int.parse(viewModel.currentCompany!.created),
+                                viewModel.currentCompany!.created,
                               ).toString().split('.')[0],
                             ),
                           ],

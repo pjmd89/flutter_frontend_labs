@@ -1,0 +1,177 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:labs/src/domain/entities/types/laboratory/laboratory_model.dart';
+import 'package:labs/src/domain/entities/types/loggeduser/loggeduser_model.dart';
+import 'package:labs/src/domain/usecases/Laboratory/set_current_laboratory_usecase.dart';
+import 'package:labs/src/domain/operation/mutations/setCurrentLaboratory/setcurrentlaboratory_mutation.dart';
+import 'package:labs/src/domain/extensions/user_logged_builder/main.dart';
+import 'package:labs/src/domain/operation/fields_builders/main.dart';
+import 'package:labs/src/presentation/providers/auth_notifier.dart';
+import 'package:agile_front/agile_front.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+/// Provider para manejar el laboratorio seleccionado actualmente
+class LaboratoryNotifier extends ChangeNotifier {
+  Laboratory? _selectedLaboratory;
+  LoggedUser? _loggedUser;
+  final GqlConn? _gqlConn;
+
+  Laboratory? get selectedLaboratory => _selectedLaboratory;
+  LoggedUser? get loggedUser => _loggedUser;
+  String get laboratoryName => _selectedLaboratory?.company?.name ?? 'Labs';
+  bool get hasLaboratory => _selectedLaboratory != null;
+
+  LaboratoryNotifier({GqlConn? gqlConn}) : _gqlConn = gqlConn {
+    _loadSelectedLaboratory();
+  }
+
+  /// Cargar laboratorio seleccionado desde SharedPreferences
+  Future<void> _loadSelectedLaboratory() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final laboratoryJson = prefs.getString('selected_laboratory');
+      
+      if (laboratoryJson != null) {
+        final Map<String, dynamic> json = jsonDecode(laboratoryJson);
+        _selectedLaboratory = Laboratory.fromJson(json);
+        notifyListeners();
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('💥 Error loading selected laboratory: $e');
+      }
+    }
+  }
+
+  /// Seleccionar un nuevo laboratorio y ejecutar mutación setCurrentLaboratory
+  /// 
+  /// Parámetros:
+  /// - [laboratory]: El laboratorio a seleccionar
+  /// - [context]: BuildContext para acceder a providers y detectar la ruta actual
+  /// - [onLaboratoryChanged]: Callback opcional que se ejecuta después de cambiar el laboratorio
+  ///   Si no se proporciona, se intentará refrescar automáticamente según la ruta actual
+  Future<void> selectLaboratory(
+    Laboratory laboratory, 
+    BuildContext context, {
+    Future<void> Function()? onLaboratoryChanged,
+  }) async {
+    _selectedLaboratory = laboratory;
+    
+    // Guardar en SharedPreferences
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final laboratoryJson = jsonEncode(laboratory.toJson());
+      await prefs.setString('selected_laboratory', laboratoryJson);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('💥 Error saving selected laboratory: $e');
+      }
+    }
+    
+    // Ejecutar mutación setCurrentLaboratory si tenemos gqlConn
+    if (_gqlConn != null) {
+      try {
+        debugPrint('🚀 Ejecutando mutación setCurrentLaboratory para laboratoryId: ${laboratory.id}');
+        
+        final useCase = SetCurrentLaboratoryUsecase(
+          operation: SetCurrentLaboratoryMutation(
+            builder: LoggedUserFieldsBuilder().defaultValues(),
+          ),
+          conn: _gqlConn,
+        );
+
+        final loggedUser = await useCase.execute(laboratoryId: laboratory.id);
+        
+        if (loggedUser != null) {
+          _loggedUser = loggedUser;
+          
+          // Actualizar labRole en AuthNotifier
+          final authNotifier = context.read<AuthNotifier>();
+          await authNotifier.updateLabRole(
+            loggedUser.labRole,
+            loggedUser.userIsLabOwner,
+          );
+          
+          debugPrint('✅ setCurrentLaboratory ejecutado exitosamente');
+          debugPrint('   CurrentLab: ${loggedUser.currentLaboratory?.company?.name ?? 'N/A'}');
+          debugPrint('   LabRole: ${loggedUser.labRole}');
+          debugPrint('   UserIsLabOwner: ${loggedUser.userIsLabOwner}');
+          
+          // Ejecutar callback si existe
+          if (onLaboratoryChanged != null) {
+            debugPrint('🔄 Ejecutando callback onLaboratoryChanged...');
+            await onLaboratoryChanged();
+          } else {
+            // Si no hay callback, intentar refrescar automáticamente según la ruta
+            _autoRefreshByRoute(context);
+          }
+        }
+      } catch (e, stackTrace) {
+        debugPrint('💥 Error ejecutando setCurrentLaboratory: $e');
+        debugPrint('📍 StackTrace: $stackTrace');
+        // No lanzamos el error para que la UI no se bloquee
+      }
+    } else {
+      debugPrint('⚠️ GqlConn no disponible, no se ejecutará la mutación');
+    }
+    
+    notifyListeners();
+  }
+
+  /// Refrescar automáticamente según la ruta actual
+  void _autoRefreshByRoute(BuildContext context) {
+    try {
+      // Obtener la ruta actual usando GoRouter
+      final routerState = GoRouterState.of(context);
+      final currentRoute = routerState.matchedLocation;
+      
+      debugPrint('📍 Ruta actual detectada: $currentRoute');
+      
+      // Disparar evento de refresco según la ruta
+      // Nota: Las páginas deben escuchar este evento para refrescarse
+      if (currentRoute.contains('/user')) {
+        debugPrint('🔄 Detectada página de usuarios, disparando evento de refresco');
+        _dispatchRefreshEvent(context, 'users');
+      } else if (currentRoute.contains('/patient')) {
+        debugPrint('🔄 Detectada página de pacientes, disparando evento de refresco');
+        _dispatchRefreshEvent(context, 'patients');
+      } else if (currentRoute.contains('/exam')) {
+        debugPrint('🔄 Detectada página de exámenes, disparando evento de refresco');
+        _dispatchRefreshEvent(context, 'exams');
+      } else if (currentRoute.contains('/company')) {
+        debugPrint('🔄 Detectada página de empresas, disparando evento de refresco');
+        _dispatchRefreshEvent(context, 'companies');
+      }
+      // Agregar más rutas según sea necesario
+    } catch (e) {
+      debugPrint('⚠️ No se pudo detectar la ruta actual: $e');
+    }
+  }
+
+  /// Disparar evento de refresco (puede ser escuchado por las páginas)
+  void _dispatchRefreshEvent(BuildContext context, String pageType) {
+    // Esta es una implementación simple usando notifyListeners
+    // Las páginas pueden detectar el cambio de laboratorio y refrescarse
+    notifyListeners();
+  }
+
+  /// Limpiar laboratorio seleccionado
+  Future<void> clearLaboratory() async {
+    _selectedLaboratory = null;
+    _loggedUser = null;
+    
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('selected_laboratory');
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('💥 Error clearing selected laboratory: $e');
+      }
+    }
+    
+    notifyListeners();
+  }
+}

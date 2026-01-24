@@ -33,10 +33,13 @@ class ViewModel extends ChangeNotifier {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
   }
 
-  setLoginUser(User user) async{
+  setLoginUser(LoggedUser loggedUser) async{
     final authNotifier = _context.read<AuthNotifier>();
-    await authNotifier.signIn(user: user);
-
+    await authNotifier.signIn(
+      user: loggedUser.user!,
+      userIsLabOwner: loggedUser.userIsLabOwner,
+      labRole: loggedUser.labRole,
+    );
   }
   Future<LoggedUser?> loggedUser() async{
     loading = true;

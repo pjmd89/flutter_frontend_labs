@@ -25,6 +25,16 @@ class UserRoleOption {
     required this.isAdmin,
     this.employeeRole,
   });
+  
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserRoleOption &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+  
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class UserCreatePage extends StatefulWidget {
@@ -217,6 +227,12 @@ class _UserCreatePageState extends State<UserCreatePage> {
         isAdmin: false,
         employeeRole: LabMemberRole.bILLING,
       ),
+      UserRoleOption(
+        id: 'bioanalyst',
+        label: l10n.roleBioanalyst,
+        isAdmin: false,
+        employeeRole: LabMemberRole.bIOANALYST,
+      ),
     ]);
     
     return options;
@@ -318,16 +334,25 @@ class _UserCreatePageState extends State<UserCreatePage> {
                                 if (newValue.id == 'owner') {
                                   // Owner: inicializar companyInfo
                                   viewModel.input.companyInfo ??= CreateCompanyInput();
-                                } else if (newValue.id == 'technician' || newValue.id == 'billing') {
-                                  // Technician/Billing: limpiar companyInfo
+                                } else if (newValue.id == 'technician' || newValue.id == 'billing' || newValue.id == 'bioanalyst') {
+                                  // Employee roles: limpiar companyInfo, cutOffDate y fee
                                   viewModel.input.companyInfo = null;
                                   viewModel.input.cutOffDate = null;
                                   viewModel.input.fee = null;
+                                  phoneNumbers.clear();
+                                  companyNameController.clear();
+                                  companyTaxIDController.clear();
+                                  companyLogoController.clear();
+                                  labAddressController.clear();
+                                  phoneController.clear();
+                                  cutOffDateController.clear();
+                                  feeController.clear();
                                 } else {
                                   // Admin: limpiar todo
                                   viewModel.input.companyInfo = null;
                                   viewModel.input.cutOffDate = null;
                                   viewModel.input.fee = null;
+                                  viewModel.input.employeeRole = null;
                                   phoneNumbers.clear();
                                   companyNameController.clear();
                                   companyTaxIDController.clear();
@@ -445,6 +470,12 @@ class _UserCreatePageState extends State<UserCreatePage> {
                             isDense: true,
                             fieldLength: FormFieldLength.name,
                             counterText: "",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return l10n.fieldRequired;
+                              }
+                              return null;
+                            },
                             onChange: (value) {
                               viewModel.input.companyInfo ??=
                                   CreateCompanyInput();
@@ -461,6 +492,12 @@ class _UserCreatePageState extends State<UserCreatePage> {
                             isDense: true,
                             fieldLength: FormFieldLength.name,
                             counterText: "",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return l10n.fieldRequired;
+                              }
+                              return null;
+                            },
                             onChange: (value) {
                               viewModel.input.companyInfo ??=
                                   CreateCompanyInput();

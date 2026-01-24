@@ -558,6 +558,10 @@
   "@roleBilling": {
     "description": "Billing role"
   },
+  "roleBioanalyst": "Bioanalyst",
+  "@roleBioanalyst": {
+    "description": "Bioanalyst role"
+  },
   "isAdmin": "Is administrator",
   "@isAdmin": {
     "description": "Label for boolean administrator field"
@@ -1039,10 +1043,9 @@
   "atLeastOnePhoneRequired": "You must add at least one contact phone",
   "@atLeastOnePhoneRequired": {
     "description": "Validation message when no phones are added for laboratory"
-  }
-,
-  "atLeastOnePhoneRequired": "You must add at least one contact phone",
-  "@atLeastOnePhoneRequired": {
-    "description": "Validation message when no phones are added for laboratory"
+  },
+  "selectLaboratory": "Select Laboratory",
+  "@selectLaboratory": {
+    "description": "Title of laboratory selection dialog"
   }
 }

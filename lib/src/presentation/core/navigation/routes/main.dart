@@ -20,14 +20,15 @@ ShellRoute ownerShellRoute = ShellRoute(
   },
   routes: [
     ...homeRoutes,
-    ...examRoutes,
     ...companyRoutes,
     ...laboratoryRoutes,
-    ...evaluationpackageRoutes,
     ...userRoutes,
     ...examRoutes,
-    ...invoiceRoutes,
     ...patientRoutes,
+    ...invoiceRoutes,
+    ...evaluationpackageRoutes,
+    ...examtemplateRoutes,
+    ...examindicatorRoutes,
   ],
 );
 ShellRoute rootShellRoute = ShellRoute(
@@ -75,7 +76,7 @@ GoRouter billingRouter = GoRouter(
   routes: [billingShellRoute],
 );
 GoRouter technicianRouter = GoRouter(
-  initialLocation: "/exams",
+  initialLocation: "/exam",
   routes: [technicianShellRoute],
 );
 GoRouter loginRouter = GoRouter(

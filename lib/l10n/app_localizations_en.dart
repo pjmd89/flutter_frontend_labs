@@ -409,6 +409,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get roleBilling => 'Billing';
 
   @override
+  String get roleBioanalyst => 'Bioanalyst';
+
+  @override
   String get isAdmin => 'Is administrator';
 
   @override
@@ -778,4 +781,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get atLeastOnePhoneRequired => 'You must add at least one contact phone';
+
+  @override
+  String get selectLaboratory => 'Select Laboratory';
 }

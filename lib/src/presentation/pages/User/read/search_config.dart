@@ -13,15 +13,18 @@ SearchTemplateConfig getSearchConfig({
   return SearchTemplateConfig(
     rightWidget: FilledButton.icon(
       icon: const Icon(Icons.add),
-      label: Text(l10n.newThing(l10n.user)),
+      label: const Text('Nueva Membresía'),
       onPressed: () async {
-        final pushResult = await context.push('/user/create');
+        final pushResult = await context.push('/membership/create');
         if (pushResult == true) {
-          viewModel.getUsers();
+          viewModel.getMemberships();
         }
       },
     ),
-    searchFields: [SearchFields(field: 'name'), SearchFields(field: 'email')],
+    searchFields: [
+      SearchFields(field: 'member'),
+      SearchFields(field: 'laboratory'),
+    ],
     pageInfo: viewModel.pageInfo,
     onSearchChanged: (search) {
       viewModel.search(search);

@@ -9,16 +9,16 @@ class Company {
   final String logo;
   final String taxID;
   final User? owner;
-  final String created;
-  final String updated;
+  final int created;
+  final int updated;
   Company({
     this.id = "",
     this.name = "",
     this.logo = "",
     this.taxID = "",
     this.owner,
-    this.created = "",
-    this.updated = "",
+    this.created = 0,
+    this.updated = 0,
   });
   factory Company.fromJson(Map<String, dynamic> json) => _$CompanyFromJson(json);
   Map<String, dynamic> toJson() => _$CompanyToJson(this);
