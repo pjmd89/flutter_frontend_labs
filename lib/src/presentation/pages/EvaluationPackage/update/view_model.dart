@@ -136,7 +136,14 @@ class ViewModel extends ChangeNotifier {
     try {
       var response = await useCase.execute(input: input);
       
+      // 🐛 DEBUG: Ver tipo y valor de la respuesta
+      debugPrint('✅ Response recibido en ViewModel:');
+      debugPrint('  - Type: ${response.runtimeType}');
+      debugPrint('  - Value: $response');
+      debugPrint('  - Is EvaluationPackage? ${response is EvaluationPackage}');
+      
       if (response is EvaluationPackage) {
+        debugPrint('✅ Response ES EvaluationPackage - Todo OK!');
         isError = false;
         _currentEvaluationPackage = response;
         
@@ -144,16 +151,25 @@ class ViewModel extends ChangeNotifier {
           message: l10n.thingUpdatedSuccessfully(l10n.evaluationPackage),
           type: ErrorType.success,
         );
+      } else {
+        debugPrint('❌ Response NO es EvaluationPackage - isError sigue siendo true');
+        debugPrint('   Por eso no se ejecuta el pop(true)');
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en updateEvaluationPackage: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
       
-      _errorService.showError(
-        message: 'Error al actualizar paquete de evaluación: ${e.toString()}',
-        type: ErrorType.error,
-      );
+      // Solo mostrar error si no es un error controlado del backend
+      // (Los errores controlados ya fueron mostrados por el ErrorManager)
+      final errorMessage = e.toString();
+      if (!errorMessage.contains('Backend error handled')) {
+        _errorService.showError(
+          message: 'Error al actualizar paquete de evaluación: $errorMessage',
+          type: ErrorType.error,
+        );
+      }
+      // Si es "Backend error handled", el ErrorManager ya mostró el mensaje traducido
     } finally {
       loading = false;
     }

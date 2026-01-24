@@ -190,6 +190,23 @@ class ErrorService {
       '051': l10n.error051,
       '052': l10n.error052,
       '053': l10n.error053,
+      '054': l10n.error054,
+      '055': l10n.error055,
+      '056': l10n.error056,
+      '057': l10n.error057,
+      '058': l10n.error058,
+      '059': l10n.error059,
+      '060': l10n.error060,
+      '061': l10n.error061,
+      '062': l10n.error062,
+      '063': l10n.error063,
+      '064': l10n.error064,
+      '065': l10n.error065,
+      '066': l10n.error066,
+      '067': l10n.error067,
+      '068': l10n.error068,
+      '069': l10n.error069,
+      '070': l10n.error070,
     };
 
     return errorMessages[errorCode];

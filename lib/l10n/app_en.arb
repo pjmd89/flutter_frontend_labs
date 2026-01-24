@@ -817,6 +817,74 @@
   "@error053": {
     "description": "Error when trying to create patient with existing DNI"
   },
+  "error054": "Generic error 54",
+  "@error054": {
+    "description": "Generic error 54"
+  },
+  "error055": "Generic error 55",
+  "@error055": {
+    "description": "Generic error 55"
+  },
+  "error056": "Generic error 56",
+  "@error056": {
+    "description": "Generic error 56"
+  },
+  "error057": "Generic error 57",
+  "@error057": {
+    "description": "Generic error 57"
+  },
+  "error058": "Generic error 58",
+  "@error058": {
+    "description": "Generic error 58"
+  },
+  "error059": "Generic error 59",
+  "@error059": {
+    "description": "Generic error 59"
+  },
+  "error060": "Generic error 60",
+  "@error060": {
+    "description": "Generic error 60"
+  },
+  "error061": "Generic error 61",
+  "@error061": {
+    "description": "Generic error 61"
+  },
+  "error062": "Generic error 62",
+  "@error062": {
+    "description": "Generic error 62"
+  },
+  "error063": "Generic error 63",
+  "@error063": {
+    "description": "Generic error 63"
+  },
+  "error064": "Generic error 64",
+  "@error064": {
+    "description": "Generic error 64"
+  },
+  "error065": "Generic error 65",
+  "@error065": {
+    "description": "Generic error 65"
+  },
+  "error066": "All the exams for this evaluation package have already been completed",
+  "@error066": {
+    "description": "Error when all exams in evaluation package are already completed"
+  },
+  "error067": "Generic error 67",
+  "@error067": {
+    "description": "Generic error 67"
+  },
+  "error068": "Generic error 68",
+  "@error068": {
+    "description": "Generic error 68"
+  },
+  "error069": "Generic error 69",
+  "@error069": {
+    "description": "Generic error 69"
+  },
+  "error070": "Generic error 70",
+  "@error070": {
+    "description": "Generic error 70"
+  },
   "invoice": "Invoice",
   "invoices": "Invoices",
   "patient": "Patient",

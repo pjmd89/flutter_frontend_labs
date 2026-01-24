@@ -65,6 +65,23 @@ class GQLNotifier extends ChangeNotifier {
       '051': handleGenericError,
       '052': handleGenericError,
       '053': handleGenericError,
+      '054': handleGenericError,
+      '055': handleGenericError,
+      '056': handleGenericError,
+      '057': handleGenericError,
+      '058': handleGenericError,
+      '059': handleGenericError,
+      '060': handleGenericError,
+      '061': handleGenericError,
+      '062': handleGenericError,
+      '063': handleGenericError,
+      '064': handleGenericError,
+      '065': handleGenericError,
+      '066': handleGenericError,
+      '067': handleGenericError,
+      '068': handleGenericError,
+      '069': handleGenericError,
+      '070': handleGenericError,
     };
 
     gqlConn = GqlConn(

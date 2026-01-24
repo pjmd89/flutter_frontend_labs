@@ -42,13 +42,36 @@ class UpdateEvaluationPackageUsecase implements af.UseCase {
       );
 
       debugPrint('✅ Response recibido: $response');
+      debugPrint('🔍 Response type: ${response.runtimeType}');
 
-      // Transformar respuesta a entidad
-      if (response != null && response is Map<String, dynamic>) {
-        return newMutation.result(response);
+      // Si la respuesta es ErrorReturned, el ErrorManager ya mostró el mensaje
+      // Solo lanzar excepción silenciosa para evitar mostrar mensaje duplicado
+      if (response.runtimeType.toString() == 'ErrorReturned') {
+        debugPrint('❌ Response es ErrorReturned - error controlado del backend');
+        throw Exception('Backend error handled');
       }
 
-      return null;
+      // Si la respuesta es null, hubo un error controlado del backend
+      if (response == null) {
+        debugPrint('❌ Response es null - hubo error controlado del backend');
+        throw Exception('Backend error handled');
+      }
+
+      // Si la respuesta ya es un EvaluationPackage, devolverla directamente
+      if (response is EvaluationPackage) {
+        debugPrint('✅ Response ya es EvaluationPackage, retornándola directamente');
+        return response;
+      }
+
+      // Si es Map, transformarla
+      if (response is Map<String, dynamic>) {
+        final result = newMutation.result(response);
+        debugPrint('✅ Result from mutation.result(): $result (${result.runtimeType})');
+        return result;
+      }
+
+      debugPrint('❌ Response no es ni EvaluationPackage ni Map<String, dynamic>');
+      throw Exception('Error: Tipo de respuesta inesperado: ${response.runtimeType}');
     } catch (e, stackTrace) {
       debugPrint('💥 Error en UpdateEvaluationPackageUsecase.execute: $e');
       debugPrint('📍 StackTrace: $stackTrace');

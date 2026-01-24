@@ -607,6 +607,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error053 => 'A patient with the provided DNI already exists';
 
   @override
+  String get error054 => 'Generic error 54';
+
+  @override
+  String get error055 => 'Generic error 55';
+
+  @override
+  String get error056 => 'Generic error 56';
+
+  @override
+  String get error057 => 'Generic error 57';
+
+  @override
+  String get error058 => 'Generic error 58';
+
+  @override
+  String get error059 => 'Generic error 59';
+
+  @override
+  String get error060 => 'Generic error 60';
+
+  @override
+  String get error061 => 'Generic error 61';
+
+  @override
+  String get error062 => 'Generic error 62';
+
+  @override
+  String get error063 => 'Generic error 63';
+
+  @override
+  String get error064 => 'Generic error 64';
+
+  @override
+  String get error065 => 'Generic error 65';
+
+  @override
+  String get error066 => 'All the exams for this evaluation package have already been completed';
+
+  @override
+  String get error067 => 'Generic error 67';
+
+  @override
+  String get error068 => 'Generic error 68';
+
+  @override
+  String get error069 => 'Generic error 69';
+
+  @override
+  String get error070 => 'Generic error 70';
+
+  @override
   String get patient => 'Patient';
 
   @override

@@ -839,6 +839,57 @@
   "@error053": {
     "description": "Error cuando se intenta crear un paciente con un DNI ya existente"
   },
+  "@error054": {
+    "description": "Error genérico 54"
+  },
+  "@error055": {
+    "description": "Error genérico 55"
+  },
+  "@error056": {
+    "description": "Error genérico 56"
+  },
+  "@error057": {
+    "description": "Error genérico 57"
+  },
+  "@error058": {
+    "description": "Error genérico 58"
+  },
+  "@error059": {
+    "description": "Error genérico 59"
+  },
+  "@error060": {
+    "description": "Error genérico 60"
+  },
+  "@error061": {
+    "description": "Error genérico 61"
+  },
+  "@error062": {
+    "description": "Error genérico 62"
+  },
+  "@error063": {
+    "description": "Error genérico 63"
+  },
+  "@error064": {
+    "description": "Error genérico 64"
+  },
+  "@error065": {
+    "description": "Error genérico 65"
+  },
+  "@error066": {
+    "description": "Error cuando todos los exámenes del paquete de evaluación ya han sido completados"
+  },
+  "@error067": {
+    "description": "Error genérico 67"
+  },
+  "@error068": {
+    "description": "Error genérico 68"
+  },
+  "@error069": {
+    "description": "Error genérico 69"
+  },
+  "@error070": {
+    "description": "Error genérico 70"
+  },
   
   "error001": "Usuario no ha iniciado sesión",
   "error002": "ID de entrada vacío o inválido",
@@ -893,6 +944,23 @@
   "error051": "Ya existe una cuenta con el número de teléfono proporcionado",
   "error052": "Error al intentar eliminar el paciente",
   "error053": "Ya existe un paciente con el DNI proporcionado",
+  "error054": "Error genérico 54",
+  "error055": "Error genérico 55",
+  "error056": "Error genérico 56",
+  "error057": "Error genérico 57",
+  "error058": "Error genérico 58",
+  "error059": "Error genérico 59",
+  "error060": "Error genérico 60",
+  "error061": "Error genérico 61",
+  "error062": "Error genérico 62",
+  "error063": "Error genérico 63",
+  "error064": "Error genérico 64",
+  "error065": "Error genérico 65",
+  "error066": "Todos los exámenes de este paquete de evaluación ya han sido completados",
+  "error067": "Error genérico 67",
+  "error068": "Error genérico 68",
+  "error069": "Error genérico 69",
+  "error070": "Error genérico 70",
   "invoice": "Factura",
   "@invoice": {
     "description": "Factura singular"

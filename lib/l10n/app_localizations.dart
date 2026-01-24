@@ -1235,6 +1235,108 @@ abstract class AppLocalizations {
   /// **'Ya existe un paciente con el DNI proporcionado'**
   String get error053;
 
+  /// Error genérico 54
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 54'**
+  String get error054;
+
+  /// Error genérico 55
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 55'**
+  String get error055;
+
+  /// Error genérico 56
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 56'**
+  String get error056;
+
+  /// Error genérico 57
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 57'**
+  String get error057;
+
+  /// Error genérico 58
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 58'**
+  String get error058;
+
+  /// Error genérico 59
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 59'**
+  String get error059;
+
+  /// Error genérico 60
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 60'**
+  String get error060;
+
+  /// Error genérico 61
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 61'**
+  String get error061;
+
+  /// Error genérico 62
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 62'**
+  String get error062;
+
+  /// Error genérico 63
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 63'**
+  String get error063;
+
+  /// Error genérico 64
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 64'**
+  String get error064;
+
+  /// Error genérico 65
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 65'**
+  String get error065;
+
+  /// Error cuando todos los exámenes del paquete de evaluación ya han sido completados
+  ///
+  /// In es, this message translates to:
+  /// **'Todos los exámenes de este paquete de evaluación ya han sido completados'**
+  String get error066;
+
+  /// Error genérico 67
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 67'**
+  String get error067;
+
+  /// Error genérico 68
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 68'**
+  String get error068;
+
+  /// Error genérico 69
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 69'**
+  String get error069;
+
+  /// Error genérico 70
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 70'**
+  String get error070;
+
   /// Paciente singular
   ///
   /// In es, this message translates to:
