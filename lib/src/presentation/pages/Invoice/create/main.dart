@@ -45,9 +45,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   String getInvoiceKindLabel(BuildContext context, InvoiceKind kind) {
     final l10n = AppLocalizations.of(context)!;
     switch (kind) {
-      case InvoiceKind.iNVOICE:
+      case InvoiceKind.invoice:
         return l10n.invoiceTypeInvoice;
-      case InvoiceKind.cREDIT_NOTE:
+      case InvoiceKind.creditNote:
         return l10n.invoiceTypeCreditNote;
     }
   }
@@ -280,7 +280,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                   
                   // Tipo de Factura (REQUERIDO)
                   DropdownButtonFormField<InvoiceKind>(
-                    value: selectedInvoiceKind ?? InvoiceKind.iNVOICE,
+                    value: selectedInvoiceKind ?? InvoiceKind.invoice,
                     decoration: InputDecoration(
                       labelText: l10n.invoiceType,
                       isDense: true,
@@ -295,7 +295,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                     onChanged: (InvoiceKind? newValue) {
                       setState(() {
                         selectedInvoiceKind = newValue;
-                        viewModel.invoiceInput.kind = newValue ?? InvoiceKind.iNVOICE;
+                        viewModel.invoiceInput.kind = newValue ?? InvoiceKind.invoice;
                       });
                     },
                   ),

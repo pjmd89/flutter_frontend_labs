@@ -2,7 +2,7 @@ import "package:flutter/foundation.dart";
 import "package:json_annotation/json_annotation.dart";
 part "checkuploadinput_input.g.dart";
 @JsonSerializable(includeIfNull: false)
-class checkUploadInput extends ChangeNotifier {
+class CheckUploadInput extends ChangeNotifier {
   String _name = "";
   String get name => _name;
   set name(String value) {
@@ -21,7 +21,7 @@ class checkUploadInput extends ChangeNotifier {
     _type = value;
     notifyListeners();
   }
-  checkUploadInput({
+  CheckUploadInput({
     String? name,
     num? size,
     String? type,
@@ -30,6 +30,6 @@ class checkUploadInput extends ChangeNotifier {
     this.size = size ?? 0;
     this.type = type ?? "";
   }
-  factory checkUploadInput.fromJson(Map<String, dynamic> json) => _$checkUploadInputFromJson(json);
-  Map<String, dynamic> toJson() => _$checkUploadInputToJson(this);
+  factory CheckUploadInput.fromJson(Map<String, dynamic> json) => _$CheckUploadInputFromJson(json);
+  Map<String, dynamic> toJson() => _$CheckUploadInputToJson(this);
 }

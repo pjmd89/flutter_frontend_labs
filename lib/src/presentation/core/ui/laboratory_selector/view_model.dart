@@ -19,6 +19,7 @@ class LaboratorySelectorViewModel extends ChangeNotifier {
 
   late GqlConn _gqlConn;
   late ReadLaboratoryUsecase _readLaboratoryUseCase;
+  // ignore: unused_field
   late ReadLabMembershipUsecase _readLabMembershipUseCase;
   final BuildContext _context;
   final String _userId;

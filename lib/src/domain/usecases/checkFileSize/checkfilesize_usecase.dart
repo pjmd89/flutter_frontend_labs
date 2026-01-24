@@ -34,7 +34,7 @@ class CheckFileSizeUsecase implements af.UseCase {
       debugPrint('🔍 Verificando archivo: $name');
       
       // Crear input
-      final input = checkUploadInput(
+      final input = CheckUploadInput(
         name: name,
         size: size,
         type: type,

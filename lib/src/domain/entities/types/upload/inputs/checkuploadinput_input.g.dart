@@ -6,14 +6,14 @@ part of 'checkuploadinput_input.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-checkUploadInput _$checkUploadInputFromJson(Map<String, dynamic> json) =>
-    checkUploadInput(
+CheckUploadInput _$CheckUploadInputFromJson(Map<String, dynamic> json) =>
+    CheckUploadInput(
       name: json['name'] as String?,
       size: json['size'] as num?,
       type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$checkUploadInputToJson(checkUploadInput instance) =>
+Map<String, dynamic> _$CheckUploadInputToJson(CheckUploadInput instance) =>
     <String, dynamic>{
       'name': instance.name,
       'size': instance.size,

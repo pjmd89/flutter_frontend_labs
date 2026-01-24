@@ -3,7 +3,7 @@ part "invoicekind_enum.g.dart";
 @JsonEnum(alwaysCreate: true)
 enum InvoiceKind {
   @JsonValue("INVOICE")
-  iNVOICE,
+  invoice,
   @JsonValue("CREDIT_NOTE")
-  cREDIT_NOTE,
+  creditNote,
 }

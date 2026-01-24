@@ -50,7 +50,7 @@ class InvoiceItem extends StatelessWidget {
     String invoiceTypeLabel;
     Color invoiceTypeColor;
     
-    if (invoice.kind == InvoiceKind.cREDIT_NOTE) {
+    if (invoice.kind == InvoiceKind.creditNote) {
       invoiceTypeLabel = l10n.invoiceTypeCreditNote;
       invoiceTypeColor = Colors.orange;
     } else {
