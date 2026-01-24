@@ -17,7 +17,24 @@ extension EdgeLabMembershipInfoFieldsBuilderExtension on EdgeLabMembershipInfoFi
           ..laboratory(builder: (labBuilder) {
             labBuilder
               ..id()
-              ..address();
+              ..address()
+              ..contactPhoneNumbers()
+              ..company(builder: (companyBuilder) {
+                companyBuilder
+                  ..id()
+                  ..name()
+                  ..logo()
+                  ..taxID()
+                  ..owner(builder: (userBuilder) {
+                    userBuilder
+                      ..id()
+                      ..firstName()
+                      ..lastName()
+                      ..email();
+                  });
+              })
+              ..created()
+              ..updated();
           })
           ..created()
           ..updated();

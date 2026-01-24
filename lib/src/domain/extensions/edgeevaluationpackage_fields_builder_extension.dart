@@ -10,6 +10,22 @@ extension EdgeEvaluationPackageFieldsBuilderExtension on EdgeEvaluationPackageFi
             ..status()
             ..referred()
             ..observations()
+            ..isApproved()
+            ..bioanalystReview(
+              builder: (bioanalystReviewBuilder) {
+                bioanalystReviewBuilder
+                  ..bioanalyst(
+                    builder: (userBuilder) {
+                      userBuilder
+                        ..id()
+                        ..firstName()
+                        ..lastName()
+                        ..email();
+                    },
+                  )
+                  ..reviewedAt();
+              },
+            )
             ..valuesByExam(
               builder: (examResultBuilder) {
                 examResultBuilder

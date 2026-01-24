@@ -1,14 +1,16 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
+import 'package:labs/src/domain/extensions/edgelabmembershipinfo_fields_builder_extension.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/queries/getLaboratories/getlaboratories_query.dart';
+import 'package:labs/src/domain/operation/queries/getLabMemberships/getlabmemberships_query.dart';
 import 'package:labs/src/domain/usecases/Laboratory/read_laboratory_usecase.dart';
+import 'package:labs/src/domain/usecases/LabMembership/read_labmembership_usecase.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import 'package:labs/src/presentation/providers/gql_notifier.dart';
-import 'package:provider/provider.dart';
+
 
 class LaboratorySelectorViewModel extends ChangeNotifier {
   bool _loading = false;
@@ -16,12 +18,18 @@ class LaboratorySelectorViewModel extends ChangeNotifier {
   List<Laboratory>? _laboratoryList;
 
   late GqlConn _gqlConn;
-  late ReadLaboratoryUsecase _readUseCase;
+  late ReadLaboratoryUsecase _readLaboratoryUseCase;
+  late ReadLabMembershipUsecase _readLabMembershipUseCase;
   final BuildContext _context;
   final String _userId;
+  final Role? _userRole;
 
-  final GetLaboratoriesQuery _operation = GetLaboratoriesQuery(
+  final GetLaboratoriesQuery _laboratoryOperation = GetLaboratoriesQuery(
     builder: EdgeLaboratoryFieldsBuilder().defaultValues(),
+  );
+
+  final GetLabMembershipsQuery _labMembershipOperation = GetLabMembershipsQuery(
+    builder: EdgeLabMembershipInfoFieldsBuilder().defaultValues(),
   );
 
   bool get loading => _loading;
@@ -45,9 +53,11 @@ class LaboratorySelectorViewModel extends ChangeNotifier {
 
   LaboratorySelectorViewModel({required BuildContext context})
       : _context = context,
-        _userId = context.read<AuthNotifier>().id {
+        _userId = context.read<AuthNotifier>().id,
+        _userRole = context.read<AuthNotifier>().role {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
-    _readUseCase = ReadLaboratoryUsecase(operation: _operation, conn: _gqlConn);
+    _readLaboratoryUseCase = ReadLaboratoryUsecase(operation: _laboratoryOperation, conn: _gqlConn);
+    _readLabMembershipUseCase = ReadLabMembershipUsecase(operation: _labMembershipOperation, conn: _gqlConn);
     _init();
   }
 
@@ -60,22 +70,50 @@ class LaboratorySelectorViewModel extends ChangeNotifier {
     error = false;
 
     try {
-      debugPrint('🔍 Cargando laboratorios para usuario: $_userId');
+      debugPrint('🔍 Cargando laboratorios para usuario: $_userId (Role: $_userRole)');
       
-      final response = await _readUseCase.build();
+      // Para ROOT y ADMIN: obtener todos los laboratorios que poseen (por company.owner)
+      if (_userRole == Role.rOOT || _userRole == Role.aDMIN) {
+        debugPrint('👑 Usuario ROOT/ADMIN - Obteniendo laboratorios como propietario');
+        final response = await _readLaboratoryUseCase.build();
 
-      if (response is EdgeLaboratory) {
-        final allLaboratories = response.edges;
-        debugPrint('📦 Total laboratorios encontrados: ${allLaboratories.length}');
+        if (response is EdgeLaboratory) {
+          final allLaboratories = response.edges;
+          debugPrint('📦 Total laboratorios encontrados: ${allLaboratories.length}');
+          
+          // Filtrar laboratorios por company.owner.id = userId
+          laboratoryList = allLaboratories.where((lab) {
+            final ownerMatches = lab.company?.owner?.id == _userId;
+            debugPrint('   Lab: ${lab.company?.name ?? 'Sin nombre'} - Owner: ${lab.company?.owner?.id} - Match: $ownerMatches');
+            return ownerMatches;
+          }).toList();
+          
+          debugPrint('✅ Laboratorios filtrados como propietario: ${laboratoryList?.length ?? 0}');
+        }
+      } 
+      // Para USER (BIOANALYST, TECHNICIAN, BILLING, etc.): obtener laboratorios donde es miembro
+      else if (_userRole == Role.uSER) {
+        debugPrint('👤 Usuario con Role.USER - Obteniendo laboratorios como miembro');
+        debugPrint('⚠️ NOTA: getLabMemberships requiere laboratorio seleccionado, no funciona en selector');
+        debugPrint('🔄 Intentando obtener TODOS los laboratorios y filtrar localmente...');
         
-        // Filtrar laboratorios por company.owner.id = userId
-        laboratoryList = allLaboratories.where((lab) {
-          final ownerMatches = lab.company?.owner?.id == _userId;
-          debugPrint('   Lab: ${lab.company?.name ?? 'Sin nombre'} - Owner: ${lab.company?.owner?.id} - Match: $ownerMatches');
-          return ownerMatches;
-        }).toList();
+        // Obtener TODOS los laboratorios sin filtros
+        final response = await _readLaboratoryUseCase.build();
         
-        debugPrint('✅ Laboratorios filtrados: ${laboratoryList?.length ?? 0}');
+        if (response is EdgeLaboratory) {
+          final allLaboratories = response.edges;
+          debugPrint('📦 Total laboratorios encontrados: ${allLaboratories.length}');
+          
+          // Por ahora, mostrar TODOS los laboratorios como workaround
+          // TODO: El backend debería filtrar por membresía del usuario
+          laboratoryList = allLaboratories;
+          
+          debugPrint('✅ Laboratorios disponibles: ${laboratoryList?.length ?? 0}');
+          debugPrint('⚠️ TEMPORAL: Mostrando TODOS los laboratorios. Requiere filtro backend.');
+        }
+      } else {
+        debugPrint('⚠️ Rol no reconocido: $_userRole');
+        laboratoryList = [];
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en getLaboratories: $e');

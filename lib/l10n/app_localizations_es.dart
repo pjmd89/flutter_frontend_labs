@@ -156,6 +156,45 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evaluationPackages => 'Paquetes de Evaluación';
 
   @override
+  String get approve => 'Aprobar';
+
+  @override
+  String get approveEvaluationPackage => 'Aprobar Paquete de Evaluación';
+
+  @override
+  String get approveEvaluationPackageConfirmation => '¿Está seguro de que desea aprobar este paquete de evaluación? Esta acción registrará su revisión como bioanalista.';
+
+  @override
+  String get evaluationPackageApprovedSuccessfully => 'Paquete de evaluación aprobado exitosamente';
+
+  @override
+  String get viewOnlyMode => 'Solo puedes ver este paquete de evaluación. Solo los propietarios y técnicos pueden editar los resultados.';
+
+  @override
+  String get bioanalystViewMode => 'Como bioanalista, puedes revisar los resultados y aprobar el paquete de evaluación cuando esté completo.';
+
+  @override
+  String get markAsCompletedDescription => 'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.';
+
+  @override
+  String get isApproved => 'Aprobado';
+
+  @override
+  String get approved => 'Aprobado';
+
+  @override
+  String get notApproved => 'No Aprobado';
+
+  @override
+  String get reviewedBy => 'Revisado por';
+
+  @override
+  String get reviewedAt => 'Fecha de revisión';
+
+  @override
+  String get bioanalystReview => 'Revisión del Bioanalista';
+
+  @override
   String get status => 'Estado';
 
   @override

@@ -202,6 +202,65 @@
     "description": "Término para paquetes de evaluación en plural"
   },
   
+  "approve": "Aprobar",
+  "@approve": {
+    "description": "Acción de aprobar"
+  },
+  "approveEvaluationPackage": "Aprobar Paquete de Evaluación",
+  "@approveEvaluationPackage": {
+    "description": "Acción de aprobar un paquete de evaluación"
+  },
+  "approveEvaluationPackageConfirmation": "¿Está seguro de que desea aprobar este paquete de evaluación? Esta acción registrará su revisión como bioanalista.",
+  "@approveEvaluationPackageConfirmation": {
+    "description": "Mensaje de confirmación para aprobar un paquete de evaluación"
+  },
+  "evaluationPackageApprovedSuccessfully": "Paquete de evaluación aprobado exitosamente",
+  "@evaluationPackageApprovedSuccessfully": {
+    "description": "Mensaje de éxito al aprobar un paquete de evaluación"
+  },
+  "viewOnlyMode": "Solo puedes ver este paquete de evaluación. Solo los propietarios y técnicos pueden editar los resultados.",
+  "@viewOnlyMode": {
+    "description": "Mensaje informativo cuando el usuario no puede editar"
+  },
+  "bioanalystViewMode": "Como bioanalista, puedes revisar los resultados y aprobar el paquete de evaluación cuando esté completo.",
+  "@bioanalystViewMode": {
+    "description": "Mensaje informativo para bioanalistas"
+  },
+  "markAsCompletedDescription": "Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.",
+  "@markAsCompletedDescription": {
+    "description": "Descripción del switch de marcar como completado"
+  },
+  
+  "isApproved": "Aprobado",
+  "@isApproved": {
+    "description": "Campo para indicar si está aprobado"
+  },
+  
+  "approved": "Aprobado",
+  "@approved": {
+    "description": "Estado aprobado"
+  },
+  
+  "notApproved": "No Aprobado",
+  "@notApproved": {
+    "description": "Estado no aprobado"
+  },
+  
+  "reviewedBy": "Revisado por",
+  "@reviewedBy": {
+    "description": "Campo para mostrar quién revisó"
+  },
+  
+  "reviewedAt": "Fecha de revisión",
+  "@reviewedAt": {
+    "description": "Campo para fecha de revisión"
+  },
+  
+  "bioanalystReview": "Revisión del Bioanalista",
+  "@bioanalystReview": {
+    "description": "Sección de revisión del bioanalista"
+  },
+  
   "status": "Estado",
   "@status": {
     "description": "Campo de estado general"

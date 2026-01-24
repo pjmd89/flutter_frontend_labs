@@ -21,7 +21,7 @@ class EvaluationPackageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final statusText = evaluationPackage.status?.toString().split('.').last ?? 'pending';
+    final statusText = _getStatusText(evaluationPackage.status);
     final referredText = evaluationPackage.referred.isEmpty 
         ? 'N/A' 
         : evaluationPackage.referred;
@@ -99,6 +99,35 @@ class EvaluationPackageItem extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 8),
+                  // Estado de aprobación
+                  Row(
+                    children: [
+                      Icon(
+                        evaluationPackage.isApproved 
+                            ? Icons.verified_outlined 
+                            : Icons.pending_outlined,
+                        size: 16,
+                        color: evaluationPackage.isApproved 
+                            ? Colors.green 
+                            : Colors.orange,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          evaluationPackage.isApproved 
+                              ? l10n.approved 
+                              : l10n.notApproved,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: evaluationPackage.isApproved 
+                                ? Colors.green 
+                                : Colors.orange,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   if (hasObservations) ...[
                     const SizedBox(height: 8),
                     Row(
@@ -140,6 +169,19 @@ class EvaluationPackageItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getStatusText(ResultStatus? status) {
+    switch (status) {
+      case ResultStatus.cOMPLETED:
+        return l10n.statusCompleted;
+      case ResultStatus.iNPROGRESS:
+        return l10n.statusInProgress;
+      case ResultStatus.pENDING:
+        return l10n.statusPending;
+      default:
+        return l10n.statusUnknown;
+    }
   }
 
   IconData _getStatusIcon(ResultStatus? status) {

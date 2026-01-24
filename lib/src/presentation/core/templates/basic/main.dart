@@ -7,6 +7,7 @@ import 'package:labs/src/presentation/core/templates/basic/drawer_header_buttons
 import 'package:labs/src/presentation/core/templates/basic/drawer_owner_buttons_list.dart';
 import 'package:labs/src/presentation/core/templates/basic/drawer_root_buttons_list.dart';
 import 'package:labs/src/presentation/core/templates/basic/drawer_technician_buttons_list.dart';
+import 'package:labs/src/presentation/core/templates/basic/drawer_bioanalyst_buttons_list.dart';
 import 'package:labs/src/presentation/core/templates/basic/drawer_billing_buttons_list.dart';
 import 'package:labs/src/presentation/core/ui/custom_drawer/drawer_config.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
@@ -41,8 +42,10 @@ class BasicTemplate extends StatelessWidget {
             case LabMemberRole.oWNER:
               drawerButtonConfigList = getOwnerDrawerButtonList(context, fullPath);
               break;
-            case LabMemberRole.tECHNICIAN:
             case LabMemberRole.bIOANALYST:
+              drawerButtonConfigList = getBioanalystDrawerButtonList(context, fullPath);
+              break;
+            case LabMemberRole.tECHNICIAN:
               drawerButtonConfigList = getTechnicianDrawerButtonList(context, fullPath);
               break;
             case LabMemberRole.bILLING:
@@ -53,7 +56,7 @@ class BasicTemplate extends StatelessWidget {
           // Si no tiene labRole, usar userIsLabOwner como fallback
           drawerButtonConfigList = authNotifier.userIsLabOwner
               ? getOwnerDrawerButtonList(context, fullPath)
-              : getTechnicianDrawerButtonList(context, fullPath);
+              : getBioanalystDrawerButtonList(context, fullPath);
         }
         break;
       default:

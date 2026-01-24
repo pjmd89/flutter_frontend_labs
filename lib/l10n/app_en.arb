@@ -106,6 +106,65 @@
     "description": "Term for evaluation packages in plural form"
   },
   
+  "approve": "Approve",
+  "@approve": {
+    "description": "Approve action"
+  },
+  "approveEvaluationPackage": "Approve Evaluation Package",
+  "@approveEvaluationPackage": {
+    "description": "Action to approve an evaluation package"
+  },
+  "approveEvaluationPackageConfirmation": "Are you sure you want to approve this evaluation package? This action will register your review as a bioanalyst.",
+  "@approveEvaluationPackageConfirmation": {
+    "description": "Confirmation message to approve an evaluation package"
+  },
+  "evaluationPackageApprovedSuccessfully": "Evaluation package approved successfully",
+  "@evaluationPackageApprovedSuccessfully": {
+    "description": "Success message when an evaluation package is approved"
+  },
+  "viewOnlyMode": "You can only view this evaluation package. Only owners and technicians can edit the results.",
+  "@viewOnlyMode": {
+    "description": "Informative message when the user cannot edit"
+  },
+  "bioanalystViewMode": "As a bioanalyst, you can review the results and approve the evaluation package when it's complete.",
+  "@bioanalystViewMode": {
+    "description": "Informative message for bioanalysts"
+  },
+  "markAsCompletedDescription": "Mark that all exam results have been completed and are ready for bioanalyst review.",
+  "@markAsCompletedDescription": {
+    "description": "Description of the mark as completed switch"
+  },
+  
+  "isApproved": "Approved",
+  "@isApproved": {
+    "description": "Field to indicate if it's approved"
+  },
+  
+  "approved": "Approved",
+  "@approved": {
+    "description": "Approved status"
+  },
+  
+  "notApproved": "Not Approved",
+  "@notApproved": {
+    "description": "Not approved status"
+  },
+  
+  "reviewedBy": "Reviewed by",
+  "@reviewedBy": {
+    "description": "Field to show who reviewed"
+  },
+  
+  "reviewedAt": "Review date",
+  "@reviewedAt": {
+    "description": "Field for review date"
+  },
+  
+  "bioanalystReview": "Bioanalyst Review",
+  "@bioanalystReview": {
+    "description": "Bioanalyst review section"
+  },
+  
   "status": "Status",
   "@status": {
     "description": "General status field"

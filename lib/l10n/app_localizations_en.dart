@@ -156,6 +156,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get evaluationPackages => 'Evaluation Packages';
 
   @override
+  String get approve => 'Approve';
+
+  @override
+  String get approveEvaluationPackage => 'Approve Evaluation Package';
+
+  @override
+  String get approveEvaluationPackageConfirmation => 'Are you sure you want to approve this evaluation package? This action will register your review as a bioanalyst.';
+
+  @override
+  String get evaluationPackageApprovedSuccessfully => 'Evaluation package approved successfully';
+
+  @override
+  String get viewOnlyMode => 'You can only view this evaluation package. Only owners and technicians can edit the results.';
+
+  @override
+  String get bioanalystViewMode => 'As a bioanalyst, you can review the results and approve the evaluation package when it\'s complete.';
+
+  @override
+  String get markAsCompletedDescription => 'Mark that all exam results have been completed and are ready for bioanalyst review.';
+
+  @override
+  String get isApproved => 'Approved';
+
+  @override
+  String get approved => 'Approved';
+
+  @override
+  String get notApproved => 'Not Approved';
+
+  @override
+  String get reviewedBy => 'Reviewed by';
+
+  @override
+  String get reviewedAt => 'Review date';
+
+  @override
+  String get bioanalystReview => 'Bioanalyst Review';
+
+  @override
   String get status => 'Status';
 
   @override

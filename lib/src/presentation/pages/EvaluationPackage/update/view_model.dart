@@ -5,7 +5,9 @@ import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/updateEvaluationPackage/updateevaluationpackage_mutation.dart';
+import 'package:labs/src/domain/operation/mutations/approveEvaluationPackage/approveevaluationpackage_mutation.dart';
 import 'package:labs/src/domain/usecases/EvaluationPackage/update_evaluationpackage_usecase.dart';
+import 'package:labs/src/domain/usecases/EvaluationPackage/approve_evaluationpackage_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
 
@@ -54,6 +56,7 @@ class ViewModel extends ChangeNotifier {
     // Prellenar input con datos existentes
     input.id = evaluationPackage.id;
     input.observations = List.from(evaluationPackage.observations);
+    // Prellenar allResultsCompleted basado en el estado actual
     input.allResultsCompleted = evaluationPackage.status == ResultStatus.cOMPLETED;
     
     // Prellenar valuesByExam (estructura compleja)
@@ -170,6 +173,75 @@ class ViewModel extends ChangeNotifier {
         );
       }
       // Si es "Backend error handled", el ErrorManager ya mostró el mensaje traducido
+    } finally {
+      loading = false;
+    }
+
+    return isError;
+  }
+  
+  Future<bool> approve() async {
+    bool isError = true;
+    loading = true;
+
+    ApproveEvaluationPackageUsecase useCase = ApproveEvaluationPackageUsecase(
+      operation: ApproveEvaluationPackageMutation(
+        builder: EvaluationPackageFieldsBuilder()
+          ..id()
+          ..status()
+          ..isApproved()
+          ..bioanalystReview(
+            builder: (bioanalystReviewBuilder) {
+              bioanalystReviewBuilder
+                ..bioanalyst(
+                  builder: (userBuilder) {
+                    userBuilder
+                      ..id()
+                      ..firstName()
+                      ..lastName();
+                  },
+                )
+                ..reviewedAt();
+            },
+          )
+          ..updated(),
+      ),
+      conn: _gqlConn,
+    );
+
+    try {
+      var response = await useCase.execute(evaluationPackageId: input.id);
+      
+      debugPrint('✅ Response recibido en ViewModel (approve):');
+      debugPrint('  - Type: ${response.runtimeType}');
+      debugPrint('  - Value: $response');
+      debugPrint('  - Is EvaluationPackage? ${response is EvaluationPackage}');
+      
+      if (response is EvaluationPackage) {
+        debugPrint('✅ Aprobación exitosa!');
+        isError = false;
+        _currentEvaluationPackage = response;
+        
+        _errorService.showError(
+          message: l10n.evaluationPackageApprovedSuccessfully,
+          type: ErrorType.success,
+        );
+      } else {
+        debugPrint('❌ Response NO es EvaluationPackage');
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en approveEvaluationPackage: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+      isError = true;
+      
+      // Solo mostrar error si no es un error controlado del backend
+      final errorMessage = e.toString();
+      if (!errorMessage.contains('Backend error handled')) {
+        _errorService.showError(
+          message: 'Error al aprobar paquete de evaluación: $errorMessage',
+          type: ErrorType.error,
+        );
+      }
     } finally {
       loading = false;
     }

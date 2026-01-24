@@ -176,8 +176,50 @@ class DetailsSection extends StatelessWidget {
                 label: l10n.completedAt,
                 value: _formatDate(evaluationPackage.completedAt),
               ),
+            ],            
+            const SizedBox(height: 16),
+            
+            // Estado de aprobación
+            _buildInfoRow(
+              context: context,
+              icon: evaluationPackage.isApproved 
+                  ? Icons.verified 
+                  : Icons.pending,
+              label: l10n.isApproved,
+              value: evaluationPackage.isApproved 
+                  ? l10n.approved 
+                  : l10n.notApproved,
+              valueColor: evaluationPackage.isApproved 
+                  ? Colors.green 
+                  : Colors.orange,
+            ),
+            
+            // Revisión del bioanalista
+            if (evaluationPackage.bioanalystReview != null) ...[
+              const Divider(height: 32),
+              Text(
+                l10n.bioanalystReview,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildInfoRow(
+                context: context,
+                icon: Icons.person_outline,
+                label: l10n.reviewedBy,
+                value: evaluationPackage.bioanalystReview?.bioanalyst != null
+                    ? '${evaluationPackage.bioanalystReview!.bioanalyst!.firstName} ${evaluationPackage.bioanalystReview!.bioanalyst!.lastName}'
+                    : 'N/A',
+              ),
+              const SizedBox(height: 16),
+              _buildInfoRow(
+                context: context,
+                icon: Icons.event_outlined,
+                label: l10n.reviewedAt,
+                value: _formatDate(evaluationPackage.bioanalystReview?.reviewedAt),
+              ),
             ],
-
             // Observaciones
             if (evaluationPackage.observations.isNotEmpty) ...[
               const Divider(height: 32),
@@ -226,6 +268,7 @@ class DetailsSection extends StatelessWidget {
     required IconData icon,
     required String label,
     required String value,
+    Color? valueColor,
   }) {
     final theme = Theme.of(context);
     return Row(
@@ -233,7 +276,7 @@ class DetailsSection extends StatelessWidget {
         Icon(
           icon,
           size: 20,
-          color: theme.colorScheme.primary,
+          color: valueColor ?? theme.colorScheme.primary,
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -251,6 +294,7 @@ class DetailsSection extends StatelessWidget {
                 value,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w500,
+                  color: valueColor,
                 ),
               ),
             ],

@@ -12,7 +12,7 @@ BioanalystReview _$BioanalystReviewFromJson(Map<String, dynamic> json) =>
           json['bioanalyst'] == null
               ? null
               : User.fromJson(json['bioanalyst'] as Map<String, dynamic>),
-      reviewedAt: json['reviewedAt'] as String? ?? "",
+      reviewedAt: (json['reviewedAt'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$BioanalystReviewToJson(BioanalystReview instance) =>

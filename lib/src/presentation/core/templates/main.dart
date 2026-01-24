@@ -69,8 +69,10 @@ class _TemplateState extends State<Template> {
             case LabMemberRole.oWNER:
               router = ownerRouter;
               break;
-            case LabMemberRole.tECHNICIAN:
             case LabMemberRole.bIOANALYST:
+              router = bioanalystRouter;
+              break;
+            case LabMemberRole.tECHNICIAN:
               router = technicianRouter;
               break;
             case LabMemberRole.bILLING:
@@ -79,7 +81,7 @@ class _TemplateState extends State<Template> {
           }
         } else {
           // Si no tiene labRole, usar userIsLabOwner como fallback
-          router = authNotifier.userIsLabOwner ? ownerRouter : technicianRouter;
+          router = authNotifier.userIsLabOwner ? ownerRouter : bioanalystRouter;
         }
         break;
       default:

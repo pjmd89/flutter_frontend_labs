@@ -38,7 +38,15 @@ class ApproveEvaluationPackageMutation implements Operation{
   EvaluationPackage result(Map<String, dynamic> data) {
     String name;
     name = alias ?? _name;
-    return EvaluationPackage.fromJson(data[name]);
+    final responseData = data[name];
+    
+    // Si ya es un EvaluationPackage, devolverlo directamente
+    if (responseData is EvaluationPackage) {
+      return responseData;
+    }
+    
+    // Si es un Map, parsearlo
+    return EvaluationPackage.fromJson(responseData);
   }
 
 }

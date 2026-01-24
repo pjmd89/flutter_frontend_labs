@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:labs/src/domain/entities/types/laboratory/laboratory_model.dart';
 import 'package:labs/src/domain/entities/types/loggeduser/loggeduser_model.dart';
+import 'package:labs/src/domain/entities/enums/labmemberrole_enum.dart';
 import 'package:labs/src/domain/usecases/Laboratory/set_current_laboratory_usecase.dart';
 import 'package:labs/src/domain/operation/mutations/setCurrentLaboratory/setcurrentlaboratory_mutation.dart';
 import 'package:labs/src/domain/extensions/user_logged_builder/main.dart';
@@ -98,6 +100,33 @@ class LaboratoryNotifier extends ChangeNotifier {
           debugPrint('   CurrentLab: ${loggedUser.currentLaboratory?.company?.name ?? 'N/A'}');
           debugPrint('   LabRole: ${loggedUser.labRole}');
           debugPrint('   UserIsLabOwner: ${loggedUser.userIsLabOwner}');
+          
+          // Navegar a la ruta inicial correspondiente según el labRole
+          if (context.mounted) {
+            String initialRoute;
+            switch (loggedUser.labRole) {
+              case LabMemberRole.oWNER:
+                initialRoute = '/home';
+                debugPrint('🧭 Navegando a ruta de OWNER: $initialRoute');
+                break;
+              case LabMemberRole.bIOANALYST:
+                initialRoute = '/patient';
+                debugPrint('🧭 Navegando a ruta de BIOANALYST: $initialRoute');
+                break;
+              case LabMemberRole.tECHNICIAN:
+                initialRoute = '/exam';
+                debugPrint('🧭 Navegando a ruta de TECHNICIAN: $initialRoute');
+                break;
+              case LabMemberRole.bILLING:
+                initialRoute = '/invoice';
+                debugPrint('🧭 Navegando a ruta de BILLING: $initialRoute');
+                break;
+              default:
+                initialRoute = '/patient';
+                debugPrint('🧭 Navegando a ruta por defecto: $initialRoute');
+            }
+            context.go(initialRoute);
+          }
           
           // Ejecutar callback si existe
           if (onLaboratoryChanged != null) {

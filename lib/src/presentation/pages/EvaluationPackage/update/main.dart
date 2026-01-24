@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:agile_front/agile_front.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import 'package:labs/src/presentation/core/ui/custom_text_form_fields/custom_text_form_field.dart';
 import 'package:labs/src/presentation/core/ui/custom_text_form_fields/utils/form_field_length/main.dart';
+import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import './view_model.dart';
 
 class EvaluationPackageUpdatePage extends StatefulWidget {
@@ -57,7 +59,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       }
     }
     
-    // Prellenar estado de completitud
+    // Inicializar estado de completitud
     allResultsCompleted = widget.evaluationPackage.status == ResultStatus.cOMPLETED;
   }
   
@@ -137,6 +139,11 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final authNotifier = context.read<AuthNotifier>();
+    final isBioanalyst = authNotifier.labRole == LabMemberRole.bIOANALYST;
+    final isTechnician = authNotifier.labRole == LabMemberRole.tECHNICIAN;
+    final isOwner = authNotifier.userIsLabOwner;
+    final canEdit = (isOwner || isTechnician) && !isBioanalyst;
     
     return ListenableBuilder(
       listenable: viewModel,
@@ -152,6 +159,61 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Mensaje informativo para usuarios según su rol
+                  if (!canEdit && !isBioanalyst) ...[
+                    Card(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.info_outline,
+                              color: Theme.of(context).colorScheme.onSecondaryContainer,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                l10n.viewOnlyMode,
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  
+                  if (isBioanalyst) ...[  
+                    Card(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.verified_user,
+                              color: Theme.of(context).colorScheme.onPrimaryContainer,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                l10n.bioanalystViewMode,
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  
                   // Sección de información no editable
                   if (viewModel.currentEvaluationPackage != null) ...[
                     Card(
@@ -249,11 +311,12 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                                         isDense: true,
                                         fieldLength: FormFieldLength.name,
                                         counterText: "",
+                                        readOnly: !canEdit,
                                         onChange: (value) {
                                           _updateExamValues();
                                         },
                                         validator: (value) {
-                                          if (value == null || value.isEmpty) {
+                                          if (canEdit && (value == null || value.isEmpty)) {
                                             return l10n.fieldRequired;
                                           }
                                           return null;
@@ -272,19 +335,21 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                     const SizedBox(height: 16),
                   ],
                   
-                  // Switch de completitud
-                  SwitchListTile(
-                    title: Text(l10n.allResultsCompleted),
-                    subtitle: Text(l10n.allResultsCompletedDescription),
-                    value: allResultsCompleted,
-                    onChanged: (bool value) {
-                      setState(() {
-                        allResultsCompleted = value;
-                        viewModel.input.allResultsCompleted = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                  // Switch de completitud - Solo para OWNER y TECHNICIAN
+                  if (canEdit) ...[
+                    SwitchListTile(
+                      title: Text(l10n.allResultsCompleted),
+                      subtitle: Text(l10n.markAsCompletedDescription),
+                      value: allResultsCompleted,
+                      onChanged: (bool value) {
+                        setState(() {
+                          allResultsCompleted = value;
+                          viewModel.input.allResultsCompleted = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   
                   // Sección de observaciones
                   Row(
@@ -294,11 +359,12 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                         l10n.observations,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      FilledButton.icon(
-                        icon: const Icon(Icons.add, size: 18),
-                        label: Text(l10n.addObservation),
-                        onPressed: _addObservationField,
-                      ),
+                      if (canEdit)
+                        FilledButton.icon(
+                          icon: const Icon(Icons.add, size: 18),
+                          label: Text(l10n.addObservation),
+                          onPressed: _addObservationField,
+                        ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -332,6 +398,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                                   isDense: true,
                                   fieldLength: FormFieldLength.name,
                                   counterText: "",
+                                  readOnly: !canEdit,
                                   onChange: (value) {
                                     viewModel.input.observations = observationControllers
                                       .map((c) => c.text)
@@ -340,7 +407,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                                   },
                                 ),
                               ),
-                              if (observationControllers.length > 1) ...[
+                              if (canEdit && observationControllers.length > 1) ...[
                                 const SizedBox(width: 8),
                                 IconButton(
                                   icon: const Icon(Icons.remove_circle_outline),
@@ -366,22 +433,86 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                   onPressed: () => context.pop(false),
                 ),
                 const SizedBox(width: 8),
-                FilledButton(
-                  onPressed: viewModel.loading
-                    ? null
-                    : () async {
-                      if (formKey.currentState!.validate()) {
-                        // Actualizar valores de exámenes antes de guardar
-                        _updateExamValues();
+                
+                // Botón de aprobación - Solo visible para bioanalistas cuando el paquete está completado
+                if (isBioanalyst && 
+                    viewModel.currentEvaluationPackage?.isApproved == false &&
+                    viewModel.currentEvaluationPackage?.status == ResultStatus.cOMPLETED) ...[
+                  FilledButton.tonal(
+                    onPressed: viewModel.loading
+                      ? null
+                      : () async {
+                        // Mostrar diálogo de confirmación
+                        final shouldApprove = await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(l10n.approveEvaluationPackage),
+                              content: Text(l10n.approveEvaluationPackageConfirmation),
+                              actions: [
+                                TextButton(
+                                  child: Text(l10n.cancel),
+                                  onPressed: () => Navigator.of(context).pop(false),
+                                ),
+                                FilledButton(
+                                  child: Text(l10n.approve),
+                                  onPressed: () => Navigator.of(context).pop(true),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                         
-                        var isErr = await viewModel.update();
-                        
-                        if (!isErr) {
-                          if (!context.mounted) return;
-                          context.pop(true);
+                        if (shouldApprove == true) {
+                          var isErr = await viewModel.approve();
+                          
+                          if (!isErr) {
+                            if (!context.mounted) return;
+                            context.pop(true);
+                          }
                         }
-                      }
-                    },
+                      },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(l10n.approve),
+                        if (viewModel.loading) ...[
+                          const SizedBox(width: 8),
+                          const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ] else ...[
+                          const SizedBox(width: 8),
+                          const Icon(Icons.verified, size: 18),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+                
+                // Botón de actualizar - Solo para técnicos y bioanalistas
+                if (canEdit)
+                  FilledButton(
+                    onPressed: viewModel.loading
+                      ? null
+                      : () async {
+                        if (formKey.currentState!.validate()) {
+                          // Actualizar valores de exámenes antes de guardar
+                          _updateExamValues();
+                          
+                          var isErr = await viewModel.update();
+                          
+                          if (!isErr) {
+                            if (!context.mounted) return;
+                            context.pop(true);
+                          }
+                        }
+                      },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

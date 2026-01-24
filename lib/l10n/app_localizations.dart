@@ -389,6 +389,84 @@ abstract class AppLocalizations {
   /// **'Paquetes de Evaluación'**
   String get evaluationPackages;
 
+  /// Acción de aprobar
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar'**
+  String get approve;
+
+  /// Acción de aprobar un paquete de evaluación
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar Paquete de Evaluación'**
+  String get approveEvaluationPackage;
+
+  /// Mensaje de confirmación para aprobar un paquete de evaluación
+  ///
+  /// In es, this message translates to:
+  /// **'¿Está seguro de que desea aprobar este paquete de evaluación? Esta acción registrará su revisión como bioanalista.'**
+  String get approveEvaluationPackageConfirmation;
+
+  /// Mensaje de éxito al aprobar un paquete de evaluación
+  ///
+  /// In es, this message translates to:
+  /// **'Paquete de evaluación aprobado exitosamente'**
+  String get evaluationPackageApprovedSuccessfully;
+
+  /// Mensaje informativo cuando el usuario no puede editar
+  ///
+  /// In es, this message translates to:
+  /// **'Solo puedes ver este paquete de evaluación. Solo los propietarios y técnicos pueden editar los resultados.'**
+  String get viewOnlyMode;
+
+  /// Mensaje informativo para bioanalistas
+  ///
+  /// In es, this message translates to:
+  /// **'Como bioanalista, puedes revisar los resultados y aprobar el paquete de evaluación cuando esté completo.'**
+  String get bioanalystViewMode;
+
+  /// Descripción del switch de marcar como completado
+  ///
+  /// In es, this message translates to:
+  /// **'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.'**
+  String get markAsCompletedDescription;
+
+  /// Campo para indicar si está aprobado
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobado'**
+  String get isApproved;
+
+  /// Estado aprobado
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobado'**
+  String get approved;
+
+  /// Estado no aprobado
+  ///
+  /// In es, this message translates to:
+  /// **'No Aprobado'**
+  String get notApproved;
+
+  /// Campo para mostrar quién revisó
+  ///
+  /// In es, this message translates to:
+  /// **'Revisado por'**
+  String get reviewedBy;
+
+  /// Campo para fecha de revisión
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de revisión'**
+  String get reviewedAt;
+
+  /// Sección de revisión del bioanalista
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión del Bioanalista'**
+  String get bioanalystReview;
+
   /// Campo de estado general
   ///
   /// In es, this message translates to:

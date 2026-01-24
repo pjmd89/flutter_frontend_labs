@@ -41,6 +41,18 @@ class EvaluationPackageFieldsBuilder {
     _fields.add(fieldStr);
     return this;
   }
+  EvaluationPackageFieldsBuilder isApproved({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
+    final fieldStr = formatField("isApproved", alias: alias, args: args, directives: directives);
+    _fields.add(fieldStr);
+    return this;
+  }
+  EvaluationPackageFieldsBuilder bioanalystReview({String? alias, Map<String, dynamic>? args, List<Directive>? directives, void Function(BioanalystReviewFieldsBuilder)? builder}) {
+    final child = BioanalystReviewFieldsBuilder();
+    if (builder != null) builder(child);
+    final fieldStr = formatField("bioanalystReview", alias: alias, args: args, directives: directives, selection: child.build());
+    _fields.add(fieldStr);
+    return this;
+  }
   EvaluationPackageFieldsBuilder created({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
     final fieldStr = formatField("created", alias: alias, args: args, directives: directives);
     _fields.add(fieldStr);

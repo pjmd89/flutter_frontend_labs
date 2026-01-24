@@ -57,6 +57,17 @@ ShellRoute technicianShellRoute = ShellRoute(
   },
   routes: [...examRoutes, ...evaluationpackageRoutes],
 );
+ShellRoute bioanalystShellRoute = ShellRoute(
+  builder: (context, state, child) {
+    return BasicTemplate(child: child);
+  },
+  routes: [
+    ...dashboardRoutes,
+    ...patientRoutes,
+    ...evaluationpackageRoutes,
+    ...laboratoryRoutes,
+  ],
+);
 ShellRoute loginShellRoute = ShellRoute(
   builder: (context, state, child) {
     return LoginTemplate(child: child);
@@ -78,6 +89,10 @@ GoRouter billingRouter = GoRouter(
 GoRouter technicianRouter = GoRouter(
   initialLocation: "/exam",
   routes: [technicianShellRoute],
+);
+GoRouter bioanalystRouter = GoRouter(
+  initialLocation: "/patient",
+  routes: [bioanalystShellRoute],
 );
 GoRouter loginRouter = GoRouter(
   initialLocation: "/login",
