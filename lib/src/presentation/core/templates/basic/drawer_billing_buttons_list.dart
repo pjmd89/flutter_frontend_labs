@@ -10,25 +10,25 @@ List<DrawerButtonConfig> getBillingDrawerButtonList(
   final l10n = AppLocalizations.of(context)!;
   return [
     DrawerButtonConfig(
-      buttonText: l10n.user, //l10n.user,
+      buttonText: l10n.users,
       buttonRoute: "/user",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.person),
     ),
     DrawerButtonConfig(
-      buttonText: "Lista de Exámenes",
+      buttonText: l10n.exams,
       buttonRoute: "/exam",
       currentPath: currentPath,
-      leadingIcon: const Icon(Icons.assignment), // icono de caja embalada
+      leadingIcon: const Icon(Icons.assignment),
     ),
     DrawerButtonConfig(
-      buttonText: "Pacientes",
+      buttonText: l10n.patients,
       buttonRoute: "/patient",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.people),
     ),
     DrawerButtonConfig(
-      buttonText: AppLocalizations.of(context)!.invoices,
+      buttonText: l10n.invoices,
       buttonRoute: "/invoice",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.receipt),

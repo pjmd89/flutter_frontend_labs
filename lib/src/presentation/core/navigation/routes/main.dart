@@ -49,7 +49,12 @@ ShellRoute billingShellRoute = ShellRoute(
   builder: (context, state, child) {
     return BasicTemplate(child: child);
   },
-  routes: [...invoiceRoutes, ...patientRoutes],
+  routes: [
+    ...userRoutes,
+    ...examRoutes,
+    ...patientRoutes,
+    ...invoiceRoutes,
+  ],
 );
 ShellRoute technicianShellRoute = ShellRoute(
   builder: (context, state, child) {
