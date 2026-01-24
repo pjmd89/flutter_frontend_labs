@@ -6,9 +6,9 @@ Cuando un usuario cambia de laboratorio usando el `LaboratorySelector`, los dato
 
 ## Solución Implementada
 
-### 1. LaboratoryNotifier con Callback Opcional
+### 1. LaboratoryNotifier con Patrón Observer
 
-El `LaboratoryNotifier.selectLaboratory()` ahora acepta un callback opcional:
+El `LaboratoryNotifier` extiende `ChangeNotifier` y dispara `notifyListeners()` cuando cambia el laboratorio:
 
 ```dart
 Future<void> selectLaboratory(
@@ -18,42 +18,25 @@ Future<void> selectLaboratory(
 }) async {
   // ... lógica de cambio de laboratorio ...
   
+  // Callback explícito (opcional)
   if (onLaboratoryChanged != null) {
     await onLaboratoryChanged();
-  } else {
-    _autoRefreshByRoute(context); // Refresco automático
   }
-}
-```
-
-### 2. Auto-Detección de Ruta
-
-Si no se proporciona un callback, el `LaboratoryNotifier` detecta automáticamente la ruta actual y dispara `notifyListeners()` para que las páginas puedan refrescarse:
-
-```dart
-void _autoRefreshByRoute(BuildContext context) {
-  final routerState = GoRouterState.of(context);
-  final currentRoute = routerState.matchedLocation;
   
-  if (currentRoute.contains('/user')) {
-    debugPrint('🔄 Detectada página de usuarios, disparando evento de refresco');
-  }
-  // ... más rutas ...
-  
+  // Notificar a todos los listeners
   notifyListeners();
 }
 ```
 
-### 3. ViewModel Escuchando Cambios
+### 2. ViewModel Escuchando Cambios (Patrón Recomendado)
 
-Cada `ViewModel` puede escuchar cambios en el `LaboratoryNotifier` y ejecutar su método de recarga:
+Cada `ViewModel` escucha cambios en el `LaboratoryNotifier` usando `addListener`:
 
 ```dart
 class ViewModel extends ChangeNotifier {
   late LaboratoryNotifier _laboratoryNotifier;
   
   ViewModel({required BuildContext context}) : _context = context {
-    _gqlConn = context.read<GQLNotifier>().gqlConn;
     _laboratoryNotifier = context.read<LaboratoryNotifier>();
     
     // Escuchar cambios en el laboratorio
@@ -64,7 +47,7 @@ class ViewModel extends ChangeNotifier {
   
   void _onLaboratoryChanged() {
     debugPrint('🔄 Laboratorio cambiado, recargando datos...');
-    getMemberships(); // o getUsers(), getPatients(), etc.
+    getData(); // Método de recarga específico de la página
   }
   
   @override
@@ -77,27 +60,29 @@ class ViewModel extends ChangeNotifier {
 
 ## Uso en Diferentes Escenarios
 
-### Opción 1: Auto-Refresh (Recomendado)
+### Opción 1: Listener Pattern (Recomendado)
 
-Deja que el ViewModel escuche los cambios automáticamente:
+El ViewModel escucha los cambios automáticamente usando el patrón Observer:
 
 ```dart
 // En el ViewModel
 _laboratoryNotifier.addListener(_onLaboratoryChanged);
 
 void _onLaboratoryChanged() {
-  getDataForCurrentPage(); // Método de recarga específico
+  getData(); // Método de recarga específico
 }
 ```
 
 **Ventajas:**
+- ✅ Patrón estándar de Flutter (Observer)
 - ✅ No requiere cambios en el código que llama a `selectLaboratory`
 - ✅ La página se mantiene sincronizada automáticamente
 - ✅ Funciona desde cualquier lugar (drawer, dialog, etc.)
+- ✅ No hay problemas de contexto
 
 ### Opción 2: Callback Explícito
 
-Pasa un callback específico al cambiar de laboratorio:
+Pasa un callback específico al cambiar de laboratorio (para casos especiales):
 
 ```dart
 await laboratoryNotifier.selectLaboratory(
@@ -113,6 +98,7 @@ await laboratoryNotifier.selectLaboratory(
 **Ventajas:**
 - ✅ Control explícito sobre qué se ejecuta
 - ✅ Útil para lógica compleja o múltiples ViewModels
+- ✅ Útil cuando no tienes acceso directo al ViewModel
 
 ## Ejemplo Completo: Página de Membresías
 
@@ -169,23 +155,10 @@ class ViewModel extends ChangeNotifier {
 1. Usuario abre `LaboratorySelector`
 2. Usuario selecciona un laboratorio
 3. `LaboratoryNotifier.selectLaboratory()` se ejecuta:
-   - Guarda laboratorio en SharedPreferences
-   - Ejecuta mutación `setCurrentLaboratory`
-   - Actualiza `labRole` en AuthNotifier
-   - Llama a `notifyListeners()`
-4. El `ViewModel` escucha el cambio vía `_onLaboratoryChanged()`
+   - Guarda laboratorio en Share (patrón Observer)
+4. El `ViewModel` detecta el cambio vía `_onLaboratoryChanged()` (listener)
 5. El `ViewModel` ejecuta su método de recarga (`getMemberships()`, `getUsers()`, etc.)
 6. La UI se actualiza con los datos del nuevo laboratorio
-
-## Rutas Detectadas Automáticamente
-
-El sistema detecta estas rutas:
-- `/user/*` → Páginas de usuarios
-- `/patient/*` → Páginas de pacientes
-- `/exam/*` → Páginas de exámenes
-- `/company/*` → Páginas de empresas
-
-Para agregar más rutas, edita `_autoRefreshByRoute()` en `laboratory_notifier.dart`.
 
 ## Debug
 
@@ -194,6 +167,7 @@ Los logs ayudan a rastrear el flujo:
 🚀 Ejecutando mutación setCurrentLaboratory para laboratoryId: abc123
 ✅ setCurrentLaboratory ejecutado exitosamente
    CurrentLab: Mi Laboratorio
+   LabRole: ADMIN
    LabRole: ADMIN
 📍 Ruta actual detectada: /user/read
 🔄 Detectada página de usuarios, disparando evento de refresco

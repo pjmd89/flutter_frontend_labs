@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:labs/src/domain/entities/types/laboratory/laboratory_model.dart';
 import 'package:labs/src/domain/entities/types/loggeduser/loggeduser_model.dart';
 import 'package:labs/src/domain/usecases/Laboratory/set_current_laboratory_usecase.dart';
@@ -104,9 +103,6 @@ class LaboratoryNotifier extends ChangeNotifier {
           if (onLaboratoryChanged != null) {
             debugPrint('🔄 Ejecutando callback onLaboratoryChanged...');
             await onLaboratoryChanged();
-          } else {
-            // Si no hay callback, intentar refrescar automáticamente según la ruta
-            _autoRefreshByRoute(context);
           }
         }
       } catch (e, stackTrace) {
@@ -118,43 +114,6 @@ class LaboratoryNotifier extends ChangeNotifier {
       debugPrint('⚠️ GqlConn no disponible, no se ejecutará la mutación');
     }
     
-    notifyListeners();
-  }
-
-  /// Refrescar automáticamente según la ruta actual
-  void _autoRefreshByRoute(BuildContext context) {
-    try {
-      // Obtener la ruta actual usando GoRouter
-      final routerState = GoRouterState.of(context);
-      final currentRoute = routerState.matchedLocation;
-      
-      debugPrint('📍 Ruta actual detectada: $currentRoute');
-      
-      // Disparar evento de refresco según la ruta
-      // Nota: Las páginas deben escuchar este evento para refrescarse
-      if (currentRoute.contains('/user')) {
-        debugPrint('🔄 Detectada página de usuarios, disparando evento de refresco');
-        _dispatchRefreshEvent(context, 'users');
-      } else if (currentRoute.contains('/patient')) {
-        debugPrint('🔄 Detectada página de pacientes, disparando evento de refresco');
-        _dispatchRefreshEvent(context, 'patients');
-      } else if (currentRoute.contains('/exam')) {
-        debugPrint('🔄 Detectada página de exámenes, disparando evento de refresco');
-        _dispatchRefreshEvent(context, 'exams');
-      } else if (currentRoute.contains('/company')) {
-        debugPrint('🔄 Detectada página de empresas, disparando evento de refresco');
-        _dispatchRefreshEvent(context, 'companies');
-      }
-      // Agregar más rutas según sea necesario
-    } catch (e) {
-      debugPrint('⚠️ No se pudo detectar la ruta actual: $e');
-    }
-  }
-
-  /// Disparar evento de refresco (puede ser escuchado por las páginas)
-  void _dispatchRefreshEvent(BuildContext context, String pageType) {
-    // Esta es una implementación simple usando notifyListeners
-    // Las páginas pueden detectar el cambio de laboratorio y refrescarse
     notifyListeners();
   }
 
