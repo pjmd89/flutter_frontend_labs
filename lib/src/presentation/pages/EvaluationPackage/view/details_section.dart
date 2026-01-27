@@ -118,9 +118,9 @@ class DetailsSection extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: statusColor,
+                          color: statusColor.withOpacity(0.15),  // color del fondo de el estado del paquete
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: statusColor),
+                          border: Border.all(color: statusColor, width: 1.5),
                         ),
                         child: Text(
                           _getStatusText(evaluationPackage.status),
