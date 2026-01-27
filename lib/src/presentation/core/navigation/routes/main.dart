@@ -36,6 +36,7 @@ ShellRoute rootShellRoute = ShellRoute(
     return BasicTemplate(child: child);
   },
   routes: [
+    ...homeRoutes,
     ...dashboardRoutes,
     ...companyRoutes,
     ...laboratoryRoutes,

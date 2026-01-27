@@ -93,7 +93,7 @@ class InvoiceItem extends StatelessWidget {
                         fontSize: 12,
                       ),
                     ),
-                    backgroundColor: paymentStatusColor,
+                    backgroundColor: paymentStatusColor.withOpacity(0.15), // color del estado de pago
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                   ),
                 ],
@@ -120,7 +120,7 @@ class InvoiceItem extends StatelessWidget {
                         fontSize: 11,
                       ),
                     ),
-                    backgroundColor: invoiceTypeColor,
+                    backgroundColor: invoiceTypeColor.withOpacity(0.15), //color del tipo de factura
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     visualDensity: VisualDensity.compact,
                   ),

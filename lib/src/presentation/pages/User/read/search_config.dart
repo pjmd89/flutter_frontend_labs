@@ -24,7 +24,7 @@ SearchTemplateConfig getSearchConfig({
             icon: const Icon(Icons.add),
             label: const Text('Nueva Membresía'),
             onPressed: () async {
-              final pushResult = await context.push('/membership/create');
+              final pushResult = await context.push('/user/create');
               if (pushResult == true) {
                 viewModel.getMemberships();
               }

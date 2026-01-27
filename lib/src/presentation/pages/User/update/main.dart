@@ -83,6 +83,25 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
         return l10n.roleUser;
     }
   }
+  
+  String formatTimestamp(num timestamp) {
+    try {
+      // Convertir timestamp Unix (segundos o milisegundos) a DateTime
+      final date = timestamp > 9999999999 
+        ? DateTime.fromMillisecondsSinceEpoch(timestamp.toInt())
+        : DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000);
+      
+      // Formatear como: "27 de enero de 2026"
+      final months = [
+        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+      ];
+      
+      return '${date.day} de ${months[date.month - 1]} de ${date.year}';
+    } catch (e) {
+      return timestamp.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +225,7 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
                           const SizedBox(height: 8),
                           _buildReadOnlyField(
                             l10n.cutOffDate, 
-                            viewModel.currentUser!.cutOffDate.toString()
+                            formatTimestamp(viewModel.currentUser!.cutOffDate)
                           ),
                           const SizedBox(height: 8),
                           _buildReadOnlyField(

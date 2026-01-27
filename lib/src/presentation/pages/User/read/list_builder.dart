@@ -57,7 +57,7 @@ List<Widget> buildList({
       membership: membership,
       l10n: l10n,
       onUpdate: (id) async {
-        final result = await context.push('/membership/update/$id');
+        final result = await context.push('/user/update/$id');
         if (result == true) {
           viewModel.getMemberships();
         }
