@@ -384,6 +384,10 @@
   "@manageLaboratories": {
     "description": "Descripción para la tarjeta de laboratorios"
   },
+  "manageExamTemplates": "Gestionar plantillas de examen",
+  "@manageExamTemplates": {
+    "description": "Descripción para la tarjeta de plantillas de examen"
+  },
   "reports": "Reportes",
   "@reports": {
     "description": "Término para reportes en plural"

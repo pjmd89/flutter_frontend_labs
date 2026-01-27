@@ -623,6 +623,12 @@ abstract class AppLocalizations {
   /// **'Gestionar laboratorios'**
   String get manageLaboratories;
 
+  /// Descripción para la tarjeta de plantillas de examen
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar plantillas de examen'**
+  String get manageExamTemplates;
+
   /// Término para reportes en plural
   ///
   /// In es, this message translates to:

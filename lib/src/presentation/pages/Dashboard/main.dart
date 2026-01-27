@@ -62,15 +62,15 @@ class DashboardPage extends StatelessWidget {
                     title: l10n.laboratories,
                     description: l10n.manageLaboratories,
                     onTap: () {
-                      // Navegación a laboratorios (pendiente)
+                      context.push('/laboratory');
                     },
                   ),
                   _DashboardCard(
-                    icon: Icons.analytics,
-                    title: l10n.reports,
-                    description: l10n.viewReports,
+                    icon: Icons.description,
+                    title: l10n.examTemplates,
+                    description: l10n.manageExamTemplates,
                     onTap: () {
-                      // Navegación a reportes (pendiente)
+                      context.push('/examtemplate');
                     },
                   ),
                 ],

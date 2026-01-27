@@ -273,6 +273,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get manageLaboratories => 'Gestionar laboratorios';
 
   @override
+  String get manageExamTemplates => 'Gestionar plantillas de examen';
+
+  @override
   String get reports => 'Reportes';
 
   @override

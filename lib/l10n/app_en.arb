@@ -309,6 +309,10 @@
   "@manageLaboratories": {
     "description": "Description for laboratories card"
   },
+  "manageExamTemplates": "Manage exam templates",
+  "@manageExamTemplates": {
+    "description": "Description for exam templates card"
+  },
   "reports": "Reports",
   "@reports": {
     "description": "Term for reports in plural form"
