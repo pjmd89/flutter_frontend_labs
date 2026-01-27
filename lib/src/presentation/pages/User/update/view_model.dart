@@ -113,21 +113,25 @@ class ViewModel extends ChangeNotifier {
       
       var response = await useCase.execute(input: input);
       
+      debugPrint('🔍 Tipo de response: ${response.runtimeType}');
+      debugPrint('🔍 Response es User? ${response is User}');
+      debugPrint('🔍 Response completo: $response');
+      
       if (response is User) {
         isError = false;
         _currentUser = response;
-        debugPrint('✅ Usuario actualizado exitosamente');
-        
-       
+        debugPrint('✅ Usuario actualizado exitosamente - isError: $isError');
+      } else {
+        debugPrint('⚠️ Response NO es de tipo User. Tipo: ${response.runtimeType}');
+        isError = true;
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en updateUser: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
-      
-      
     } finally {
       loading = false;
+      debugPrint('🏁 Finalizando update - isError: $isError');
     }
 
     return isError;

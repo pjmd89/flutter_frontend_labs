@@ -33,12 +33,21 @@ class UpdateUserUsecase {
       );
 
       debugPrint('✅ Response recibido: $response');
+      debugPrint('🔍 Tipo de response: ${response.runtimeType}');
 
-      // Transformar respuesta a entidad
+      // Si el response ya es un User, retornarlo directamente
+      if (response is User) {
+        debugPrint('✅ Response es directamente un User');
+        return response;
+      }
+
+      // Si es un Map, transformar con mutation.result()
       if (response != null && response is Map<String, dynamic>) {
+        debugPrint('🔄 Transformando Map a User');
         return mutation.result(response);
       }
 
+      debugPrint('⚠️ Response es null o tipo inesperado');
       return null;
     } catch (e, stackTrace) {
       debugPrint('💥 Error en UpdateUserUsecase.execute: $e');
