@@ -42,6 +42,8 @@ ShellRoute rootShellRoute = ShellRoute(
     ...userRoutes,
     ...examtemplateRoutes,
     ...examindicatorRoutes,
+    ...invoiceRoutes,
+    ...evaluationpackageRoutes,
     ...patientRoutes,
   ],
 );

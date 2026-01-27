@@ -10,7 +10,7 @@ class CreateExamIndicator extends ChangeNotifier {
     _name = value;
     notifyListeners();
   }
-  ValueType _valueType = ValueType.values.first;
+  ValueType _valueType = ValueType.numeric;
   ValueType get valueType => _valueType;
   set valueType(ValueType value) {
     _valueType = value;
@@ -35,7 +35,7 @@ class CreateExamIndicator extends ChangeNotifier {
     String? normalRange,
   }) {
     this.name = name ?? "";
-    this.valueType = valueType ?? ValueType.values.first;
+    this.valueType = valueType ?? ValueType.numeric;
     this.unit = unit ?? "";
     this.normalRange = normalRange ?? "";
   }

@@ -93,9 +93,9 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
         
         // Usar completer para manejar el evento de cambio
         final completer = Completer<void>();
-        uploadInput.addEventListener('change', (event) {
+        uploadInput.addEventListener('change', ((JSAny event) {
           completer.complete();
-        }.toJS);
+        }).toJS);
         
         await completer.future;
 
@@ -106,9 +106,9 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
           
           // Usar completer para el evento onload
           final loadCompleter = Completer<void>();
-          reader.addEventListener('load', (event) {
+          reader.addEventListener('load', ((JSAny event) {
             loadCompleter.complete();
-          }.toJS);
+          }).toJS);
           
           reader.readAsArrayBuffer(file);
           await loadCompleter.future;
