@@ -112,11 +112,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('🔄 Actualizando usuario: ${input.toJson()}');
       
       var response = await useCase.execute(input: input);
-      
-      debugPrint('🔍 Tipo de response: ${response.runtimeType}');
-      debugPrint('🔍 Response es User? ${response is User}');
-      debugPrint('🔍 Response completo: $response');
-      
+ 
       if (response is User) {
         isError = false;
         _currentUser = response;

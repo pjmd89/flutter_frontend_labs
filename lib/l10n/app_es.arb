@@ -554,6 +554,18 @@
       }
     }
   },
+  "errorUpdating": "Error al actualizar",
+  "@errorUpdating": {
+    "description": "Mensaje de error genérico al actualizar"
+  },
+  "created": "Creado",
+  "@created": {
+    "description": "Label para fecha de creación"
+  },
+  "updated": "Actualizado",
+  "@updated": {
+    "description": "Label para fecha de actualización"
+  },
   
   "noRegisteredMaleThings": "No hay {thing} registrados",
   "@noRegisteredMaleThings": {

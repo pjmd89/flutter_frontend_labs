@@ -761,6 +761,24 @@ abstract class AppLocalizations {
   /// **'{thing} actualizada exitosamente'**
   String femeThingUpdatedSuccessfully(String thing);
 
+  /// Mensaje de error genérico al actualizar
+  ///
+  /// In es, this message translates to:
+  /// **'Error al actualizar'**
+  String get errorUpdating;
+
+  /// Label para fecha de creación
+  ///
+  /// In es, this message translates to:
+  /// **'Creado'**
+  String get created;
+
+  /// Label para fecha de actualización
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizado'**
+  String get updated;
+
   /// Mensaje cuando no hay registros (masculino/neutro). Ej: No hay Usuarios registrados
   ///
   /// In es, this message translates to:

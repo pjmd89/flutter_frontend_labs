@@ -364,6 +364,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get errorUpdating => 'Error al actualizar';
+
+  @override
+  String get created => 'Creado';
+
+  @override
+  String get updated => 'Actualizado';
+
+  @override
   String noRegisteredMaleThings(String thing) {
     return 'No hay $thing registrados';
   }

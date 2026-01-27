@@ -364,6 +364,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get errorUpdating => 'Error updating';
+
+  @override
+  String get created => 'Created';
+
+  @override
+  String get updated => 'Updated';
+
+  @override
   String noRegisteredMaleThings(String thing) {
     return 'No $thing registered';
   }
