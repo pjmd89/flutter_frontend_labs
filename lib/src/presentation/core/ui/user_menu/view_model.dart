@@ -7,6 +7,7 @@ import 'package:labs/src/domain/operation/queries/logout/logout_query.dart';
 import 'package:labs/src/domain/usecases/Auth/logout_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/presentation/providers/auth_notifier.dart';
+import '/src/presentation/core/navigation/routes/main.dart';
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
@@ -40,15 +41,14 @@ class ViewModel extends ChangeNotifier {
         // Logout exitoso en el backend
         isError = false;
 
-        // Limpiar sesión local
+        // Resetear el loginRouter para que comience fresco
+        resetLoginRouter();
+
+        // Limpiar sesión local - la redirección se maneja automáticamente
+        // por el listener _onAuthChanged en Template (main.dart)
         if (_context.mounted) {
           final authNotifier = _context.read<AuthNotifier>();
           await authNotifier.signOut();
-
-          // Redireccionar a login
-          if (_context.mounted) {
-            _context.go('/login');
-          }
         }
       } else {
         isError = true;

@@ -32,9 +32,10 @@ class _TemplateState extends State<Template> {
     final authNotifier = context.read<AuthNotifier>();
 
     if (!authNotifier.isAuthenticated) {
+      // Forzar rebuild para cambiar al loginRouter
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          context.go('/login');
+          setState(() {});
         }
       });
     }
@@ -89,6 +90,8 @@ class _TemplateState extends State<Template> {
     }
 
     return MaterialApp.router(
+      // Key única para forzar reconstrucción al cambiar de router (especialmente al logout)
+      key: ValueKey(authNotifier.isAuthenticated ? authNotifier.id : 'login'),
       scaffoldMessengerKey: errorService.scaffoldMessengerKey,
       routerConfig: router,
       debugShowCheckedModeBanner: false,

@@ -86,6 +86,7 @@ ShellRoute loginShellRoute = ShellRoute(
   },
   routes: [...loginRoutes],
 );
+
 GoRouter rootRouter = GoRouter(
   initialLocation: "/dashboard",
   routes: [rootShellRoute],
@@ -110,3 +111,11 @@ GoRouter loginRouter = GoRouter(
   initialLocation: "/login",
   routes: [loginShellRoute],
 );
+
+// Función para resetear el router de login (llamar después de logout)
+void resetLoginRouter() {
+  loginRouter = GoRouter(
+    initialLocation: "/login",
+    routes: [loginShellRoute],
+  );
+}
