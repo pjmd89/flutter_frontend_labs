@@ -42,7 +42,7 @@ class PatientItem extends StatelessWidget {
       }
     } else {
       patientName = '${l10n.patient} ${patient.id}';
-      patientInfo = patient.patientType?.toString() ?? '';
+      patientInfo = _getPatientTypeLabel();
     }
 
     return ConstrainedBox(
@@ -70,5 +70,16 @@ class PatientItem extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  String _getPatientTypeLabel() {
+    if (patient.patientType == null) return '';
+    
+    switch (patient.patientType!) {
+      case PatientType.hUMAN:
+        return l10n.patientTypeHuman;
+      case PatientType.aNIMAL:
+        return l10n.patientTypeAnimal;
+    }
   }
 }

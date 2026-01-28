@@ -97,31 +97,40 @@ class ViewModel extends ChangeNotifier {
     searching = true;
 
     try {
+      debugPrint('🔍 Buscando paciente con DNI: $dni');
+      
       final query = GetPatientsQuery(
         builder: EdgePatientFieldsBuilder().defaultValues(),
       );
 
       final useCase = ReadPatientUsecase(operation: query, conn: _gqlConn);
 
-      // Crear SearchInput para filtrar por DNI
-      final searchInputs = [
-        SearchInput(
-          field: 'dni',
-          value: [
-            ValueInput(
-              value: dni,
-              kind: KindEnum.string,
-              operator: OperatorEnum.eq,
-            ),
-          ],
-        ),
-      ];
-
-      final response = await useCase.search(searchInputs, null);
-
-      if (response is EdgePatient && response.edges.isNotEmpty) {
-        foundPatient = response.edges.first;
+      // Obtener todos los pacientes (sin filtro de búsqueda)
+      // Porque el backend no soporta búsquedas en union types
+      final response = await useCase.build();
+      
+      debugPrint('📥 Response type: ${response.runtimeType}');
+      
+      if (response is EdgePatient) {
+        debugPrint('📊 Total pacientes recibidos: ${response.edges.length}');
+        
+        // Filtrar en el frontend por DNI
+        final patients = response.edges.where((patient) {
+          if (patient.isPerson && patient.asPerson != null) {
+            return patient.asPerson!.dni == dni;
+          }
+          return false;
+        }).toList();
+        
+        if (patients.isNotEmpty) {
+          debugPrint('✅ Paciente encontrado: ${patients.first.id}');
+          foundPatient = patients.first;
+        } else {
+          debugPrint('❌ No se encontró paciente con DNI: $dni');
+          foundPatient = null;
+        }
       } else {
+        debugPrint('❌ Response no es EdgePatient');
         foundPatient = null;
       }
     } catch (e, stackTrace) {

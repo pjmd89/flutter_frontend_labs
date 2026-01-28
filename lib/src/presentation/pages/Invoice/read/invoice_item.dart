@@ -73,7 +73,7 @@ class InvoiceItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      '${invoice.patient?.metadata ?? ''} ${invoice.patient?.patientType ?? ''}',
+                      _getPatientName(),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -261,5 +261,21 @@ class InvoiceItem extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  String _getPatientName() {
+    if (invoice.patient == null) return l10n.patient;
+    
+    final patient = invoice.patient!;
+    
+    if (patient.isPerson && patient.asPerson != null) {
+      final person = patient.asPerson!;
+      return '${person.firstName} ${person.lastName}';
+    } else if (patient.isAnimal && patient.asAnimal != null) {
+      final animal = patient.asAnimal!;
+      return '${animal.firstName} ${animal.lastName}';
+    }
+    
+    return '${l10n.patient} ${patient.id}';
   }
 }

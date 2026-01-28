@@ -51,6 +51,43 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
         return l10n.invoiceTypeCreditNote;
     }
   }
+  
+  String _getPatientName(Patient patient) {
+    if (patient.isPerson && patient.asPerson != null) {
+      final person = patient.asPerson!;
+      return '${person.firstName} ${person.lastName}';
+    } else if (patient.isAnimal && patient.asAnimal != null) {
+      final animal = patient.asAnimal!;
+      return '${animal.firstName} ${animal.lastName}';
+    }
+    return 'Paciente ${patient.id}';
+  }
+  
+  String _getPatientInfo(Patient patient, AppLocalizations l10n) {
+    if (patient.isPerson && patient.asPerson != null) {
+      final person = patient.asPerson!;
+      return '${l10n.dni}: ${person.dni}';
+    } else if (patient.isAnimal && patient.asAnimal != null) {
+      final animal = patient.asAnimal!;
+      String info = animal.species;
+      if (animal.owner != null) {
+        info += ' - ${l10n.owner}: ${animal.owner!.firstName} ${animal.owner!.lastName}';
+      }
+      return info;
+    }
+    
+    // Traducir el tipo de paciente si no hay datos específicos
+    if (patient.patientType != null) {
+      switch (patient.patientType!) {
+        case PatientType.hUMAN:
+          return l10n.patientTypeHuman;
+        case PatientType.aNIMAL:
+          return l10n.patientTypeAnimal;
+      }
+    }
+    
+    return '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,13 +164,13 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${viewModel.foundPatient!..patientData} ${viewModel.foundPatient!.patientType}',
+                                  _getPatientName(viewModel.foundPatient!),
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  '${l10n.dni}: ${viewModel.foundPatient!.patientData}',
+                                  _getPatientInfo(viewModel.foundPatient!, l10n),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
