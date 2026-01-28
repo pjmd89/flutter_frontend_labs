@@ -18,6 +18,21 @@ class MembershipItem extends StatelessWidget {
     this.onDelete,
   });
 
+  String _getRoleTranslation(LabMemberRole? role) {
+    if (role == null) return l10n.roleUnknown;
+    
+    switch (role) {
+      case LabMemberRole.oWNER:
+        return l10n.roleOwner;
+      case LabMemberRole.tECHNICIAN:
+        return l10n.roleTechnician;
+      case LabMemberRole.bILLING:
+        return l10n.roleBilling;
+      case LabMemberRole.bIOANALYST:
+        return l10n.roleBioanalyst;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Obtener el rol del usuario logueado
@@ -42,7 +57,7 @@ class MembershipItem extends StatelessWidget {
                   if (membership.laboratory != null)
                     Text('Lab: ${membership.laboratory!.address}'),
                   if (membership.role != null)
-                    Text('Rol: ${membership.role}'),
+                    Text('${l10n.role}: ${_getRoleTranslation(membership.role)}'),
                 ],
               ),
               trailing: isBilling

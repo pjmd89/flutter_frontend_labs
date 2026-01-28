@@ -22,7 +22,7 @@ SearchTemplateConfig getSearchConfig({
         ? const SizedBox.shrink() // Ocultar botón si es billing
         : FilledButton.icon(
             icon: const Icon(Icons.add),
-            label: const Text('Nueva Membresía'),
+            label: Text(l10n.newThing(l10n.user)),
             onPressed: () async {
               final pushResult = await context.push('/user/create');
               if (pushResult == true) {
