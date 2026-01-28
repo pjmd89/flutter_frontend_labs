@@ -6,7 +6,7 @@ part of 'uploadinput_input.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UploadInput _$UploadInputFromJson(Map<String, dynamic> json) => UploadInput(
+uploadInput _$uploadInputFromJson(Map<String, dynamic> json) => uploadInput(
   name: json['name'] as String?,
   size: json['size'] as num?,
   type: json['type'] as String?,
@@ -15,7 +15,7 @@ UploadInput _$UploadInputFromJson(Map<String, dynamic> json) => UploadInput(
   isThumb: json['isThumb'] as bool?,
 );
 
-Map<String, dynamic> _$UploadInputToJson(UploadInput instance) =>
+Map<String, dynamic> _$uploadInputToJson(uploadInput instance) =>
     <String, dynamic>{
       'name': instance.name,
       'size': instance.size,

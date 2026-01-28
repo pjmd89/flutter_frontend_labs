@@ -50,7 +50,7 @@ class InvoiceItem extends StatelessWidget {
     String invoiceTypeLabel;
     Color invoiceTypeColor;
     
-    if (invoice.kind == InvoiceKind.creditNote) {
+    if (invoice.kind == InvoiceKind.cREDIT_NOTE) {
       invoiceTypeLabel = l10n.invoiceTypeCreditNote;
       invoiceTypeColor = Colors.orange;
     } else {
@@ -73,7 +73,7 @@ class InvoiceItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      '${invoice.patient?.firstName ?? ''} ${invoice.patient?.lastName ?? ''}',
+                      '${invoice.patient?.metadata ?? ''} ${invoice.patient?.patientType ?? ''}',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

@@ -155,7 +155,7 @@ class UploadFileUseCase {
     final fileData = base64Fragment;
     
     // Crear input para este fragmento
-    final input = UploadInput(
+    final input = uploadInput(
       name: name,
       size: totalSize,
       type: type,

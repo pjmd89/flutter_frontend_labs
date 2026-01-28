@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
@@ -47,33 +48,69 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
     // Inicializar controllers cuando los datos se carguen
     if (viewModel.currentPatient != null && !viewModel.loading && !_controllersInitialized) {
       setState(() {
-        firstNameController = TextEditingController(
-          text: viewModel.currentPatient!.firstName
-        );
-        lastNameController = TextEditingController(
-          text: viewModel.currentPatient!.lastName
-        );
-        dniController = TextEditingController(
-          text: viewModel.currentPatient!.dni ?? ''
-        );
-        phoneController = TextEditingController(
-          text: viewModel.currentPatient!.phone ?? ''
-        );
-        emailController = TextEditingController(
-          text: viewModel.currentPatient!.email ?? ''
-        );
-        addressController = TextEditingController(
-          text: viewModel.currentPatient!.address ?? ''
-        );
+        // Parsear patientData desde JSON string
+        Map<String, dynamic>? patientDataMap;
+        try {
+          if (viewModel.currentPatient!.patientData.isNotEmpty) {
+            patientDataMap = Map<String, dynamic>.from(
+              const JsonDecoder().convert(viewModel.currentPatient!.patientData)
+            );
+          }
+        } catch (e) {
+          debugPrint('⚠️ Error parseando patientData: $e');
+        }
         
-        // Formatear birthDate (timestamp int a fecha legible)
+        // Acceder a propiedades del JSON según el tipo
+        String firstName = '';
+        String lastName = '';
+        String? birthDate;
+        String dni = '';
+        String phone = '';
+        String email = '';
+        String address = '';
+        
+        if (patientDataMap != null) {
+          firstName = patientDataMap['firstName']?.toString() ?? '';
+          lastName = patientDataMap['lastName']?.toString() ?? '';
+          
+          // Manejar birthDate (puede ser int o string)
+          var birthDateValue = patientDataMap['birthDate'];
+          if (birthDateValue is int) {
+            birthDate = birthDateValue.toString();
+          } else if (birthDateValue is String) {
+            birthDate = birthDateValue;
+          }
+          
+          // Campos solo en Person (no en Animal)
+          dni = patientDataMap['dni']?.toString() ?? '';
+          phone = patientDataMap['phone']?.toString() ?? '';
+          email = patientDataMap['email']?.toString() ?? '';
+          address = patientDataMap['address']?.toString() ?? '';
+        }
+        
+        firstNameController = TextEditingController(text: firstName);
+        lastNameController = TextEditingController(text: lastName);
+        dniController = TextEditingController(text: dni);
+        phoneController = TextEditingController(text: phone);
+        emailController = TextEditingController(text: email);
+        addressController = TextEditingController(text: address);
+        
+        // Formatear birthDate
         String formattedDate = '';
-        if (viewModel.currentPatient!.birthDate != null && viewModel.currentPatient!.birthDate! > 0) {
+        if (birthDate != null && birthDate.isNotEmpty) {
           try {
-            // Convertir timestamp (segundos) a DateTime
-            final date = DateTime.fromMillisecondsSinceEpoch(viewModel.currentPatient!.birthDate! * 1000);
-            formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+            // Si es timestamp (número), convertir
+            if (int.tryParse(birthDate) != null) {
+              final timestamp = int.parse(birthDate);
+              final date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+              formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+            } else {
+              // Si es string de fecha, intentar parsear
+              final date = DateTime.parse(birthDate);
+              formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+            }
           } catch (e) {
+            debugPrint('⚠️ Error formateando birthDate: $e');
             formattedDate = '';
           }
         }
@@ -110,6 +147,51 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
         return l10n.sexMale;
       case Sex.iNTERSEX:
         return l10n.sexIntersex;
+    }
+  }
+  
+  // Método auxiliar para obtener el sex del patientData
+  Sex? _getPatientSex() {
+    if (viewModel.currentPatient?.patientData == null || viewModel.currentPatient!.patientData.isEmpty) {
+      return null;
+    }
+    
+    try {
+      final patientDataMap = Map<String, dynamic>.from(
+        const JsonDecoder().convert(viewModel.currentPatient!.patientData)
+      );
+      
+      final sexValue = patientDataMap['sex'];
+      if (sexValue == null) return null;
+      
+      // Convertir string a enum Sex
+      if (sexValue == 'FEMALE') return Sex.fEMALE;
+      if (sexValue == 'MALE') return Sex.mALE;
+      if (sexValue == 'INTERSEX') return Sex.iNTERSEX;
+      
+      return null;
+    } catch (e) {
+      debugPrint('⚠️ Error obteniendo sex: $e');
+      return null;
+    }
+  }
+  
+  // Método auxiliar para obtener la especie
+  String _getSpecies() {
+    if (viewModel.currentPatient?.patientData == null || viewModel.currentPatient!.patientData.isEmpty) {
+      return '-';
+    }
+    
+    try {
+      final patientDataMap = Map<String, dynamic>.from(
+        const JsonDecoder().convert(viewModel.currentPatient!.patientData)
+      );
+      
+      final species = patientDataMap['species']?.toString() ?? '';
+      return species.isNotEmpty ? species : '-';
+    } catch (e) {
+      debugPrint('⚠️ Error obteniendo species: $e');
+      return '-';
     }
   }
 
@@ -312,14 +394,12 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                           const SizedBox(height: 12),
                           _buildReadOnlyField(
                             l10n.sex,
-                            getSexLabel(context, viewModel.currentPatient!.sex)
+                            getSexLabel(context, _getPatientSex())
                           ),
                           const SizedBox(height: 8),
                           _buildReadOnlyField(
                             l10n.species, 
-                            viewModel.currentPatient!.species.isNotEmpty
-                              ? viewModel.currentPatient!.species
-                              : '-'
+                            _getSpecies()
                           ),
                         ],
                       ),

@@ -8,20 +8,35 @@ extension InvoiceFieldsBuilderExtension on InvoiceFieldsBuilder {
         builder: (patientBuilder) {
           patientBuilder
             ..id()
-            ..firstName()
-            ..lastName()
-            ..sex()
-            ..birthDate()
-            ..species()
-            ..dni()
-            ..phone()
-            ..email()
-            ..address()
-            ..laboratory(
-              builder: (labBuilder) {
-                labBuilder
-                  ..id()
-                  ..address();
+            ..patientType()
+            ..patientData(
+              // Inline fragment para Person
+              personBuilder: (personBuilder) {
+                personBuilder
+                  ..firstName(alias: 'personFirstName')
+                  ..lastName(alias: 'personLastName')
+                  ..sex(alias: 'personSex')
+                  ..dni()
+                  ..phone()
+                  ..email()
+                  ..address()
+                  ..birthDate();
+              },
+              // Inline fragment para Animal
+              animalBuilder: (animalBuilder) {
+                animalBuilder
+                  ..firstName(alias: 'animalFirstName')
+                  ..lastName(alias: 'animalLastName')
+                  ..sex(alias: 'animalSex')
+                  ..species()
+                  ..birthDate()
+                  ..owner(builder: (ownerBuilder) {
+                    ownerBuilder
+                      ..firstName()
+                      ..lastName()
+                      ..phone()
+                      ..email();
+                  });
               },
             );
         },

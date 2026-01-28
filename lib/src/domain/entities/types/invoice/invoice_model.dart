@@ -6,6 +6,7 @@ class Invoice {
   @JsonKey(name: "_id")
   final String id;
   final Patient? patient;
+  final ResponsibleParty? billTo;
   final num totalAmount;
   final String orderID;
   final PaymentStatus? paymentStatus;
@@ -17,6 +18,7 @@ class Invoice {
   Invoice({
     this.id = "",
     this.patient,
+    this.billTo,
     this.totalAmount = 0,
     this.orderID = "",
     this.paymentStatus,

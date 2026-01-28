@@ -1,4 +1,5 @@
 import 'package:agile_front/agile_front.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
@@ -41,14 +42,41 @@ class ViewModel extends ChangeNotifier {
       labRole: loggedUser.labRole,
     );
   }
-  Future<LoggedUser?> loggedUser() async{
+  Future<LoggedUser?> loggedUser() async {
     loading = true;
-    final response = await ReadUserLoggedUsecase(
-      operation: _loggedQuery,
-      conn: _gqlConn,
-    ).build();
+    error = false;
 
-    return response as LoggedUser;
+    try {
+      final response = await ReadUserLoggedUsecase(
+        operation: _loggedQuery,
+        conn: _gqlConn,
+      ).build();
+
+      debugPrint('🔍 Response type: ${response.runtimeType}');
+
+      // Si la respuesta es ErrorReturned, el ErrorManager ya mostró el mensaje
+      if (response.runtimeType.toString() == 'ErrorReturned') {
+        debugPrint('❌ Response es ErrorReturned - error controlado del backend');
+        error = true;
+        return null;
+      }
+
+      // Verificar que sea LoggedUser antes de retornar
+      if (response is LoggedUser) {
+        return response;
+      } else {
+        debugPrint('💥 Tipo de respuesta inesperado: ${response.runtimeType}');
+        error = true;
+        return null;
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en loggedUser: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+      error = true;
+      return null;
+    } finally {
+      loading = false;
+    }
   }
 
   read(Operation operation) async{

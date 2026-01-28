@@ -99,7 +99,7 @@ class _LaboratoryBillingPageState extends State<LaboratoryBillingPage> {
             Text('${l10n.totalAmount}: \$${invoice.totalAmount}'),
             Text('${l10n.status}: ${invoice.paymentStatus.toString().split('.').last}'),
             if (invoice.patient != null)
-              Text('${l10n.patient}: ${invoice.patient!.firstName} ${invoice.patient!.lastName}'),
+              Text('${l10n.patient}: ${invoice.patient!.metadata} ${invoice.patient!.patientType}'),
           ],
         ),
       ),

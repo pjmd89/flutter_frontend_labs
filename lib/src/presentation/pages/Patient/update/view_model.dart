@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
@@ -68,16 +69,46 @@ class ViewModel extends ChangeNotifier {
         
         if (patients.isNotEmpty) {
           _currentPatient = patients.first;
-          debugPrint('✅ Paciente cargado: ${_currentPatient!.firstName} ${_currentPatient!.lastName}');
+          
+          // Parsear patientData desde JSON string
+          Map<String, dynamic>? patientDataMap;
+          try {
+            if (_currentPatient!.patientData.isNotEmpty) {
+              patientDataMap = Map<String, dynamic>.from(
+                const JsonDecoder().convert(_currentPatient!.patientData)
+              );
+            }
+          } catch (e) {
+            debugPrint('⚠️ Error parseando patientData: $e');
+          }
+          
+          // Extraer datos del JSON
+          String firstName = '';
+          String lastName = '';
+          String dni = '';
+          String phone = '';
+          String email = '';
+          String address = '';
+          
+          if (patientDataMap != null) {
+            firstName = patientDataMap['firstName']?.toString() ?? '';
+            lastName = patientDataMap['lastName']?.toString() ?? '';
+            dni = patientDataMap['dni']?.toString() ?? '';
+            phone = patientDataMap['phone']?.toString() ?? '';
+            email = patientDataMap['email']?.toString() ?? '';
+            address = patientDataMap['address']?.toString() ?? '';
+          }
+          
+          debugPrint('✅ Paciente cargado: $firstName $lastName');
           
           // Prellenar input con datos existentes
           input.id = _currentPatient!.id;
-          input.firstName = _currentPatient!.firstName;
-          input.lastName = _currentPatient!.lastName;
-          input.dni = _currentPatient!.dni;
-          input.phone = _currentPatient!.phone;
-          input.email = _currentPatient!.email;
-          input.address = _currentPatient!.address;
+          input.firstName = firstName;
+          input.lastName = lastName;
+          input.dni = dni.isNotEmpty ? dni : null;
+          input.phone = phone.isNotEmpty ? phone : null;
+          input.email = email.isNotEmpty ? email : null;
+          input.address = address.isNotEmpty ? address : null;
           // ✅ NO asignar birthDate aquí - solo se asignará si el usuario la modifica
           // Esto permite validación diferencial: si no se toca, no se envía al servidor
         } else {

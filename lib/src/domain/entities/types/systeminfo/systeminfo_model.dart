@@ -3,19 +3,19 @@ import "package:json_annotation/json_annotation.dart";
 part "systeminfo_model.g.dart";
 @JsonSerializable(includeIfNull: false)
 class SystemInfo {
-   String version;
-   String name;
-   String description;
-   List<ChangeLog> changeLog;
-   String created;
-   String updated;
+  final String version;
+  final String name;
+  final String description;
+  final List<ChangeLog> changeLog;
+  final int created;
+  final int updated;
   SystemInfo({
     this.version = "",
     this.name = "",
     this.description = "",
     this.changeLog = const [],
-    this.created = "",
-    this.updated = "",
+    this.created = 0,
+    this.updated = 0,
   });
   factory SystemInfo.fromJson(Map<String, dynamic> json) => _$SystemInfoFromJson(json);
   Map<String, dynamic> toJson() => _$SystemInfoToJson(this);

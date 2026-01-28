@@ -12,6 +12,10 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
       json['patient'] == null
           ? null
           : Patient.fromJson(json['patient'] as Map<String, dynamic>),
+  billTo:
+      json['billTo'] == null
+          ? null
+          : ResponsibleParty.fromJson(json['billTo'] as Map<String, dynamic>),
   totalAmount: json['totalAmount'] as num? ?? 0,
   orderID: json['orderID'] as String? ?? "",
   paymentStatus: $enumDecodeNullable(
@@ -36,6 +40,7 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
 Map<String, dynamic> _$InvoiceToJson(Invoice instance) => <String, dynamic>{
   '_id': instance.id,
   if (instance.patient case final value?) 'patient': value,
+  if (instance.billTo case final value?) 'billTo': value,
   'totalAmount': instance.totalAmount,
   'orderID': instance.orderID,
   if (_$PaymentStatusEnumMap[instance.paymentStatus] case final value?)
@@ -54,6 +59,6 @@ const _$PaymentStatusEnumMap = {
 };
 
 const _$InvoiceKindEnumMap = {
-  InvoiceKind.invoice: 'INVOICE',
-  InvoiceKind.creditNote: 'CREDIT_NOTE',
+  InvoiceKind.iNVOICE: 'INVOICE',
+  InvoiceKind.cREDIT_NOTE: 'CREDIT_NOTE',
 };

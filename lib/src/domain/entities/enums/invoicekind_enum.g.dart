@@ -7,6 +7,6 @@ part of 'invoicekind_enum.dart';
 // **************************************************************************
 
 const _$InvoiceKindEnumMap = {
-  InvoiceKind.invoice: 'INVOICE',
-  InvoiceKind.creditNote: 'CREDIT_NOTE',
+  InvoiceKind.iNVOICE: 'INVOICE',
+  InvoiceKind.cREDIT_NOTE: 'CREDIT_NOTE',
 };

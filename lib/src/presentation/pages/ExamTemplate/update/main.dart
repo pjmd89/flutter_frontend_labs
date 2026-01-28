@@ -67,13 +67,10 @@ class _ExamTemplateUpdatePageState extends State<ExamTemplateUpdatePage> {
     final l10n = AppLocalizations.of(context)!;
     switch (valueType) {
       case ValueType.nUMERIC:
-      case ValueType.numeric:
         return l10n.valueTypeNumeric;
       case ValueType.tEXT:
-      case ValueType.text:
         return l10n.valueTypeText;
       case ValueType.bOOLEAN:
-      case ValueType.boolean:
         return l10n.valueTypeBoolean;
     }
   }
@@ -100,7 +97,7 @@ class _ExamTemplateUpdatePageState extends State<ExamTemplateUpdatePage> {
     final indicatorNameController = TextEditingController();
     final indicatorUnitController = TextEditingController();
     final indicatorRangeController = TextEditingController();
-    ValueType selectedValueType = ValueType.numeric;
+    ValueType selectedValueType = ValueType.nUMERIC;
 
     showDialog(
       context: context,
@@ -127,9 +124,9 @@ class _ExamTemplateUpdatePageState extends State<ExamTemplateUpdatePage> {
                     border: const OutlineInputBorder(),
                   ),
                   items: [
-                    ValueType.numeric,
-                    ValueType.text,
-                    ValueType.boolean
+                    ValueType.nUMERIC,
+                    ValueType.tEXT,
+                    ValueType.bOOLEAN
                   ].map((ValueType type) {
                     return DropdownMenuItem<ValueType>(
                       value: type,

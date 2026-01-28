@@ -2,7 +2,7 @@ import "package:flutter/foundation.dart";
 import "package:json_annotation/json_annotation.dart";
 part "uploadinput_input.g.dart";
 @JsonSerializable(includeIfNull: false)
-class UploadInput extends ChangeNotifier {
+class uploadInput extends ChangeNotifier {
   String _name = "";
   String get name => _name;
   set name(String value) {
@@ -39,7 +39,7 @@ class UploadInput extends ChangeNotifier {
     _isThumb = value;
     notifyListeners();
   }
-  UploadInput({
+  uploadInput({
     String? name,
     num? size,
     String? type,
@@ -54,6 +54,6 @@ class UploadInput extends ChangeNotifier {
     this.file = file ?? "";
     this.isThumb = isThumb ?? false;
   }
-  factory UploadInput.fromJson(Map<String, dynamic> json) => _$UploadInputFromJson(json);
-  Map<String, dynamic> toJson() => _$UploadInputToJson(this);
+  factory uploadInput.fromJson(Map<String, dynamic> json) => _$uploadInputFromJson(json);
+  Map<String, dynamic> toJson() => _$uploadInputToJson(this);
 }

@@ -15,8 +15,8 @@ SystemInfo _$SystemInfoFromJson(Map<String, dynamic> json) => SystemInfo(
           ?.map((e) => ChangeLog.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  created: json['created'] as String? ?? "",
-  updated: json['updated'] as String? ?? "",
+  created: (json['created'] as num?)?.toInt() ?? 0,
+  updated: (json['updated'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$SystemInfoToJson(SystemInfo instance) =>

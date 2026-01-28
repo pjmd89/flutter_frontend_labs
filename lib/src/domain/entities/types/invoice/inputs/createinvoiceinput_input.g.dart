@@ -24,6 +24,6 @@ Map<String, dynamic> _$CreateInvoiceInputToJson(CreateInvoiceInput instance) =>
     };
 
 const _$InvoiceKindEnumMap = {
-  InvoiceKind.invoice: 'INVOICE',
-  InvoiceKind.creditNote: 'CREDIT_NOTE',
+  InvoiceKind.iNVOICE: 'INVOICE',
+  InvoiceKind.cREDIT_NOTE: 'CREDIT_NOTE',
 };

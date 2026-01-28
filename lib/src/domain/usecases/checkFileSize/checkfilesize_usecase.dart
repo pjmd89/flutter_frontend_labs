@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:agile_front/agile_front.dart' as af;
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
-import 'package:labs/src/domain/entities/main.dart';
+import 'package:labs/src/domain/entities/types/upload/inputs/checkuploadinput_input.dart';
 import '/src/domain/operation/queries/checkFileSize/checkfilesize_query.dart';
 
 /// UseCase para verificar el tamaño de un archivo antes de subirlo
@@ -34,7 +34,7 @@ class CheckFileSizeUsecase implements af.UseCase {
       debugPrint('🔍 Verificando archivo: $name');
       
       // Crear input
-      final input = CheckUploadInput(
+      final input = checkUploadInput(
         name: name,
         size: size,
         type: type,

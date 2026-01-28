@@ -10,7 +10,4 @@ const _$ValueTypeEnumMap = {
   ValueType.nUMERIC: 'NUMERIC',
   ValueType.tEXT: 'TEXT',
   ValueType.bOOLEAN: 'BOOLEAN',
-  ValueType.numeric: 'numeric',
-  ValueType.text: 'text',
-  ValueType.boolean: 'boolean',
 };

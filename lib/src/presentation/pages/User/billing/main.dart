@@ -105,7 +105,8 @@ class _UserBillingPageState extends State<UserBillingPage> {
             if (invoice.laboratory?.address != null && invoice.laboratory!.address.isNotEmpty)
               Text('${l10n.address}: ${invoice.laboratory!.address}'),
             if (invoice.patient != null)
-              Text('${l10n.patient}: ${invoice.patient!.firstName} ${invoice.patient!.lastName}'),
+              
+              Text('${l10n.patient}: ${invoice.patient!.metadata} ${invoice.patient!.patientType}'),
           ],
         ),
       ),

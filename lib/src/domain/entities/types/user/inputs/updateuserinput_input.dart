@@ -35,9 +35,9 @@ class UpdateUserInput extends ChangeNotifier {
     String? email,
   }) {
     this.id = id ?? "";
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
+    this.firstName = firstName ?? "";
+    this.lastName = lastName ?? "";
+    this.email = email ?? "";
   }
   factory UpdateUserInput.fromJson(Map<String, dynamic> json) => _$UpdateUserInputFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateUserInputToJson(this);

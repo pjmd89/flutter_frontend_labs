@@ -45,9 +45,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   String getInvoiceKindLabel(BuildContext context, InvoiceKind kind) {
     final l10n = AppLocalizations.of(context)!;
     switch (kind) {
-      case InvoiceKind.invoice:
+      case InvoiceKind.iNVOICE:
         return l10n.invoiceTypeInvoice;
-      case InvoiceKind.creditNote:
+      case InvoiceKind.cREDIT_NOTE:
         return l10n.invoiceTypeCreditNote;
     }
   }
@@ -127,13 +127,13 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${viewModel.foundPatient!.firstName} ${viewModel.foundPatient!.lastName}',
+                                  '${viewModel.foundPatient!..patientData} ${viewModel.foundPatient!.patientType}',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  '${l10n.dni}: ${viewModel.foundPatient!.dni}',
+                                  '${l10n.dni}: ${viewModel.foundPatient!.patientData}',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -280,7 +280,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                   
                   // Tipo de Factura (REQUERIDO)
                   DropdownButtonFormField<InvoiceKind>(
-                    value: selectedInvoiceKind ?? InvoiceKind.invoice,
+                    value: selectedInvoiceKind ?? InvoiceKind.iNVOICE,
                     decoration: InputDecoration(
                       labelText: l10n.invoiceType,
                       isDense: true,
@@ -295,7 +295,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                     onChanged: (InvoiceKind? newValue) {
                       setState(() {
                         selectedInvoiceKind = newValue;
-                        viewModel.invoiceInput.kind = newValue ?? InvoiceKind.invoice;
+                        viewModel.invoiceInput.kind = newValue ?? InvoiceKind.iNVOICE;
                       });
                     },
                   ),
