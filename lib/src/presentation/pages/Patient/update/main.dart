@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
@@ -48,44 +47,30 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
     // Inicializar controllers cuando los datos se carguen
     if (viewModel.currentPatient != null && !viewModel.loading && !_controllersInitialized) {
       setState(() {
-        // Parsear patientData desde JSON string
-        Map<String, dynamic>? patientDataMap;
-        try {
-          if (viewModel.currentPatient!.patientData.isNotEmpty) {
-            patientDataMap = Map<String, dynamic>.from(
-              const JsonDecoder().convert(viewModel.currentPatient!.patientData)
-            );
-          }
-        } catch (e) {
-          debugPrint('⚠️ Error parseando patientData: $e');
-        }
-        
-        // Acceder a propiedades del JSON según el tipo
+        // Extraer datos del objeto Person o Animal
         String firstName = '';
         String lastName = '';
-        String? birthDate;
+        int? birthDate;
         String dni = '';
         String phone = '';
         String email = '';
         String address = '';
         
-        if (patientDataMap != null) {
-          firstName = patientDataMap['firstName']?.toString() ?? '';
-          lastName = patientDataMap['lastName']?.toString() ?? '';
-          
-          // Manejar birthDate (puede ser int o string)
-          var birthDateValue = patientDataMap['birthDate'];
-          if (birthDateValue is int) {
-            birthDate = birthDateValue.toString();
-          } else if (birthDateValue is String) {
-            birthDate = birthDateValue;
-          }
-          
-          // Campos solo en Person (no en Animal)
-          dni = patientDataMap['dni']?.toString() ?? '';
-          phone = patientDataMap['phone']?.toString() ?? '';
-          email = patientDataMap['email']?.toString() ?? '';
-          address = patientDataMap['address']?.toString() ?? '';
+        if (viewModel.currentPatient!.isPerson) {
+          final person = viewModel.currentPatient!.asPerson!;
+          firstName = person.firstName;
+          lastName = person.lastName;
+          birthDate = person.birthDate;
+          dni = person.dni;
+          phone = person.phone;
+          email = person.email;
+          address = person.address;
+        } else if (viewModel.currentPatient!.isAnimal) {
+          final animal = viewModel.currentPatient!.asAnimal!;
+          firstName = animal.firstName;
+          lastName = animal.lastName;
+          birthDate = animal.birthDate;
+          // Animal no tiene dni, phone, email, address - dejar vacíos
         }
         
         firstNameController = TextEditingController(text: firstName);
@@ -97,18 +82,10 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
         
         // Formatear birthDate
         String formattedDate = '';
-        if (birthDate != null && birthDate.isNotEmpty) {
+        if (birthDate != null && birthDate > 0) {
           try {
-            // Si es timestamp (número), convertir
-            if (int.tryParse(birthDate) != null) {
-              final timestamp = int.parse(birthDate);
-              final date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-              formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-            } else {
-              // Si es string de fecha, intentar parsear
-              final date = DateTime.parse(birthDate);
-              formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-            }
+            final date = DateTime.fromMillisecondsSinceEpoch(birthDate * 1000);
+            formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
           } catch (e) {
             debugPrint('⚠️ Error formateando birthDate: $e');
             formattedDate = '';
@@ -152,22 +129,16 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
   
   // Método auxiliar para obtener el sex del patientData
   Sex? _getPatientSex() {
-    if (viewModel.currentPatient?.patientData == null || viewModel.currentPatient!.patientData.isEmpty) {
+    if (viewModel.currentPatient?.patientData == null) {
       return null;
     }
     
     try {
-      final patientDataMap = Map<String, dynamic>.from(
-        const JsonDecoder().convert(viewModel.currentPatient!.patientData)
-      );
-      
-      final sexValue = patientDataMap['sex'];
-      if (sexValue == null) return null;
-      
-      // Convertir string a enum Sex
-      if (sexValue == 'FEMALE') return Sex.fEMALE;
-      if (sexValue == 'MALE') return Sex.mALE;
-      if (sexValue == 'INTERSEX') return Sex.iNTERSEX;
+      if (viewModel.currentPatient!.isPerson) {
+        return viewModel.currentPatient!.asPerson!.sex;
+      } else if (viewModel.currentPatient!.isAnimal) {
+        return viewModel.currentPatient!.asAnimal!.sex;
+      }
       
       return null;
     } catch (e) {
@@ -178,17 +149,18 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
   
   // Método auxiliar para obtener la especie
   String _getSpecies() {
-    if (viewModel.currentPatient?.patientData == null || viewModel.currentPatient!.patientData.isEmpty) {
+    if (viewModel.currentPatient?.patientData == null) {
       return '-';
     }
     
     try {
-      final patientDataMap = Map<String, dynamic>.from(
-        const JsonDecoder().convert(viewModel.currentPatient!.patientData)
-      );
+      // Solo los animales tienen species
+      if (viewModel.currentPatient!.isAnimal) {
+        final species = viewModel.currentPatient!.asAnimal!.species;
+        return species.isNotEmpty ? species : '-';
+      }
       
-      final species = patientDataMap['species']?.toString() ?? '';
-      return species.isNotEmpty ? species : '-';
+      return '-';
     } catch (e) {
       debugPrint('⚠️ Error obteniendo species: $e');
       return '-';

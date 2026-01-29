@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
@@ -70,19 +69,7 @@ class ViewModel extends ChangeNotifier {
         if (patients.isNotEmpty) {
           _currentPatient = patients.first;
           
-          // Parsear patientData desde JSON string
-          Map<String, dynamic>? patientDataMap;
-          try {
-            if (_currentPatient!.patientData.isNotEmpty) {
-              patientDataMap = Map<String, dynamic>.from(
-                const JsonDecoder().convert(_currentPatient!.patientData)
-              );
-            }
-          } catch (e) {
-            debugPrint('⚠️ Error parseando patientData: $e');
-          }
-          
-          // Extraer datos del JSON
+          // Extraer datos del objeto Person o Animal
           String firstName = '';
           String lastName = '';
           String dni = '';
@@ -90,13 +77,19 @@ class ViewModel extends ChangeNotifier {
           String email = '';
           String address = '';
           
-          if (patientDataMap != null) {
-            firstName = patientDataMap['firstName']?.toString() ?? '';
-            lastName = patientDataMap['lastName']?.toString() ?? '';
-            dni = patientDataMap['dni']?.toString() ?? '';
-            phone = patientDataMap['phone']?.toString() ?? '';
-            email = patientDataMap['email']?.toString() ?? '';
-            address = patientDataMap['address']?.toString() ?? '';
+          if (_currentPatient!.isPerson) {
+            final person = _currentPatient!.asPerson!;
+            firstName = person.firstName;
+            lastName = person.lastName;
+            dni = person.dni;
+            phone = person.phone;
+            email = person.email;
+            address = person.address;
+          } else if (_currentPatient!.isAnimal) {
+            final animal = _currentPatient!.asAnimal!;
+            firstName = animal.firstName;
+            lastName = animal.lastName;
+            // Animal no tiene dni, phone, email, address - dejar vacíos
           }
           
           debugPrint('✅ Paciente cargado: $firstName $lastName');
