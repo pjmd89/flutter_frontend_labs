@@ -233,7 +233,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                           fieldLength: FormFieldLength.name,
                           counterText: "",
                           onChange: (value) {
-                            viewModel.input.firstName = value;
+                            if (viewModel.currentPatient!.isPerson) {
+                              viewModel.inputPerson.firstName = value;
+                            } else if (viewModel.currentPatient!.isAnimal) {
+                              viewModel.inputPatient.animalData?.firstName = value;
+                            }
                           },
                         ),
                       ),
@@ -246,7 +250,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                           fieldLength: FormFieldLength.name,
                           counterText: "",
                           onChange: (value) {
-                            viewModel.input.lastName = value;
+                            if (viewModel.currentPatient!.isPerson) {
+                              viewModel.inputPerson.lastName = value;
+                            } else if (viewModel.currentPatient!.isAnimal) {
+                              viewModel.inputPatient.animalData?.lastName = value;
+                            }
                           },
                         ),
                       ),
@@ -264,8 +272,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                           isDense: true,
                           fieldLength: 20,
                           counterText: "",
+                          isEnabled: viewModel.currentPatient?.isPerson ?? true,
                           onChange: (value) {
-                            viewModel.input.dni = value;
+                            if (viewModel.currentPatient!.isPerson) {
+                              viewModel.inputPerson.dni = value;
+                            }
                           },
                         ),
                       ),
@@ -277,8 +288,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                           isDense: true,
                           fieldLength: 20,
                           counterText: "",
+                          isEnabled: viewModel.currentPatient?.isPerson ?? true,
                           onChange: (value) {
-                            viewModel.input.phone = value;
+                            if (viewModel.currentPatient!.isPerson) {
+                              viewModel.inputPerson.phone = value;
+                            }
                           },
                         ),
                       ),
@@ -293,8 +307,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                     isDense: true,
                     fieldLength: FormFieldLength.email,
                     counterText: "",
+                    isEnabled: viewModel.currentPatient?.isPerson ?? true,
                     onChange: (value) {
-                      viewModel.input.email = value;
+                      if (viewModel.currentPatient!.isPerson) {
+                        viewModel.inputPerson.email = value;
+                      }
                     },
                   ),
                   const SizedBox(height: 16),
@@ -306,8 +323,11 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                     isDense: true,
                     fieldLength: 100,
                     counterText: "",
+                    isEnabled: viewModel.currentPatient?.isPerson ?? true,
                     onChange: (value) {
-                      viewModel.input.address = value;
+                      if (viewModel.currentPatient!.isPerson) {
+                        viewModel.inputPerson.address = value;
+                      }
                     },
                   ),
                   const SizedBox(height: 16),
@@ -345,7 +365,13 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                         final day = date.day.toString().padLeft(2, '0');
                         final month = date.month.toString().padLeft(2, '0');
                         final year = date.year.toString();
-                        viewModel.input.birthDate = '$day/$month/$year 00:00';
+                        final formattedDate = '$day/$month/$year 00:00';
+                        
+                        if (viewModel.currentPatient!.isPerson) {
+                          viewModel.inputPerson.birthDate = formattedDate;
+                        } else if (viewModel.currentPatient!.isAnimal) {
+                          viewModel.inputPatient.animalData?.birthDate = formattedDate;
+                        }
                       }
                     },
                   ),

@@ -36,10 +36,7 @@ class PatientItem extends StatelessWidget {
     } else if (patient.isAnimal && patient.asAnimal != null) {
       final animal = patient.asAnimal!;
       patientName = '${animal.firstName} ${animal.lastName}';
-      patientInfo = '${animal.species}';
-      if (animal.owner != null) {
-        patientInfo += ' - ${l10n.owner}: ${animal.owner!.firstName} ${animal.owner!.lastName}';
-      }
+      patientInfo = animal.species;
     } else {
       patientName = '${l10n.patient} ${patient.id}';
       patientInfo = _getPatientTypeLabel();

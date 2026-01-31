@@ -1,3 +1,4 @@
+import "/src/domain/entities/main.dart";
 import "package:flutter/foundation.dart";
 import "package:json_annotation/json_annotation.dart";
 part "updatepatientinput_input.g.dart";
@@ -10,66 +11,26 @@ class UpdatePatientInput extends ChangeNotifier {
     _id = value;
     notifyListeners();
   }
-  String? _firstName;
-  String? get firstName => _firstName;
-  set firstName(String? value) {
-    _firstName = value;
+  List<SetKeyValuePair>? _metadata;
+  List<SetKeyValuePair>? get metadata => _metadata;
+  set metadata(List<SetKeyValuePair>? value) {
+    _metadata = value;
     notifyListeners();
   }
-  String? _lastName;
-  String? get lastName => _lastName;
-  set lastName(String? value) {
-    _lastName = value;
-    notifyListeners();
-  }
-  String? _birthDate;
-  String? get birthDate => _birthDate;
-  set birthDate(String? value) {
-    _birthDate = value;
-    notifyListeners();
-  }
-  String? _dni;
-  String? get dni => _dni;
-  set dni(String? value) {
-    _dni = value;
-    notifyListeners();
-  }
-  String? _phone;
-  String? get phone => _phone;
-  set phone(String? value) {
-    _phone = value;
-    notifyListeners();
-  }
-  String? _email;
-  String? get email => _email;
-  set email(String? value) {
-    _email = value;
-    notifyListeners();
-  }
-  String? _address;
-  String? get address => _address;
-  set address(String? value) {
-    _address = value;
+  UpdateAnimalPatientInput? _animalData;
+  UpdateAnimalPatientInput? get animalData => _animalData;
+  set animalData(UpdateAnimalPatientInput? value) {
+    _animalData = value;
     notifyListeners();
   }
   UpdatePatientInput({
     String? id,
-    String? firstName,
-    String? lastName,
-    String? birthDate,
-    String? dni,
-    String? phone,
-    String? email,
-    String? address,
+    List<SetKeyValuePair>? metadata,
+    UpdateAnimalPatientInput? animalData,
   }) {
     this.id = id ?? "";
-    this.firstName = firstName ?? "";
-    this.lastName = lastName ?? "";
-    this.birthDate = birthDate ?? "";
-    this.dni = dni ?? "";
-    this.phone = phone ?? "";
-    this.email = email ?? "";
-    this.address = address ?? "";
+    this.metadata = metadata;
+    this.animalData = animalData;
   }
   factory UpdatePatientInput.fromJson(Map<String, dynamic> json) => _$UpdatePatientInputFromJson(json);
   Map<String, dynamic> toJson() => _$UpdatePatientInputToJson(this);

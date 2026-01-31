@@ -17,7 +17,7 @@ LoggedUser _$LoggedUserFromJson(Map<String, dynamic> json) => LoggedUser(
           : Laboratory.fromJson(
             json['currentLaboratory'] as Map<String, dynamic>,
           ),
-  labRole: const LabMemberRoleConverter().fromJson(json['labRole'] as String?),
+  labRole: _labRoleFromJson(json['labRole']),
   userIsLabOwner: json['userIsLabOwner'] as bool? ?? false,
 );
 
@@ -26,7 +26,14 @@ Map<String, dynamic> _$LoggedUserToJson(
 ) => <String, dynamic>{
   if (instance.user case final value?) 'user': value,
   if (instance.currentLaboratory case final value?) 'currentLaboratory': value,
-  if (const LabMemberRoleConverter().toJson(instance.labRole) case final value?)
+  if (_$LabMemberRoleEnumMap[instance.labRole] case final value?)
     'labRole': value,
   'userIsLabOwner': instance.userIsLabOwner,
+};
+
+const _$LabMemberRoleEnumMap = {
+  LabMemberRole.oWNER: 'OWNER',
+  LabMemberRole.tECHNICIAN: 'TECHNICIAN',
+  LabMemberRole.bILLING: 'BILLING',
+  LabMemberRole.bIOANALYST: 'BIOANALYST',
 };

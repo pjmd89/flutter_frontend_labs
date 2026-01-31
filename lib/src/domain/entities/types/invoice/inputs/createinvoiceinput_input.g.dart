@@ -13,6 +13,7 @@ CreateInvoiceInput _$CreateInvoiceInputFromJson(Map<String, dynamic> json) =>
           (json['examIDs'] as List<dynamic>?)?.map((e) => e as String).toList(),
       referred: json['referred'] as String?,
       kind: $enumDecodeNullable(_$InvoiceKindEnumMap, json['kind']),
+      billTo: json['billTo'] as String?,
     );
 
 Map<String, dynamic> _$CreateInvoiceInputToJson(CreateInvoiceInput instance) =>
@@ -21,6 +22,7 @@ Map<String, dynamic> _$CreateInvoiceInputToJson(CreateInvoiceInput instance) =>
       'examIDs': instance.examIDs,
       if (instance.referred case final value?) 'referred': value,
       'kind': _$InvoiceKindEnumMap[instance.kind]!,
+      'billTo': instance.billTo,
     };
 
 const _$InvoiceKindEnumMap = {

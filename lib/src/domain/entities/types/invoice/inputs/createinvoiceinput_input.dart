@@ -28,16 +28,24 @@ class CreateInvoiceInput extends ChangeNotifier {
     _kind = value;
     notifyListeners();
   }
+  String _billTo = "";
+  String get billTo => _billTo;
+  set billTo(String value) {
+    _billTo = value;
+    notifyListeners();
+  }
   CreateInvoiceInput({
     String? patient,
     List<String>? examIDs,
     String? referred,
     InvoiceKind? kind,
+    String? billTo,
   }) {
     this.patient = patient ?? "";
     this.examIDs = examIDs ?? const [];
     this.referred = referred ?? "";
     this.kind = kind ?? InvoiceKind.values.first;
+    this.billTo = billTo ?? "";
   }
   factory CreateInvoiceInput.fromJson(Map<String, dynamic> json) => _$CreateInvoiceInputFromJson(json);
   Map<String, dynamic> toJson() => _$CreateInvoiceInputToJson(this);

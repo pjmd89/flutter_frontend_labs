@@ -9,23 +9,21 @@ part of 'updatepatientinput_input.dart';
 UpdatePatientInput _$UpdatePatientInputFromJson(Map<String, dynamic> json) =>
     UpdatePatientInput(
       id: json['_id'] as String?,
-      firstName: json['firstName'] as String?,
-      lastName: json['lastName'] as String?,
-      birthDate: json['birthDate'] as String?,
-      dni: json['dni'] as String?,
-      phone: json['phone'] as String?,
-      email: json['email'] as String?,
-      address: json['address'] as String?,
+      metadata:
+          (json['metadata'] as List<dynamic>?)
+              ?.map((e) => SetKeyValuePair.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      animalData:
+          json['animalData'] == null
+              ? null
+              : UpdateAnimalPatientInput.fromJson(
+                json['animalData'] as Map<String, dynamic>,
+              ),
     );
 
 Map<String, dynamic> _$UpdatePatientInputToJson(UpdatePatientInput instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      if (instance.firstName case final value?) 'firstName': value,
-      if (instance.lastName case final value?) 'lastName': value,
-      if (instance.birthDate case final value?) 'birthDate': value,
-      if (instance.dni case final value?) 'dni': value,
-      if (instance.phone case final value?) 'phone': value,
-      if (instance.email case final value?) 'email': value,
-      if (instance.address case final value?) 'address': value,
+      if (instance.metadata case final value?) 'metadata': value,
+      if (instance.animalData case final value?) 'animalData': value,
     };

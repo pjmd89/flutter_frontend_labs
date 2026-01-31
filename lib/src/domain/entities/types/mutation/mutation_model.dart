@@ -24,6 +24,8 @@ class Mutation {
   final Patient? createPatient;
   final Patient? updatePatient;
   final Patient? deletePatient;
+  final Person? createPerson;
+  final Person? updatePerson;
   final Upload? upload;
   final Upload? cancelUpload;
   final User? createUser;
@@ -51,6 +53,8 @@ class Mutation {
     this.createPatient,
     this.updatePatient,
     this.deletePatient,
+    this.createPerson,
+    this.updatePerson,
     this.upload,
     this.cancelUpload,
     this.createUser,

@@ -4,11 +4,14 @@ import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/updatePatient/updatepatient_mutation.dart';
+import 'package:labs/src/domain/operation/mutations/updatePerson/updateperson_mutation.dart';
 import 'package:labs/src/domain/usecases/Patient/update_patient_usecase.dart';
+import 'package:labs/src/domain/usecases/Person/update_person_usecase.dart';
 import 'package:labs/src/domain/usecases/Patient/read_patient_usecase.dart';
 import 'package:labs/src/domain/operation/queries/getPatients/getpatients_query.dart';
 import 'package:labs/src/domain/extensions/edgepatient_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/patient_fields_builder_extension.dart';
+import 'package:labs/src/domain/extensions/person_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 
 
@@ -18,7 +21,8 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   
-  final UpdatePatientInput input = UpdatePatientInput();
+  final UpdatePatientInput inputPatient = UpdatePatientInput();
+  final UpdatePersonInput inputPerson = UpdatePersonInput();
   Patient? _currentPatient;
   
   Patient? get currentPatient => _currentPatient;
@@ -94,16 +98,27 @@ class ViewModel extends ChangeNotifier {
           
           debugPrint('✅ Paciente cargado: $firstName $lastName');
           
-          // Prellenar input con datos existentes
-          input.id = _currentPatient!.id;
-          input.firstName = firstName;
-          input.lastName = lastName;
-          input.dni = dni.isNotEmpty ? dni : null;
-          input.phone = phone.isNotEmpty ? phone : null;
-          input.email = email.isNotEmpty ? email : null;
-          input.address = address.isNotEmpty ? address : null;
-          // ✅ NO asignar birthDate aquí - solo se asignará si el usuario la modifica
-          // Esto permite validación diferencial: si no se toca, no se envía al servidor
+          // Prellenar input según el tipo de paciente
+          if (_currentPatient!.isPerson) {
+            // Prellenar inputPerson para pacientes humanos
+            inputPerson.id = _currentPatient!.id;
+            inputPerson.firstName = firstName;
+            inputPerson.lastName = lastName;
+            inputPerson.dni = dni.isNotEmpty ? dni : null;
+            inputPerson.phone = phone.isNotEmpty ? phone : null;
+            inputPerson.email = email.isNotEmpty ? email : null;
+            inputPerson.address = address.isNotEmpty ? address : null;
+            // ✅ NO asignar birthDate aquí - solo se asignará si el usuario la modifica
+          } else if (_currentPatient!.isAnimal) {
+            // Prellenar inputPatient para pacientes animales
+            inputPatient.id = _currentPatient!.id;
+            // Para animals, usamos animalData
+            inputPatient.animalData = UpdateAnimalPatientInput(
+              firstName: firstName,
+              lastName: lastName,
+            );
+            // ✅ NO asignar birthDate aquí - solo se asignará si el usuario la modifica
+          }
         } else {
           debugPrint('⚠️ No se encontró paciente con ID: $id en la lista');
           error = true;
@@ -133,29 +148,57 @@ class ViewModel extends ChangeNotifier {
     bool isError = true;
     loading = true;
 
-    UpdatePatientUsecase useCase = UpdatePatientUsecase(
-      operation: UpdatePatientMutation(builder: PatientFieldsBuilder().defaultValues()),
-      conn: _gqlConn,
-    );
-
     try {
-      debugPrint('🔄 Actualizando paciente: ${input.toJson()}');
-      
-      var response = await useCase.execute(input: input);
-      
-      if (response is Patient) {
-        isError = false;
-        _currentPatient = response;
-        debugPrint('✅ Paciente actualizado exitosamente');
+      // ✅ Lógica condicional: ejecutar mutation según el tipo de paciente
+      if (_currentPatient!.isPerson) {
+        // 🟢 Paciente humano → usar updatePerson
+        debugPrint('🔄 Actualizando persona (humano): ${inputPerson.toJson()}');
         
-       
+        UpdatePersonUsecase useCase = UpdatePersonUsecase(
+          operation: UpdatePersonMutation(builder: PersonFieldsBuilder().defaultValues()),
+          conn: _gqlConn,
+        );
+        
+        var response = await useCase.execute(input: inputPerson);
+        
+        if (response is Person) {
+          isError = false;
+          debugPrint('✅ Persona actualizada exitosamente');
+          
+          // Actualizar _currentPatient con los nuevos datos
+          _currentPatient = Patient(
+            id: response.id,
+            patientType: PatientType.hUMAN,
+            patientData: response,
+            laboratory: _currentPatient!.laboratory,
+            created: _currentPatient!.created,
+            updated: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          );
+        }
+      } else if (_currentPatient!.isAnimal) {
+        // 🟡 Paciente animal → usar updatePatient
+        debugPrint('🔄 Actualizando paciente (animal): ${inputPatient.toJson()}');
+        
+        UpdatePatientUsecase useCase = UpdatePatientUsecase(
+          operation: UpdatePatientMutation(builder: PatientFieldsBuilder().defaultValues()),
+          conn: _gqlConn,
+        );
+        
+        var response = await useCase.execute(input: inputPatient);
+        
+        if (response is Patient) {
+          isError = false;
+          _currentPatient = response;
+          debugPrint('✅ Paciente (animal) actualizado exitosamente');
+        }
+      } else {
+        debugPrint('⚠️ Tipo de paciente desconocido');
+        isError = true;
       }
     } catch (e, stackTrace) {
-      debugPrint('💥 Error en updatePatient: $e');
+      debugPrint('💥 Error en update: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
-      
-      
     } finally {
       loading = false;
     }

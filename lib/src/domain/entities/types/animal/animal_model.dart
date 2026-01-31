@@ -8,14 +8,12 @@ class Animal {
   final String lastName;
   final int birthDate;
   final Sex? sex;
-  final Person? owner;
   Animal({
     this.firstName = "",
     this.species = "",
     this.lastName = "",
     this.birthDate = 0,
     this.sex,
-    this.owner,
   });
   factory Animal.fromJson(Map<String, dynamic> json) => _$AnimalFromJson(json);
   Map<String, dynamic> toJson() => _$AnimalToJson(this);

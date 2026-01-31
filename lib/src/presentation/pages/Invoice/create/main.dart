@@ -69,11 +69,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       return '${l10n.dni}: ${person.dni}';
     } else if (patient.isAnimal && patient.asAnimal != null) {
       final animal = patient.asAnimal!;
-      String info = animal.species;
-      if (animal.owner != null) {
-        info += ' - ${l10n.owner}: ${animal.owner!.firstName} ${animal.owner!.lastName}';
-      }
-      return info;
+      return animal.species;
     }
     
     // Traducir el tipo de paciente si no hay datos específicos

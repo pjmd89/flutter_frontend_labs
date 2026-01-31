@@ -27,6 +27,12 @@ List<DrawerButtonConfig> getTechnicianDrawerButtonList(
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.inventory_2),
     ),
+    DrawerButtonConfig(
+      buttonText: AppLocalizations.of(context)!.invoices,
+      buttonRoute: "/invoice",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.receipt),
+    ),
     
     // DrawerButtonConfig(
     //   buttonText: AppLocalizations.of(context)!.logout,

@@ -67,6 +67,7 @@ ShellRoute technicianShellRoute = ShellRoute(
     ...examRoutes,
     ...patientRoutes,
     ...evaluationpackageRoutes,
+    ...invoiceRoutes,
   ],
 );
 ShellRoute bioanalystShellRoute = ShellRoute(
