@@ -1144,6 +1144,14 @@
   "@invoiceTypeCreditNote": {
     "description": "Document type: Credit Note"
   },
+  "invoiceMarkedAsPaid": "Invoice marked as paid",
+  "@invoiceMarkedAsPaid": {
+    "description": "Success message when an invoice is marked as paid"
+  },
+  "paymentCanceled": "Payment canceled successfully",
+  "@paymentCanceled": {
+    "description": "Success message when an invoice payment is canceled"
+  },
   "billTo": "Bill To",
   "@billTo": {
     "description": "Label for billTo field - person who receives the invoice"

@@ -140,6 +140,14 @@
   "@invoiceTypeCreditNote": {
     "description": "Tipo de documento: Nota de crédito"
   },
+  "invoiceMarkedAsPaid": "Factura marcada como pagada",
+  "@invoiceMarkedAsPaid": {
+    "description": "Mensaje de éxito cuando una factura se marca como pagada"
+  },
+  "paymentCanceled": "Pago cancelado exitosamente",
+  "@paymentCanceled": {
+    "description": "Mensaje de éxito cuando se cancela el pago de una factura"
+  },
   "billTo": "Facturar a",
   "@billTo": {
     "description": "Etiqueta para el campo billTo - persona que recibe la factura"

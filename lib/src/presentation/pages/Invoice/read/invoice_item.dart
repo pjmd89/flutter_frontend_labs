@@ -240,14 +240,17 @@ class InvoiceItem extends StatelessWidget {
               ),
               
               // Botones de actualización de estado de pago
-              if (onUpdatePaymentStatus != null && invoice.paymentStatus != null) ...[
+              // ⚠️ No mostrar botones si la factura está cancelada (estado final)
+              if (onUpdatePaymentStatus != null && 
+                  invoice.paymentStatus != null && 
+                  invoice.paymentStatus != PaymentStatus.cANCELED) ...[
                 const SizedBox(height: 12),
                 const Divider(height: 1),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    // Botón Marcar como Pagado (si está pending o canceled)
-                    if (invoice.paymentStatus != PaymentStatus.pAID)
+                    // Botón Marcar como Pagado (si está pending)
+                    if (invoice.paymentStatus == PaymentStatus.pENDING)
                       Expanded(
                         child: TextButton.icon(
                           icon: const Icon(Icons.check_circle, size: 18),
@@ -260,22 +263,20 @@ class InvoiceItem extends StatelessWidget {
                       ),
                     
                     // Espaciador si hay dos botones
-                    if (invoice.paymentStatus != PaymentStatus.pAID && 
-                        invoice.paymentStatus != PaymentStatus.cANCELED)
+                    if (invoice.paymentStatus == PaymentStatus.pENDING)
                       const SizedBox(width: 8),
                     
                     // Botón Cancelar Pago (si está paid o pending)
-                    if (invoice.paymentStatus != PaymentStatus.cANCELED)
-                      Expanded(
-                        child: TextButton.icon(
-                          icon: const Icon(Icons.block, size: 18),
-                          label: Text(l10n.cancelPayment),
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.red,
-                          ),
-                          onPressed: () => onUpdatePaymentStatus!(invoice.id, PaymentStatus.cANCELED),
+                    Expanded(
+                      child: TextButton.icon(
+                        icon: const Icon(Icons.block, size: 18),
+                        label: Text(l10n.cancelPayment),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
                         ),
+                        onPressed: () => onUpdatePaymentStatus!(invoice.id, PaymentStatus.cANCELED),
                       ),
+                    ),
                   ],
                 ),
               ],

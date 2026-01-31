@@ -114,6 +114,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invoiceTypeCreditNote => 'Credit Note';
 
   @override
+  String get invoiceMarkedAsPaid => 'Invoice marked as paid';
+
+  @override
+  String get paymentCanceled => 'Payment canceled successfully';
+
+  @override
   String get billTo => 'Bill To';
 
   @override

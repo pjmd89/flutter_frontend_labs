@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart';
 import 'package:agile_front/agile_front.dart';
+import 'package:agile_front/infraestructure/graphql/helpers.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/extensions/edgeinvoice_fields_builder_extension.dart';
+import 'package:labs/src/domain/extensions/invoice_fields_builder_extension.dart';
 import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/queries/getInvoices/getinvoices_query.dart';
+import 'package:labs/src/domain/operation/mutations/markInvoiceAsPaid/markinvoiceaspaid_mutation.dart';
+import 'package:labs/src/domain/operation/mutations/cancelInvoicePayment/cancelinvoicepayment_mutation.dart';
 import 'package:labs/src/domain/usecases/Invoice/read_invoice_usecase.dart';
 import 'package:labs/src/presentation/providers/gql_notifier.dart';
 import 'package:labs/src/infraestructure/services/error_service.dart';
+import 'package:labs/l10n/app_localizations.dart';
 
 class ViewModel extends ChangeNotifier {
   // Estados privados
@@ -146,36 +151,85 @@ class ViewModel extends ChangeNotifier {
     loading = true;
     
     try {
-      // Aquí irá la llamada a la mutation cuando esté implementada
-      // Por ahora solo simulamos la actualización en la lista local
-      if (_invoiceList != null) {
-        final index = _invoiceList!.indexWhere((inv) => inv.id == invoiceId);
-        if (index != -1) {
-          // Actualizar el estado en la lista local
-          _invoiceList![index] = Invoice(
-            id: _invoiceList![index].id,
-            patient: _invoiceList![index].patient,
-            totalAmount: _invoiceList![index].totalAmount,
-            orderID: _invoiceList![index].orderID,
-            paymentStatus: newStatus,
-            kind: _invoiceList![index].kind,
-            laboratory: _invoiceList![index].laboratory,
-            evaluationPackage: _invoiceList![index].evaluationPackage,
-            created: _invoiceList![index].created,
-            updated: _invoiceList![index].updated,
+      debugPrint('\n🔄 ========== UPDATE PAYMENT STATUS ==========');
+      debugPrint('🔄 InvoiceID: $invoiceId');
+      debugPrint('🔄 Nuevo estado: $newStatus');
+      
+      final l10n = AppLocalizations.of(_context)!;
+      
+      // Ejecutar la mutación correspondiente según el nuevo estado
+      Invoice? updatedInvoice;
+      
+      if (newStatus == PaymentStatus.pAID) {
+        // Marcar como pagado
+        debugPrint('✅ Ejecutando markInvoiceAsPaid...');
+        
+        final mutation = MarkInvoiceAsPaidMutation(
+          builder: InvoiceFieldsBuilder().defaultValues(),
+          declarativeArgs: {"invoiceID": "ID!"},
+          opArgs: {"invoiceID": GqlVar("invoiceID")},
+        );
+        
+        final response = await _gqlConn.operation(
+          operation: mutation,
+          variables: {"invoiceID": invoiceId},
+        );
+        
+        if (response is Invoice) {
+          updatedInvoice = response;
+          debugPrint('✅ Factura marcada como pagada exitosamente');
+          _errorService.showError(
+            message: 'Factura marcada como pagada',
+            type: ErrorType.success,
           );
-          notifyListeners();
+        }
+        
+      } else if (newStatus == PaymentStatus.cANCELED) {
+        // Cancelar pago
+        debugPrint('❌ Ejecutando cancelInvoicePayment...');
+        
+        final mutation = CancelInvoicePaymentMutation(
+          builder: InvoiceFieldsBuilder().defaultValues(),
+          declarativeArgs: {"invoiceID": "ID!"},
+          opArgs: {"invoiceID": GqlVar("invoiceID")},
+        );
+        
+        final response = await _gqlConn.operation(
+          operation: mutation,
+          variables: {"invoiceID": invoiceId},
+        );
+        
+        if (response is Invoice) {
+          updatedInvoice = response;
+          debugPrint('✅ Pago de factura cancelado exitosamente');
+          _errorService.showError(
+            message: 'Pago cancelado exitosamente',
+            type: ErrorType.success,
+          );
         }
       }
       
-      // Mensaje de éxito (por ahora usando showError)
-      debugPrint('✅ Estado de pago actualizado correctamente');
+      // Actualizar la factura en la lista local
+      if (updatedInvoice != null && _invoiceList != null) {
+        final index = _invoiceList!.indexWhere((inv) => inv.id == invoiceId);
+        if (index != -1) {
+          _invoiceList![index] = updatedInvoice;
+          notifyListeners();
+          debugPrint('✅ Lista local actualizada');
+        }
+      }
+      
+      debugPrint('========================================\n');
+      
     } catch (e, stackTrace) {
-      debugPrint('💥 Error al actualizar estado de pago: $e');
+      debugPrint('\n💥 ========== ERROR AL ACTUALIZAR PAGO ==========');
+      debugPrint('💥 Error: $e');
       debugPrint('📍 StackTrace: $stackTrace');
+      debugPrint('========================================\n');
       
       _errorService.showError(
         message: 'Error al actualizar estado de pago: ${e.toString()}',
+        type: ErrorType.error,
       );
     } finally {
       loading = false;

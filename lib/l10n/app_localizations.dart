@@ -305,6 +305,18 @@ abstract class AppLocalizations {
   /// **'Nota de Crédito'**
   String get invoiceTypeCreditNote;
 
+  /// Mensaje de éxito cuando una factura se marca como pagada
+  ///
+  /// In es, this message translates to:
+  /// **'Factura marcada como pagada'**
+  String get invoiceMarkedAsPaid;
+
+  /// Mensaje de éxito cuando se cancela el pago de una factura
+  ///
+  /// In es, this message translates to:
+  /// **'Pago cancelado exitosamente'**
+  String get paymentCanceled;
+
   /// Etiqueta para el campo billTo - persona que recibe la factura
   ///
   /// In es, this message translates to:
