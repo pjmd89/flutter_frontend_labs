@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 
@@ -9,7 +10,7 @@ class UserItem extends StatelessWidget {
   final User user;
   final AppLocalizations l10n;
   final Function(String id)? onViewLabs;
-  final Function(String id)? onUpdate;
+  final Function(User user)? onUpdate;
   final Function(String id)? onDelete;
 
   const UserItem({
@@ -61,7 +62,13 @@ class UserItem extends StatelessWidget {
                       icon: const Icon(Icons.more_vert),
                       onSelected: (value) {
                         if (value == 'edit' && onUpdate != null) {
-                          onUpdate!(user.id);
+                          debugPrint('\n📤 ========== NAVEGANDO A UPDATE (UserItem) ==========');
+                          debugPrint('📤 user.id: "${user.id}"');
+                          debugPrint('📤 user.firstName: ${user.firstName}');
+                          debugPrint('📤 user.lastName: ${user.lastName}');
+                          debugPrint('📤 Pasando objeto User completo');
+                          debugPrint('========================================\n');
+                          onUpdate!(user);
                         }
                       },
                       itemBuilder:

@@ -7,8 +7,9 @@ import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
 class UserUpdatePage extends StatefulWidget {
-  const UserUpdatePage({super.key, required this.id});
+  const UserUpdatePage({super.key, required this.id, this.user});
   final String id;
+  final User? user;
 
   @override
   State<UserUpdatePage> createState() => _UserUpdatePageState();
@@ -36,15 +37,38 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    viewModel = ViewModel(context: context, userId: widget.id);
+    debugPrint('\n🎯 ========== didChangeDependencies LLAMADO ==========');
+    debugPrint('🎯 widget.id: "${widget.id}"');
+    debugPrint('🎯 widget.user != null: ${widget.user != null}');
     
-    // Escuchar cambios del ViewModel para inicializar controllers
+    if (widget.user != null) {
+      debugPrint('✅ Usuario pasado directamente (Opción A)');
+      debugPrint('   - ID: ${widget.user!.id}');
+      debugPrint('   - Nombre: ${widget.user!.firstName} ${widget.user!.lastName}');
+      viewModel = ViewModel(context: context, user: widget.user!);
+      
+      // ✅ Como los datos ya están disponibles, inicializar controllers inmediatamente
+      debugPrint('\n🎮 Inicializando controllers inmediatamente (Opción A)');
+      _initializeControllers();
+    } else {
+      debugPrint('⚠️ Solo ID disponible, cargando desde servidor (Opción B)');
+      viewModel = ViewModel(context: context, userId: widget.id);
+    }
+    
+    // Escuchar cambios del ViewModel para inicializar controllers (para Opción B)
     viewModel.addListener(_updateControllers);
+    debugPrint('🎯 ViewModel creado y listener agregado');
+    debugPrint('========================================\n');
   }
   
-  void _updateControllers() {
-    // Inicializar controllers cuando los datos se carguen
-    if (viewModel.currentUser != null && !viewModel.loading && !_controllersInitialized) {
+  void _initializeControllers() {
+    if (viewModel.currentUser != null && !_controllersInitialized) {
+      debugPrint('✅ Inicializando controllers...');
+      debugPrint('   - firstName: ${viewModel.currentUser!.firstName}');
+      debugPrint('   - lastName: ${viewModel.currentUser!.lastName}');
+      debugPrint('   - email: ${viewModel.currentUser!.email}');
+      debugPrint('   - role: ${viewModel.currentUser!.role}');
+      
       setState(() {
         firstNameController = TextEditingController(
           text: viewModel.currentUser!.firstName
@@ -58,7 +82,25 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
         selectedRole = viewModel.currentUser!.role;
         _controllersInitialized = true;
       });
+      
+      debugPrint('✅ Controllers inicializados exitosamente');
     }
+  }
+  
+  void _updateControllers() {
+    debugPrint('\n🎮 ========== _updateControllers LLAMADO ==========');
+    debugPrint('🎮 viewModel.currentUser != null: ${viewModel.currentUser != null}');
+    debugPrint('🎮 viewModel.loading: ${viewModel.loading}');
+    debugPrint('🎮 _controllersInitialized: $_controllersInitialized');
+    
+    // Inicializar controllers cuando los datos se carguen (solo para Opción B)
+    if (viewModel.currentUser != null && !viewModel.loading && !_controllersInitialized) {
+      debugPrint('\n✅ Condiciones cumplidas, inicializando...');
+      _initializeControllers();
+    } else {
+      debugPrint('⏭️ Condiciones no cumplidas para inicializar controllers');
+    }
+    debugPrint('========================================\n');
   }
 
   @override

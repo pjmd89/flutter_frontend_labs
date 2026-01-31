@@ -32,8 +32,8 @@ List<Widget> buildList({
       return UserItem(
         user: user,
         l10n: l10n,
-        onUpdate: (id) async {
-          final result = await context.push('/user/update/$id');
+        onUpdate: (user) async {
+          final result = await context.push('/user/update/${user.id}', extra: user);
           if (result == true) {
             viewModel.getMemberships();
           }
@@ -56,8 +56,8 @@ List<Widget> buildList({
     return MembershipItem(
       membership: membership,
       l10n: l10n,
-      onUpdate: (id) async {
-        final result = await context.push('/user/update/$id');
+      onUpdate: (user) async {
+        final result = await context.push('/user/update/${user.id}', extra: user);
         if (result == true) {
           viewModel.getMemberships();
         }

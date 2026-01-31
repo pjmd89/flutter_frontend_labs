@@ -35,15 +35,51 @@ class ViewModel extends ChangeNotifier {
   
   ViewModel({
     required BuildContext context,
-    required String userId,
+    User? user,
+    String? userId,
   }) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
-    loadData(userId);
+    
+    if (user != null) {
+      // Opción A (recomendada): Objeto completo disponible inmediatamente
+      debugPrint('\n✅ ========== Opción A: Usuario prellenado ==========');
+      _currentUser = user;
+      _prellenarInput(user);
+      loading = false;
+      debugPrint('========================================\n');
+    } else if (userId != null) {
+      // Opción B: Cargar desde servidor
+      debugPrint('\n⚠️ ========== Opción B: Cargando desde servidor ==========');
+      loadData(userId);
+    } else {
+      debugPrint('\n❌ ERROR: Ni user ni userId fueron proporcionados');
+      error = true;
+      loading = false;
+    }
+  }
+  
+  void _prellenarInput(User user) {
+    debugPrint('📝 Prellenando input con datos existentes...');
+    input.id = user.id;
+    input.firstName = user.firstName;
+    input.lastName = user.lastName;
+    input.email = user.email;
+    
+    debugPrint('✅ Input prellenado:');
+    debugPrint('   - id: ${input.id}');
+    debugPrint('   - firstName: ${input.firstName}');
+    debugPrint('   - lastName: ${input.lastName}');
+    debugPrint('   - email: ${input.email}');
   }
   
   AppLocalizations get l10n => AppLocalizations.of(_context)!;
   
   Future<void> loadData(String id) async {
+    debugPrint('\n🚀 ========== INICIO loadData ==========');
+    debugPrint('🔍 ID buscado: "$id"');
+    debugPrint('🔍 Tipo de ID: ${id.runtimeType}');
+    debugPrint('🔍 Longitud ID: ${id.length}');
+    
     loading = true;
     error = false;
     
@@ -58,26 +94,62 @@ class ViewModel extends ChangeNotifier {
       
       var response = await useCase.build();
       
+      debugPrint('\n📦 ========== RESPONSE RECIBIDA ==========');
       debugPrint('🔍 Tipo de response: ${response.runtimeType}');
-      debugPrint('🔍 Response completo: $response');
+      debugPrint('🔍 Response es EdgeUser: ${response is EdgeUser}');
+      
+      if (response is EdgeUser) {
+        debugPrint('📊 Cantidad de edges: ${response.edges.length}');
+        debugPrint('🔍 Edges está vacío: ${response.edges.isEmpty}');
+        
+        if (response.edges.isNotEmpty) {
+          debugPrint('\n👥 ========== USUARIOS EN EDGES ==========');
+          for (int i = 0; i < response.edges.length; i++) {
+            final user = response.edges[i];
+            debugPrint('Usuario [$i]:');
+            debugPrint('  - ID: "${user.id}"');
+            debugPrint('  - Tipo ID: ${user.id.runtimeType}');
+            debugPrint('  - Longitud ID: ${user.id.length}');
+            debugPrint('  - Nombre: ${user.firstName} ${user.lastName}');
+            debugPrint('  - Email: ${user.email}');
+            debugPrint('  - Role: ${user.role}');
+            debugPrint('  - ¿Coincide con ID buscado? ${user.id == id}');
+            debugPrint('  - ¿IDs idénticos byte a byte? ${user.id.codeUnits == id.codeUnits}');
+          }
+        }
+      }
       
       if (response is EdgeUser && response.edges.isNotEmpty) {
+        debugPrint('\n🔎 ========== FILTRANDO USUARIO ==========');
+        
         // Filtrar usuario por ID en memoria
-        final users = response.edges.where((user) => user.id == id).toList();
+        final users = response.edges.where((user) {
+          final matches = user.id == id;
+          debugPrint('Comparando: "${user.id}" == "$id" → $matches');
+          return matches;
+        }).toList();
+        
+        debugPrint('🔍 Usuarios encontrados después del filtro: ${users.length}');
         
         if (users.isNotEmpty) {
           _currentUser = users.first;
-          debugPrint('✅ Usuario cargado: ${_currentUser!.firstName} ${_currentUser!.lastName}');
+          debugPrint('\n✅ ========== USUARIO ENCONTRADO ==========');
+          debugPrint('✅ ID: ${_currentUser!.id}');
+          debugPrint('✅ Nombre: ${_currentUser!.firstName} ${_currentUser!.lastName}');
+          debugPrint('✅ Email: ${_currentUser!.email}');
+          debugPrint('✅ Role: ${_currentUser!.role}');
           
           // Prellenar input con datos existentes
-          input.id = _currentUser!.id;
-          input.firstName = _currentUser!.firstName;
-          input.lastName = _currentUser!.lastName;
-          input.email = _currentUser!.email;
+          _prellenarInput(_currentUser!);
         } else {
-          debugPrint('⚠️ No se encontró usuario con ID: $id en la lista');
+          debugPrint('\n❌ ========== USUARIO NO ENCONTRADO ==========');
+          debugPrint('❌ ID buscado: "$id"');
+          debugPrint('❌ Total de usuarios en lista: ${response.edges.length}');
+          debugPrint('❌ IDs disponibles en la lista:');
+          for (var user in response.edges) {
+            debugPrint('   - "${user.id}" (${user.firstName} ${user.lastName})');
+          }
           error = true;
-          
         }
       } else if (response is EdgeUser && response.edges.isEmpty) {
         debugPrint('⚠️ EdgeUser sin datos - edges está vacío');
@@ -89,13 +161,21 @@ class ViewModel extends ChangeNotifier {
        
       }
     } catch (e, stackTrace) {
-      debugPrint('💥 Error en loadData: $e');
+      debugPrint('\n💥 ========== ERROR EN LOADDATA ==========');
+      debugPrint('💥 Error: $e');
+      debugPrint('💥 Tipo de error: ${e.runtimeType}');
       debugPrint('📍 StackTrace: $stackTrace');
       error = true;
-      
-     
     } finally {
       loading = false;
+      debugPrint('\n🏁 ========== FIN loadData ==========');
+      debugPrint('🏁 loading: $_loading');
+      debugPrint('🏁 error: $_error');
+      debugPrint('🏁 currentUser != null: ${_currentUser != null}');
+      if (_currentUser != null) {
+        debugPrint('🏁 currentUser.id: ${_currentUser!.id}');
+      }
+      debugPrint('========================================\n');
     }
   }
   

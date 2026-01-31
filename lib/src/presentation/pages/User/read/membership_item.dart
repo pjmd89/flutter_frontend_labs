@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
@@ -7,7 +8,7 @@ import 'package:provider/provider.dart';
 class MembershipItem extends StatelessWidget {
   final LabMembershipInfo membership;
   final AppLocalizations l10n;
-  final Function(String id)? onUpdate;
+  final Function(User user)? onUpdate;
   final Function(String id)? onDelete;
 
   const MembershipItem({
@@ -64,8 +65,14 @@ class MembershipItem extends StatelessWidget {
                   ? null // Ocultar el menú si es billing
                   : PopupMenuButton<String>(
                       onSelected: (value) {
-                        if (value == 'edit' && onUpdate != null) {
-                          onUpdate!(membership.id);
+                        if (value == 'edit' && onUpdate != null && membership.member != null) {
+                          debugPrint('\n📤 ========== NAVEGANDO A UPDATE (MembershipItem) ==========');
+                          debugPrint('📤 membership.id: "${membership.id}"');
+                          debugPrint('📤 membership.member.id: "${membership.member!.id}"');
+                          debugPrint('📤 Nombre: ${membership.member!.firstName} ${membership.member!.lastName}');
+                          debugPrint('📤 Pasando objeto User completo');
+                          debugPrint('========================================\n');
+                          onUpdate!(membership.member!);  // ✅ Pasar objeto User completo
                         }
                       },
                       itemBuilder: (context) => [
