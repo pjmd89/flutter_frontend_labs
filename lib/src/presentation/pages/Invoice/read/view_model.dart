@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:agile_front/agile_front.dart';
 import 'package:agile_front/infraestructure/graphql/helpers.dart';
 import 'package:labs/src/domain/entities/main.dart';
@@ -13,7 +12,7 @@ import 'package:labs/src/domain/operation/mutations/cancelInvoicePayment/canceli
 import 'package:labs/src/domain/usecases/Invoice/read_invoice_usecase.dart';
 import 'package:labs/src/presentation/providers/gql_notifier.dart';
 import 'package:labs/src/infraestructure/services/error_service.dart';
-import 'package:labs/l10n/app_localizations.dart';
+
 
 class ViewModel extends ChangeNotifier {
   // Estados privados
@@ -155,7 +154,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('🔄 InvoiceID: $invoiceId');
       debugPrint('🔄 Nuevo estado: $newStatus');
       
-      final l10n = AppLocalizations.of(_context)!;
+      //final l10n = AppLocalizations.of(_context)!;
       
       // Ejecutar la mutación correspondiente según el nuevo estado
       Invoice? updatedInvoice;
