@@ -15,7 +15,7 @@ import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
 import '/src/presentation/widgets/loading/main.dart';
 import 'package:labs/src/presentation/core/ui/custom_drawer/main.dart';
 import 'package:labs/src/presentation/core/ui/user_menu/main.dart';
-import 'package:labs/src/presentation/core/ui/laboratory_selector/main.dart';
+import 'package:labs/src/presentation/core/ui/laboratory_switcher/main.dart';
 
 class BasicTemplate extends StatelessWidget {
   const BasicTemplate({super.key, required this.child, this.title = "Labs"});
@@ -71,21 +71,9 @@ class BasicTemplate extends StatelessWidget {
         title: Text(displayTitle),
         centerTitle: false,
         actions: [
-          // Botón para seleccionar laboratorio
-          IconButton(
-            icon: Icon(
-              laboratoryNotifier.hasLaboratory
-                  ? Icons.science
-                  : Icons.science_outlined,
-            ),
-            tooltip: 'Seleccionar Laboratorio',
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => const LaboratorySelectorDialog(),
-              );
-            },
-          ),
+          // Laboratory Switcher - Similar al selector de cuentas de Google
+          const LaboratorySwitcher(),
+          const SizedBox(width: 8),
           const UserMenu(),
         ],
       ),
