@@ -140,6 +140,26 @@
   "@invoiceTypeCreditNote": {
     "description": "Tipo de documento: Nota de crédito"
   },
+  "billTo": "Facturar a",
+  "@billTo": {
+    "description": "Etiqueta para el campo billTo - persona que recibe la factura"
+  },
+  "billToInformation": "Información del Pagador",
+  "@billToInformation": {
+    "description": "Título de la sección de información de la persona que pagará"
+  },
+  "createNewPerson": "Crear Nueva Persona",
+  "@createNewPerson": {
+    "description": "Opción para crear una nueva persona para facturación"
+  },
+  "selectExistingPerson": "Seleccionar Persona Existente",
+  "@selectExistingPerson": {
+    "description": "Opción para seleccionar una persona existente"
+  },
+  "personForBilling": "Persona para Facturación",
+  "@personForBilling": {
+    "description": "Etiqueta para la persona que recibirá la factura"
+  },
   "noData": "No hay datos disponibles",
   "@noData": {
     "description": "Mensaje cuando no hay datos para mostrar"

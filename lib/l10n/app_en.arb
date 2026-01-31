@@ -1144,6 +1144,26 @@
   "@invoiceTypeCreditNote": {
     "description": "Document type: Credit Note"
   },
+  "billTo": "Bill To",
+  "@billTo": {
+    "description": "Label for billTo field - person who receives the invoice"
+  },
+  "billToInformation": "Payer Information",
+  "@billToInformation": {
+    "description": "Title for the payer information section"
+  },
+  "createNewPerson": "Create New Person",
+  "@createNewPerson": {
+    "description": "Option to create a new person for billing"
+  },
+  "selectExistingPerson": "Select Existing Person",
+  "@selectExistingPerson": {
+    "description": "Option to select an existing person"
+  },
+  "personForBilling": "Person for Billing",
+  "@personForBilling": {
+    "description": "Label for the person who will receive the invoice"
+  },
   "noData": "No data available",
   "@noData": {
     "description": "Message when there is no data to display"

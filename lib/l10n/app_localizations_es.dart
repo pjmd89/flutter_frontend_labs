@@ -114,6 +114,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get invoiceTypeCreditNote => 'Nota de Crédito';
 
   @override
+  String get billTo => 'Facturar a';
+
+  @override
+  String get billToInformation => 'Información del Pagador';
+
+  @override
+  String get createNewPerson => 'Crear Nueva Persona';
+
+  @override
+  String get selectExistingPerson => 'Seleccionar Persona Existente';
+
+  @override
+  String get personForBilling => 'Persona para Facturación';
+
+  @override
   String get noData => 'No hay datos disponibles';
 
   @override

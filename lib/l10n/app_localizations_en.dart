@@ -114,6 +114,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invoiceTypeCreditNote => 'Credit Note';
 
   @override
+  String get billTo => 'Bill To';
+
+  @override
+  String get billToInformation => 'Payer Information';
+
+  @override
+  String get createNewPerson => 'Create New Person';
+
+  @override
+  String get selectExistingPerson => 'Select Existing Person';
+
+  @override
+  String get personForBilling => 'Person for Billing';
+
+  @override
   String get noData => 'No data available';
 
   @override

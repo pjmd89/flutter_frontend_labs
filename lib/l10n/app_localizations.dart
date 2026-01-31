@@ -305,6 +305,36 @@ abstract class AppLocalizations {
   /// **'Nota de Crédito'**
   String get invoiceTypeCreditNote;
 
+  /// Etiqueta para el campo billTo - persona que recibe la factura
+  ///
+  /// In es, this message translates to:
+  /// **'Facturar a'**
+  String get billTo;
+
+  /// Título de la sección de información de la persona que pagará
+  ///
+  /// In es, this message translates to:
+  /// **'Información del Pagador'**
+  String get billToInformation;
+
+  /// Opción para crear una nueva persona para facturación
+  ///
+  /// In es, this message translates to:
+  /// **'Crear Nueva Persona'**
+  String get createNewPerson;
+
+  /// Opción para seleccionar una persona existente
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar Persona Existente'**
+  String get selectExistingPerson;
+
+  /// Etiqueta para la persona que recibirá la factura
+  ///
+  /// In es, this message translates to:
+  /// **'Persona para Facturación'**
+  String get personForBilling;
+
   /// Mensaje cuando no hay datos para mostrar
   ///
   /// In es, this message translates to:

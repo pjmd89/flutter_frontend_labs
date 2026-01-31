@@ -4,13 +4,16 @@ import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/extensions/invoice_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/edgeexam_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/edgepatient_fields_builder_extension.dart';
+import 'package:labs/src/domain/extensions/person_fields_builder_extension.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/createInvoice/createinvoice_mutation.dart';
+import 'package:labs/src/domain/operation/mutations/createPerson/createperson_mutation.dart';
 import 'package:labs/src/domain/operation/queries/getPatients/getpatients_query.dart';
 import 'package:labs/src/domain/operation/queries/getExams/getexams_query.dart';
 import 'package:labs/src/domain/usecases/Invoice/create_invoice_usecase.dart';
 import 'package:labs/src/domain/usecases/Patient/read_patient_usecase.dart';
 import 'package:labs/src/domain/usecases/Exam/read_exam_usecase.dart';
+import 'package:labs/src/domain/usecases/Person/create_person_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 
 class ViewModel extends ChangeNotifier {
@@ -28,6 +31,14 @@ class ViewModel extends ChangeNotifier {
     examIDs: [],
     referred: '',
     kind: InvoiceKind.iNVOICE,
+    billTo: '',
+  );
+
+  // Input para crear persona (billTo)
+  final CreatePersonInput personInput = CreatePersonInput(
+    firstName: '',
+    lastName: '',
+    dni: '',
   );
 
   // Exámenes
@@ -179,11 +190,32 @@ class ViewModel extends ChangeNotifier {
         throw Exception('No se ha seleccionado un paciente');
       }
 
-      // Preparar datos de la factura
+      // 1. Crear Person primero (para billTo)
+      debugPrint('🔵 Creando Person para billTo...');
+      final createPersonUseCase = CreatePersonUsecase(
+        operation: CreatePersonMutation(
+          builder: PersonFieldsBuilder().defaultValues(),
+        ),
+        conn: _gqlConn,
+      );
+
+      final personResponse = await createPersonUseCase.execute(
+        input: personInput,
+      );
+
+      if (personResponse is! Person) {
+        throw Exception('Error al crear la persona para facturación');
+      }
+
+      debugPrint('✅ Person creada con ID: ${personResponse.id}');
+
+      // 2. Preparar datos de la factura con el billTo
       invoiceInput.patient = foundPatient!.id;
       invoiceInput.examIDs = _selectedExams.map((e) => e.id).toList();
+      invoiceInput.billTo = personResponse.id; // Asignar ID de Person creada
 
-      // Crear factura
+      // 3. Crear factura
+      debugPrint('🔵 Creando Invoice...');
       final createInvoiceUseCase = CreateInvoiceUsecase(
         operation: CreateInvoiceMutation(
           builder: InvoiceFieldsBuilder().defaultValues(),
@@ -196,6 +228,7 @@ class ViewModel extends ChangeNotifier {
       );
 
       if (invoiceResponse is Invoice) {
+        debugPrint('✅ Invoice creada con ID: ${invoiceResponse.id}');
         isError = false;
       } else {
         isError = true;

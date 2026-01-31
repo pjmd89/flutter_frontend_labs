@@ -21,8 +21,23 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   final dniSearchController = TextEditingController();
   final referredController = TextEditingController();
   
+  // Controllers para CreatePerson
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final dniPersonController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+  final birthDateController = TextEditingController();
+  
   // Estado para InvoiceKind
   InvoiceKind? selectedInvoiceKind;
+  
+  // Estado para Sex (CreatePerson)
+  Sex? selectedSex;
+  
+  // Estado para expandir sección de Person
+  bool showPersonForm = false;
 
   @override
   void initState() {
@@ -39,6 +54,13 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   void dispose() {
     dniSearchController.dispose();
     referredController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    dniPersonController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    birthDateController.dispose();
     super.dispose();
   }
   
@@ -50,6 +72,33 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       case InvoiceKind.cREDIT_NOTE:
         return l10n.invoiceTypeCreditNote;
     }
+  }
+  
+  String getSexLabel(BuildContext context, Sex sex) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (sex) {
+      case Sex.fEMALE:
+        return l10n.sexFemale;
+      case Sex.mALE:
+        return l10n.sexMale;
+      case Sex.iNTERSEX:
+        return l10n.sexIntersex;
+    }
+  }
+  
+  Widget _buildStepHeader(BuildContext context, String stepNumber, String title, IconData icon, bool required) {
+    return Row(
+      children: [
+        Icon(icon, size: 24, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
   }
   
   String _getPatientName(Patient patient) {
@@ -96,6 +145,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
           icon: Icons.receipt_long,
           title: l10n.createThing(l10n.invoice),
           loading: viewModel.loading,
+          maxWidth: 700,
+          minWidth: 700,
           form: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -103,234 +154,475 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Búsqueda de paciente (REQUERIDO)
-                  Text(
-                    '${l10n.patient} *',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  // PASO 1: Seleccionar Paciente
+                  _buildStepHeader(context, '1', l10n.patient, Icons.person, true),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.searchByDNI,
-                          controller: dniSearchController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.password,
-                          prefixIcon: const Icon(Icons.search),
-                          counterText: "",
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton.filled(
-                        icon: viewModel.searching
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Icon(Icons.search),
-                        onPressed: viewModel.searching
-                            ? null
-                            : () => viewModel.searchPatientByDNI(
-                                  dniSearchController.text,
-                                ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Resultado de búsqueda
-                  if (viewModel.foundPatient != null)
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withValues(alpha: 0.1),
-                        border: Border.all(color: Colors.green),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
+                  
+                  Card(
+                    elevation: 0,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
                         children: [
-                          const Icon(Icons.check_circle, color: Colors.green),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _getPatientName(viewModel.foundPatient!),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  _getPatientInfo(viewModel.foundPatient!, l10n),
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  else if (dniSearchController.text.isNotEmpty)
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.orange.withValues(alpha: 0.1),
-                        border: Border.all(color: Colors.orange),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.warning, color: Colors.orange),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              l10n.patientNotFoundCreateFirst,
-                              style: const TextStyle(fontSize: 13),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 16),
-
-                  // Exámenes
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FilledButton.tonalIcon(
-                        onPressed: () => _showExamSelector(context, l10n),
-                        icon: const Icon(Icons.add, size: 18),
-                        label: Text(l10n.addExam),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Lista de exámenes
-                  if (viewModel.selectedExams.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          l10n.noExamsSelected,
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                      ),
-                    )
-                  else
-                    ...viewModel.selectedExams.map((exam) {
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: ListTile(
-                          dense: true,
-                          leading: const Icon(Icons.science, size: 20),
-                          title: Text(
-                            exam.template?.name ?? '',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          subtitle: Text(
-                            exam.template?.description ?? '',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
+                          Row(
                             children: [
-                              Text(
-                                '\$${exam.baseCost.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
+                              Expanded(
+                                child: CustomTextFormField(
+                                  labelText: l10n.searchByDNI,
+                                  controller: dniSearchController,
+                                  isDense: true,
+                                  fieldLength: FormFieldLength.password,
+                                  prefixIcon: const Icon(Icons.search),
+                                  counterText: "",
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              IconButton(
-                                icon: const Icon(Icons.delete, size: 20),
-                                color: Colors.red,
-                                onPressed: () => viewModel.removeExam(exam.id),
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
+                              IconButton.filled(
+                                icon: viewModel.searching
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(strokeWidth: 2),
+                                      )
+                                    : const Icon(Icons.search),
+                                onPressed: viewModel.searching
+                                    ? null
+                                    : () => viewModel.searchPatientByDNI(
+                                          dniSearchController.text,
+                                        ),
                               ),
                             ],
                           ),
-                        ),
-                      );
-                    }),
-
-                  const SizedBox(height: 16),
-
-                  // Total
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${l10n.totalAmount}:',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          viewModel.formattedTotal,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                          
+                          if (viewModel.foundPatient != null) ...[
+                            const SizedBox(height: 12),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.green.withValues(alpha: 0.1),
+                                border: Border.all(color: Colors.green),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.check_circle, color: Colors.green),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _getPatientName(viewModel.foundPatient!),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          _getPatientInfo(viewModel.foundPatient!, l10n),
+                                          style: Theme.of(context).textTheme.bodySmall,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ] else if (dniSearchController.text.isNotEmpty) ...[
+                            const SizedBox(height: 12),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withValues(alpha: 0.1),
+                                border: Border.all(color: Colors.orange),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.warning, color: Colors.orange),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      l10n.patientNotFoundCreateFirst,
+                                      style: const TextStyle(fontSize: 13),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
+
+                  // PASO 2: Seleccionar Exámenes
+                  _buildStepHeader(context, '2', l10n.selectExams, Icons.science, true),
+                  const SizedBox(height: 12),
+                  
+                  Card(
+                    elevation: 0,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          FilledButton.tonalIcon(
+                            onPressed: () => _showExamSelector(context, l10n),
+                            icon: const Icon(Icons.add, size: 18),
+                            label: Text(l10n.addExam),
+                            style: FilledButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 12),
+                          
+                          if (viewModel.selectedExams.isEmpty)
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  l10n.noExamsSelected,
+                                  style: TextStyle(color: Colors.grey[600]),
+                                ),
+                              ),
+                            )
+                          else
+                            ...viewModel.selectedExams.map((exam) {
+                              return Card(
+                                margin: const EdgeInsets.only(bottom: 8),
+                                child: ListTile(
+                                  dense: true,
+                                  leading: const Icon(Icons.science, size: 20),
+                                  title: Text(
+                                    exam.template?.name ?? '',
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                  subtitle: Text(
+                                    exam.template?.description ?? '',
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        '\$${exam.baseCost.toStringAsFixed(2)}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete, size: 20),
+                                        color: Colors.red,
+                                        onPressed: () => viewModel.removeExam(exam.id),
+                                        padding: EdgeInsets.zero,
+                                        constraints: const BoxConstraints(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          
+                          if (viewModel.selectedExams.isNotEmpty) ...[
+                            const SizedBox(height: 12),
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primaryContainer,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${l10n.totalAmount}:',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    viewModel.formattedTotal,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            const Divider(height: 1),
+                            const SizedBox(height: 16),
+                            
+                            // Tipo de Factura
+                            DropdownButtonFormField<InvoiceKind>(
+                              value: selectedInvoiceKind ?? InvoiceKind.iNVOICE,
+                              decoration: InputDecoration(
+                                labelText: l10n.invoiceType,
+                                isDense: true,
+                                border: const OutlineInputBorder(),
+                              ),
+                              items: InvoiceKind.values.map((InvoiceKind kind) {
+                                return DropdownMenuItem<InvoiceKind>(
+                                  value: kind,
+                                  child: Text(getInvoiceKindLabel(context, kind)),
+                                );
+                              }).toList(),
+                              onChanged: (InvoiceKind? newValue) {
+                                setState(() {
+                                  selectedInvoiceKind = newValue;
+                                  viewModel.invoiceInput.kind = newValue ?? InvoiceKind.iNVOICE;
+                                });
+                              },
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // PASO 3: Información de Facturación
+                  _buildStepHeader(context, '3', l10n.billToInformation, Icons.receipt, true),
+                  const SizedBox(height: 12),
+                  
+                  Card(
+                    elevation: 0,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                l10n.personForBilling,
+                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextButton.icon(
+                                icon: Icon(
+                                  showPersonForm ? Icons.expand_less : Icons.expand_more,
+                                  size: 20,
+                                ),
+                                label: Text(showPersonForm ? 'Ocultar' : 'Mostrar'),
+                                onPressed: () {
+                                  setState(() {
+                                    showPersonForm = !showPersonForm;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          
+                          if (!showPersonForm) ...[
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withValues(alpha: 0.05),
+                                border: Border.all(
+                                  color: Colors.blue.withValues(alpha: 0.3),
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.info_outline, color: Colors.blue, size: 20),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      'Haga clic en "Mostrar" para ingresar los datos de facturación',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.blue[700],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                          
+                          if (showPersonForm) ...[
+                            const SizedBox(height: 16),
+                            const Divider(height: 1),
+                            const SizedBox(height: 16),
+                            
+                            // Nombre y Apellido en la misma fila
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    labelText: l10n.firstName,
+                                    controller: firstNameController,
+                                    isDense: true,
+                                    fieldLength: FormFieldLength.name,
+                                    counterText: "",
+                                    onChange: (value) => viewModel.personInput.firstName = value,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    labelText: l10n.lastName,
+                                    controller: lastNameController,
+                                    isDense: true,
+                                    fieldLength: FormFieldLength.name,
+                                    counterText: "",
+                                    onChange: (value) => viewModel.personInput.lastName = value,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            // DNI y Teléfono en la misma fila
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    labelText: l10n.dni,
+                                    controller: dniPersonController,
+                                    isDense: true,
+                                    fieldLength: FormFieldLength.password,
+                                    counterText: "",
+                                    onChange: (value) => viewModel.personInput.dni = value,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    labelText: '${l10n.phone} (${l10n.optional})',
+                                    controller: phoneController,
+                                    isDense: true,
+                                    fieldLength: FormFieldLength.password,
+                                    counterText: "",
+                                    onChange: (value) => viewModel.personInput.phone = value,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            // Email
+                            CustomTextFormField(
+                              labelText: '${l10n.email} (${l10n.optional})',
+                              controller: emailController,
+                              isDense: true,
+                              fieldLength: FormFieldLength.email,
+                              counterText: "",
+                              onChange: (value) => viewModel.personInput.email = value,
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            // Dirección
+                            CustomTextFormField(
+                              labelText: '${l10n.address} (${l10n.optional})',
+                              controller: addressController,
+                              isDense: true,
+                              fieldLength: FormFieldLength.name,
+                              counterText: "",
+                              onChange: (value) => viewModel.personInput.address = value,
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            // Fecha de nacimiento y Sexo en la misma fila
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    labelText: '${l10n.birthDate} (${l10n.optional})',
+                                    controller: birthDateController,
+                                    isDense: true,
+                                    fieldLength: FormFieldLength.password,
+                                    counterText: "",
+                                    readOnly: true,
+                                    suffixIcon: const Icon(Icons.calendar_today, size: 18),
+                                    onTap: () async {
+                                      final date = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1900),
+                                        lastDate: DateTime.now(),
+                                      );
+                                      if (date != null) {
+                                        // Formato dd/mm/yyyy hh:mm requerido por el servidor
+                                        final formattedDate = '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} 00:00';
+                                        birthDateController.text = formattedDate;
+                                        viewModel.personInput.birthDate = formattedDate;
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: DropdownButtonFormField<Sex>(
+                                    value: selectedSex,
+                                    decoration: InputDecoration(
+                                      labelText: '${l10n.sex} (${l10n.optional})',
+                                      isDense: true,
+                                      border: const OutlineInputBorder(),
+                                    ),
+                                    items: Sex.values.map((Sex sex) {
+                                      return DropdownMenuItem<Sex>(
+                                        value: sex,
+                                        child: Text(getSexLabel(context, sex)),
+                                      );
+                                    }).toList(),
+                                    onChanged: (Sex? newValue) {
+                                      setState(() {
+                                        selectedSex = newValue;
+                                        viewModel.personInput.sex = newValue;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
 
                   // Referido (opcional)
-                  CustomTextFormField(
-                    labelText: '${l10n.referred} (${l10n.optional})',
-                    controller: referredController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.name,
-                    counterText: "",
-                    onChange: (value) => viewModel.invoiceInput.referred = value,
-                  ),
+                  _buildStepHeader(context, '4', l10n.referred, Icons.medical_services, false),
+                  const SizedBox(height: 12),
                   
-                  const SizedBox(height: 16),
-                  
-                  // Tipo de Factura (REQUERIDO)
-                  DropdownButtonFormField<InvoiceKind>(
-                    value: selectedInvoiceKind ?? InvoiceKind.iNVOICE,
-                    decoration: InputDecoration(
-                      labelText: l10n.invoiceType,
-                      isDense: true,
-                      border: const OutlineInputBorder(),
+                  Card(
+                    elevation: 0,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: CustomTextFormField(
+                        labelText: '${l10n.referred} (${l10n.optional})',
+                        controller: referredController,
+                        isDense: true,
+                        fieldLength: FormFieldLength.name,
+                        counterText: "",
+                        prefixIcon: const Icon(Icons.medical_services, size: 20),
+                        onChange: (value) => viewModel.invoiceInput.referred = value,
+                      ),
                     ),
-                    items: InvoiceKind.values.map((InvoiceKind kind) {
-                      return DropdownMenuItem<InvoiceKind>(
-                        value: kind,
-                        child: Text(getInvoiceKindLabel(context, kind)),
-                      );
-                    }).toList(),
-                    onChanged: (InvoiceKind? newValue) {
-                      setState(() {
-                        selectedInvoiceKind = newValue;
-                        viewModel.invoiceInput.kind = newValue ?? InvoiceKind.iNVOICE;
-                      });
-                    },
                   ),
                 ],
               ),
@@ -366,6 +658,22 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(l10n.noExamsSelected)),
                               );
+                              return;
+                            }
+                            
+                            // Validar que se hayan llenado los datos de Person
+                            if (viewModel.personInput.firstName.isEmpty ||
+                                viewModel.personInput.lastName.isEmpty ||
+                                viewModel.personInput.dni.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('${l10n.billToInformation}: ${l10n.firstName}, ${l10n.lastName} y ${l10n.dni} son requeridos'),
+                                  backgroundColor: Colors.orange,
+                                ),
+                              );
+                              setState(() {
+                                showPersonForm = true;
+                              });
                               return;
                             }
 
