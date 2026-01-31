@@ -28,14 +28,7 @@ extension EdgePatientFieldsBuilderExtension on EdgePatientFieldsBuilder {
                   ..lastName(alias: 'animalLastName')
                   ..sex(alias: 'animalSex')
                   ..species()
-                  ..birthDate()
-                  ..owner(builder: (ownerBuilder) {
-                    ownerBuilder
-                      ..firstName()
-                      ..lastName()
-                      ..phone()
-                      ..email();
-                  });
+                  ..birthDate();
               },
             )
             ..created()
