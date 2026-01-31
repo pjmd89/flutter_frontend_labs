@@ -151,6 +151,29 @@ class InvoiceItem extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               
+              // Bill To (Pagador)
+              if (invoice.billTo != null) ...[
+                Row(
+                  children: [
+                    Icon(Icons.person, size: 16, color: theme.colorScheme.primary),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${l10n.billTo}: ',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '${invoice.billTo!.firstName} ${invoice.billTo!.lastName}',
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+              ],
+              
               // Laboratory
               Row(
                 children: [

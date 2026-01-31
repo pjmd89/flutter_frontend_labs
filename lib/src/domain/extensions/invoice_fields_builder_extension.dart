@@ -38,6 +38,15 @@ extension InvoiceFieldsBuilderExtension on InvoiceFieldsBuilder {
       ..orderID()
       ..paymentStatus()
       ..kind()
+      ..billTo(
+        builder: (billToBuilder) {
+          billToBuilder
+            ..firstName()
+            ..lastName()
+            ..dni()
+            ..address();
+        },
+      )
       ..laboratory(
         builder: (laboratoryBuilder) {
           laboratoryBuilder

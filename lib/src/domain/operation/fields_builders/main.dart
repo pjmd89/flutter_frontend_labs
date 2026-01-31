@@ -32,3 +32,4 @@ export './edgeevaluationpackage_fields_builder.dart';
 export './edgelabmembershipinfo_fields_builder.dart';
 export './labmembershipinfo_fields_builder.dart';
 export './bioanalystreview_fields_builder.dart';
+export './responsibleparty_fields_builder.dart';
