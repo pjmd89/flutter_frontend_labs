@@ -101,6 +101,7 @@ class ViewModel extends ChangeNotifier {
           // Prellenar input según el tipo de paciente
           if (_currentPatient!.isPerson) {
             // Prellenar inputPerson para pacientes humanos
+            final person = _currentPatient!.asPerson!;
             inputPerson.id = _currentPatient!.id;
             inputPerson.firstName = firstName;
             inputPerson.lastName = lastName;
@@ -108,16 +109,46 @@ class ViewModel extends ChangeNotifier {
             inputPerson.phone = phone.isNotEmpty ? phone : null;
             inputPerson.email = email.isNotEmpty ? email : null;
             inputPerson.address = address.isNotEmpty ? address : null;
-            // ✅ NO asignar birthDate aquí - solo se asignará si el usuario la modifica
+            
+            // ✅ Prellenar birthDate en formato DD/MM/YYYY HH:MM si existe
+            if (person.birthDate != null && person.birthDate! > 0) {
+              try {
+                final date = DateTime.fromMillisecondsSinceEpoch(person.birthDate! * 1000);
+                final day = date.day.toString().padLeft(2, '0');
+                final month = date.month.toString().padLeft(2, '0');
+                final year = date.year.toString();
+                inputPerson.birthDate = '$day/$month/$year 00:00';
+                debugPrint('✅ birthDate prellenado: ${inputPerson.birthDate}');
+              } catch (e) {
+                debugPrint('⚠️ Error formateando birthDate para inputPerson: $e');
+              }
+            }
           } else if (_currentPatient!.isAnimal) {
             // Prellenar inputPatient para pacientes animales
+            final animal = _currentPatient!.asAnimal!;
             inputPatient.id = _currentPatient!.id;
+            
+            // ✅ Prellenar birthDate en formato DD/MM/YYYY HH:MM si existe
+            String? formattedBirthDate;
+            if (animal.birthDate != null && animal.birthDate! > 0) {
+              try {
+                final date = DateTime.fromMillisecondsSinceEpoch(animal.birthDate! * 1000);
+                final day = date.day.toString().padLeft(2, '0');
+                final month = date.month.toString().padLeft(2, '0');
+                final year = date.year.toString();
+                formattedBirthDate = '$day/$month/$year 00:00';
+                debugPrint('✅ birthDate prellenado: $formattedBirthDate');
+              } catch (e) {
+                debugPrint('⚠️ Error formateando birthDate para inputPatient: $e');
+              }
+            }
+            
             // Para animals, usamos animalData
             inputPatient.animalData = UpdateAnimalPatientInput(
               firstName: firstName,
               lastName: lastName,
+              birthDate: formattedBirthDate,
             );
-            // ✅ NO asignar birthDate aquí - solo se asignará si el usuario la modifica
           }
         } else {
           debugPrint('⚠️ No se encontró paciente con ID: $id en la lista');
