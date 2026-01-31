@@ -12,6 +12,7 @@ extension EdgePatientFieldsBuilderExtension on EdgePatientFieldsBuilder {
               // Inline fragment para Person
               personBuilder: (personBuilder) {
                 personBuilder
+                  ..id() // ✅ CRÍTICO: Necesario para updatePerson
                   ..firstName(alias: 'personFirstName')
                   ..lastName(alias: 'personLastName')
                   ..sex(alias: 'personSex')

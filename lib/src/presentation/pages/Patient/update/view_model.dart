@@ -102,7 +102,9 @@ class ViewModel extends ChangeNotifier {
           if (_currentPatient!.isPerson) {
             // Prellenar inputPerson para pacientes humanos
             final person = _currentPatient!.asPerson!;
-            inputPerson.id = _currentPatient!.id;
+            debugPrint('🔍 Person.id: "${person.id}"');
+            debugPrint('🔍 Patient.id: "${_currentPatient!.id}"');
+            inputPerson.id = person.id; // ✅ Usar el ID de Person, no el ID de Patient
             inputPerson.firstName = firstName;
             inputPerson.lastName = lastName;
             inputPerson.dni = dni.isNotEmpty ? dni : null;
@@ -111,9 +113,9 @@ class ViewModel extends ChangeNotifier {
             inputPerson.address = address.isNotEmpty ? address : null;
             
             // ✅ Prellenar birthDate en formato DD/MM/YYYY HH:MM si existe
-            if (person.birthDate != null && person.birthDate! > 0) {
+            if (person.birthDate > 0) {
               try {
-                final date = DateTime.fromMillisecondsSinceEpoch(person.birthDate! * 1000);
+                final date = DateTime.fromMillisecondsSinceEpoch(person.birthDate * 1000);
                 final day = date.day.toString().padLeft(2, '0');
                 final month = date.month.toString().padLeft(2, '0');
                 final year = date.year.toString();
@@ -126,13 +128,13 @@ class ViewModel extends ChangeNotifier {
           } else if (_currentPatient!.isAnimal) {
             // Prellenar inputPatient para pacientes animales
             final animal = _currentPatient!.asAnimal!;
-            inputPatient.id = _currentPatient!.id;
+            inputPatient.id = _currentPatient!.id; // ✅ Usar el ID de Patient (Animal no tiene id propio)
             
             // ✅ Prellenar birthDate en formato DD/MM/YYYY HH:MM si existe
             String? formattedBirthDate;
-            if (animal.birthDate != null && animal.birthDate! > 0) {
+            if (animal.birthDate > 0) {
               try {
-                final date = DateTime.fromMillisecondsSinceEpoch(animal.birthDate! * 1000);
+                final date = DateTime.fromMillisecondsSinceEpoch(animal.birthDate * 1000);
                 final day = date.day.toString().padLeft(2, '0');
                 final month = date.month.toString().padLeft(2, '0');
                 final year = date.year.toString();
