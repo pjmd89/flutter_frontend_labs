@@ -39,13 +39,6 @@ class ViewModel extends ChangeNotifier {
   }
 
   setLoginUser(LoggedUser loggedUser) async{
-    final authNotifier = _context.read<AuthNotifier>();
-    await authNotifier.signIn(
-      user: loggedUser.user!,
-      userIsLabOwner: loggedUser.userIsLabOwner,
-      labRole: loggedUser.labRole,
-    );
-    
     final laboratoryNotifier = _context.read<LaboratoryNotifier>();
     Laboratory? laboratoryToSelect;
     
@@ -76,7 +69,8 @@ class ViewModel extends ChangeNotifier {
       }
     }
     
-    // Ejecutar la mutación setCurrentLaboratory con el laboratorio seleccionado
+    // Ejecutar la mutación setCurrentLaboratory con el laboratorio seleccionado PRIMERO
+    LoggedUser? updatedLoggedUser;
     if (laboratoryToSelect != null) {
       try {
         debugPrint('🚀 Ejecutando setCurrentLaboratory con: ${laboratoryToSelect.company?.name}');
@@ -85,14 +79,28 @@ class ViewModel extends ChangeNotifier {
           _context,
           shouldNavigate: false,
         );
+        
+        // Obtener el LoggedUser actualizado desde el laboratoryNotifier
+        updatedLoggedUser = laboratoryNotifier.loggedUser;
         debugPrint('✅ Laboratorio seleccionado y mutación ejecutada exitosamente');
+        debugPrint('   LabRole actualizado: ${updatedLoggedUser?.labRole}');
+        debugPrint('   UserIsLabOwner actualizado: ${updatedLoggedUser?.userIsLabOwner}');
       } catch (e, stackTrace) {
         debugPrint('💥 Error ejecutando setCurrentLaboratory después del login: $e');
         debugPrint('📍 StackTrace: $stackTrace');
       }
-    } else {
-      debugPrint('❌ No hay laboratorio disponible para seleccionar');
     }
+    
+    // Ahora hacer signIn con los datos actualizados (si tenemos updatedLoggedUser, usarlo)
+    final finalLoggedUser = updatedLoggedUser ?? loggedUser;
+    final authNotifier = _context.read<AuthNotifier>();
+    await authNotifier.signIn(
+      user: finalLoggedUser.user!,
+      userIsLabOwner: finalLoggedUser.userIsLabOwner,
+      labRole: finalLoggedUser.labRole,
+    );
+    
+    debugPrint('✅ SignIn completado con labRole: ${finalLoggedUser.labRole}');
   }
   Future<LoggedUser?> loggedUser() async {
     loading = true;

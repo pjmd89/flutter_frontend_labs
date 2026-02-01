@@ -14,7 +14,13 @@ extension LoggedUserDefaultBuilder on LoggedUserFieldsBuilder {
       ..currentLaboratory(builder: (labBuilder) {
         labBuilder
           ..id()
-          ..address();
+          ..address()
+          ..company(builder: (companyBuilder) {
+            companyBuilder
+              ..id()
+              ..name();
+          
+          });
       })
       ..labRole()
       ..userIsLabOwner();

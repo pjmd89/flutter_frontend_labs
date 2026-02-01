@@ -50,13 +50,16 @@ class _AuthCallbackPageState extends State<AuthCallbackPage> {
     }
   }
 
-  void _scheduleRedirect(LoggedUser loggedUser) {
+  void _scheduleRedirect(LoggedUser loggedUser) async {
     final router = GoRouter.of(context);
-    Future.delayed(const Duration(seconds: 2), () {
-      if (!mounted) return;
-      viewModel.setLoginUser(loggedUser);
-      router.go('/home');
-    });
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+    
+    // Esperar a que setLoginUser complete toda la configuración (incluye setCurrentLaboratory)
+    await viewModel.setLoginUser(loggedUser);
+    
+    if (!mounted) return;
+    router.go('/home');
   }
 
   @override
