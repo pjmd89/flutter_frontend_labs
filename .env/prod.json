@@ -1,5 +1,5 @@
 {
-    "env":"dev",
+    "env":"prod",
     "mobileApiURL":"https://api.app.labs.allsoftwaretech.com/",
     "webApiURL":"https://api.app.labs.allsoftwaretech.com/graphql",
     "desktopApiURL":"https://api.app.labs.allsoftwaretech.com/",
