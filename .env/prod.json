@@ -1,9 +1,13 @@
 {
-    "env":"prod",
-    "mobileApiURL":"https://localhost:8443/",
-    "webApiURL":"https://localhost:8443/",
-    "desktopApiURL":"https://localhost:8443/",
-    "mobileWsURL":"https://localhost:8443/ws/",
-    "webWsURL":"https://localhost:8443/ws/",
-    "desktopWsURL":"https://localhost:8443/ws/"
+    "env":"dev",
+    "mobileApiURL":"https://api.app.labs.allsoftwaretech.com/",
+    "webApiURL":"https://api.app.labs.allsoftwaretech.com/graphql",
+    "desktopApiURL":"https://api.app.labs.allsoftwaretech.com/",
+    "mobileWsURL":"https://api.app.labs.allsoftwaretech.com/ws/",
+    "webWsURL":"https://api.app.labs.allsoftwaretech.com/ws/",
+    "desktopWsURL":"https://api.app.labs.allsoftwaretech.com/ws/",
+    "mobileAuthURL":"https://api.app.labs.allsoftwaretech.com/auth/google",
+    "webAuthURL":"https://api.app.labs.allsoftwaretech.com/auth/google",
+    "desktopAuthURL":"https://api.app.labs.allsoftwaretech.com/auth/google",
+    "webAuthCallbackPath":"https://api.app.labs.allsoftwaretech.com/auth/google/callback"
 }
