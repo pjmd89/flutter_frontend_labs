@@ -29,6 +29,7 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
   late TextEditingController taxIDController;
 
   bool _controllersInitialized = false;
+  bool _viewModelInitialized = false;
 
   @override
   void initState() {
@@ -38,10 +39,20 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    viewModel = ViewModel(context: context, companyId: widget.id);
-
-    // Escuchar cambios del ViewModel para inicializar controllers
-    viewModel.addListener(_updateControllers);
+    
+    // Solo inicializar el ViewModel una vez
+    if (!_viewModelInitialized) {
+      viewModel = ViewModel(context: context, companyId: widget.id);
+      viewModel.addListener(_updateControllers);
+      _viewModelInitialized = true;
+    } else if (_controllersInitialized) {
+      // Si el ViewModel ya está inicializado y los controllers también,
+      // forzar actualización cuando cambie el idioma
+      setState(() {
+        // Actualizar logoController porque displayFileName usa l10n
+        logoController.text = viewModel.displayFileName ?? '';
+      });
+    }
   }
 
   void _updateControllers() {
@@ -54,7 +65,7 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
           text: viewModel.currentCompany!.name,
         );
         logoController = TextEditingController(
-          text: viewModel.currentCompany!.logo,
+          text: viewModel.displayFileName ?? '',
         );
         taxIDController = TextEditingController(
           text: viewModel.currentCompany!.taxID,
@@ -73,6 +84,39 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
       taxIDController.dispose();
     }
     super.dispose();
+  }
+
+  String formatTimestamp(num timestamp) {
+    try {
+      // Convertir timestamp Unix (segundos o milisegundos) a DateTime
+      final date = timestamp > 9999999999 
+        ? DateTime.fromMillisecondsSinceEpoch(timestamp.toInt())
+        : DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000);
+      
+      // Obtener l10n actual del context
+      final l10n = AppLocalizations.of(context)!;
+      
+      // Obtener mes traducido según el idioma actual
+      final months = [
+        l10n.january, l10n.february, l10n.march, l10n.april, 
+        l10n.may, l10n.june, l10n.july, l10n.august, 
+        l10n.september, l10n.october, l10n.november, l10n.december
+      ];
+      
+      // Detectar idioma actual
+      final locale = Localizations.localeOf(context).languageCode;
+      
+      // Formatear según el idioma
+      if (locale == 'es') {
+        // Español: "27 de enero de 2026"
+        return '${date.day} de ${months[date.month - 1]} de ${date.year}';
+      } else {
+        // Inglés: "January 27, 2026"
+        return '${months[date.month - 1]} ${date.day}, ${date.year}';
+      }
+    } catch (e) {
+      return timestamp.toString();
+    }
   }
 
   Future<void> _pickAndUploadLogo(BuildContext context) async {
@@ -283,8 +327,8 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                               : const Icon(Icons.upload_file),
                           label: Text(
                             viewModel.uploading
-                                ? 'Subiendo...'
-                                : 'Subir',
+                                ? l10n.uploading
+                                : l10n.upload,
                           ),
                         ),
                       ),
@@ -323,8 +367,8 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                               children: [
                                 Text(
                                   viewModel.logoImageBytes != null
-                                      ? 'Logo seleccionado'
-                                      : 'Logo actual',
+                                      ? l10n.logoSelected
+                                      : l10n.currentLogo,
                                   style: TextStyle(
                                     color: Theme.of(
                                       context,
@@ -379,7 +423,7 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Información no editable',
+                              l10n.nonEditableInformation,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                             const SizedBox(height: 12),
@@ -389,10 +433,8 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                             ),
                             const SizedBox(height: 8),
                             _buildReadOnlyField(
-                              'Fecha de creación',
-                              DateTime.fromMillisecondsSinceEpoch(
-                                viewModel.currentCompany!.created,
-                              ).toString().split('.')[0],
+                              l10n.creationDate,
+                              formatTimestamp(viewModel.currentCompany!.created),
                             ),
                           ],
                         ),

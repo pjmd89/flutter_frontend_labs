@@ -386,7 +386,7 @@ class _PatientUpdatePageState extends State<PatientUpdatePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Información no editable',
+                            l10n.nonEditableInformation,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                           const SizedBox(height: 12),

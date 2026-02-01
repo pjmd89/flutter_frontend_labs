@@ -28,6 +28,7 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
   Role? selectedRole;
   
   bool _controllersInitialized = false;
+  bool _viewModelInitialized = false;
 
   @override
   void initState() {
@@ -37,28 +38,40 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    debugPrint('\n🎯 ========== didChangeDependencies LLAMADO ==========');
-    debugPrint('🎯 widget.id: "${widget.id}"');
-    debugPrint('🎯 widget.user != null: ${widget.user != null}');
     
-    if (widget.user != null) {
-      debugPrint('✅ Usuario pasado directamente (Opción A)');
-      debugPrint('   - ID: ${widget.user!.id}');
-      debugPrint('   - Nombre: ${widget.user!.firstName} ${widget.user!.lastName}');
-      viewModel = ViewModel(context: context, user: widget.user!);
+    // Solo inicializar el ViewModel una vez
+    if (!_viewModelInitialized) {
+      debugPrint('\n🎯 ========== didChangeDependencies LLAMADO ==========');
+      debugPrint('🎯 widget.id: "${widget.id}"');
+      debugPrint('🎯 widget.user != null: ${widget.user != null}');
       
-      // ✅ Como los datos ya están disponibles, inicializar controllers inmediatamente
-      debugPrint('\n🎮 Inicializando controllers inmediatamente (Opción A)');
-      _initializeControllers();
-    } else {
-      debugPrint('⚠️ Solo ID disponible, cargando desde servidor (Opción B)');
-      viewModel = ViewModel(context: context, userId: widget.id);
+      if (widget.user != null) {
+        debugPrint('✅ Usuario pasado directamente (Opción A)');
+        debugPrint('   - ID: ${widget.user!.id}');
+        debugPrint('   - Nombre: ${widget.user!.firstName} ${widget.user!.lastName}');
+        viewModel = ViewModel(context: context, user: widget.user!);
+        
+        // ✅ Como los datos ya están disponibles, inicializar controllers inmediatamente
+        debugPrint('\n🎮 Inicializando controllers inmediatamente (Opción A)');
+        _initializeControllers();
+      } else {
+        debugPrint('⚠️ Solo ID disponible, cargando desde servidor (Opción B)');
+        viewModel = ViewModel(context: context, userId: widget.id);
+      }
+      
+      // Escuchar cambios del ViewModel para inicializar controllers (para Opción B)
+      viewModel.addListener(_updateControllers);
+      debugPrint('🎯 ViewModel creado y listener agregado');
+      debugPrint('========================================\n');
+      
+      _viewModelInitialized = true;
+    } else if (_controllersInitialized) {
+      // Si el ViewModel ya está inicializado y los controllers también,
+      // forzar actualización cuando cambie el idioma
+      setState(() {
+        // Esto forzará que formatTimestamp se ejecute de nuevo con el nuevo idioma
+      });
     }
-    
-    // Escuchar cambios del ViewModel para inicializar controllers (para Opción B)
-    viewModel.addListener(_updateControllers);
-    debugPrint('🎯 ViewModel creado y listener agregado');
-    debugPrint('========================================\n');
   }
   
   void _initializeControllers() {
@@ -133,13 +146,27 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
         ? DateTime.fromMillisecondsSinceEpoch(timestamp.toInt())
         : DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000);
       
-      // Formatear como: "27 de enero de 2026"
+      // Obtener l10n actual del context
+      final l10n = AppLocalizations.of(context)!;
+      
+      // Obtener mes traducido según el idioma actual
       final months = [
-        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+        l10n.january, l10n.february, l10n.march, l10n.april, 
+        l10n.may, l10n.june, l10n.july, l10n.august, 
+        l10n.september, l10n.october, l10n.november, l10n.december
       ];
       
-      return '${date.day} de ${months[date.month - 1]} de ${date.year}';
+      // Detectar idioma actual
+      final locale = Localizations.localeOf(context).languageCode;
+      
+      // Formatear según el idioma
+      if (locale == 'es') {
+        // Español: "27 de enero de 2026"
+        return '${date.day} de ${months[date.month - 1]} de ${date.year}';
+      } else {
+        // Inglés: "January 27, 2026"
+        return '${months[date.month - 1]} ${date.day}, ${date.year}';
+      }
     } catch (e) {
       return timestamp.toString();
     }
@@ -254,7 +281,7 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Información no editable',
+                            l10n.nonEditableInformation,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                           const SizedBox(height: 12),

@@ -435,6 +435,54 @@
     "description": "Logotipo de la empresa"
   },
   
+  "companyLogoFileName": "logo_empresa",
+  "@companyLogoFileName": {
+    "description": "Nombre genérico para archivo de logo de empresa"
+  },
+  
+  "upload": "Subir",
+  "@upload": {
+    "description": "Botón para subir archivo"
+  },
+  
+  "uploading": "Subiendo...",
+  "@uploading": {
+    "description": "Mensaje durante la carga de archivo"
+  },
+  
+  "logoSelected": "Logo seleccionado",
+  "@logoSelected": {
+    "description": "Mensaje cuando se selecciona un nuevo logo"
+  },
+  
+  "currentLogo": "Logo actual",
+  "@currentLogo": {
+    "description": "Mensaje para logo existente"
+  },
+  
+  "nonEditableInformation": "Información no editable",
+  "@nonEditableInformation": {
+    "description": "Título de sección con campos no editables"
+  },
+  
+  "creationDate": "Fecha de creación",
+  "@creationDate": {
+    "description": "Campo de fecha de creación"
+  },
+  
+  "january": "enero",
+  "february": "febrero",
+  "march": "marzo",
+  "april": "abril",
+  "may": "mayo",
+  "june": "junio",
+  "july": "julio",
+  "august": "agosto",
+  "september": "septiembre",
+  "october": "octubre",
+  "november": "noviembre",
+  "december": "diciembre",
+  
   "owner": "Propietario",
   "@owner": {
     "description": "Propietario de la empresa"

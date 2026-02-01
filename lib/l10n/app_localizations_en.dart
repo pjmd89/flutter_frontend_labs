@@ -234,7 +234,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generalInformation => 'General Information';
 
   @override
-  String get creationDate => 'Creation Date';
+  String get creationDate => 'Creation date';
 
   @override
   String get viewPdf => 'View PDF';
@@ -307,6 +307,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logo => 'Logo';
+
+  @override
+  String get companyLogoFileName => 'company_logo';
+
+  @override
+  String get upload => 'Upload';
+
+  @override
+  String get uploading => 'Uploading...';
+
+  @override
+  String get logoSelected => 'Logo selected';
+
+  @override
+  String get currentLogo => 'Current logo';
+
+  @override
+  String get nonEditableInformation => 'Non-editable information';
+
+  @override
+  String get january => 'January';
+
+  @override
+  String get february => 'February';
+
+  @override
+  String get march => 'March';
+
+  @override
+  String get april => 'April';
+
+  @override
+  String get may => 'May';
+
+  @override
+  String get june => 'June';
+
+  @override
+  String get july => 'July';
+
+  @override
+  String get august => 'August';
+
+  @override
+  String get september => 'September';
+
+  @override
+  String get october => 'October';
+
+  @override
+  String get november => 'November';
+
+  @override
+  String get december => 'December';
 
   @override
   String get owner => 'Owner';
@@ -880,9 +934,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permissionDenied => 'You do not have permission to perform this action';
-
-  @override
-  String get nonEditableInformation => 'Non-editable information';
 
   @override
   String get allResultsCompleted => 'All results completed';
