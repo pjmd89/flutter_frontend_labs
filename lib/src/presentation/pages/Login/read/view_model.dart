@@ -47,9 +47,11 @@ class ViewModel extends ChangeNotifier {
       laboratoryToSelect = loggedUser.currentLaboratory;
       debugPrint('📌 LoggedUser tiene currentLaboratory: ${laboratoryToSelect!.company?.name}');
     } else {
-      // Si NO tiene currentLaboratory, obtener el primer laboratorio disponible
-      debugPrint('⚠️ LoggedUser NO tiene currentLaboratory - obteniendo primer laboratorio disponible');
+      // Si NO tiene currentLaboratory, obtener laboratorios según el rol del usuario
+      debugPrint('⚠️ LoggedUser NO tiene currentLaboratory - obteniendo laboratorios disponibles');
       try {
+        // readWithoutPaginate() del backend ya filtra automáticamente por membresía del usuario
+        // Solo retorna los laboratorios donde el usuario autenticado es miembro
         final laboratoriesResponse = await ReadLaboratoryUsecase(
           operation: GetLaboratoriesQuery(
             builder: EdgeLaboratoryFieldsBuilder().defaultValues(),
@@ -60,8 +62,9 @@ class ViewModel extends ChangeNotifier {
         if (laboratoriesResponse is EdgeLaboratory && laboratoriesResponse.edges.isNotEmpty) {
           laboratoryToSelect = laboratoriesResponse.edges.first;
           debugPrint('✅ Primer laboratorio obtenido: ${laboratoryToSelect.company?.name}');
+          debugPrint('   Total laboratorios del usuario: ${laboratoriesResponse.edges.length}');
         } else {
-          debugPrint('❌ No se encontraron laboratorios disponibles');
+          debugPrint('❌ No se encontraron laboratorios disponibles para este usuario');
         }
       } catch (e, stackTrace) {
         debugPrint('💥 Error obteniendo laboratorios: $e');
