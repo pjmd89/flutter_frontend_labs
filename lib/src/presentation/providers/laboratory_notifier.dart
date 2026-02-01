@@ -51,11 +51,13 @@ class LaboratoryNotifier extends ChangeNotifier {
   /// Parámetros:
   /// - [laboratory]: El laboratorio a seleccionar
   /// - [context]: BuildContext para acceder a providers y detectar la ruta actual
+  /// - [shouldNavigate]: Si es true, navegará a la ruta según el labRole (default: true)
   /// - [onLaboratoryChanged]: Callback opcional que se ejecuta después de cambiar el laboratorio
   ///   Si no se proporciona, se intentará refrescar automáticamente según la ruta actual
   Future<void> selectLaboratory(
     Laboratory laboratory, 
     BuildContext context, {
+    bool shouldNavigate = true,
     Future<void> Function()? onLaboratoryChanged,
   }) async {
     _selectedLaboratory = laboratory;
@@ -100,8 +102,8 @@ class LaboratoryNotifier extends ChangeNotifier {
           debugPrint('   LabRole: ${loggedUser.labRole}');
           debugPrint('   UserIsLabOwner: ${loggedUser.userIsLabOwner}');
           
-          // Navegar a la ruta inicial correspondiente según el labRole
-          if (context.mounted) {
+          // Navegar a la ruta inicial correspondiente según el labRole (solo si shouldNavigate es true)
+          if (shouldNavigate && context.mounted) {
             String initialRoute;
             switch (loggedUser.labRole) {
               case LabMemberRole.oWNER:
@@ -156,6 +158,37 @@ class LaboratoryNotifier extends ChangeNotifier {
     } catch (e) {
       if (kDebugMode) {
         debugPrint('💥 Error clearing selected laboratory: $e');
+      }
+    }
+    
+    notifyListeners();
+  }
+
+  /// Inicializar laboratorio por defecto después del login
+  /// 
+  /// Este método se usa cuando el usuario inicia sesión y el backend ya
+  /// retorna un currentLaboratory. Solo guarda el laboratorio localmente
+  /// sin ejecutar la mutación setCurrentLaboratory porque ya fue ejecutada.
+  /// 
+  /// Parámetros:
+  /// - [laboratory]: El laboratorio a establecer como seleccionado
+  /// - [loggedUser]: El LoggedUser que contiene la información del usuario y laboratorio
+  Future<void> initializeDefaultLaboratory(
+    Laboratory laboratory, 
+    LoggedUser loggedUser,
+  ) async {
+    _selectedLaboratory = laboratory;
+    _loggedUser = loggedUser;
+    
+    // Guardar en SharedPreferences
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final laboratoryJson = jsonEncode(laboratory.toJson());
+      await prefs.setString('selected_laboratory', laboratoryJson);
+      debugPrint('💾 Laboratorio guardado en SharedPreferences: ${laboratory.company?.name}');
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('💥 Error saving selected laboratory: $e');
       }
     }
     
