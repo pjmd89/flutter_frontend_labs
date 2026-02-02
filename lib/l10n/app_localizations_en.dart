@@ -315,6 +315,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upload => 'Upload';
 
   @override
+  String get changeLogo => 'Change logo';
+
+  @override
   String get uploading => 'Uploading...';
 
   @override

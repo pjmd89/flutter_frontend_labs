@@ -445,6 +445,11 @@
     "description": "Botón para subir archivo"
   },
   
+  "changeLogo": "Cambiar logo",
+  "@changeLogo": {
+    "description": "Botón para cambiar el logo existente"
+  },
+  
   "uploading": "Subiendo...",
   "@uploading": {
     "description": "Mensaje durante la carga de archivo"

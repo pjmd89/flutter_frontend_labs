@@ -276,126 +276,50 @@ class _CompanyUpdatePageState extends State<CompanyUpdatePage> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Logo URL
+                  // Botón para cambiar logo
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.logo,
-                          controller: logoController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.email,
-                          counterText: "",
-                          readOnly: true,
-                          onTap: viewModel.uploading
-                              ? null
-                              : () => _pickAndUploadLogo(context),
-                          suffixIcon: viewModel.uploading
-                              ? const Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                )
-                              : const Icon(Icons.upload_file),
-                          onChange: (value) {
-                            viewModel.input.logo = value;
-                          },
-                        ),
+                      Icon(
+                        Icons.image,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        size: 20,
                       ),
                       const SizedBox(width: 8),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: FilledButton.icon(
-                          onPressed:
-                              viewModel.uploading
-                                  ? null
-                                  : () => _pickAndUploadLogo(context),
-                          icon: viewModel.uploading
-                              ? const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Icon(Icons.upload_file),
-                          label: Text(
-                            viewModel.uploading
-                                ? l10n.uploading
-                                : l10n.upload,
+                      Expanded(
+                        child: Text(
+                          viewModel.hasLogo
+                              ? viewModel.displayFileName ?? ''
+                              : l10n.logo,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontWeight: viewModel.hasLogo ? FontWeight.normal : FontWeight.w500,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      FilledButton.icon(
+                        onPressed: viewModel.uploading
+                            ? null
+                            : () => _pickAndUploadLogo(context),
+                        icon: viewModel.uploading
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.upload_file, size: 18),
+                        label: Text(
+                          viewModel.uploading
+                              ? l10n.uploading
+                              : (viewModel.hasLogo ? l10n.changeLogo : l10n.upload),
                         ),
                       ),
                     ],
                   ),
-                  // ✅ Información del logo (sin vista previa)
-                  if (viewModel.hasLogo) ...[
-                    const SizedBox(height: 12),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.primary,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  viewModel.logoImageBytes != null
-                                      ? l10n.logoSelected
-                                      : l10n.currentLogo,
-                                  style: TextStyle(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  viewModel.displayFileName ?? '',
-                                  style: TextStyle(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                    fontSize: 12,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
                   const SizedBox(height: 16),
 
                   // Tax ID

@@ -342,6 +342,11 @@
     "description": "Button to upload file"
   },
   
+  "changeLogo": "Change logo",
+  "@changeLogo": {
+    "description": "Button to change existing logo"
+  },
+  
   "uploading": "Uploading...",
   "@uploading": {
     "description": "Message during file upload"

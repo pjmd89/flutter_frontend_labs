@@ -707,6 +707,12 @@ abstract class AppLocalizations {
   /// **'Subir'**
   String get upload;
 
+  /// Botón para cambiar el logo existente
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar logo'**
+  String get changeLogo;
+
   /// Mensaje durante la carga de archivo
   ///
   /// In es, this message translates to:

@@ -315,6 +315,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get upload => 'Subir';
 
   @override
+  String get changeLogo => 'Cambiar logo';
+
+  @override
   String get uploading => 'Subiendo...';
 
   @override
