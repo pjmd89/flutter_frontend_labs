@@ -7,10 +7,10 @@ List<DrawerButtonConfig> getRootDrawerButtonList(
   BuildContext context,
   String currentPath,
 ) {
-  //final l10n = AppLocalizations.of(context)!;
+  final l10n = AppLocalizations.of(context)!;
   return [
     DrawerButtonConfig( 
-      buttonText: "Dashboard",
+      buttonText: l10n.dashboard,
       buttonRoute: "/home",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.dashboard),

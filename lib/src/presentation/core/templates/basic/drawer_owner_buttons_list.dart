@@ -7,10 +7,10 @@ List<DrawerButtonConfig> getOwnerDrawerButtonList(
   BuildContext context,
   String currentPath,
 ) {
-  //final l10n = AppLocalizations.of(context)!;
+  final l10n = AppLocalizations.of(context)!;
   return [
     DrawerButtonConfig(
-      buttonText: "Dashboard",
+      buttonText: l10n.dashboard,
       buttonRoute: "/home",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.dashboard),
@@ -46,13 +46,13 @@ List<DrawerButtonConfig> getOwnerDrawerButtonList(
       leadingIcon: const Icon(Icons.people),
     ),
     DrawerButtonConfig(
-      buttonText: AppLocalizations.of(context)!.invoices,
+      buttonText: l10n.invoices,
       buttonRoute: "/invoice",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.receipt),
     ),
     DrawerButtonConfig(
-      buttonText: "Paquetes de evaluación",
+      buttonText: l10n.evaluationPackages,
       buttonRoute: "/evaluationpackage",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.folder_special),
