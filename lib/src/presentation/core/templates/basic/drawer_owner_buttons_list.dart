@@ -16,31 +16,31 @@ List<DrawerButtonConfig> getOwnerDrawerButtonList(
       leadingIcon: const Icon(Icons.dashboard),
     ),
     DrawerButtonConfig(
-      buttonText: "Empresas",
+      buttonText: AppLocalizations.of(context)!.companies,
       buttonRoute: "/company",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.business),
     ),
     DrawerButtonConfig(
-      buttonText: "Laboratorios",
+      buttonText: AppLocalizations.of(context)!.laboratories,
       buttonRoute: "/laboratory",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.science),
     ),
     DrawerButtonConfig(
-      buttonText: "Usuarios",
+      buttonText: AppLocalizations.of(context)!.users,
       buttonRoute: "/user",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.person),
     ),
     DrawerButtonConfig(
-      buttonText: "Lista de Exámenes",
+      buttonText: AppLocalizations.of(context)!.exam,
       buttonRoute: "/exam",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.assignment), // icono de caja embalada
     ),
     DrawerButtonConfig(
-      buttonText: "Pacientes",
+      buttonText: AppLocalizations.of(context)!.patients,
       buttonRoute: "/patient",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.people),

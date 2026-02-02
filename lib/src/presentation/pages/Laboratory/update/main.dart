@@ -96,20 +96,15 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Información no editable',
+                            l10n.nonEditableInformation,
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 12),
                           _buildReadOnlyField(
-                            'Empresa',
-                            widget.laboratory.company?.name ?? 'Sin empresa',
-                          ),
-                          const SizedBox(height: 8),
-                          _buildReadOnlyField(
-                            'ID',
-                            widget.laboratory.id,
+                            l10n.company,
+                            widget.laboratory.company?.name ?? '-',
                           ),
                         ],
                       ),
