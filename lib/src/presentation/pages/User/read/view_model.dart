@@ -25,7 +25,7 @@ class ViewModel extends ChangeNotifier {
   late ReadLabMembershipUsecase? _readMembershipUseCase;
   late ReadUserUsecase? _readUserUseCase;
   late LaboratoryNotifier _laboratoryNotifier;
-  late bool _isRootUser;
+  late bool _isRootUser; // true si es ROOT o ADMIN
   final BuildContext _context;
 
   // Query con FieldsBuilder configurado para memberships
@@ -43,7 +43,7 @@ class ViewModel extends ChangeNotifier {
   List<LabMembershipInfo>? get membershipList => _membershipList;
   List<User>? get userList => _userList;
   PageInfo? get pageInfo => _pageInfo;
-  bool get isRootUser => _isRootUser;
+  bool get isRootUser => _isRootUser; // true si es ROOT o ADMIN
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -74,11 +74,11 @@ class ViewModel extends ChangeNotifier {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
     _laboratoryNotifier = _context.read<LaboratoryNotifier>();
     
-    // Detectar si es usuario ROOT
+    // Detectar si es usuario ROOT o ADMIN
     final authNotifier = _context.read<AuthNotifier>();
-    _isRootUser = authNotifier.role == Role.rOOT;
+    _isRootUser = authNotifier.role == Role.rOOT || authNotifier.role == Role.aDMIN;
     
-    debugPrint('🔍 User ViewModel - Es ROOT? $_isRootUser');
+    debugPrint('🔍 User ViewModel - Es ROOT o ADMIN? $_isRootUser, Rol: ${authNotifier.role}');
     
     // Inicializar el usecase apropiado según el rol
     if (_isRootUser) {
@@ -121,7 +121,7 @@ class ViewModel extends ChangeNotifier {
 
     try {
       if (_isRootUser) {
-        // Usuario ROOT: usar getUsers
+        // Usuario ROOT o ADMIN: usar getUsers
         final response = await _readUserUseCase!.build();
         
         if (response is EdgeUser) {
@@ -159,7 +159,7 @@ class ViewModel extends ChangeNotifier {
 
     try {
       if (_isRootUser) {
-        // Usuario ROOT: usar getUsers
+        // Usuario ROOT o ADMIN: usar getUsers
         final response = await _readUserUseCase!.search(searchInputs, _pageInfo);
 
         if (response is EdgeUser) {
