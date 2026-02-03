@@ -105,7 +105,7 @@ GoRouter technicianRouter = GoRouter(
   routes: [technicianShellRoute],
 );
 GoRouter bioanalystRouter = GoRouter(
-  initialLocation: "/patient",
+  initialLocation: "/evaluationpackage",
   routes: [bioanalystShellRoute],
 );
 GoRouter loginRouter = GoRouter(
