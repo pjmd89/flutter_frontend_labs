@@ -10,6 +10,8 @@ class MembershipItem extends StatelessWidget {
   final AppLocalizations l10n;
   final Function(User user)? onUpdate;
   final Function(String id)? onDelete;
+  final Function(String id)? onViewLabs;
+  final bool isRootView;
 
   const MembershipItem({
     super.key,
@@ -17,6 +19,8 @@ class MembershipItem extends StatelessWidget {
     required this.l10n,
     this.onUpdate,
     this.onDelete,
+    this.onViewLabs,
+    this.isRootView = false,
   });
 
   String _getRoleTranslation(LabMemberRole? role) {
@@ -36,10 +40,87 @@ class MembershipItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fullName = membership.member != null 
+        ? '${membership.member!.firstName} ${membership.member!.lastName}'.trim()
+        : 'Sin miembro';
+    final roleText = _getRoleTranslation(membership.role);
+    
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
     final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
 
+    // Diseño para ROOT/ADMIN (similar a UserItem)
+    if (isRootView) {
+      return ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 360, maxHeight: 150),
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const CircleAvatar(child: Icon(Icons.person_outline)),
+                title: Text(fullName, style: theme.textTheme.titleMedium),
+                subtitle: Text(roleText),
+                trailing: isBilling
+                    ? null
+                    : PopupMenuButton<String>(
+                        icon: const Icon(Icons.more_vert),
+                        onSelected: (value) {
+                          if (value == 'edit' && onUpdate != null && membership.member != null) {
+                            debugPrint('\n📤 ========== NAVEGANDO A UPDATE (MembershipItem ROOT) ==========');
+                            debugPrint('📤 membership.id: "${membership.id}"');
+                            debugPrint('📤 membership.member.id: "${membership.member!.id}"');
+                            debugPrint('📤 Nombre: ${membership.member!.firstName} ${membership.member!.lastName}');
+                            debugPrint('📤 Pasando objeto User completo');
+                            debugPrint('========================================\n');
+                            onUpdate!(membership.member!);
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'edit',
+                            child: Row(
+                              children: [
+                                const Icon(Icons.edit),
+                                const SizedBox(width: 8),
+                                Text(l10n.edit),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+              ),
+              const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (membership.laboratory != null)
+                      Expanded(
+                        child: Text(
+                          '${l10n.laboratory}: ${membership.laboratory!.address}',
+                          style: theme.textTheme.bodySmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    if (onViewLabs != null && membership.member != null)
+                      OutlinedButton(
+                        onPressed: () => onViewLabs!(membership.member!.id),
+                        child: Text(l10n.viewLaboratories),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Diseño original para usuarios normales
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360),
       child: Card(
@@ -62,7 +143,7 @@ class MembershipItem extends StatelessWidget {
                 ],
               ),
               trailing: isBilling
-                  ? null // Ocultar el menú si es billing
+                  ? null
                   : PopupMenuButton<String>(
                       onSelected: (value) {
                         if (value == 'edit' && onUpdate != null && membership.member != null) {
@@ -72,7 +153,7 @@ class MembershipItem extends StatelessWidget {
                           debugPrint('📤 Nombre: ${membership.member!.firstName} ${membership.member!.lastName}');
                           debugPrint('📤 Pasando objeto User completo');
                           debugPrint('========================================\n');
-                          onUpdate!(membership.member!);  // ✅ Pasar objeto User completo
+                          onUpdate!(membership.member!);
                         }
                       },
                       itemBuilder: (context) => [

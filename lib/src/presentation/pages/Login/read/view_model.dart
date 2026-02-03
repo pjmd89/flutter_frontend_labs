@@ -40,6 +40,24 @@ class ViewModel extends ChangeNotifier {
 
   setLoginUser(LoggedUser loggedUser) async{
     final laboratoryNotifier = _context.read<LaboratoryNotifier>();
+    final authNotifier = _context.read<AuthNotifier>();
+    
+    // Verificar si es usuario ROOT o ADMIN
+    final isRootOrAdmin = loggedUser.user?.role == Role.rOOT || loggedUser.user?.role == Role.aDMIN;
+    
+    if (isRootOrAdmin) {
+      // ROOT/ADMIN: NO ejecutar setCurrentLaboratory, entrar directamente sin laboratorio
+      debugPrint('🔑 Usuario ROOT/ADMIN detectado - Acceso sin laboratorio');
+      await authNotifier.signIn(
+        user: loggedUser.user!,
+        userIsLabOwner: loggedUser.userIsLabOwner,
+        labRole: loggedUser.labRole,
+      );
+      debugPrint('✅ SignIn completado para ROOT/ADMIN');
+      return;
+    }
+    
+    // Para usuarios normales: continuar con el flujo de selección de laboratorio
     Laboratory? laboratoryToSelect;
     
     // Si el LoggedUser tiene un currentLaboratory, usarlo
@@ -96,7 +114,6 @@ class ViewModel extends ChangeNotifier {
     
     // Ahora hacer signIn con los datos actualizados (si tenemos updatedLoggedUser, usarlo)
     final finalLoggedUser = updatedLoggedUser ?? loggedUser;
-    final authNotifier = _context.read<AuthNotifier>();
     await authNotifier.signIn(
       user: finalLoggedUser.user!,
       userIsLabOwner: finalLoggedUser.userIsLabOwner,

@@ -258,6 +258,14 @@
   "@markAsCompletedDescription": {
     "description": "Descripción del switch de marcar como completado"
   },
+  "markAsReviewed": "Marcar como revisado",
+  "@markAsReviewed": {
+    "description": "Switch para marcar como revisado"
+  },
+  "markAsReviewedDescription": "Marca que has revisado todos los resultados del paquete de evaluación.",
+  "@markAsReviewedDescription": {
+    "description": "Descripción del switch de marcar como revisado"
+  },
   
   "isApproved": "Aprobado",
   "@isApproved": {

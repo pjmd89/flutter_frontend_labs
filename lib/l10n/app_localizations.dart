@@ -473,6 +473,18 @@ abstract class AppLocalizations {
   /// **'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.'**
   String get markAsCompletedDescription;
 
+  /// Switch para marcar como revisado
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar como revisado'**
+  String get markAsReviewed;
+
+  /// Descripción del switch de marcar como revisado
+  ///
+  /// In es, this message translates to:
+  /// **'Marca que has revisado todos los resultados del paquete de evaluación.'**
+  String get markAsReviewedDescription;
+
   /// Campo para indicar si está aprobado
   ///
   /// In es, this message translates to:

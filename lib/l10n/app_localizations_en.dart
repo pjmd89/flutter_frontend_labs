@@ -198,6 +198,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get markAsCompletedDescription => 'Mark that all exam results have been completed and are ready for bioanalyst review.';
 
   @override
+  String get markAsReviewed => 'Mark as Reviewed';
+
+  @override
+  String get markAsReviewedDescription => 'Mark that you have reviewed all results of the evaluation package.';
+
+  @override
   String get isApproved => 'Approved';
 
   @override

@@ -198,6 +198,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get markAsCompletedDescription => 'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.';
 
   @override
+  String get markAsReviewed => 'Marcar como revisado';
+
+  @override
+  String get markAsReviewedDescription => 'Marca que has revisado todos los resultados del paquete de evaluación.';
+
+  @override
   String get isApproved => 'Aprobado';
 
   @override

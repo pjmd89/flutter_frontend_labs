@@ -134,6 +134,14 @@
   "@markAsCompletedDescription": {
     "description": "Description of the mark as completed switch"
   },
+  "markAsReviewed": "Mark as Reviewed",
+  "@markAsReviewed": {
+    "description": "Switch to mark as reviewed"
+  },
+  "markAsReviewedDescription": "Mark that you have reviewed all results of the evaluation package.",
+  "@markAsReviewedDescription": {
+    "description": "Description of the mark as reviewed switch"
+  },
   
   "isApproved": "Approved",
   "@isApproved": {
