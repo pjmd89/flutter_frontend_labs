@@ -9,18 +9,18 @@ List<DrawerButtonConfig> getBioanalystDrawerButtonList(
 ) {
   final l10n = AppLocalizations.of(context)!;
   return [
-    //DrawerButtonConfig(
-    //  buttonText: l10n.dashboard,
-    //  buttonRoute: "/dashboard",
-    //  currentPath: currentPath,
-    //  leadingIcon: const Icon(Icons.dashboard),
-    //),
-    //DrawerButtonConfig(
-    //  buttonText: l10n.patients,
-    //  buttonRoute: "/patient",
-    //  currentPath: currentPath,
-    //  leadingIcon: const Icon(Icons.people),
-    //),
+    DrawerButtonConfig(
+      buttonText: AppLocalizations.of(context)!.users,
+      buttonRoute: "/user",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.person),
+    ),
+    DrawerButtonConfig(
+      buttonText: AppLocalizations.of(context)!.exam,
+      buttonRoute: "/exam",
+      currentPath: currentPath,
+      leadingIcon: const Icon(Icons.assignment), // icono de caja embalada
+    ),
     DrawerButtonConfig(
       buttonText: l10n.evaluationPackages,
       buttonRoute: "/evaluationpackage",

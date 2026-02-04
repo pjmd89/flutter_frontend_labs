@@ -111,7 +111,7 @@ class LaboratoryNotifier extends ChangeNotifier {
                 debugPrint('🧭 Navegando a ruta de OWNER: $initialRoute');
                 break;
               case LabMemberRole.bIOANALYST:
-                initialRoute = '/patient';
+                initialRoute = '/evaluationpackage';
                 debugPrint('🧭 Navegando a ruta de BIOANALYST: $initialRoute');
                 break;
               case LabMemberRole.tECHNICIAN:
@@ -119,11 +119,11 @@ class LaboratoryNotifier extends ChangeNotifier {
                 debugPrint('🧭 Navegando a ruta de TECHNICIAN: $initialRoute');
                 break;
               case LabMemberRole.bILLING:
-                initialRoute = '/invoice';
+                initialRoute = '/billing';
                 debugPrint('🧭 Navegando a ruta de BILLING: $initialRoute');
                 break;
               default:
-                initialRoute = '/patient';
+                initialRoute = '/dashboard';
                 debugPrint('🧭 Navegando a ruta por defecto: $initialRoute');
             }
             context.go(initialRoute);

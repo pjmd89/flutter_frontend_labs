@@ -76,9 +76,9 @@ ShellRoute bioanalystShellRoute = ShellRoute(
   },
   routes: [
     ...dashboardRoutes,
-    ...patientRoutes,
+    ...userRoutes,
+    ...examRoutes,
     ...evaluationpackageRoutes,
-    ...laboratoryRoutes,
   ],
 );
 ShellRoute loginShellRoute = ShellRoute(
