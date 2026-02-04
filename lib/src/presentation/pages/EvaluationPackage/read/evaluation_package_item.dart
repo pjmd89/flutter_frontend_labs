@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EvaluationPackageItem extends StatelessWidget {
   final EvaluationPackage evaluationPackage;
@@ -132,24 +133,53 @@ class EvaluationPackageItem extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 16),
-                  // Botón "Ver"
-                  if (onView != null)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: FilledButton(
-                        onPressed: () => onView!(evaluationPackage.id),
-                        style: FilledButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                  // Botones de acción
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // Botón "Ver PDF" - Solo visible cuando está aprobado
+                      if (evaluationPackage.isApproved)
+                        FilledButton.icon(
+                          onPressed: () async {
+                            final url = 'https://localhost:8443/evaluation-pdf?t=${evaluationPackage.pdfToken}';
+                            final uri = Uri.parse(url);
+                            try {
+                              await launchUrl(uri, mode: LaunchMode.externalApplication);
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Error: $e')),
+                                );
+                              }
+                            }
+                          },
+                          icon: const Icon(Icons.picture_as_pdf, size: 18),
+                          label: Text(l10n.viewPdf),
+                          style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         ),
-                        child: Text(
-                          l10n.view,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                      if (evaluationPackage.isApproved && onView != null)
+                        const SizedBox(width: 8),
+                      // Botón "Ver"
+                      if (onView != null)
+                        FilledButton(
+                          onPressed: () => onView!(evaluationPackage.id),
+                          style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          ),
+                          child: Text(
+                            l10n.view,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                       ),
-                    ),
+                ]),
                 ],
               ),
             ),

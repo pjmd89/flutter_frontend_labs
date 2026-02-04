@@ -14,6 +14,7 @@ class EvaluationPackage {
   final List<String> observations;
   final bool isApproved;
   final BioanalystReview? bioanalystReview;
+  final String pdfToken;
   final int created;
   final int updated;
   EvaluationPackage({
@@ -27,6 +28,7 @@ class EvaluationPackage {
     this.observations = const [],
     this.isApproved = false,
     this.bioanalystReview,
+    this.pdfToken = "",
     this.created = 0,
     this.updated = 0,
   });

@@ -10,6 +10,7 @@ extension EdgeEvaluationPackageFieldsBuilderExtension on EdgeEvaluationPackageFi
             ..status()
             ..pdfFilepath()
             ..completedAt()
+            ..pdfToken()
             ..referred()
             ..observations()
             ..isApproved()

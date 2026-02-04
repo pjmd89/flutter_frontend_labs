@@ -26,6 +26,11 @@ class EvaluationPackageFieldsBuilder {
     _fields.add(fieldStr);
     return this;
   }
+  EvaluationPackageFieldsBuilder pdfToken({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
+    final fieldStr = formatField("pdfToken", alias: alias, args: args, directives: directives);
+    _fields.add(fieldStr);
+    return this;
+  }
   EvaluationPackageFieldsBuilder completedAt({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
     final fieldStr = formatField("completedAt", alias: alias, args: args, directives: directives);
     _fields.add(fieldStr);

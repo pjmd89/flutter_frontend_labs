@@ -6,6 +6,7 @@ extension EvaluationPackageFieldsBuilderExtension on EvaluationPackageFieldsBuil
       ..id()
       ..status()
       ..pdfFilepath()
+      ..pdfToken()
       ..completedAt()
       ..referred()
       ..observations()
