@@ -13,10 +13,12 @@ BioanalystReview _$BioanalystReviewFromJson(Map<String, dynamic> json) =>
               ? null
               : User.fromJson(json['bioanalyst'] as Map<String, dynamic>),
       reviewedAt: (json['reviewedAt'] as num?)?.toInt() ?? 0,
+      signatureFilepath: json['signatureFilepath'] as String? ?? '',
     );
 
 Map<String, dynamic> _$BioanalystReviewToJson(BioanalystReview instance) =>
     <String, dynamic>{
       if (instance.bioanalyst case final value?) 'bioanalyst': value,
       'reviewedAt': instance.reviewedAt,
+      'signatureFilepath': instance.signatureFilepath,
     };

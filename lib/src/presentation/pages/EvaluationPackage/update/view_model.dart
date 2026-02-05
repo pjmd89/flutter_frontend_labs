@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
@@ -7,6 +8,7 @@ import 'package:labs/src/domain/operation/mutations/updateEvaluationPackage/upda
 import 'package:labs/src/domain/operation/mutations/approveEvaluationPackage/approveevaluationpackage_mutation.dart';
 import 'package:labs/src/domain/usecases/EvaluationPackage/update_evaluationpackage_usecase.dart';
 import 'package:labs/src/domain/usecases/EvaluationPackage/approve_evaluationpackage_usecase.dart';
+import 'package:labs/src/domain/usecases/upload/upload_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
 
@@ -15,15 +17,30 @@ class ViewModel extends ChangeNotifier {
   late ErrorService _errorService;
   final BuildContext _context;
   bool _loading = false;
+  bool _uploadingSignature = false;
   
   final UpdateEvaluationInput input = UpdateEvaluationInput();
   EvaluationPackage? _currentEvaluationPackage;
   
+  String? _uploadedSignaturePath;
+  String? _signatureOriginalFileName;
+  Uint8List? _signatureImageBytes;
+  
   EvaluationPackage? get currentEvaluationPackage => _currentEvaluationPackage;
   bool get loading => _loading;
+  bool get uploadingSignature => _uploadingSignature;
+  String? get uploadedSignaturePath => _uploadedSignaturePath;
+  Uint8List? get signatureImageBytes => _signatureImageBytes;
+  bool get hasSignature => _signatureImageBytes != null;
+  String? get signatureDisplayFileName => _signatureOriginalFileName;
   
   set loading(bool newLoading) {
     _loading = newLoading;
+    notifyListeners();
+  }
+  
+  set uploadingSignature(bool newUploading) {
+    _uploadingSignature = newUploading;
     notifyListeners();
   }
   
@@ -200,6 +217,7 @@ class ViewModel extends ChangeNotifier {
                       ..lastName();
                   },
                 )
+                ..signatureFilepath()
                 ..reviewedAt();
             },
           )
@@ -209,7 +227,10 @@ class ViewModel extends ChangeNotifier {
     );
 
     try {
-      var response = await useCase.execute(evaluationPackageId: input.id);
+      var response = await useCase.execute(
+        evaluationPackageId: input.id,
+        signatureFilepath: _uploadedSignaturePath,
+      );
       
       debugPrint('✅ Response recibido en ViewModel (approve):');
       debugPrint('  - Type: ${response.runtimeType}');
@@ -246,5 +267,83 @@ class ViewModel extends ChangeNotifier {
     }
 
     return isError;
+  }
+  
+  /// Sube la firma del bioanalista
+  Future<bool> uploadSignature({
+    required Uint8List fileBytes,
+    required String fileName,
+    required String evaluationPackageId,
+  }) async {
+    uploadingSignature = true;
+
+    try {
+      final uploadUseCase = UploadFileUseCase(conn: _gqlConn);
+
+      debugPrint('📤 Iniciando upload de firma: $fileName, ${fileBytes.length} bytes');
+
+      final result = await uploadUseCase.uploadFile(
+        fileOriginalName: fileName,
+        fileDestinyName: 'signature_$evaluationPackageId',
+        fileBytes: fileBytes,
+        destinyDirectory: 'evaluations/signatures',
+        userId: evaluationPackageId,
+        onlyXlsx: false,
+      );
+
+      debugPrint('📦 Resultado upload - success: ${result.success}, code: ${result.code}');
+      debugPrint('📦 uploadedFile: ${result.uploadedFile}');
+
+      if (result.success && result.uploadedFile != null) {
+        _uploadedSignaturePath = '${result.uploadedFile!['folder']}/${result.uploadedFile!['name']}';
+        _signatureOriginalFileName = fileName;
+        _signatureImageBytes = fileBytes;
+
+        debugPrint('✅ Firma subida exitosamente: $_uploadedSignaturePath');
+
+        _errorService.showError(
+          message: 'Firma cargada exitosamente',
+          type: ErrorType.success,
+        );
+
+        return true;
+      } else {
+        String errorMessage;
+        switch (result.code) {
+          case UploadFileUseCase.codeNoExtension:
+            errorMessage = 'El archivo no tiene extensión';
+            break;
+          case UploadFileUseCase.codeInvalidExtension:
+            errorMessage = 'Extensión no válida. Use: jpeg, jpg, png, gif';
+            break;
+          case UploadFileUseCase.codeUploadError:
+            errorMessage = 'Error al subir el archivo';
+            break;
+          default:
+            errorMessage = 'Error desconocido';
+        }
+
+        debugPrint('❌ Error al subir firma: $errorMessage');
+
+        _errorService.showError(
+          message: errorMessage,
+          type: ErrorType.error,
+        );
+
+        return false;
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al subir firma: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+
+      _errorService.showError(
+        message: 'Error al subir firma: ${e.toString()}',
+        type: ErrorType.error,
+      );
+
+      return false;
+    } finally {
+      uploadingSignature = false;
+    }
   }
 }

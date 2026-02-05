@@ -189,6 +189,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evaluationPackageApprovedSuccessfully => 'Paquete de evaluación aprobado exitosamente';
 
   @override
+  String get bioanalystSignature => 'Firma del Bioanalista';
+
+  @override
+  String get signature => 'Firma';
+
+  @override
+  String get changeSignature => 'Cambiar firma';
+
+  @override
+  String get signatureUploadedSuccessfully => 'Firma subida exitosamente';
+
+  @override
+  String get fileNoExtension => 'El archivo no tiene extensión';
+
+  @override
+  String get invalidImageExtension => 'Extensión no válida. Use: jpeg, jpg, png, gif';
+
+  @override
+  String get uploadError => 'Error al subir el archivo';
+
+  @override
+  String get unknownError => 'Error desconocido';
+
+  @override
+  String get userNotAuthenticated => 'Usuario no autenticado';
+
+  @override
+  String get imageLoadError => 'Error al cargar la imagen';
+
+  @override
   String get viewOnlyMode => 'Solo puedes ver este paquete de evaluación. Solo los propietarios y técnicos pueden editar los resultados.';
 
   @override

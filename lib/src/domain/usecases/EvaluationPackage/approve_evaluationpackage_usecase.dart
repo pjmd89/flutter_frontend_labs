@@ -23,22 +23,39 @@ class ApproveEvaluationPackageUsecase implements af.UseCase {
     //final thisObject = ob as EvaluationPackage;
   }
 
-  Future<dynamic> execute({required String evaluationPackageId, bool isApproved = true}) async {
+  Future<dynamic> execute({required String evaluationPackageId, bool isApproved = true, String? signatureFilepath}) async {
     try {
       // Crear nueva mutation con declarativeArgs
       final mutation = _operation as ApproveEvaluationPackageMutation;
+      
+      // Construir el input object según el schema GraphQL
+      final inputData = <String, dynamic>{
+        "_id": evaluationPackageId,
+        "isApproved": isApproved,
+      };
+      
+      // Agregar signatureFilepath si está presente
+      if (signatureFilepath != null && signatureFilepath.isNotEmpty) {
+        inputData["signatureFilepath"] = signatureFilepath;
+      }
+      
+      // Usar el tipo ApproveEvaluationInput! definido en el schema
+      final declarativeArgs = {"input": "ApproveEvaluationInput!"};
+      final opArgs = {"input": GqlVar("input")};
+      final variables = {"input": inputData};
+      
       final newMutation = ApproveEvaluationPackageMutation(
         builder: mutation.builder,
-        declarativeArgs: {"id": "ID!", "isApproved": "Boolean!"},
-        opArgs: {"_id": GqlVar("id"), "isApproved": GqlVar("isApproved")},
+        declarativeArgs: declarativeArgs,
+        opArgs: opArgs,
       );
 
-      debugPrint('🔧 Ejecutando ApproveEvaluationPackageMutation con _id: $evaluationPackageId, isApproved: $isApproved');
+      debugPrint('🔧 Ejecutando ApproveEvaluationPackageMutation con input: $inputData');
 
-      // Ejecutar operación con ID del paquete y estado de aprobación
+      // Ejecutar operación con ID del paquete, estado de aprobación y firma
       final response = await _conn.operation(
         operation: newMutation,
-        variables: {"id": evaluationPackageId, "isApproved": isApproved},
+        variables: variables,
       );
 
       debugPrint('✅ Response recibido: $response');

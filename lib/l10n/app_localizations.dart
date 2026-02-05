@@ -455,6 +455,66 @@ abstract class AppLocalizations {
   /// **'Paquete de evaluación aprobado exitosamente'**
   String get evaluationPackageApprovedSuccessfully;
 
+  /// Título para la sección de firma del bioanalista
+  ///
+  /// In es, this message translates to:
+  /// **'Firma del Bioanalista'**
+  String get bioanalystSignature;
+
+  /// Etiqueta para el campo de firma
+  ///
+  /// In es, this message translates to:
+  /// **'Firma'**
+  String get signature;
+
+  /// Botón para cambiar la firma
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar firma'**
+  String get changeSignature;
+
+  /// Mensaje de éxito al subir la firma
+  ///
+  /// In es, this message translates to:
+  /// **'Firma subida exitosamente'**
+  String get signatureUploadedSuccessfully;
+
+  /// Error cuando el archivo no tiene extensión
+  ///
+  /// In es, this message translates to:
+  /// **'El archivo no tiene extensión'**
+  String get fileNoExtension;
+
+  /// Error cuando la extensión de imagen no es válida
+  ///
+  /// In es, this message translates to:
+  /// **'Extensión no válida. Use: jpeg, jpg, png, gif'**
+  String get invalidImageExtension;
+
+  /// Error genérico al subir archivo
+  ///
+  /// In es, this message translates to:
+  /// **'Error al subir el archivo'**
+  String get uploadError;
+
+  /// Error desconocido
+  ///
+  /// In es, this message translates to:
+  /// **'Error desconocido'**
+  String get unknownError;
+
+  /// Error cuando el usuario no está autenticado
+  ///
+  /// In es, this message translates to:
+  /// **'Usuario no autenticado'**
+  String get userNotAuthenticated;
+
+  /// Error al cargar imagen
+  ///
+  /// In es, this message translates to:
+  /// **'Error al cargar la imagen'**
+  String get imageLoadError;
+
   /// Mensaje informativo cuando el usuario no puede editar
   ///
   /// In es, this message translates to:

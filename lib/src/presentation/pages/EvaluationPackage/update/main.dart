@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:agile_front/agile_front.dart';
@@ -8,6 +10,9 @@ import 'package:labs/src/presentation/core/ui/custom_text_form_fields/custom_tex
 import 'package:labs/src/presentation/core/ui/custom_text_form_fields/utils/form_field_length/main.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import './view_model.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:web/web.dart' show HTMLInputElement, FileReader;
+import 'dart:js_interop';
 
 class EvaluationPackageUpdatePage extends StatefulWidget {
   const EvaluationPackageUpdatePage({super.key, required this.evaluationPackage});
@@ -25,6 +30,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   // Map: examIndex -> List<TextEditingController> para cada indicador
   final Map<int, List<TextEditingController>> examValueControllers = {};
   bool allResultsCompleted = false;
+  final signatureController = TextEditingController();
   
   @override
   void didChangeDependencies() {
@@ -73,6 +79,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
         controller.dispose();
       }
     }
+    signatureController.dispose();
     super.dispose();
   }
   
@@ -123,6 +130,87 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     viewModel.input.valuesByExam = examResults;
   }
   
+  Future<void> _pickAndUploadSignature(BuildContext context) async {
+    try {
+      debugPrint('🔧 Iniciando selección de archivo de firma... (kIsWeb: $kIsWeb)');
+      
+      if (kIsWeb) {
+        debugPrint('🌐 Usando implementación web nativa');
+        
+        final uploadInput = HTMLInputElement();
+        uploadInput.type = 'file';
+        uploadInput.accept = 'image/jpeg,image/jpg,image/png,image/gif';
+        uploadInput.click();
+
+        await Future.delayed(const Duration(milliseconds: 100));
+        
+        final completer = Completer<void>();
+        uploadInput.addEventListener('change', ((JSAny event) {
+          completer.complete();
+        }).toJS);
+        
+        await completer.future;
+
+        final files = uploadInput.files;
+        if (files != null && files.length > 0) {
+          final file = files.item(0)!;
+          final reader = FileReader();
+          
+          final loadCompleter = Completer<void>();
+          reader.addEventListener('load', ((JSAny event) {
+            loadCompleter.complete();
+          }).toJS);
+          
+          reader.readAsArrayBuffer(file);
+          await loadCompleter.future;
+
+          final result = reader.result;
+          final Uint8List fileBytes = (result as JSArrayBuffer).toDart.asUint8List();
+          final String fileName = file.name;
+
+          debugPrint('📄 Archivo web: $fileName, Bytes: ${fileBytes.length}');
+
+          final extension = fileName.split('.').last.toLowerCase();
+          if (!['jpg', 'jpeg', 'png', 'gif'].contains(extension)) {
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Formato no válido. Usa JPG, JPEG, PNG o GIF')),
+            );
+            return;
+          }
+
+          final success = await viewModel.uploadSignature(
+            fileBytes: fileBytes,
+            fileName: fileName,
+            evaluationPackageId: widget.evaluationPackage.id,
+          );
+
+          if (success && viewModel.signatureDisplayFileName != null) {
+            setState(() {
+              signatureController.text = viewModel.signatureDisplayFileName!;
+            });
+          }
+        } else {
+          debugPrint('ℹ️ Selección de archivo cancelada');
+        }
+      } else {
+        debugPrint('⚠️ Esta ruta solo funciona en web');
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Funcionalidad solo disponible en web')),
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al seleccionar archivo: $e');
+      debugPrint('💥 Tipo de error: ${e.runtimeType}');
+      debugPrint('📍 StackTrace: $stackTrace');
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
   String getStatusLabel(BuildContext context, ResultStatus? status) {
     final l10n = AppLocalizations.of(context)!;
     if (status == null) return l10n.status;
@@ -351,6 +439,61 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                     const SizedBox(height: 16),
                   ],
                   
+                  // Sección de firma - Solo para bioanalistas cuando pueden aprobar
+                  if (isBioanalyst && 
+                      viewModel.currentEvaluationPackage?.isApproved == false &&
+                      viewModel.currentEvaluationPackage?.status == ResultStatus.cOMPLETED) ...[
+                    Text(
+                      l10n.signature,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.draw,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            viewModel.hasSignature
+                                ? viewModel.signatureDisplayFileName ?? ''
+                                : '${l10n.signature} (${l10n.optional})',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              fontWeight: viewModel.hasSignature ? FontWeight.normal : FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        FilledButton.icon(
+                          onPressed: viewModel.uploadingSignature
+                              ? null
+                              : () => _pickAndUploadSignature(context),
+                          icon: viewModel.uploadingSignature
+                              ? const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Icon(Icons.upload_file, size: 18),
+                          label: Text(
+                            viewModel.uploadingSignature
+                                ? l10n.uploading
+                                : (viewModel.hasSignature ? l10n.changeSignature : l10n.upload),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                  
                   // Sección de observaciones
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -368,7 +511,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                     ],
                   ),
                   const SizedBox(height: 12),
-                  
+              
                   if (observationControllers.isEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),

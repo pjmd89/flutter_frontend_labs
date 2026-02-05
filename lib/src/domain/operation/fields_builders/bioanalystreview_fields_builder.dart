@@ -16,5 +16,10 @@ class BioanalystReviewFieldsBuilder {
     _fields.add(fieldStr);
     return this;
   }
+  BioanalystReviewFieldsBuilder signatureFilepath({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
+    final fieldStr = formatField("signatureFilepath", alias: alias, args: args, directives: directives);
+    _fields.add(fieldStr);
+    return this;
+  }
   String build() => _fields.join(" ");
 }

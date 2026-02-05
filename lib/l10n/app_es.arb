@@ -246,6 +246,46 @@
   "@evaluationPackageApprovedSuccessfully": {
     "description": "Mensaje de éxito al aprobar un paquete de evaluación"
   },
+  "bioanalystSignature": "Firma del Bioanalista",
+  "@bioanalystSignature": {
+    "description": "Título para la sección de firma del bioanalista"
+  },
+  "signature": "Firma",
+  "@signature": {
+    "description": "Etiqueta para el campo de firma"
+  },
+  "changeSignature": "Cambiar firma",
+  "@changeSignature": {
+    "description": "Botón para cambiar la firma"
+  },
+  "signatureUploadedSuccessfully": "Firma subida exitosamente",
+  "@signatureUploadedSuccessfully": {
+    "description": "Mensaje de éxito al subir la firma"
+  },
+  "fileNoExtension": "El archivo no tiene extensión",
+  "@fileNoExtension": {
+    "description": "Error cuando el archivo no tiene extensión"
+  },
+  "invalidImageExtension": "Extensión no válida. Use: jpeg, jpg, png, gif",
+  "@invalidImageExtension": {
+    "description": "Error cuando la extensión de imagen no es válida"
+  },
+  "uploadError": "Error al subir el archivo",
+  "@uploadError": {
+    "description": "Error genérico al subir archivo"
+  },
+  "unknownError": "Error desconocido",
+  "@unknownError": {
+    "description": "Error desconocido"
+  },
+  "userNotAuthenticated": "Usuario no autenticado",
+  "@userNotAuthenticated": {
+    "description": "Error cuando el usuario no está autenticado"
+  },
+  "imageLoadError": "Error al cargar la imagen",
+  "@imageLoadError": {
+    "description": "Error al cargar imagen"
+  },
   "viewOnlyMode": "Solo puedes ver este paquete de evaluación. Solo los propietarios y técnicos pueden editar los resultados.",
   "@viewOnlyMode": {
     "description": "Mensaje informativo cuando el usuario no puede editar"

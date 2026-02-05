@@ -1320,5 +1320,13 @@
   "selectLaboratory": "Select Laboratory",
   "@selectLaboratory": {
     "description": "Title of laboratory selection dialog"
+  },
+  "signature": "Signature",
+  "@signature": {
+    "description": "Label for signature field"
+  },
+  "changeSignature": "Change signature",
+  "@changeSignature": {
+    "description": "Button to change signature"
   }
 }
