@@ -124,7 +124,7 @@ class _UserMenuState extends State<UserMenu> {
               (context) => [
                 // Idioma con submenú
                 PopupMenuItem<String>(
-                  onTap: () {},
+                  enabled: false,
                   child: Theme(
                     data: Theme.of(
                       context,
@@ -185,7 +185,7 @@ class _UserMenuState extends State<UserMenu> {
                 ),
                 // Tema con submenú
                 PopupMenuItem<String>(
-                  onTap: () {},
+                  enabled: false,
                   child: Theme(
                     data: Theme.of(
                       context,

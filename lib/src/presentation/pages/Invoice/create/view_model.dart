@@ -44,6 +44,9 @@ class ViewModel extends ChangeNotifier {
   // Exámenes
   List<Exam> _availableExams = [];
   List<Exam> _selectedExams = [];
+  
+  // Pacientes (para el selector)
+  List<Patient> _allPatients = [];
 
   // Getters
   bool get loading => _loading;
@@ -51,6 +54,7 @@ class ViewModel extends ChangeNotifier {
   Patient? get foundPatient => _foundPatient;
   List<Exam> get availableExams => _availableExams;
   List<Exam> get selectedExams => _selectedExams;
+  List<Patient> get allPatients => _allPatients;
 
   // Setters
   set loading(bool value) {
@@ -76,6 +80,7 @@ class ViewModel extends ChangeNotifier {
   ViewModel({required BuildContext context}) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
     _loadExams();
+    _loadAllPatients();
   }
 
   // Cargar exámenes disponibles
@@ -94,6 +99,27 @@ class ViewModel extends ChangeNotifier {
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error al cargar exámenes: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+    }
+  }
+
+  // Cargar todos los pacientes (para el selector)
+  Future<void> _loadAllPatients() async {
+    try {
+      final query = GetPatientsQuery(
+        builder: EdgePatientFieldsBuilder().defaultValues(),
+      );
+
+      final useCase = ReadPatientUsecase(operation: query, conn: _gqlConn);
+      final response = await useCase.build();
+
+      if (response is EdgePatient) {
+        _allPatients = response.edges;
+        notifyListeners();
+        debugPrint('✅ ${_allPatients.length} pacientes cargados');
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al cargar pacientes: $e');
       debugPrint('📍 StackTrace: $stackTrace');
     }
   }

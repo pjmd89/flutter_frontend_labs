@@ -23,7 +23,9 @@ class ExamItem extends StatelessWidget {
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
     final userRole = loggedUser?.labRole;
-    final shouldHideMenu = userRole == LabMemberRole.bILLING || userRole == LabMemberRole.tECHNICIAN;
+    final shouldHideMenu = userRole == LabMemberRole.bILLING || 
+                          userRole == LabMemberRole.tECHNICIAN || 
+                          userRole == LabMemberRole.bIOANALYST;
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360),

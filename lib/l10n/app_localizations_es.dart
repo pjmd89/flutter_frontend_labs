@@ -877,6 +877,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get searchByDNI => 'Buscar por Cédula/DNI';
 
   @override
+  String get searchByName => 'Buscar por Nombre';
+
+  @override
+  String get selectPatient => 'Seleccionar Paciente';
+
+  @override
+  String get selectPatientHint => 'Haz clic en el botón para seleccionar un paciente';
+
+  @override
+  String get noPatientSelected => 'No hay paciente seleccionado';
+
+  @override
+  String get selectFromList => 'Seleccionar de la Lista';
+
+  @override
   String get patientFound => 'Paciente encontrado';
 
   @override

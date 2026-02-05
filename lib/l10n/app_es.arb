@@ -1253,6 +1253,26 @@
   "@searchByDNI": {
     "description": "Placeholder para búsqueda por documento"
   },
+  "searchByName": "Buscar por Nombre",
+  "@searchByName": {
+    "description": "Buscar paciente por nombre"
+  },
+  "selectPatient": "Seleccionar Paciente",
+  "@selectPatient": {
+    "description": "Seleccionar un paciente de la lista"
+  },
+  "selectPatientHint": "Haz clic en el botón para seleccionar un paciente",
+  "@selectPatientHint": {
+    "description": "Indicación para seleccionar paciente"
+  },
+  "noPatientSelected": "No hay paciente seleccionado",
+  "@noPatientSelected": {
+    "description": "Mensaje cuando no se ha seleccionado paciente"
+  },
+  "selectFromList": "Seleccionar de la Lista",
+  "@selectFromList": {
+    "description": "Botón para abrir lista de pacientes"
+  },
   "patientFound": "Paciente encontrado",
   "@patientFound": {
     "description": "Mensaje cuando se encuentra un paciente"

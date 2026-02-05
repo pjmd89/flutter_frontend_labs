@@ -877,6 +877,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchByDNI => 'Search by ID Number';
 
   @override
+  String get searchByName => 'Search by Name';
+
+  @override
+  String get selectPatient => 'Select Patient';
+
+  @override
+  String get selectPatientHint => 'Click the button to select a patient';
+
+  @override
+  String get noPatientSelected => 'No patient selected';
+
+  @override
+  String get selectFromList => 'Select from List';
+
+  @override
   String get patientFound => 'Patient found';
 
   @override

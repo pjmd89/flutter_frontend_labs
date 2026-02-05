@@ -5,6 +5,7 @@ import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
+import './patient_selector_dialog.dart';
 
 class InvoiceCreatePage extends StatefulWidget {
   const InvoiceCreatePage({super.key});
@@ -18,7 +19,6 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Controllers
-  final dniSearchController = TextEditingController();
   final referredController = TextEditingController();
   
   // Controllers para CreatePerson
@@ -52,7 +52,6 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
 
   @override
   void dispose() {
-    dniSearchController.dispose();
     referredController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
@@ -164,35 +163,27 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CustomTextFormField(
-                                  labelText: l10n.searchByDNI,
-                                  controller: dniSearchController,
-                                  isDense: true,
-                                  fieldLength: FormFieldLength.password,
-                                  prefixIcon: const Icon(Icons.search),
-                                  counterText: "",
+                          // Botón para abrir selector de pacientes
+                          FilledButton.tonalIcon(
+                            onPressed: () async {
+                              final selected = await showDialog<Patient>(
+                                context: context,
+                                builder: (context) => PatientSelectorDialog(
+                                  patients: viewModel.allPatients,
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              IconButton.filled(
-                                icon: viewModel.searching
-                                    ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(strokeWidth: 2),
-                                      )
-                                    : const Icon(Icons.search),
-                                onPressed: viewModel.searching
-                                    ? null
-                                    : () => viewModel.searchPatientByDNI(
-                                          dniSearchController.text,
-                                        ),
-                              ),
-                            ],
+                              );
+                              
+                              if (selected != null) {
+                                viewModel.foundPatient = selected;
+                              }
+                            },
+                            icon: const Icon(Icons.person_search),
+                            label: Text(l10n.selectFromList),
+                            style: FilledButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            ),
                           ),
                           
                           if (viewModel.foundPatient != null) ...[
@@ -206,7 +197,12 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.check_circle, color: Colors.green),
+                                  Icon(
+                                    viewModel.foundPatient!.isPerson 
+                                      ? Icons.person 
+                                      : Icons.pets,
+                                    color: Colors.green,
+                                  ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Column(
@@ -225,26 +221,33 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                                       ],
                                     ),
                                   ),
+                                  IconButton(
+                                    icon: const Icon(Icons.close, size: 20),
+                                    onPressed: () {
+                                      viewModel.foundPatient = null;
+                                    },
+                                    color: Colors.grey,
+                                  ),
                                 ],
                               ),
                             ),
-                          ] else if (dniSearchController.text.isNotEmpty) ...[
+                          ] else ...[
                             const SizedBox(height: 12),
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Colors.orange.withValues(alpha: 0.1),
-                                border: Border.all(color: Colors.orange),
+                                color: Colors.grey.withValues(alpha: 0.1),
+                                border: Border.all(color: Colors.grey),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.warning, color: Colors.orange),
+                                  const Icon(Icons.info_outline, color: Colors.grey),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      l10n.patientNotFoundCreateFirst,
-                                      style: const TextStyle(fontSize: 13),
+                                      l10n.selectPatientHint,
+                                      style: TextStyle(fontSize: 13, color: Colors.grey[700]),
                                     ),
                                   ),
                                 ],

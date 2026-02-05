@@ -1775,6 +1775,36 @@ abstract class AppLocalizations {
   /// **'Buscar por Cédula/DNI'**
   String get searchByDNI;
 
+  /// Buscar paciente por nombre
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar por Nombre'**
+  String get searchByName;
+
+  /// Seleccionar un paciente de la lista
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar Paciente'**
+  String get selectPatient;
+
+  /// Indicación para seleccionar paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Haz clic en el botón para seleccionar un paciente'**
+  String get selectPatientHint;
+
+  /// Mensaje cuando no se ha seleccionado paciente
+  ///
+  /// In es, this message translates to:
+  /// **'No hay paciente seleccionado'**
+  String get noPatientSelected;
+
+  /// Botón para abrir lista de pacientes
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar de la Lista'**
+  String get selectFromList;
+
   /// Mensaje cuando se encuentra un paciente
   ///
   /// In es, this message translates to:

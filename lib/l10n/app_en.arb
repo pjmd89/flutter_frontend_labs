@@ -1046,6 +1046,29 @@
   "totalAmount": "Total",
   "searchPatient": "Search Patient",
   "searchByDNI": "Search by ID Number",
+  "@searchByDNI": {
+    "description": "Search patient by ID number"
+  },
+  "searchByName": "Search by Name",
+  "@searchByName": {
+    "description": "Search patient by name"
+  },
+  "selectPatient": "Select Patient",
+  "@selectPatient": {
+    "description": "Select a patient from the list"
+  },
+  "selectPatientHint": "Click the button to select a patient",
+  "@selectPatientHint": {
+    "description": "Hint to select patient"
+  },
+  "noPatientSelected": "No patient selected",
+  "@noPatientSelected": {
+    "description": "Message when no patient is selected"
+  },
+  "selectFromList": "Select from List",
+  "@selectFromList": {
+    "description": "Button to open patient list"
+  },
   "patientFound": "Patient found",
   "patientNotFound": "Patient not found",
   "patientNotFoundCreateFirst": "Patient not found. Please create it first in the Patients module.",

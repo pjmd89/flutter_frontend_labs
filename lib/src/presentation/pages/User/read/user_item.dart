@@ -42,7 +42,9 @@ class UserItem extends StatelessWidget {
     
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
-    final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
+    final userRole = loggedUser?.labRole;
+    final shouldHideMenu = userRole == LabMemberRole.bILLING || 
+                          userRole == LabMemberRole.bIOANALYST;
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360, maxHeight: 150),
@@ -55,8 +57,8 @@ class UserItem extends StatelessWidget {
               leading: const CircleAvatar(child: Icon(Icons.person_outline)),
               title: Text(fullName, style: theme.textTheme.titleMedium),
               subtitle: Text(roleText),
-              trailing: isBilling
-                  ? null // Ocultar el menú si es billing
+              trailing: shouldHideMenu
+                  ? null // Ocultar el menú si es billing o bioanalista
                   : PopupMenuButton<String>(
                       icon: const Icon(Icons.more_vert),
                       onSelected: (value) {

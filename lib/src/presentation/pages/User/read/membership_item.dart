@@ -47,7 +47,9 @@ class MembershipItem extends StatelessWidget {
     
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
-    final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
+    final userRole = loggedUser?.labRole;
+    final shouldHideMenu = userRole == LabMemberRole.bILLING || 
+                          userRole == LabMemberRole.bIOANALYST;
 
     // Diseño para ROOT/ADMIN (similar a UserItem)
     if (isRootView) {
@@ -62,8 +64,8 @@ class MembershipItem extends StatelessWidget {
                 leading: const CircleAvatar(child: Icon(Icons.person_outline)),
                 title: Text(fullName, style: theme.textTheme.titleMedium),
                 subtitle: Text(roleText),
-                trailing: isBilling
-                    ? null
+                trailing: shouldHideMenu
+                    ? null // Ocultar el menú si es billing o bioanalista
                     : PopupMenuButton<String>(
                         icon: const Icon(Icons.more_vert),
                         onSelected: (value) {
@@ -141,8 +143,8 @@ class MembershipItem extends StatelessWidget {
                     Text('${l10n.role}: ${_getRoleTranslation(membership.role)}'),
                 ],
               ),
-              trailing: isBilling
-                  ? null
+              trailing: shouldHideMenu
+                  ? null // Ocultar el menú si es billing o bioanalista
                   : PopupMenuButton<String>(
                       onSelected: (value) {
                         if (value == 'edit' && onUpdate != null && membership.member != null) {
