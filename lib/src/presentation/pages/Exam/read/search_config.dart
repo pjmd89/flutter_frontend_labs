@@ -16,12 +16,13 @@ SearchTemplateConfig getSearchConfig({
   // Obtener el rol del usuario logueado
   final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
   final userRole = loggedUser?.labRole;
-  final shouldHideButton = userRole == LabMemberRole.bILLING;
-  final isBioanalyst = loggedUser?.labRole == LabMemberRole.bIOANALYST;
+  final shouldHideButton = userRole == LabMemberRole.bILLING || 
+                          userRole == LabMemberRole.tECHNICIAN || 
+                          userRole == LabMemberRole.bIOANALYST;
 
   return SearchTemplateConfig(
-    rightWidget: (shouldHideButton || isBioanalyst)
-        ? const SizedBox.shrink() // Ocultar botón si es billing o bioanalista
+    rightWidget: shouldHideButton
+        ? const SizedBox.shrink() // Ocultar botón si es billing, technician o bioanalista
         : FilledButton.icon(
             icon: const Icon(Icons.add),
             label: Text(l10n.createThing(l10n.exam)),

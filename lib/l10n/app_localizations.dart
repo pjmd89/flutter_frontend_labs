@@ -1673,6 +1673,126 @@ abstract class AppLocalizations {
   /// **'Error genérico 70'**
   String get error070;
 
+  /// No description provided for @error071.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 71'**
+  String get error071;
+
+  /// No description provided for @error072.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 72'**
+  String get error072;
+
+  /// No description provided for @error073.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 73'**
+  String get error073;
+
+  /// No description provided for @error074.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 74'**
+  String get error074;
+
+  /// No description provided for @error075.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 75'**
+  String get error075;
+
+  /// No description provided for @error076.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 76'**
+  String get error076;
+
+  /// No description provided for @error077.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 77'**
+  String get error077;
+
+  /// No description provided for @error078.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 78'**
+  String get error078;
+
+  /// No description provided for @error079.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 79'**
+  String get error079;
+
+  /// No description provided for @error080.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 80'**
+  String get error080;
+
+  /// No description provided for @error081.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 81'**
+  String get error081;
+
+  /// No description provided for @error082.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 82'**
+  String get error082;
+
+  /// No description provided for @error083.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 83'**
+  String get error083;
+
+  /// No description provided for @error084.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 84'**
+  String get error084;
+
+  /// No description provided for @error085.
+  ///
+  /// In es, this message translates to:
+  /// **'Falta la firma del bioanalista'**
+  String get error085;
+
+  /// No description provided for @error086.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 86'**
+  String get error086;
+
+  /// No description provided for @error087.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 87'**
+  String get error087;
+
+  /// No description provided for @error088.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 88'**
+  String get error088;
+
+  /// No description provided for @error089.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 89'**
+  String get error089;
+
+  /// No description provided for @error090.
+  ///
+  /// In es, this message translates to:
+  /// **'Error genérico 90'**
+  String get error090;
+
   /// Paciente singular
   ///
   /// In es, this message translates to:
@@ -2014,6 +2134,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Observación'**
   String get observation;
+
+  /// Placeholder para campo de observaciones
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tus observaciones aquí...'**
+  String get writeObservationsHere;
 
   /// Nota informativa sobre resultados de exámenes
   ///

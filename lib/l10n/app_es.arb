@@ -1169,6 +1169,26 @@
   "error068": "Error genérico 68",
   "error069": "Error genérico 69",
   "error070": "Error genérico 70",
+  "error071": "Error genérico 71",
+  "error072": "Error genérico 72",
+  "error073": "Error genérico 73",
+  "error074": "Error genérico 74",
+  "error075": "Error genérico 75",
+  "error076": "Error genérico 76",
+  "error077": "Error genérico 77",
+  "error078": "Error genérico 78",
+  "error079": "Error genérico 79",
+  "error080": "Error genérico 80",
+  "error081": "Error genérico 81",
+  "error082": "Error genérico 82",
+  "error083": "Error genérico 83",
+  "error084": "Error genérico 84",
+  "error085": "Falta la firma del bioanalista",
+  "error086": "Error genérico 86",
+  "error087": "Error genérico 87",
+  "error088": "Error genérico 88",
+  "error089": "Error genérico 89",
+  "error090": "Error genérico 90",
   "invoice": "Factura",
   "@invoice": {
     "description": "Factura singular"
@@ -1462,6 +1482,10 @@
   "observation": "Observación",
   "@observation": {
     "description": "Label para campo de observación"
+  },
+  "writeObservationsHere": "Escribe tus observaciones aquí...",
+  "@writeObservationsHere": {
+    "description": "Placeholder para campo de observaciones"
   },
   "examResultsNote": "Nota: Los resultados de exámenes se editan en su módulo correspondiente",
   "@examResultsNote": {

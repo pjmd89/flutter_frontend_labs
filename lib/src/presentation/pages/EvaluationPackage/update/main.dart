@@ -26,7 +26,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   late ViewModel viewModel;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   
-  final List<TextEditingController> observationControllers = [];
+  final TextEditingController observationController = TextEditingController();
   // Map: examIndex -> List<TextEditingController> para cada indicador
   final Map<int, List<TextEditingController>> examValueControllers = {};
   bool allResultsCompleted = false;
@@ -40,14 +40,10 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       evaluationPackage: widget.evaluationPackage,
     );
     
-    // Inicializar controllers de observaciones
-    if (observationControllers.isEmpty) {
+    // Inicializar controller de observaciones
+    if (observationController.text.isEmpty) {
       if (widget.evaluationPackage.observations.isNotEmpty) {
-        for (var observation in widget.evaluationPackage.observations) {
-          observationControllers.add(TextEditingController(text: observation));
-        }
-      } else {
-        observationControllers.add(TextEditingController());
+        observationController.text = widget.evaluationPackage.observations.join('\n');
       }
     }
     
@@ -71,9 +67,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   
   @override
   void dispose() {
-    for (var controller in observationControllers) {
-      controller.dispose();
-    }
+    observationController.dispose();
     for (var controllers in examValueControllers.values) {
       for (var controller in controllers) {
         controller.dispose();
@@ -81,25 +75,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     }
     signatureController.dispose();
     super.dispose();
-  }
-  
-  void _addObservationField() {
-    setState(() {
-      observationControllers.add(TextEditingController());
-    });
-  }
-  
-  void _removeObservationField(int index) {
-    setState(() {
-      observationControllers[index].dispose();
-      observationControllers.removeAt(index);
-      
-      // Actualizar input
-      viewModel.input.observations = observationControllers
-        .map((c) => c.text)
-        .where((text) => text.isNotEmpty)
-        .toList();
-    });
   }
   
   void _updateExamValues() {
@@ -495,74 +470,32 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                   ],
                   
                   // Sección de observaciones
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.observations,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      if (canEdit)
-                        FilledButton.icon(
-                          icon: const Icon(Icons.add, size: 18),
-                          label: Text(l10n.addObservation),
-                          onPressed: _addObservationField,
-                        ),
-                    ],
+                  Text(
+                    l10n.observations,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 12),
               
-                  if (observationControllers.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: Text(
-                          l10n.noObservations,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: observationControllers.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: CustomTextFormField(
-                                  labelText: '${l10n.observation} ${index + 1}',
-                                  controller: observationControllers[index],
-                                  isDense: true,
-                                  fieldLength: FormFieldLength.name,
-                                  counterText: "",
-                                  readOnly: !canEdit,
-                                  onChange: (value) {
-                                    viewModel.input.observations = observationControllers
-                                      .map((c) => c.text)
-                                      .where((text) => text.isNotEmpty)
-                                      .toList();
-                                  },
-                                ),
-                              ),
-                              if (canEdit && observationControllers.length > 1) ...[
-                                const SizedBox(width: 8),
-                                IconButton(
-                                  icon: const Icon(Icons.remove_circle_outline),
-                                  onPressed: () => _removeObservationField(index),
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                              ],
-                            ],
-                          ),
-                        );
-                      },
+                  TextFormField(
+                    controller: observationController,
+                    maxLines: null,
+                    minLines: 3,
+                    readOnly: !canEdit,
+                    decoration: InputDecoration(
+                      labelText: l10n.observations,
+                      hintText: l10n.writeObservationsHere,
+                      alignLabelWithHint: true,
+                      border: const OutlineInputBorder(),
                     ),
+                    onChanged: (value) {
+                      // Dividir por líneas y filtrar vacías para mantener compatibilidad con lista
+                      final observations = value.split('\n')
+                          .where((line) => line.trim().isNotEmpty)
+                          .toList();
+                      viewModel.input.observations = observations;
+                    },
+                  ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),

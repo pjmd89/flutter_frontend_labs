@@ -826,6 +826,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error070 => 'Generic error 70';
 
   @override
+  String get error071 => 'Generic error 71';
+
+  @override
+  String get error072 => 'Generic error 72';
+
+  @override
+  String get error073 => 'Generic error 73';
+
+  @override
+  String get error074 => 'Generic error 74';
+
+  @override
+  String get error075 => 'Generic error 75';
+
+  @override
+  String get error076 => 'Generic error 76';
+
+  @override
+  String get error077 => 'Generic error 77';
+
+  @override
+  String get error078 => 'Generic error 78';
+
+  @override
+  String get error079 => 'Generic error 79';
+
+  @override
+  String get error080 => 'Generic error 80';
+
+  @override
+  String get error081 => 'Generic error 81';
+
+  @override
+  String get error082 => 'Generic error 82';
+
+  @override
+  String get error083 => 'Generic error 83';
+
+  @override
+  String get error084 => 'Generic error 84';
+
+  @override
+  String get error085 => 'Missing bioanalyst signature';
+
+  @override
+  String get error086 => 'Generic error 86';
+
+  @override
+  String get error087 => 'Generic error 87';
+
+  @override
+  String get error088 => 'Generic error 88';
+
+  @override
+  String get error089 => 'Generic error 89';
+
+  @override
+  String get error090 => 'Generic error 90';
+
+  @override
   String get patient => 'Patient';
 
   @override
@@ -1003,6 +1063,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get observation => 'Observation';
+
+  @override
+  String get writeObservationsHere => 'Write your observations here...';
 
   @override
   String get examResultsNote => 'Note: Exam results are edited in their corresponding module';

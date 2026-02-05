@@ -1025,6 +1025,86 @@
   "@error070": {
     "description": "Generic error 70"
   },
+  "error071": "Generic error 71",
+  "@error071": {
+    "description": "Generic error 71"
+  },
+  "error072": "Generic error 72",
+  "@error072": {
+    "description": "Generic error 72"
+  },
+  "error073": "Generic error 73",
+  "@error073": {
+    "description": "Generic error 73"
+  },
+  "error074": "Generic error 74",
+  "@error074": {
+    "description": "Generic error 74"
+  },
+  "error075": "Generic error 75",
+  "@error075": {
+    "description": "Generic error 75"
+  },
+  "error076": "Generic error 76",
+  "@error076": {
+    "description": "Generic error 76"
+  },
+  "error077": "Generic error 77",
+  "@error077": {
+    "description": "Generic error 77"
+  },
+  "error078": "Generic error 78",
+  "@error078": {
+    "description": "Generic error 78"
+  },
+  "error079": "Generic error 79",
+  "@error079": {
+    "description": "Generic error 79"
+  },
+  "error080": "Generic error 80",
+  "@error080": {
+    "description": "Generic error 80"
+  },
+  "error081": "Generic error 81",
+  "@error081": {
+    "description": "Generic error 81"
+  },
+  "error082": "Generic error 82",
+  "@error082": {
+    "description": "Generic error 82"
+  },
+  "error083": "Generic error 83",
+  "@error083": {
+    "description": "Generic error 83"
+  },
+  "error084": "Generic error 84",
+  "@error084": {
+    "description": "Generic error 84"
+  },
+  "error085": "Missing bioanalyst signature",
+  "@error085": {
+    "description": "Error when bioanalyst signature is missing"
+  },
+  "error086": "Generic error 86",
+  "@error086": {
+    "description": "Generic error 86"
+  },
+  "error087": "Generic error 87",
+  "@error087": {
+    "description": "Generic error 87"
+  },
+  "error088": "Generic error 88",
+  "@error088": {
+    "description": "Generic error 88"
+  },
+  "error089": "Generic error 89",
+  "@error089": {
+    "description": "Generic error 89"
+  },
+  "error090": "Generic error 90",
+  "@error090": {
+    "description": "Generic error 90"
+  },
   "invoice": "Invoice",
   "invoices": "Invoices",
   "patient": "Patient",
@@ -1283,6 +1363,10 @@
   "observation": "Observation",
   "@observation": {
     "description": "Label for observation field"
+  },
+  "writeObservationsHere": "Write your observations here...",
+  "@writeObservationsHere": {
+    "description": "Placeholder for observations field"
   },
   "examResultsNote": "Note: Exam results are edited in their corresponding module",
   "@examResultsNote": {

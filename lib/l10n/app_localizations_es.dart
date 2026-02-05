@@ -826,6 +826,66 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error070 => 'Error genérico 70';
 
   @override
+  String get error071 => 'Error genérico 71';
+
+  @override
+  String get error072 => 'Error genérico 72';
+
+  @override
+  String get error073 => 'Error genérico 73';
+
+  @override
+  String get error074 => 'Error genérico 74';
+
+  @override
+  String get error075 => 'Error genérico 75';
+
+  @override
+  String get error076 => 'Error genérico 76';
+
+  @override
+  String get error077 => 'Error genérico 77';
+
+  @override
+  String get error078 => 'Error genérico 78';
+
+  @override
+  String get error079 => 'Error genérico 79';
+
+  @override
+  String get error080 => 'Error genérico 80';
+
+  @override
+  String get error081 => 'Error genérico 81';
+
+  @override
+  String get error082 => 'Error genérico 82';
+
+  @override
+  String get error083 => 'Error genérico 83';
+
+  @override
+  String get error084 => 'Error genérico 84';
+
+  @override
+  String get error085 => 'Falta la firma del bioanalista';
+
+  @override
+  String get error086 => 'Error genérico 86';
+
+  @override
+  String get error087 => 'Error genérico 87';
+
+  @override
+  String get error088 => 'Error genérico 88';
+
+  @override
+  String get error089 => 'Error genérico 89';
+
+  @override
+  String get error090 => 'Error genérico 90';
+
+  @override
   String get patient => 'Paciente';
 
   @override
@@ -1003,6 +1063,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get observation => 'Observación';
+
+  @override
+  String get writeObservationsHere => 'Escribe tus observaciones aquí...';
 
   @override
   String get examResultsNote => 'Nota: Los resultados de exámenes se editan en su módulo correspondiente';
