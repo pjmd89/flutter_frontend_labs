@@ -13,6 +13,7 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   List<Patient>? _patientList;
+  List<Patient>? _originalPatientList; // Copia original para filtrado
   PageInfo? _pageInfo;
 
   // Dependencias
@@ -45,6 +46,10 @@ class ViewModel extends ChangeNotifier {
 
   set patientList(List<Patient>? value) {
     _patientList = value;
+    // Guardar copia original cuando se actualizan los datos desde el backend
+    if (value != null) {
+      _originalPatientList = List.from(value);
+    }
     notifyListeners();
   }
 
@@ -115,6 +120,85 @@ class ViewModel extends ChangeNotifier {
 
   // Buscar pacientes con filtros
   Future<void> search(List<SearchInput> searchInputs) async {
+    // Si no hay filtros de búsqueda, recargar datos normales
+    if (searchInputs.isEmpty) {
+      await getPatients();
+      return;
+    }
+    
+    // Si hay pacientes cargados, filtrar del lado del cliente
+    if (_originalPatientList != null && _originalPatientList!.isNotEmpty) {
+      debugPrint('🔍 Filtrando ${_originalPatientList!.length} pacientes del lado del cliente');
+      
+      // Extraer el texto de búsqueda del primer SearchInput
+      String searchText = '';
+      if (searchInputs.isNotEmpty && 
+          searchInputs[0].value != null && 
+          searchInputs[0].value!.isNotEmpty &&
+          searchInputs[0].value![0]?.value != null) {
+        searchText = searchInputs[0].value![0]!.value.toString().toLowerCase();
+      }
+      
+      debugPrint('🔍 Texto de búsqueda: "$searchText"');
+      
+      if (searchText.isEmpty) {
+        // Sin texto, mostrar todos
+        patientList = _originalPatientList;
+        return;
+      }
+      
+      // Filtrar pacientes por firstName, lastName, dni o email
+      final filtered = _originalPatientList!.where((patient) {
+        // Patient puede ser Person o Animal, necesitamos acceder a patientData
+        if (patient.isPerson) {
+          final person = patient.asPerson;
+          if (person == null) return false;
+          
+          final firstName = person.firstName?.toLowerCase() ?? '';
+          final lastName = person.lastName?.toLowerCase() ?? '';
+          final dni = person.dni?.toLowerCase() ?? '';
+          final email = person.email?.toLowerCase() ?? '';
+          
+          return firstName.contains(searchText) ||
+                 lastName.contains(searchText) ||
+                 dni.contains(searchText) ||
+                 email.contains(searchText);
+        } else if (patient.isAnimal) {
+          final animal = patient.asAnimal;
+          if (animal == null) return false;
+          
+          final firstName = animal.firstName?.toLowerCase() ?? '';
+          final lastName = animal.lastName?.toLowerCase() ?? '';
+          final species = animal.species?.toLowerCase() ?? '';
+          
+          return firstName.contains(searchText) ||
+                 lastName.contains(searchText) ||
+                 species.contains(searchText);
+        }
+        
+        return false;
+      }).toList();
+      
+      debugPrint('✅ Resultados filtrados: ${filtered.length}');
+      
+      // Actualizar la lista mostrada (sin guardar en _originalPatientList)
+      _patientList = filtered;
+      
+      // Actualizar pageInfo para reflejar los resultados filtrados
+      if (_pageInfo != null) {
+        _pageInfo = PageInfo(
+          total: filtered.length,
+          page: 1,
+          pages: (filtered.length / (_pageInfo!.split > 0 ? _pageInfo!.split : 10)).ceil(),
+          split: _pageInfo!.split,
+        );
+      }
+      
+      notifyListeners();
+      return;
+    }
+    
+    // Si no hay datos cargados, intentar búsqueda en el backend (fallback)
     loading = true;
     error = false;
 
