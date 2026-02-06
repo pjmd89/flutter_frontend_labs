@@ -32,8 +32,9 @@ SearchTemplateConfig getSearchConfig({
             },
           ),
     searchFields: [
-      SearchFields(field: 'member'),
-      SearchFields(field: 'laboratory'),
+      SearchFields(field: 'member.firstName'), // Buscar en firstName del usuario
+      SearchFields(field: 'member.lastName'),  // Buscar en lastName del usuario
+      SearchFields(field: 'member.email'),     // Buscar en email del usuario
     ],
     pageInfo: viewModel.pageInfo,
     onSearchChanged: (search) {

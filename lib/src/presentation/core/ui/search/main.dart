@@ -55,9 +55,15 @@ class _SearchTemplateState extends State<SearchTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    viewModel.pageInfo =
-        widget.config.pageInfo ??
-        PageInfo(total: 0, page: 1, pages: 0, split: 10);
+    final configPageInfo = widget.config.pageInfo;
+    viewModel.pageInfo = configPageInfo != null
+        ? PageInfo(
+            total: configPageInfo.total,
+            page: configPageInfo.page,
+            pages: configPageInfo.pages,
+            split: configPageInfo.split <= 0 ? 10 : configPageInfo.split,
+          )
+        : PageInfo(total: 0, page: 1, pages: 0, split: 10);
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
@@ -155,10 +161,7 @@ class _SearchTemplateState extends State<SearchTemplate> {
                                 ),
                                 const SizedBox(width: 12),
                                 DropdownButton<int>(
-                                  value:
-                                      viewModel.pageInfo.split.toInt() == 0
-                                          ? 10
-                                          : viewModel.pageInfo.split.toInt(),
+                                  value: viewModel.pageInfo.split.toInt(),
                                   style: const TextStyle(fontSize: 18),
                                   underline: SizedBox(),
 

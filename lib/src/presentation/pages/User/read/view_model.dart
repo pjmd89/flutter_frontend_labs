@@ -1,5 +1,6 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert'; // Para jsonEncode en debugging
 import 'package:labs/src/domain/entities/main.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/presentation/providers/laboratory_notifier.dart';
@@ -14,6 +15,7 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   List<LabMembershipInfo>? _membershipList;
+  List<LabMembershipInfo>? _originalMembershipList; // Copia original para filtrado
   List<User>? _userList;
   PageInfo? _pageInfo;
 
@@ -47,6 +49,10 @@ class ViewModel extends ChangeNotifier {
 
   set membershipList(List<LabMembershipInfo>? value) {
     _membershipList = value;
+    // Guardar copia original cuando se actualizan los datos desde el backend
+    if (value != null) {
+      _originalMembershipList = List.from(value);
+    }
     notifyListeners();
   }
   
@@ -116,6 +122,14 @@ class ViewModel extends ChangeNotifier {
           userList = null; // Limpiar userList, ahora usamos membershipList
           
           debugPrint('✅ Total membresías obtenidas: ${response.edges.length}');
+          if (response.edges.isNotEmpty) {
+            debugPrint('📋 Ejemplos de usuarios en este laboratorio:');
+            for (var i = 0; i < response.edges.length.clamp(0, 3); i++) {
+              final membership = response.edges[i];
+              final user = membership.member;
+              debugPrint('   - ${user?.firstName} ${user?.lastName} (${user?.email})');
+            }
+          }
         }
       } else {
         // Otros usuarios: filtrar por laboratorio seleccionado
@@ -169,12 +183,160 @@ class ViewModel extends ChangeNotifier {
   }
 
   Future<void> search(List<SearchInput> searchInputs) async {
+    // Si no hay filtros de búsqueda, recargar datos normales
+    if (searchInputs.isEmpty) {
+      await getMemberships();
+      return;
+    }
+    
+    // Si hay memberships cargadas, filtrar del lado del cliente
+    if (_originalMembershipList != null && _originalMembershipList!.isNotEmpty) {
+      debugPrint('🔍 Filtrando ${_originalMembershipList!.length} membresías del lado del cliente');
+      
+      // Extraer el texto de búsqueda del primer SearchInput
+      String searchText = '';
+      if (searchInputs.isNotEmpty && 
+          searchInputs[0].value != null && 
+          searchInputs[0].value!.isNotEmpty &&
+          searchInputs[0].value![0]?.value != null) {
+        searchText = searchInputs[0].value![0]!.value.toString().toLowerCase();
+      }
+      
+      debugPrint('🔍 Texto de búsqueda: "$searchText"');
+      
+      if (searchText.isEmpty) {
+        // Sin texto, mostrar todos
+        membershipList = _originalMembershipList;
+        return;
+      }
+      
+      // Filtrar membresías por nombre, apellido o email del usuario
+      final filtered = _originalMembershipList!.where((membership) {
+        final user = membership.member;
+        if (user == null) return false;
+        
+        final firstName = user.firstName?.toLowerCase() ?? '';
+        final lastName = user.lastName?.toLowerCase() ?? '';
+        final email = user.email?.toLowerCase() ?? '';
+        
+        return firstName.contains(searchText) ||
+               lastName.contains(searchText) ||
+               email.contains(searchText);
+      }).toList();
+      
+      debugPrint('✅ Resultados filtrados: ${filtered.length}');
+      
+      // Actualizar la lista mostrada
+      membershipList = filtered;
+      
+      // Actualizar pageInfo para reflejar los resultados filtrados
+      if (_pageInfo != null) {
+        pageInfo = PageInfo(
+          total: filtered.length,
+          page: 1,
+          pages: (filtered.length / (_pageInfo!.split > 0 ? _pageInfo!.split : 10)).ceil(),
+          split: _pageInfo!.split,
+        );
+      }
+      
+      notifyListeners();
+      return;
+    }
+    
+    // Si no hay datos cargados, intentar búsqueda en el backend
+    // (este código es el fallback, normalmente no debería ejecutarse)
     loading = true;
     error = false;
 
     try {
+      
+      // Validar y corregir pageInfo antes de usarlo
+      PageInfo? validPageInfo = _pageInfo;
+      if (validPageInfo != null && validPageInfo.split <= 0) {
+        validPageInfo = PageInfo(
+          total: validPageInfo.total,
+          page: validPageInfo.page,
+          pages: validPageInfo.pages,
+          split: 10,
+        );
+      }
+      
+      // Preparar filtros
+      List<SearchInput> finalSearchInputs = [];
+      
+      // Si hay múltiples campos de búsqueda, agruparlos con OR
+      if (searchInputs.length > 1) {
+        // Crear un único SearchInput con lógica OR para los campos de búsqueda
+        final orSearchInput = SearchInput(
+          or: searchInputs,
+        );
+        finalSearchInputs.add(orSearchInput);
+      } else if (searchInputs.length == 1) {
+        finalSearchInputs.add(searchInputs[0]);
+      }
+      
+      // Si NO es ROOT/ADMIN, agregar filtro del laboratorio seleccionado
+      if (!_isRootUser) {
+        final selectedLaboratory = _laboratoryNotifier.selectedLaboratory;
+        
+        if (selectedLaboratory == null) {
+          debugPrint('⚠️ No hay laboratorio seleccionado para búsqueda');
+          membershipList = [];
+          userList = [];
+          loading = false;
+          return;
+        }
+        
+        // Agregar filtro de laboratorio a los searchInputs
+        finalSearchInputs.add(
+          SearchInput(
+            field: 'laboratory',
+            value: [
+              ValueInput(
+                value: selectedLaboratory.id,
+                operator: OperatorEnum.eq,
+                kind: KindEnum.iD,
+              )
+            ]
+          )
+        );
+        
+        debugPrint('🔍 Búsqueda con filtro de laboratorio: ${selectedLaboratory.id}');
+      }
+      
+      // Debug: Mostrar qué se está enviando
+      debugPrint('🔍 Search Inputs que se enviarán:');
+      for (var input in finalSearchInputs) {
+        debugPrint('   Field: ${input.field}');
+        if (input.value != null) {
+          for (var value in input.value!) {
+            debugPrint('   Value: ${value?.value}, Kind: ${value?.kind}, Operator: ${value?.operator}');
+          }
+        }
+        if (input.or != null) {
+          debugPrint('   OR logic with ${input.or!.length} conditions:');
+          for (var orInput in input.or!) {
+            debugPrint('      - Field: ${orInput?.field}');
+            if (orInput?.value != null) {
+              for (var val in orInput!.value!) {
+                debugPrint('        Value: ${val?.value}');
+              }
+            }
+          }
+        }
+      }
+      
+      // Debug: Mostrar JSON completo
+      debugPrint('📤 JSON que se enviará:');
+      try {
+        final jsonList = finalSearchInputs.map((e) => e.toJson()).toList();
+        debugPrint('   ${jsonEncode(jsonList)}');
+      } catch (e) {
+        debugPrint('   Error al serializar: $e');
+      }
+      
       // Usar getLabMemberships para todos los roles
-      final response = await _readMembershipUseCase.search(searchInputs, _pageInfo);
+      final response = await _readMembershipUseCase.search(finalSearchInputs, validPageInfo);
 
       if (response is EdgeLabMembershipInfo) {
         membershipList = response.edges;
@@ -190,12 +352,23 @@ class ViewModel extends ChangeNotifier {
     } catch (e, stackTrace) {
       debugPrint('💥 Error en search: $e');
       debugPrint('📍 StackTrace: $stackTrace');
-      error = true;
-      membershipList = [];
-      userList = [];
-
-      // Mostrar error al usuario
       
+      // Si el error es "Laboratory membership not found", no es un error fatal,
+      // simplemente no hay resultados para esa búsqueda
+      if (e.toString().contains('Laboratory membership not found') || 
+          e.toString().contains('075')) {
+        debugPrint('ℹ️ No se encontraron resultados para la búsqueda');
+        membershipList = [];
+        userList = [];
+        pageInfo = PageInfo(total: 0, page: 1, pages: 0, split: _pageInfo?.split ?? 10);
+        error = false; // No es un error, simplemente no hay resultados
+      } else {
+        error = true;
+        membershipList = [];
+        userList = [];
+        
+        // Mostrar error al usuario solo si es un error real
+      }
     } finally {
       loading = false;
     }
