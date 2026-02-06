@@ -1133,6 +1133,18 @@ abstract class AppLocalizations {
   /// **'Buscar'**
   String get search;
 
+  /// Label para búsqueda de facturas por ID de orden
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar (filtrado por ID de orden)'**
+  String get searchByOrderID;
+
+  /// Label para búsqueda de paquetes de evaluación por referido
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar (filtrado por referido del paquete)'**
+  String get searchByReferredPackage;
+
   /// Acción o etiqueta para filtrado
   ///
   /// In es, this message translates to:

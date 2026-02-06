@@ -13,6 +13,7 @@ class SearchTemplateConfig {
   final Function(List<SearchInput> search)? onSearchChanged;
   final Function(PageInfo pageInfo)? onPageInfoChanged;
   final PageInfo? pageInfo;
+  final String? searchHint; // Label personalizado para el campo de búsqueda
 
   const SearchTemplateConfig({
     this.rightWidget = const SizedBox.shrink(),
@@ -21,6 +22,7 @@ class SearchTemplateConfig {
     this.onPageInfoChanged,
     this.searchFields,
     this.pageInfo,
+    this.searchHint,
   });
 }
 
@@ -88,7 +90,7 @@ class _SearchTemplateState extends State<SearchTemplate> {
                           child: TextFormField(
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.search),
-                              labelText: AppLocalizations.of(context)!.search,
+                              labelText: widget.config.searchHint ?? AppLocalizations.of(context)!.search,
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {

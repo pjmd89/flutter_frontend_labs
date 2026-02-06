@@ -662,6 +662,14 @@
   "@search": {
     "description": "Action or label for search"
   },
+  "searchByOrderID": "Search (filtered by order ID)",
+  "@searchByOrderID": {
+    "description": "Label for invoice search by order ID"
+  },
+  "searchByReferredPackage": "Search (filtered by package referred)",
+  "@searchByReferredPackage": {
+    "description": "Label for evaluation package search by referred"
+  },
   "filter": "Filter",
   "@filter": {
     "description": "Action or label for filtering"

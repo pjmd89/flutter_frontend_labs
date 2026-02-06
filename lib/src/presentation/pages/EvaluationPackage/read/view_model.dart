@@ -13,6 +13,7 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   List<EvaluationPackage>? _evaluationPackageList;
+  List<EvaluationPackage>? _originalEvaluationPackageList; // Copia original para filtrado
   PageInfo? _pageInfo;
 
   // Dependencias
@@ -45,6 +46,10 @@ class ViewModel extends ChangeNotifier {
 
   set evaluationPackageList(List<EvaluationPackage>? value) {
     _evaluationPackageList = value;
+    // Guardar copia original cuando se actualizan los datos desde el backend
+    if (value != null) {
+      _originalEvaluationPackageList = List.from(value);
+    }
     notifyListeners();
   }
 
@@ -117,6 +122,73 @@ class ViewModel extends ChangeNotifier {
 
   // Buscar paquetes de evaluación con filtros
   Future<void> search(List<SearchInput> searchInputs) async {
+    // Si no hay filtros de búsqueda, recargar datos normales
+    if (searchInputs.isEmpty) {
+      await getEvaluationPackages();
+      return;
+    }
+    
+    // Si hay paquetes cargados, filtrar del lado del cliente
+    if (_originalEvaluationPackageList != null && _originalEvaluationPackageList!.isNotEmpty) {
+      debugPrint('🔍 Filtrando ${_originalEvaluationPackageList!.length} paquetes del lado del cliente');
+      
+      // Extraer el texto de búsqueda del primer SearchInput
+      String searchText = '';
+      if (searchInputs.isNotEmpty && 
+          searchInputs[0].value != null && 
+          searchInputs[0].value!.isNotEmpty &&
+          searchInputs[0].value![0]?.value != null) {
+        searchText = searchInputs[0].value![0]!.value.toString().toLowerCase();
+      }
+      
+      debugPrint('🔍 Texto de búsqueda: "$searchText"');
+      
+      if (searchText.isEmpty) {
+        // Sin texto, mostrar todos
+        evaluationPackageList = _originalEvaluationPackageList;
+        return;
+      }
+      
+      // Filtrar paquetes por referred, status, o datos del paciente
+      final filtered = _originalEvaluationPackageList!.where((pkg) {
+        final referred = pkg.referred.toLowerCase();
+        final status = pkg.status?.name.toLowerCase() ?? '';
+        
+        // Buscar en datos del paciente (Person o Animal)
+        String patientName = '';
+        if (pkg.patient?.isPerson == true) {
+          final person = pkg.patient?.asPerson;
+          patientName = '${person?.firstName ?? ''} ${person?.lastName ?? ''}'.toLowerCase();
+        } else if (pkg.patient?.isAnimal == true) {
+          final animal = pkg.patient?.asAnimal;
+          patientName = '${animal?.firstName ?? ''} ${animal?.lastName ?? ''}'.toLowerCase();
+        }
+        
+        return referred.contains(searchText) ||
+               status.contains(searchText) ||
+               patientName.contains(searchText);
+      }).toList();
+      
+      debugPrint('✅ Resultados filtrados: ${filtered.length}');
+      
+      // Actualizar la lista mostrada (sin guardar en _originalEvaluationPackageList)
+      _evaluationPackageList = filtered;
+      
+      // Actualizar pageInfo para reflejar los resultados filtrados
+      if (_pageInfo != null) {
+        _pageInfo = PageInfo(
+          total: filtered.length,
+          page: 1,
+          pages: (filtered.length / (_pageInfo!.split > 0 ? _pageInfo!.split : 10)).ceil(),
+          split: _pageInfo!.split,
+        );
+      }
+      
+      notifyListeners();
+      return;
+    }
+    
+    // Si no hay datos cargados, intentar búsqueda en el backend (fallback)
     loading = true;
     error = false;
 

@@ -14,6 +14,7 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   List<Exam>? _examList;
+  List<Exam>? _originalExamList; // Copia original para filtrado
   PageInfo? _pageInfo;
 
   // Dependencias
@@ -46,6 +47,10 @@ class ViewModel extends ChangeNotifier {
 
   set examList(List<Exam>? value) {
     _examList = value;
+    // Guardar copia original cuando se actualizan los datos desde el backend
+    if (value != null) {
+      _originalExamList = List.from(value);
+    }
     notifyListeners();
   }
 
@@ -109,6 +114,62 @@ class ViewModel extends ChangeNotifier {
 
   // Buscar exámenes con filtros
   Future<void> search(List<SearchInput> searchInputs) async {
+    // Si no hay filtros de búsqueda, recargar datos normales
+    if (searchInputs.isEmpty) {
+      await getExams();
+      return;
+    }
+    
+    // Si hay exámenes cargados, filtrar del lado del cliente
+    if (_originalExamList != null && _originalExamList!.isNotEmpty) {
+      debugPrint('🔍 Filtrando ${_originalExamList!.length} exámenes del lado del cliente');
+      
+      // Extraer el texto de búsqueda del primer SearchInput
+      String searchText = '';
+      if (searchInputs.isNotEmpty && 
+          searchInputs[0].value != null && 
+          searchInputs[0].value!.isNotEmpty &&
+          searchInputs[0].value![0]?.value != null) {
+        searchText = searchInputs[0].value![0]!.value.toString().toLowerCase();
+      }
+      
+      debugPrint('🔍 Texto de búsqueda: "$searchText"');
+      
+      if (searchText.isEmpty) {
+        // Sin texto, mostrar todos
+        examList = _originalExamList;
+        return;
+      }
+      
+      // Filtrar exámenes por template.name y baseCost
+      final filtered = _originalExamList!.where((exam) {
+        final templateName = exam.template?.name?.toLowerCase() ?? '';
+        final baseCost = exam.baseCost.toString().toLowerCase();
+        
+        return templateName.contains(searchText) ||
+               baseCost.contains(searchText);
+      }).toList();
+      
+      debugPrint('✅ Resultados filtrados: ${filtered.length}');
+      
+      // Actualizar la lista mostrada (sin guardar en _originalExamList)
+      _examList = filtered;
+      
+      // Actualizar pageInfo para reflejar los resultados filtrados
+      if (_pageInfo != null) {
+        _pageInfo = PageInfo(
+          total: filtered.length,
+          page: 1,
+          pages: (filtered.length / (_pageInfo!.split > 0 ? _pageInfo!.split : 10)).ceil(),
+          split: _pageInfo!.split,
+        );
+      }
+      
+      notifyListeners();
+      return;
+    }
+    
+    // Si no hay datos cargados, intentar búsqueda en el backend (fallback)
     loading = true;
     error = false;
 

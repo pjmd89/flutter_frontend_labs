@@ -20,6 +20,7 @@ SearchTemplateConfig getSearchConfig({
     //    }
     //  },
     //),
+    searchHint: l10n.searchByReferredPackage,
     searchFields: [
       SearchFields(field: 'referred'),
     ],

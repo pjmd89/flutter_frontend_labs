@@ -556,6 +556,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search => 'Search';
 
   @override
+  String get searchByOrderID => 'Search (filtered by order ID)';
+
+  @override
+  String get searchByReferredPackage => 'Search (filtered by package referred)';
+
+  @override
   String get filter => 'Filter';
 
   @override

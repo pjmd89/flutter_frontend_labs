@@ -12,6 +12,7 @@ SearchTemplateConfig getSearchConfig({
 }) {
 
   return SearchTemplateConfig(
+    searchHint: l10n.searchByOrderID, // "Buscar (filtrado por ID de orden)"
     rightWidget: FilledButton.icon(
       icon: const Icon(Icons.add),
       label: Text(l10n.createThing(l10n.invoice)),

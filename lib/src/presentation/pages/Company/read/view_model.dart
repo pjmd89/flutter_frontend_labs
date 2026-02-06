@@ -13,6 +13,7 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   List<Company>? _companyList;
+  List<Company>? _originalCompanyList; // Copia original para filtrado
   PageInfo? _pageInfo;
 
   // Dependencias
@@ -45,6 +46,10 @@ class ViewModel extends ChangeNotifier {
 
   set companyList(List<Company>? value) {
     _companyList = value;
+    // Guardar copia original cuando se actualizan los datos desde el backend
+    if (value != null) {
+      _originalCompanyList = List.from(value);
+    }
     notifyListeners();
   }
 
@@ -115,6 +120,62 @@ class ViewModel extends ChangeNotifier {
 
   // Buscar empresas con filtros
   Future<void> search(List<SearchInput> searchInputs) async {
+    // Si no hay filtros de búsqueda, recargar datos normales
+    if (searchInputs.isEmpty) {
+      await getCompanies();
+      return;
+    }
+    
+    // Si hay empresas cargadas, filtrar del lado del cliente
+    if (_originalCompanyList != null && _originalCompanyList!.isNotEmpty) {
+      debugPrint('🔍 Filtrando ${_originalCompanyList!.length} empresas del lado del cliente');
+      
+      // Extraer el texto de búsqueda del primer SearchInput
+      String searchText = '';
+      if (searchInputs.isNotEmpty && 
+          searchInputs[0].value != null && 
+          searchInputs[0].value!.isNotEmpty &&
+          searchInputs[0].value![0]?.value != null) {
+        searchText = searchInputs[0].value![0]!.value.toString().toLowerCase();
+      }
+      
+      debugPrint('🔍 Texto de búsqueda: "$searchText"');
+      
+      if (searchText.isEmpty) {
+        // Sin texto, mostrar todas
+        companyList = _originalCompanyList;
+        return;
+      }
+      
+      // Filtrar empresas por name o taxID
+      final filtered = _originalCompanyList!.where((company) {
+        final name = company.name.toLowerCase();
+        final taxID = company.taxID.toLowerCase();
+        
+        return name.contains(searchText) ||
+               taxID.contains(searchText);
+      }).toList();
+      
+      debugPrint('✅ Resultados filtrados: ${filtered.length}');
+      
+      // Actualizar la lista mostrada (sin guardar en _originalCompanyList)
+      _companyList = filtered;
+      
+      // Actualizar pageInfo para reflejar los resultados filtrados
+      if (_pageInfo != null) {
+        _pageInfo = PageInfo(
+          total: filtered.length,
+          page: 1,
+          pages: (filtered.length / (_pageInfo!.split > 0 ? _pageInfo!.split : 10)).ceil(),
+          split: _pageInfo!.split,
+        );
+      }
+      
+      notifyListeners();
+      return;
+    }
+    
+    // Si no hay datos cargados, intentar búsqueda en el backend (fallback)
     loading = true;
     error = false;
 

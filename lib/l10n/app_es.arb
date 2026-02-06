@@ -805,6 +805,14 @@
   "@search": {
     "description": "Acción o etiqueta para búsqueda"
   },
+  "searchByOrderID": "Buscar (filtrado por ID de orden)",
+  "@searchByOrderID": {
+    "description": "Label para búsqueda de facturas por ID de orden"
+  },
+  "searchByReferredPackage": "Buscar (filtrado por referido del paquete)",
+  "@searchByReferredPackage": {
+    "description": "Label para búsqueda de paquetes de evaluación por referido"
+  },
   "filter": "Filtrar",
   "@filter": {
     "description": "Acción o etiqueta para filtrado"

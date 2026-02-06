@@ -19,6 +19,7 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _error = false;
   List<Invoice>? _invoiceList;
+  List<Invoice>? _originalInvoiceList; // Copia original para filtrado
   PageInfo? _pageInfo;
 
   // Dependencias
@@ -52,6 +53,10 @@ class ViewModel extends ChangeNotifier {
 
   set invoiceList(List<Invoice>? value) {
     _invoiceList = value;
+    // Guardar copia original cuando se actualizan los datos desde el backend
+    if (value != null) {
+      _originalInvoiceList = List.from(value);
+    }
     notifyListeners();
   }
 
@@ -118,6 +123,75 @@ class ViewModel extends ChangeNotifier {
 
   // Buscar facturas con filtros
   Future<void> search(List<SearchInput> searchInputs) async {
+    // Si no hay filtros de búsqueda, recargar datos normales
+    if (searchInputs.isEmpty) {
+      await getInvoices();
+      return;
+    }
+    
+    // Si hay facturas cargadas, filtrar del lado del cliente
+    if (_originalInvoiceList != null && _originalInvoiceList!.isNotEmpty) {
+      debugPrint('🔍 Filtrando ${_originalInvoiceList!.length} facturas del lado del cliente');
+      
+      // Extraer el texto de búsqueda del primer SearchInput
+      String searchText = '';
+      if (searchInputs.isNotEmpty && 
+          searchInputs[0].value != null && 
+          searchInputs[0].value!.isNotEmpty &&
+          searchInputs[0].value![0]?.value != null) {
+        searchText = searchInputs[0].value![0]!.value.toString().toLowerCase();
+      }
+      
+      debugPrint('🔍 Texto de búsqueda: "$searchText"');
+      
+      if (searchText.isEmpty) {
+        // Sin texto, mostrar todas
+        invoiceList = _originalInvoiceList;
+        return;
+      }
+      
+      // Filtrar facturas por orderID, paymentStatus, totalAmount, o datos del paciente
+      final filtered = _originalInvoiceList!.where((invoice) {
+        final orderID = invoice.orderID.toLowerCase();
+        final paymentStatus = invoice.paymentStatus?.name.toLowerCase() ?? '';
+        final totalAmount = invoice.totalAmount.toString().toLowerCase();
+        
+        // Buscar en datos del paciente (Person o Animal)
+        String patientName = '';
+        if (invoice.patient?.isPerson == true) {
+          final person = invoice.patient?.asPerson;
+          patientName = '${person?.firstName ?? ''} ${person?.lastName ?? ''}'.toLowerCase();
+        } else if (invoice.patient?.isAnimal == true) {
+          final animal = invoice.patient?.asAnimal;
+          patientName = '${animal?.firstName ?? ''} ${animal?.lastName ?? ''}'.toLowerCase();
+        }
+        
+        return orderID.contains(searchText) ||
+               paymentStatus.contains(searchText) ||
+               totalAmount.contains(searchText) ||
+               patientName.contains(searchText);
+      }).toList();
+      
+      debugPrint('✅ Resultados filtrados: ${filtered.length}');
+      
+      // Actualizar la lista mostrada (sin guardar en _originalInvoiceList)
+      _invoiceList = filtered;
+      
+      // Actualizar pageInfo para reflejar los resultados filtrados
+      if (_pageInfo != null) {
+        _pageInfo = PageInfo(
+          total: filtered.length,
+          page: 1,
+          pages: (filtered.length / (_pageInfo!.split > 0 ? _pageInfo!.split : 10)).ceil(),
+          split: _pageInfo!.split,
+        );
+      }
+      
+      notifyListeners();
+      return;
+    }
+    
+    // Si no hay datos cargados, intentar búsqueda en el backend (fallback)
     loading = true;
     error = false;
     try {
