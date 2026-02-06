@@ -21,12 +21,14 @@ SearchTemplateConfig getSearchConfig({
   // Debug
   debugPrint('🔍 Patient Search Config - User Role: $userRole');
   debugPrint('🔍 Is TECHNICIAN? ${userRole == LabMemberRole.tECHNICIAN}');
+  debugPrint('🔍 Is BILLING? ${userRole == LabMemberRole.bILLING}');
   
-  final isTechnician = userRole == LabMemberRole.tECHNICIAN;
+  final shouldHideButton = userRole == LabMemberRole.tECHNICIAN || 
+                           userRole == LabMemberRole.bILLING;
 
   return SearchTemplateConfig(
-    rightWidget: isTechnician 
-        ? const SizedBox.shrink() // Ocultar botón si es technician
+    rightWidget: shouldHideButton 
+        ? const SizedBox.shrink() // Ocultar botón si es technician o billing
         : FilledButton.icon(
             icon: const Icon(Icons.add),
             label: Text(l10n.newThing(l10n.patient)),

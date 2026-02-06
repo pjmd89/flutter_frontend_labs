@@ -23,7 +23,9 @@ class PatientItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
-    final isTechnician = loggedUser?.labRole == LabMemberRole.tECHNICIAN;
+    final userRole = loggedUser?.labRole;
+    final shouldHideMenu = userRole == LabMemberRole.tECHNICIAN || 
+                           userRole == LabMemberRole.bILLING;
 
     // Obtener datos del paciente según su tipo
     String patientName = '';
@@ -49,8 +51,8 @@ class PatientItem extends StatelessWidget {
           leading: const CircleAvatar(child: Icon(Icons.person_outline)),
           title: Text(patientName),
           subtitle: Text(patientInfo),
-          trailing: isTechnician 
-              ? null // Ocultar el menú si es technician
+          trailing: shouldHideMenu 
+              ? null // Ocultar el menú si es technician o billing
               : PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'edit' && onUpdate != null) {

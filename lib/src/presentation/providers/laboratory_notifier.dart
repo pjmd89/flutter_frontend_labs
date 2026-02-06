@@ -119,7 +119,7 @@ class LaboratoryNotifier extends ChangeNotifier {
                 debugPrint('🧭 Navegando a ruta de TECHNICIAN: $initialRoute');
                 break;
               case LabMemberRole.bILLING:
-                initialRoute = '/billing';
+                initialRoute = '/invoice';
                 debugPrint('🧭 Navegando a ruta de BILLING: $initialRoute');
                 break;
               default:

@@ -97,7 +97,7 @@ GoRouter ownerRouter = GoRouter(
   routes: [ownerShellRoute],
 );
 GoRouter billingRouter = GoRouter(
-  initialLocation: "/billing",
+  initialLocation: "/invoice",
   routes: [billingShellRoute],
 );
 GoRouter technicianRouter = GoRouter(
