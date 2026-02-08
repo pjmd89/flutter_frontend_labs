@@ -141,6 +141,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billToSelectionRequired => 'Select an existing payer or enter the billing data';
 
   @override
+  String get billingFormToggleHint => 'Click \"Show\" to enter billing details';
+
+  @override
   String get createNewPerson => 'Create New Person';
 
   @override

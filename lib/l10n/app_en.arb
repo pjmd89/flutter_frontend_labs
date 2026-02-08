@@ -1352,6 +1352,10 @@
     "@billToSelectionRequired": {
       "description": "Error message when no payer is selected"
     },
+    "billingFormToggleHint": "Click \"Show\" to enter billing details",
+    "@billingFormToggleHint": {
+      "description": "Helper text shown when the billing form is hidden"
+    },
   "createNewPerson": "Create New Person",
   "@createNewPerson": {
     "description": "Option to create a new person for billing"

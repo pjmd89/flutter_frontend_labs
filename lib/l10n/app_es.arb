@@ -176,6 +176,10 @@
   "@billToSelectionRequired": {
     "description": "Mensaje de error cuando falta elegir un pagador"
   },
+  "billingFormToggleHint": "Haga clic en \"Mostrar\" para ingresar los datos de facturación",
+  "@billingFormToggleHint": {
+    "description": "Texto informativo cuando el formulario de facturación está oculto"
+  },
   "createNewPerson": "Crear Nueva Persona",
   "@createNewPerson": {
     "description": "Opción para crear una nueva persona para facturación"

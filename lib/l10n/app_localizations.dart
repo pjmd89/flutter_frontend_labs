@@ -359,6 +359,12 @@ abstract class AppLocalizations {
   /// **'Selecciona un pagador existente o ingresa los datos de facturación'**
   String get billToSelectionRequired;
 
+  /// Texto informativo cuando el formulario de facturación está oculto
+  ///
+  /// In es, this message translates to:
+  /// **'Haga clic en \"Mostrar\" para ingresar los datos de facturación'**
+  String get billingFormToggleHint;
+
   /// Opción para crear una nueva persona para facturación
   ///
   /// In es, this message translates to:

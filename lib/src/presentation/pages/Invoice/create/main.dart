@@ -522,7 +522,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
-                                        'Haga clic en "Mostrar" para ingresar los datos de facturación',
+                                        l10n.billingFormToggleHint,
                                         style: TextStyle(
                                           fontSize: 13,
                                           color: Colors.blue[700],
