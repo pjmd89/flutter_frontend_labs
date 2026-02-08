@@ -4,15 +4,18 @@ import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/extensions/invoice_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/edgeexam_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/edgepatient_fields_builder_extension.dart';
+import 'package:labs/src/domain/extensions/edgeperson_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/person_fields_builder_extension.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/createInvoice/createinvoice_mutation.dart';
 import 'package:labs/src/domain/operation/mutations/createPerson/createperson_mutation.dart';
+import 'package:labs/src/domain/operation/queries/getPersons/getpersons_query.dart';
 import 'package:labs/src/domain/operation/queries/getPatients/getpatients_query.dart';
 import 'package:labs/src/domain/operation/queries/getExams/getexams_query.dart';
 import 'package:labs/src/domain/usecases/Invoice/create_invoice_usecase.dart';
 import 'package:labs/src/domain/usecases/Patient/read_patient_usecase.dart';
 import 'package:labs/src/domain/usecases/Exam/read_exam_usecase.dart';
+import 'package:labs/src/domain/usecases/Person/read_person_usecase.dart';
 import 'package:labs/src/domain/usecases/Person/create_person_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 
@@ -48,6 +51,9 @@ class ViewModel extends ChangeNotifier {
   List<Exam> _availableExams = [];
   List<Exam> _selectedExams = [];
   
+  // Personas (para selector de billTo)
+  List<Person> _allPersons = [];
+
   // Pacientes (para el selector)
   List<Patient> _allPatients = [];
 
@@ -59,10 +65,7 @@ class ViewModel extends ChangeNotifier {
   List<Exam> get availableExams => _availableExams;
   List<Exam> get selectedExams => _selectedExams;
   List<Patient> get allPatients => _allPatients;
-  List<Person> get billToCandidates => _allPatients
-      .where((patient) => patient.isPerson && patient.asPerson != null)
-      .map((patient) => patient.asPerson!)
-      .toList();
+  List<Person> get billToCandidates => _allPersons;
 
   // Setters
   set loading(bool value) {
@@ -94,6 +97,7 @@ class ViewModel extends ChangeNotifier {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
     _loadExams();
     _loadAllPatients();
+    _loadAllPersons();
   }
 
   // Cargar exámenes disponibles
@@ -133,6 +137,27 @@ class ViewModel extends ChangeNotifier {
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error al cargar pacientes: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+    }
+  }
+
+  // Cargar todas las personas (para billTo selector)
+  Future<void> _loadAllPersons() async {
+    try {
+      final query = GetPersonsQuery(
+        builder: EdgePersonFieldsBuilder().defaultValues(),
+      );
+
+      final useCase = ReadPersonUsecase(operation: query, conn: _gqlConn);
+      final response = await useCase.build();
+
+      if (response is EdgePerson) {
+        _allPersons = response.edges;
+        notifyListeners();
+        debugPrint('✅ ${_allPersons.length} personas cargadas');
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al cargar personas: $e');
       debugPrint('📍 StackTrace: $stackTrace');
     }
   }
@@ -205,10 +230,8 @@ class ViewModel extends ChangeNotifier {
 
     Person? match;
 
-    for (final patient in _allPatients) {
-      final person = patient.asPerson;
-
-      if (person != null && person.dni == normalized) {
+    for (final person in _allPersons) {
+      if (person.dni == normalized) {
         match = person;
         break;
       }

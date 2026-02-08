@@ -3,6 +3,7 @@
 
 export './mutation_fields_builder.dart';
 export './edgeinvoice_fields_builder.dart';
+export './edgeperson_fields_builder.dart';
 export './edgecompany_fields_builder.dart';
 export './patient_fields_builder.dart';
 export './person_fields_builder.dart';

@@ -67,6 +67,7 @@ export './types/systeminfo/systeminfo_model.dart';
 export './types/changelog/inputs/addchangeloginput_input.dart';
 export './types/changelog/changelog_model.dart';
 export './types/edgeinvoice/edgeinvoice_model.dart';
+export './types/edgeperson/edgeperson_model.dart';
 export './types/upload/inputs/uploadinput_input.dart';
 export './types/upload/inputs/checkuploadinput_input.dart';
 export './types/upload/upload_model.dart';
