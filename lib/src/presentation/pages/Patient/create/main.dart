@@ -29,7 +29,6 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
   Sex? selectedSex;
   PatientType? selectedPatientType;
   DateTime? selectedBirthDate;
-  String? selectedLaboratoryID;
 
   @override
   void initState() {
@@ -316,52 +315,7 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
                     ),
                   ],
                   
-                  // Laboratorio requerido para AMBOS tipos
-                  if (selectedPatientType != null) ...[
-                    const SizedBox(height: 16),
-                    Builder(
-                      builder: (context) {
-                        if (viewModel.loadingLaboratories) {
-                          return const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }
-                        
-                        return DropdownButtonFormField<String>(
-                          value: selectedLaboratoryID,
-                          decoration: InputDecoration(
-                            labelText: l10n.laboratory,
-                            isDense: true,
-                            border: const OutlineInputBorder(),
-                          ),
-                          items: viewModel.laboratories.map((Laboratory laboratory) {
-                            final displayText = laboratory.address.isNotEmpty 
-                                ? laboratory.address 
-                                : (laboratory.company?.name ?? 'Sin dirección');
-                            return DropdownMenuItem<String>(
-                              value: laboratory.id,
-                              child: Text(displayText),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedLaboratoryID = newValue;
-                              viewModel.input.laboratory = newValue ?? '';
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return l10n.emptyFieldError;
-                            }
-                            return null;
-                          },
-                        );
-                      },
-                    ),
-                  ],
+                  // Laboratory is taken from current context; no manual selection needed
                 ],
               ),
             ),

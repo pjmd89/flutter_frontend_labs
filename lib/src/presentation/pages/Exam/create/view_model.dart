@@ -1,24 +1,25 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:flutter/material.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/createExam/createexam_mutation.dart';
 import 'package:labs/src/domain/usecases/Exam/create_exam_usecase.dart';
 import 'package:labs/src/domain/operation/queries/getExamTemplates/getexamtemplates_query.dart';
-import 'package:labs/src/domain/operation/queries/getLaboratories/getlaboratories_query.dart';
 import 'package:labs/src/domain/usecases/ExamTemplate/read_examtemplate_usecase.dart';
-import 'package:labs/src/domain/usecases/Laboratory/read_laboratory_usecase.dart';
 import 'package:labs/src/domain/extensions/edgeexamtemplate_fields_builder_extension.dart';
-import 'package:labs/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/presentation/providers/laboratory_notifier.dart';
+import '/src/infraestructure/services/error_service.dart';
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
+  late LaboratoryNotifier _laboratoryNotifier;
+  late ErrorService _errorService;
   final BuildContext _context;
   bool _loading = false;
   bool _loadingData = true;
   List<ExamTemplate> _examTemplates = [];
-  List<Laboratory> _laboratories = [];
   
   final CreateExamInput input = CreateExamInput(
     template: '',
@@ -29,7 +30,6 @@ class ViewModel extends ChangeNotifier {
   bool get loading => _loading;
   bool get loadingData => _loadingData;
   List<ExamTemplate> get examTemplates => _examTemplates;
-  List<Laboratory> get laboratories => _laboratories;
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -46,14 +46,22 @@ class ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set laboratories(List<Laboratory> value) {
-    _laboratories = value;
-    notifyListeners();
-  }
-
   ViewModel({required BuildContext context}) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _laboratoryNotifier = _context.read<LaboratoryNotifier>();
+    _errorService = _context.read<ErrorService>();
+    _assignLaboratoryFromContext();
     _init();
+  }
+
+  void _assignLaboratoryFromContext() {
+    final labId = _laboratoryNotifier.selectedLaboratory?.id;
+    if (labId != null && labId.isNotEmpty) {
+      input.laboratory = labId;
+      debugPrint('🔗 Laboratory asignado desde contexto: $labId');
+    } else {
+      debugPrint('⚠️ No hay laboratorio seleccionado en contexto');
+    }
   }
 
   Future<void> _init() async {
@@ -77,20 +85,6 @@ class ViewModel extends ChangeNotifier {
       if (examTemplateResponse is EdgeExamTemplate) {
         examTemplates = examTemplateResponse.edges;
       }
-
-      // Cargar Laboratories
-      final laboratoryUseCase = ReadLaboratoryUsecase(
-        operation: GetLaboratoriesQuery(
-          builder: EdgeLaboratoryFieldsBuilder().defaultValues(),
-        ),
-        conn: _gqlConn,
-      );
-      
-      final laboratoryResponse = await laboratoryUseCase.readWithoutPaginate();
-      
-      if (laboratoryResponse is EdgeLaboratory) {
-        laboratories = laboratoryResponse.edges;
-      }
     } catch (e, stackTrace) {
       debugPrint('💥 Error cargando datos iniciales: $e');
       debugPrint('📍 StackTrace: $stackTrace');
@@ -113,6 +107,15 @@ class ViewModel extends ChangeNotifier {
     );
 
     try {
+      final labId = _laboratoryNotifier.selectedLaboratory?.id;
+      if (labId == null || labId.isEmpty) {
+        final l10n = AppLocalizations.of(_context)!;
+        _errorService.showError(message: l10n.selectLaboratory);
+        return true;
+      }
+
+      input.laboratory = labId;
+
       var response = await useCase.execute(input: input);
       
       if (response is Exam) {

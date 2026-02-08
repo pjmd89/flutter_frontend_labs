@@ -19,7 +19,6 @@ class _ExamCreatePageState extends State<ExamCreatePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   
   ExamTemplate? selectedExamTemplate;
-  Laboratory? selectedLaboratory;
 
   @override
   void initState() {
@@ -87,33 +86,6 @@ class _ExamCreatePageState extends State<ExamCreatePage> {
                     setState(() {
                       selectedExamTemplate = newValue;
                       viewModel.input.template = newValue?.id ?? '';
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null) {
-                      return l10n.emptyFieldError;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<Laboratory>(
-                  value: selectedLaboratory,
-                  decoration: InputDecoration(
-                    labelText: l10n.laboratory,
-                    isDense: true,
-                    border: const OutlineInputBorder(),
-                  ),
-                  items: viewModel.laboratories.map((Laboratory lab) {
-                    return DropdownMenuItem<Laboratory>(
-                      value: lab,
-                      child: Text(lab.company?.name ?? lab.id),
-                    );
-                  }).toList(),
-                  onChanged: (Laboratory? newValue) {
-                    setState(() {
-                      selectedLaboratory = newValue;
-                      viewModel.input.laboratory = newValue?.id ?? '';
                     });
                   },
                   validator: (value) {
