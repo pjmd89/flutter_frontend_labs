@@ -793,103 +793,103 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error052 => 'Error when trying to delete patient';
 
   @override
-  String get error053 => 'A patient with the provided DNI already exists';
+  String get error053 => 'A person with the provided DNI already exists';
 
   @override
-  String get error054 => 'Generic error 54';
+  String get error054 => 'Invoice not found';
 
   @override
-  String get error055 => 'Generic error 55';
+  String get error055 => 'Error when trying to create invoice';
 
   @override
-  String get error056 => 'Generic error 56';
+  String get error056 => 'Error when trying to update invoice';
 
   @override
-  String get error057 => 'Generic error 57';
+  String get error057 => 'Cannot use exams with the same template';
 
   @override
-  String get error058 => 'Generic error 58';
+  String get error058 => 'Error when trying to create evaluation package';
 
   @override
-  String get error059 => 'Generic error 59';
+  String get error059 => 'Evaluation package not found';
 
   @override
-  String get error060 => 'Generic error 60';
+  String get error060 => 'Error when trying to update evaluation package';
 
   @override
-  String get error061 => 'Generic error 61';
+  String get error061 => 'Invoice payment has already been canceled';
 
   @override
-  String get error062 => 'Generic error 62';
+  String get error062 => 'Indicator #%d for input exam #%d has out of range index (%d)';
 
   @override
-  String get error063 => 'Generic error 63';
+  String get error063 => 'Invalid value for indicator #%d in input exam #%d';
 
   @override
-  String get error064 => 'Generic error 64';
+  String get error064 => 'Indicator #%d is duplicated for input exam #%d';
 
   @override
-  String get error065 => 'Generic error 65';
+  String get error065 => 'Input exam #%d is not part of the evaluation package';
 
   @override
   String get error066 => 'All the exams for this evaluation package have already been completed';
 
   @override
-  String get error067 => 'Generic error 67';
+  String get error067 => 'The payment for this evaluation package has been canceled. Cannot manage exam values';
 
   @override
-  String get error068 => 'Generic error 68';
+  String get error068 => 'Results of exam #%d are still missing';
 
   @override
-  String get error069 => 'Generic error 69';
+  String get error069 => 'Input exam #%d contains more indicator values than the exam allows';
 
   @override
-  String get error070 => 'Generic error 70';
+  String get error070 => 'The number of input exams exceeds the number of exams included in the evaluation package';
 
   @override
-  String get error071 => 'Generic error 71';
+  String get error071 => 'File type can\'t be blank';
 
   @override
-  String get error072 => 'Generic error 72';
+  String get error072 => 'Missing employee role';
 
   @override
-  String get error073 => 'Generic error 73';
+  String get error073 => 'Error when trying to create laboratory membership';
 
   @override
-  String get error074 => 'Generic error 74';
+  String get error074 => 'The user is not a member of the laboratory';
 
   @override
-  String get error075 => 'Generic error 75';
+  String get error075 => 'Laboratory membership not found';
 
   @override
-  String get error076 => 'Generic error 76';
+  String get error076 => 'Type access not found';
 
   @override
-  String get error077 => 'Generic error 77';
+  String get error077 => 'Insufficient laboratory permissions for this operation';
 
   @override
-  String get error078 => 'Generic error 78';
+  String get error078 => 'Missing laboratory assignment for employee user';
 
   @override
-  String get error079 => 'Generic error 79';
+  String get error079 => 'Cannot approve an evaluation package that is not completed';
 
   @override
-  String get error080 => 'Generic error 80';
+  String get error080 => 'Error when trying to create person';
 
   @override
-  String get error081 => 'Generic error 81';
+  String get error081 => 'Person not found';
 
   @override
-  String get error082 => 'Generic error 82';
+  String get error082 => 'The patient already exists';
 
   @override
-  String get error083 => 'Generic error 83';
+  String get error083 => 'Cannot update animal data for a non-animal patient';
 
   @override
-  String get error084 => 'Generic error 84';
+  String get error084 => 'Error when trying to update person';
 
   @override
-  String get error085 => 'Missing bioanalyst signature';
+  String get error085 => 'Missing bioanalyst signature filepath';
 
   @override
   String get error086 => 'Generic error 86';

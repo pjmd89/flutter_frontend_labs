@@ -793,103 +793,103 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error052 => 'Error al intentar eliminar el paciente';
 
   @override
-  String get error053 => 'Ya existe un paciente con el DNI proporcionado';
+  String get error053 => 'Ya existe una persona con el DNI proporcionado';
 
   @override
-  String get error054 => 'Error genérico 54';
+  String get error054 => 'Factura no encontrada';
 
   @override
-  String get error055 => 'Error genérico 55';
+  String get error055 => 'Error al intentar crear la factura';
 
   @override
-  String get error056 => 'Error genérico 56';
+  String get error056 => 'Error al intentar actualizar la factura';
 
   @override
-  String get error057 => 'Error genérico 57';
+  String get error057 => 'No se pueden usar exámenes con la misma plantilla';
 
   @override
-  String get error058 => 'Error genérico 58';
+  String get error058 => 'Error al intentar crear el paquete de evaluación';
 
   @override
-  String get error059 => 'Error genérico 59';
+  String get error059 => 'Paquete de evaluación no encontrado';
 
   @override
-  String get error060 => 'Error genérico 60';
+  String get error060 => 'Error al intentar actualizar el paquete de evaluación';
 
   @override
-  String get error061 => 'Error genérico 61';
+  String get error061 => 'El pago de la factura ya fue cancelado';
 
   @override
-  String get error062 => 'Error genérico 62';
+  String get error062 => 'El indicador #%d para el examen de entrada #%d tiene un índice fuera de rango (%d)';
 
   @override
-  String get error063 => 'Error genérico 63';
+  String get error063 => 'Valor inválido para el indicador #%d en el examen de entrada #%d';
 
   @override
-  String get error064 => 'Error genérico 64';
+  String get error064 => 'El indicador #%d está duplicado para el examen de entrada #%d';
 
   @override
-  String get error065 => 'Error genérico 65';
+  String get error065 => 'El examen de entrada #%d no forma parte del paquete de evaluación';
 
   @override
   String get error066 => 'Todos los exámenes de este paquete de evaluación ya han sido completados';
 
   @override
-  String get error067 => 'Error genérico 67';
+  String get error067 => 'El pago de este paquete de evaluación ha sido cancelado. No se pueden gestionar valores de exámenes';
 
   @override
-  String get error068 => 'Error genérico 68';
+  String get error068 => 'Aún faltan resultados del examen #%d';
 
   @override
-  String get error069 => 'Error genérico 69';
+  String get error069 => 'El examen de entrada #%d contiene más valores de indicadores de los permitidos';
 
   @override
-  String get error070 => 'Error genérico 70';
+  String get error070 => 'La cantidad de exámenes de entrada excede la cantidad incluida en el paquete de evaluación';
 
   @override
-  String get error071 => 'Error genérico 71';
+  String get error071 => 'El tipo de archivo no puede estar vacío';
 
   @override
-  String get error072 => 'Error genérico 72';
+  String get error072 => 'Falta el rol del empleado';
 
   @override
-  String get error073 => 'Error genérico 73';
+  String get error073 => 'Error al intentar crear la membresía de laboratorio';
 
   @override
-  String get error074 => 'Error genérico 74';
+  String get error074 => 'El usuario no es miembro del laboratorio';
 
   @override
-  String get error075 => 'Error genérico 75';
+  String get error075 => 'Membresía de laboratorio no encontrada';
 
   @override
-  String get error076 => 'Error genérico 76';
+  String get error076 => 'Tipo de acceso no encontrado';
 
   @override
-  String get error077 => 'Error genérico 77';
+  String get error077 => 'Permisos de laboratorio insuficientes para esta operación';
 
   @override
-  String get error078 => 'Error genérico 78';
+  String get error078 => 'Falta la asignación de laboratorio para el usuario empleado';
 
   @override
-  String get error079 => 'Error genérico 79';
+  String get error079 => 'No se puede aprobar un paquete de evaluación que no está completo';
 
   @override
-  String get error080 => 'Error genérico 80';
+  String get error080 => 'Error al intentar crear la persona';
 
   @override
-  String get error081 => 'Error genérico 81';
+  String get error081 => 'Persona no encontrada';
 
   @override
-  String get error082 => 'Error genérico 82';
+  String get error082 => 'El paciente ya existe';
 
   @override
-  String get error083 => 'Error genérico 83';
+  String get error083 => 'No se pueden actualizar datos de animal para un paciente que no es animal';
 
   @override
-  String get error084 => 'Error genérico 84';
+  String get error084 => 'Error al intentar actualizar la persona';
 
   @override
-  String get error085 => 'Falta la firma del bioanalista';
+  String get error085 => 'Falta la ruta de la firma del bioanalista';
 
   @override
   String get error086 => 'Error genérico 86';

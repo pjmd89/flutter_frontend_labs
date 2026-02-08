@@ -961,137 +961,137 @@
   "@error052": {
     "description": "Error during patient deletion process"
   },
-  "error053": "A patient with the provided DNI already exists",
+  "error053": "A person with the provided DNI already exists",
   "@error053": {
-    "description": "Error when trying to create patient with existing DNI"
+    "description": "Error when trying to create person or patient with existing DNI"
   },
-  "error054": "Generic error 54",
+  "error054": "Invoice not found",
   "@error054": {
-    "description": "Generic error 54"
+    "description": "Error when requested invoice does not exist"
   },
-  "error055": "Generic error 55",
+  "error055": "Error when trying to create invoice",
   "@error055": {
-    "description": "Generic error 55"
+    "description": "Error during invoice creation process"
   },
-  "error056": "Generic error 56",
+  "error056": "Error when trying to update invoice",
   "@error056": {
-    "description": "Generic error 56"
+    "description": "Error during invoice update process"
   },
-  "error057": "Generic error 57",
+  "error057": "Cannot use exams with the same template",
   "@error057": {
-    "description": "Generic error 57"
+    "description": "Error when exams with the same template are used together"
   },
-  "error058": "Generic error 58",
+  "error058": "Error when trying to create evaluation package",
   "@error058": {
-    "description": "Generic error 58"
+    "description": "Error during evaluation package creation process"
   },
-  "error059": "Generic error 59",
+  "error059": "Evaluation package not found",
   "@error059": {
-    "description": "Generic error 59"
+    "description": "Error when requested evaluation package does not exist"
   },
-  "error060": "Generic error 60",
+  "error060": "Error when trying to update evaluation package",
   "@error060": {
-    "description": "Generic error 60"
+    "description": "Error during evaluation package update process"
   },
-  "error061": "Generic error 61",
+  "error061": "Invoice payment has already been canceled",
   "@error061": {
-    "description": "Generic error 61"
+    "description": "Error when invoice payment was already canceled"
   },
-  "error062": "Generic error 62",
+  "error062": "Indicator #%d for input exam #%d has out of range index (%d)",
   "@error062": {
-    "description": "Generic error 62"
+    "description": "Error when indicator index is out of range for an input exam"
   },
-  "error063": "Generic error 63",
+  "error063": "Invalid value for indicator #%d in input exam #%d",
   "@error063": {
-    "description": "Generic error 63"
+    "description": "Error when indicator value type is invalid for an input exam"
   },
-  "error064": "Generic error 64",
+  "error064": "Indicator #%d is duplicated for input exam #%d",
   "@error064": {
-    "description": "Generic error 64"
+    "description": "Error when an indicator is duplicated for an input exam"
   },
-  "error065": "Generic error 65",
+  "error065": "Input exam #%d is not part of the evaluation package",
   "@error065": {
-    "description": "Generic error 65"
+    "description": "Error when an input exam is not part of the evaluation package"
   },
   "error066": "All the exams for this evaluation package have already been completed",
   "@error066": {
     "description": "Error when all exams in evaluation package are already completed"
   },
-  "error067": "Generic error 67",
+  "error067": "The payment for this evaluation package has been canceled. Cannot manage exam values",
   "@error067": {
-    "description": "Generic error 67"
+    "description": "Error when payment for evaluation package was canceled"
   },
-  "error068": "Generic error 68",
+  "error068": "Results of exam #%d are still missing",
   "@error068": {
-    "description": "Generic error 68"
+    "description": "Error when exam results are still missing"
   },
-  "error069": "Generic error 69",
+  "error069": "Input exam #%d contains more indicator values than the exam allows",
   "@error069": {
-    "description": "Generic error 69"
+    "description": "Error when indicator values exceed limits for an input exam"
   },
-  "error070": "Generic error 70",
+  "error070": "The number of input exams exceeds the number of exams included in the evaluation package",
   "@error070": {
-    "description": "Generic error 70"
+    "description": "Error when number of input exams exceeds allowed count"
   },
-  "error071": "Generic error 71",
+  "error071": "File type can't be blank",
   "@error071": {
-    "description": "Generic error 71"
+    "description": "Error when file type is missing"
   },
-  "error072": "Generic error 72",
+  "error072": "Missing employee role",
   "@error072": {
-    "description": "Generic error 72"
+    "description": "Error when employee role is missing"
   },
-  "error073": "Generic error 73",
+  "error073": "Error when trying to create laboratory membership",
   "@error073": {
-    "description": "Generic error 73"
+    "description": "Error during laboratory membership creation process"
   },
-  "error074": "Generic error 74",
+  "error074": "The user is not a member of the laboratory",
   "@error074": {
-    "description": "Generic error 74"
+    "description": "Error when user is not a member of the laboratory"
   },
-  "error075": "Generic error 75",
+  "error075": "Laboratory membership not found",
   "@error075": {
-    "description": "Generic error 75"
+    "description": "Error when laboratory membership does not exist"
   },
-  "error076": "Generic error 76",
+  "error076": "Type access not found",
   "@error076": {
-    "description": "Generic error 76"
+    "description": "Error when type access does not exist"
   },
-  "error077": "Generic error 77",
+  "error077": "Insufficient laboratory permissions for this operation",
   "@error077": {
-    "description": "Generic error 77"
+    "description": "Error when laboratory permissions are insufficient"
   },
-  "error078": "Generic error 78",
+  "error078": "Missing laboratory assignment for employee user",
   "@error078": {
-    "description": "Generic error 78"
+    "description": "Error when employee user lacks laboratory assignment"
   },
-  "error079": "Generic error 79",
+  "error079": "Cannot approve an evaluation package that is not completed",
   "@error079": {
-    "description": "Generic error 79"
+    "description": "Error when evaluation package cannot be approved because it is incomplete"
   },
-  "error080": "Generic error 80",
+  "error080": "Error when trying to create person",
   "@error080": {
-    "description": "Generic error 80"
+    "description": "Error during person creation process"
   },
-  "error081": "Generic error 81",
+  "error081": "Person not found",
   "@error081": {
-    "description": "Generic error 81"
+    "description": "Error when requested person does not exist"
   },
-  "error082": "Generic error 82",
+  "error082": "The patient already exists",
   "@error082": {
-    "description": "Generic error 82"
+    "description": "Error when patient already exists"
   },
-  "error083": "Generic error 83",
+  "error083": "Cannot update animal data for a non-animal patient",
   "@error083": {
-    "description": "Generic error 83"
+    "description": "Error when trying to update animal data for non-animal patient"
   },
-  "error084": "Generic error 84",
+  "error084": "Error when trying to update person",
   "@error084": {
-    "description": "Generic error 84"
+    "description": "Error during person update process"
   },
-  "error085": "Missing bioanalyst signature",
+  "error085": "Missing bioanalyst signature filepath",
   "@error085": {
-    "description": "Error when bioanalyst signature is missing"
+    "description": "Error when bioanalyst signature filepath is missing"
   },
   "error086": "Generic error 86",
   "@error086": {

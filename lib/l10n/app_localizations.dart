@@ -1607,82 +1607,82 @@ abstract class AppLocalizations {
   /// **'Error al intentar eliminar el paciente'**
   String get error052;
 
-  /// Error cuando se intenta crear un paciente con un DNI ya existente
+  /// Error cuando se intenta crear una persona o paciente con un DNI ya existente
   ///
   /// In es, this message translates to:
-  /// **'Ya existe un paciente con el DNI proporcionado'**
+  /// **'Ya existe una persona con el DNI proporcionado'**
   String get error053;
 
-  /// Error genérico 54
+  /// Error cuando no se encuentra una factura específica
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 54'**
+  /// **'Factura no encontrada'**
   String get error054;
 
-  /// Error genérico 55
+  /// Error durante el proceso de creación de factura
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 55'**
+  /// **'Error al intentar crear la factura'**
   String get error055;
 
-  /// Error genérico 56
+  /// Error durante el proceso de actualización de factura
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 56'**
+  /// **'Error al intentar actualizar la factura'**
   String get error056;
 
-  /// Error genérico 57
+  /// Error cuando se usan exámenes con la misma plantilla en conjunto
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 57'**
+  /// **'No se pueden usar exámenes con la misma plantilla'**
   String get error057;
 
-  /// Error genérico 58
+  /// Error durante el proceso de creación de paquete de evaluación
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 58'**
+  /// **'Error al intentar crear el paquete de evaluación'**
   String get error058;
 
-  /// Error genérico 59
+  /// Error cuando no se encuentra un paquete de evaluación específico
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 59'**
+  /// **'Paquete de evaluación no encontrado'**
   String get error059;
 
-  /// Error genérico 60
+  /// Error durante el proceso de actualización de paquete de evaluación
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 60'**
+  /// **'Error al intentar actualizar el paquete de evaluación'**
   String get error060;
 
-  /// Error genérico 61
+  /// Error cuando el pago de la factura ya estaba cancelado
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 61'**
+  /// **'El pago de la factura ya fue cancelado'**
   String get error061;
 
-  /// Error genérico 62
+  /// Error cuando un indicador tiene índice fuera de rango para un examen de entrada
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 62'**
+  /// **'El indicador #%d para el examen de entrada #%d tiene un índice fuera de rango (%d)'**
   String get error062;
 
-  /// Error genérico 63
+  /// Error cuando el valor de un indicador es inválido para un examen de entrada
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 63'**
+  /// **'Valor inválido para el indicador #%d en el examen de entrada #%d'**
   String get error063;
 
-  /// Error genérico 64
+  /// Error cuando un indicador está duplicado para un examen de entrada
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 64'**
+  /// **'El indicador #%d está duplicado para el examen de entrada #%d'**
   String get error064;
 
-  /// Error genérico 65
+  /// Error cuando un examen de entrada no forma parte del paquete de evaluación
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 65'**
+  /// **'El examen de entrada #%d no forma parte del paquete de evaluación'**
   String get error065;
 
   /// Error cuando todos los exámenes del paquete de evaluación ya han sido completados
@@ -1691,118 +1691,118 @@ abstract class AppLocalizations {
   /// **'Todos los exámenes de este paquete de evaluación ya han sido completados'**
   String get error066;
 
-  /// Error genérico 67
+  /// Error cuando el pago del paquete de evaluación fue cancelado
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 67'**
+  /// **'El pago de este paquete de evaluación ha sido cancelado. No se pueden gestionar valores de exámenes'**
   String get error067;
 
-  /// Error genérico 68
+  /// Error cuando aún faltan resultados de un examen
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 68'**
+  /// **'Aún faltan resultados del examen #%d'**
   String get error068;
 
-  /// Error genérico 69
+  /// Error cuando los valores de indicadores exceden los límites permitidos para un examen de entrada
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 69'**
+  /// **'El examen de entrada #%d contiene más valores de indicadores de los permitidos'**
   String get error069;
 
-  /// Error genérico 70
+  /// Error cuando la cantidad de exámenes de entrada excede la permitida
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 70'**
+  /// **'La cantidad de exámenes de entrada excede la cantidad incluida en el paquete de evaluación'**
   String get error070;
 
-  /// No description provided for @error071.
+  /// Error cuando falta el tipo de archivo
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 71'**
+  /// **'El tipo de archivo no puede estar vacío'**
   String get error071;
 
-  /// No description provided for @error072.
+  /// Error cuando falta el rol del empleado
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 72'**
+  /// **'Falta el rol del empleado'**
   String get error072;
 
-  /// No description provided for @error073.
+  /// Error durante el proceso de creación de membresía de laboratorio
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 73'**
+  /// **'Error al intentar crear la membresía de laboratorio'**
   String get error073;
 
-  /// No description provided for @error074.
+  /// Error cuando el usuario no es miembro del laboratorio
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 74'**
+  /// **'El usuario no es miembro del laboratorio'**
   String get error074;
 
-  /// No description provided for @error075.
+  /// Error cuando no existe la membresía de laboratorio
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 75'**
+  /// **'Membresía de laboratorio no encontrada'**
   String get error075;
 
-  /// No description provided for @error076.
+  /// Error cuando no existe el tipo de acceso
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 76'**
+  /// **'Tipo de acceso no encontrado'**
   String get error076;
 
-  /// No description provided for @error077.
+  /// Error cuando los permisos de laboratorio son insuficientes
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 77'**
+  /// **'Permisos de laboratorio insuficientes para esta operación'**
   String get error077;
 
-  /// No description provided for @error078.
+  /// Error cuando al usuario empleado le falta asignación de laboratorio
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 78'**
+  /// **'Falta la asignación de laboratorio para el usuario empleado'**
   String get error078;
 
-  /// No description provided for @error079.
+  /// Error cuando no se puede aprobar un paquete de evaluación por estar incompleto
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 79'**
+  /// **'No se puede aprobar un paquete de evaluación que no está completo'**
   String get error079;
 
-  /// No description provided for @error080.
+  /// Error durante el proceso de creación de persona
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 80'**
+  /// **'Error al intentar crear la persona'**
   String get error080;
 
-  /// No description provided for @error081.
+  /// Error cuando no se encuentra una persona específica
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 81'**
+  /// **'Persona no encontrada'**
   String get error081;
 
-  /// No description provided for @error082.
+  /// Error cuando el paciente ya existe
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 82'**
+  /// **'El paciente ya existe'**
   String get error082;
 
-  /// No description provided for @error083.
+  /// Error cuando se intenta actualizar datos de animal en un paciente que no es animal
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 83'**
+  /// **'No se pueden actualizar datos de animal para un paciente que no es animal'**
   String get error083;
 
-  /// No description provided for @error084.
+  /// Error durante el proceso de actualización de persona
   ///
   /// In es, this message translates to:
-  /// **'Error genérico 84'**
+  /// **'Error al intentar actualizar la persona'**
   String get error084;
 
-  /// No description provided for @error085.
+  /// Error cuando falta la ruta de la firma del bioanalista
   ///
   /// In es, this message translates to:
-  /// **'Falta la firma del bioanalista'**
+  /// **'Falta la ruta de la firma del bioanalista'**
   String get error085;
 
   /// No description provided for @error086.

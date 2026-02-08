@@ -1073,58 +1073,104 @@
     "description": "Error que ocurre durante el proceso de eliminación de un paciente"
   },
   "@error053": {
-    "description": "Error cuando se intenta crear un paciente con un DNI ya existente"
+    "description": "Error cuando se intenta crear una persona o paciente con un DNI ya existente"
   },
   "@error054": {
-    "description": "Error genérico 54"
+    "description": "Error cuando no se encuentra una factura específica"
   },
   "@error055": {
-    "description": "Error genérico 55"
+    "description": "Error durante el proceso de creación de factura"
   },
   "@error056": {
-    "description": "Error genérico 56"
+    "description": "Error durante el proceso de actualización de factura"
   },
   "@error057": {
-    "description": "Error genérico 57"
+    "description": "Error cuando se usan exámenes con la misma plantilla en conjunto"
   },
   "@error058": {
-    "description": "Error genérico 58"
+    "description": "Error durante el proceso de creación de paquete de evaluación"
   },
   "@error059": {
-    "description": "Error genérico 59"
+    "description": "Error cuando no se encuentra un paquete de evaluación específico"
   },
   "@error060": {
-    "description": "Error genérico 60"
+    "description": "Error durante el proceso de actualización de paquete de evaluación"
   },
   "@error061": {
-    "description": "Error genérico 61"
+    "description": "Error cuando el pago de la factura ya estaba cancelado"
   },
   "@error062": {
-    "description": "Error genérico 62"
+    "description": "Error cuando un indicador tiene índice fuera de rango para un examen de entrada"
   },
   "@error063": {
-    "description": "Error genérico 63"
+    "description": "Error cuando el valor de un indicador es inválido para un examen de entrada"
   },
   "@error064": {
-    "description": "Error genérico 64"
+    "description": "Error cuando un indicador está duplicado para un examen de entrada"
   },
   "@error065": {
-    "description": "Error genérico 65"
+    "description": "Error cuando un examen de entrada no forma parte del paquete de evaluación"
   },
   "@error066": {
     "description": "Error cuando todos los exámenes del paquete de evaluación ya han sido completados"
   },
   "@error067": {
-    "description": "Error genérico 67"
+    "description": "Error cuando el pago del paquete de evaluación fue cancelado"
   },
   "@error068": {
-    "description": "Error genérico 68"
+    "description": "Error cuando aún faltan resultados de un examen"
   },
   "@error069": {
-    "description": "Error genérico 69"
+    "description": "Error cuando los valores de indicadores exceden los límites permitidos para un examen de entrada"
   },
   "@error070": {
-    "description": "Error genérico 70"
+    "description": "Error cuando la cantidad de exámenes de entrada excede la permitida"
+  },
+
+  "@error071": {
+    "description": "Error cuando falta el tipo de archivo"
+  },
+  "@error072": {
+    "description": "Error cuando falta el rol del empleado"
+  },
+  "@error073": {
+    "description": "Error durante el proceso de creación de membresía de laboratorio"
+  },
+  "@error074": {
+    "description": "Error cuando el usuario no es miembro del laboratorio"
+  },
+  "@error075": {
+    "description": "Error cuando no existe la membresía de laboratorio"
+  },
+  "@error076": {
+    "description": "Error cuando no existe el tipo de acceso"
+  },
+  "@error077": {
+    "description": "Error cuando los permisos de laboratorio son insuficientes"
+  },
+  "@error078": {
+    "description": "Error cuando al usuario empleado le falta asignación de laboratorio"
+  },
+  "@error079": {
+    "description": "Error cuando no se puede aprobar un paquete de evaluación por estar incompleto"
+  },
+  "@error080": {
+    "description": "Error durante el proceso de creación de persona"
+  },
+  "@error081": {
+    "description": "Error cuando no se encuentra una persona específica"
+  },
+  "@error082": {
+    "description": "Error cuando el paciente ya existe"
+  },
+  "@error083": {
+    "description": "Error cuando se intenta actualizar datos de animal en un paciente que no es animal"
+  },
+  "@error084": {
+    "description": "Error durante el proceso de actualización de persona"
+  },
+  "@error085": {
+    "description": "Error cuando falta la ruta de la firma del bioanalista"
   },
   
   "error001": "Usuario no ha iniciado sesión",
@@ -1179,39 +1225,39 @@
   "error050": "Paciente no encontrado",
   "error051": "Ya existe una cuenta con el número de teléfono proporcionado",
   "error052": "Error al intentar eliminar el paciente",
-  "error053": "Ya existe un paciente con el DNI proporcionado",
-  "error054": "Error genérico 54",
-  "error055": "Error genérico 55",
-  "error056": "Error genérico 56",
-  "error057": "Error genérico 57",
-  "error058": "Error genérico 58",
-  "error059": "Error genérico 59",
-  "error060": "Error genérico 60",
-  "error061": "Error genérico 61",
-  "error062": "Error genérico 62",
-  "error063": "Error genérico 63",
-  "error064": "Error genérico 64",
-  "error065": "Error genérico 65",
+  "error053": "Ya existe una persona con el DNI proporcionado",
+  "error054": "Factura no encontrada",
+  "error055": "Error al intentar crear la factura",
+  "error056": "Error al intentar actualizar la factura",
+  "error057": "No se pueden usar exámenes con la misma plantilla",
+  "error058": "Error al intentar crear el paquete de evaluación",
+  "error059": "Paquete de evaluación no encontrado",
+  "error060": "Error al intentar actualizar el paquete de evaluación",
+  "error061": "El pago de la factura ya fue cancelado",
+  "error062": "El indicador #%d para el examen de entrada #%d tiene un índice fuera de rango (%d)",
+  "error063": "Valor inválido para el indicador #%d en el examen de entrada #%d",
+  "error064": "El indicador #%d está duplicado para el examen de entrada #%d",
+  "error065": "El examen de entrada #%d no forma parte del paquete de evaluación",
   "error066": "Todos los exámenes de este paquete de evaluación ya han sido completados",
-  "error067": "Error genérico 67",
-  "error068": "Error genérico 68",
-  "error069": "Error genérico 69",
-  "error070": "Error genérico 70",
-  "error071": "Error genérico 71",
-  "error072": "Error genérico 72",
-  "error073": "Error genérico 73",
-  "error074": "Error genérico 74",
-  "error075": "Error genérico 75",
-  "error076": "Error genérico 76",
-  "error077": "Error genérico 77",
-  "error078": "Error genérico 78",
-  "error079": "Error genérico 79",
-  "error080": "Error genérico 80",
-  "error081": "Error genérico 81",
-  "error082": "Error genérico 82",
-  "error083": "Error genérico 83",
-  "error084": "Error genérico 84",
-  "error085": "Falta la firma del bioanalista",
+  "error067": "El pago de este paquete de evaluación ha sido cancelado. No se pueden gestionar valores de exámenes",
+  "error068": "Aún faltan resultados del examen #%d",
+  "error069": "El examen de entrada #%d contiene más valores de indicadores de los permitidos",
+  "error070": "La cantidad de exámenes de entrada excede la cantidad incluida en el paquete de evaluación",
+  "error071": "El tipo de archivo no puede estar vacío",
+  "error072": "Falta el rol del empleado",
+  "error073": "Error al intentar crear la membresía de laboratorio",
+  "error074": "El usuario no es miembro del laboratorio",
+  "error075": "Membresía de laboratorio no encontrada",
+  "error076": "Tipo de acceso no encontrado",
+  "error077": "Permisos de laboratorio insuficientes para esta operación",
+  "error078": "Falta la asignación de laboratorio para el usuario empleado",
+  "error079": "No se puede aprobar un paquete de evaluación que no está completo",
+  "error080": "Error al intentar crear la persona",
+  "error081": "Persona no encontrada",
+  "error082": "El paciente ya existe",
+  "error083": "No se pueden actualizar datos de animal para un paciente que no es animal",
+  "error084": "Error al intentar actualizar la persona",
+  "error085": "Falta la ruta de la firma del bioanalista",
   "error086": "Error genérico 86",
   "error087": "Error genérico 87",
   "error088": "Error genérico 88",
