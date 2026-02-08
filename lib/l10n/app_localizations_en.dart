@@ -126,6 +126,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billToInformation => 'Payer Information';
 
   @override
+  String get useExistingBillTo => 'Use existing payer';
+
+  @override
+  String get useExistingBillToHint => 'Search by ID number to reuse billing details';
+
+  @override
+  String get billToSearchHint => 'Enter the ID number and search to reuse a payer';
+
+  @override
+  String get billToNotFound => 'No payer found with that ID';
+
+  @override
+  String get billToSelectionRequired => 'Select an existing payer or enter the billing data';
+
+  @override
   String get createNewPerson => 'Create New Person';
 
   @override

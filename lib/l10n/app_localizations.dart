@@ -329,6 +329,36 @@ abstract class AppLocalizations {
   /// **'Información del Pagador'**
   String get billToInformation;
 
+  /// Opción para reutilizar un pagador ya creado
+  ///
+  /// In es, this message translates to:
+  /// **'Usar pagador existente'**
+  String get useExistingBillTo;
+
+  /// Texto de ayuda para el toggle de pagador existente
+  ///
+  /// In es, this message translates to:
+  /// **'Busca por cédula para reutilizar los datos de facturación'**
+  String get useExistingBillToHint;
+
+  /// Mensaje guía para buscar pagadores existentes
+  ///
+  /// In es, this message translates to:
+  /// **'Ingresa la cédula y presiona buscar para reutilizar un pagador'**
+  String get billToSearchHint;
+
+  /// Mensaje cuando no se encuentra el billTo buscado
+  ///
+  /// In es, this message translates to:
+  /// **'No se encontró un pagador con esa cédula'**
+  String get billToNotFound;
+
+  /// Mensaje de error cuando falta elegir un pagador
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona un pagador existente o ingresa los datos de facturación'**
+  String get billToSelectionRequired;
+
   /// Opción para crear una nueva persona para facturación
   ///
   /// In es, this message translates to:

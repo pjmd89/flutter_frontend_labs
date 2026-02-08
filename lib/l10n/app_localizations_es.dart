@@ -126,6 +126,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get billToInformation => 'Información del Pagador';
 
   @override
+  String get useExistingBillTo => 'Usar pagador existente';
+
+  @override
+  String get useExistingBillToHint => 'Busca por cédula para reutilizar los datos de facturación';
+
+  @override
+  String get billToSearchHint => 'Ingresa la cédula y presiona buscar para reutilizar un pagador';
+
+  @override
+  String get billToNotFound => 'No se encontró un pagador con esa cédula';
+
+  @override
+  String get billToSelectionRequired => 'Selecciona un pagador existente o ingresa los datos de facturación';
+
+  @override
   String get createNewPerson => 'Crear Nueva Persona';
 
   @override

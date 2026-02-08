@@ -1332,6 +1332,26 @@
   "@billToInformation": {
     "description": "Title for the payer information section"
   },
+    "useExistingBillTo": "Use existing payer",
+    "@useExistingBillTo": {
+      "description": "Toggle to reuse an already created payer"
+    },
+    "useExistingBillToHint": "Search by ID number to reuse billing details",
+    "@useExistingBillToHint": {
+      "description": "Helper text for the existing payer toggle"
+    },
+    "billToSearchHint": "Enter the ID number and search to reuse a payer",
+    "@billToSearchHint": {
+      "description": "Guidance text to search existing payers"
+    },
+    "billToNotFound": "No payer found with that ID",
+    "@billToNotFound": {
+      "description": "Message when the searched payer is not found"
+    },
+    "billToSelectionRequired": "Select an existing payer or enter the billing data",
+    "@billToSelectionRequired": {
+      "description": "Error message when no payer is selected"
+    },
   "createNewPerson": "Create New Person",
   "@createNewPerson": {
     "description": "Option to create a new person for billing"

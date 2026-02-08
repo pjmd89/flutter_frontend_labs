@@ -406,199 +406,275 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                l10n.personForBilling,
-                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                          FilledButton.tonalIcon(
+                            onPressed: () async {
+                              final selected = await showDialog<Person>(
+                                context: context,
+                                builder: (context) => BillToSelectorDialog(
+                                  l10n: l10n,
+                                  persons: viewModel.billToCandidates,
                                 ),
-                              ),
-                              TextButton.icon(
-                                icon: Icon(
-                                  showPersonForm ? Icons.expand_less : Icons.expand_more,
-                                  size: 20,
-                                ),
-                                label: Text(showPersonForm ? 'Ocultar' : 'Mostrar'),
-                                onPressed: () {
-                                  setState(() {
-                                    showPersonForm = !showPersonForm;
-                                  });
-                                },
-                              ),
-                            ],
+                              );
+
+                              if (selected != null) {
+                                viewModel.selectedBillTo = selected;
+                                setState(() {
+                                  showPersonForm = false;
+                                });
+                              }
+                            },
+                            icon: const Icon(Icons.person_search),
+                            label: Text(l10n.selectExistingPerson),
+                            style: FilledButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            ),
                           ),
-                          
-                          if (!showPersonForm) ...[
-                            const SizedBox(height: 8),
+
+                          const SizedBox(height: 12),
+
+                          if (viewModel.selectedBillTo != null) ...[
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Colors.blue.withValues(alpha: 0.05),
-                                border: Border.all(
-                                  color: Colors.blue.withValues(alpha: 0.3),
-                                ),
+                                color: Colors.green.withValues(alpha: 0.08),
+                                border: Border.all(color: Colors.green.withValues(alpha: 0.5)),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.info_outline, color: Colors.blue, size: 20),
+                                  const Icon(Icons.verified_user, color: Colors.green),
                                   const SizedBox(width: 12),
                                   Expanded(
-                                    child: Text(
-                                      'Haga clic en "Mostrar" para ingresar los datos de facturación',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: Colors.blue[700],
-                                      ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${viewModel.selectedBillTo!.firstName} ${viewModel.selectedBillTo!.lastName}',
+                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('${l10n.dni}: ${viewModel.selectedBillTo!.dni}'),
+                                        if (viewModel.selectedBillTo!.address.isNotEmpty)
+                                          Text(
+                                            viewModel.selectedBillTo!.address,
+                                            style: Theme.of(context).textTheme.bodySmall,
+                                          ),
+                                      ],
                                     ),
+                                  ),
+                                  IconButton(
+                                    tooltip: l10n.remove,
+                                    icon: const Icon(Icons.close, size: 20),
+                                    onPressed: () {
+                                      viewModel.clearSelectedBillTo();
+                                    },
                                   ),
                                 ],
                               ),
                             ),
+
+                            const SizedBox(height: 12),
+
+                            Text(
+                              l10n.createNewPerson,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
                           ],
-                          
-                          if (showPersonForm) ...[
-                            const SizedBox(height: 16),
-                            const Divider(height: 1),
-                            const SizedBox(height: 16),
-                            
-                            // Nombre y Apellido en la misma fila
+
+                          if (viewModel.selectedBillTo == null) ...[
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: l10n.firstName,
-                                    controller: firstNameController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.name,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.firstName = value,
+                                Text(
+                                  l10n.personForBilling,
+                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: l10n.lastName,
-                                    controller: lastNameController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.name,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.lastName = value,
+                                TextButton.icon(
+                                  icon: Icon(
+                                    showPersonForm ? Icons.expand_less : Icons.expand_more,
+                                    size: 20,
                                   ),
+                                  label: Text(showPersonForm ? 'Ocultar' : 'Mostrar'),
+                                  onPressed: () {
+                                    setState(() {
+                                      showPersonForm = !showPersonForm;
+                                    });
+                                  },
                                 ),
                               ],
                             ),
                             
-                            const SizedBox(height: 16),
-                            
-                            // DNI y Teléfono en la misma fila
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: l10n.dni,
-                                    controller: dniPersonController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.password,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.dni = value,
+                            if (!showPersonForm) ...[
+                              const SizedBox(height: 8),
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withValues(alpha: 0.05),
+                                  border: Border.all(
+                                    color: Colors.blue.withValues(alpha: 0.3),
                                   ),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: '${l10n.phone} (${l10n.optional})',
-                                    controller: phoneController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.password,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.phone = value,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            
-                            // Email
-                            CustomTextFormField(
-                              labelText: '${l10n.email} (${l10n.optional})',
-                              controller: emailController,
-                              isDense: true,
-                              fieldLength: FormFieldLength.email,
-                              counterText: "",
-                              onChange: (value) => viewModel.personInput.email = value,
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            
-                            // Dirección
-                            CustomTextFormField(
-                              labelText: '${l10n.address} (${l10n.optional})',
-                              controller: addressController,
-                              isDense: true,
-                              fieldLength: FormFieldLength.name,
-                              counterText: "",
-                              onChange: (value) => viewModel.personInput.address = value,
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            
-                            // Fecha de nacimiento y Sexo en la misma fila
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: '${l10n.birthDate} (${l10n.optional})',
-                                    controller: birthDateController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.password,
-                                    counterText: "",
-                                    readOnly: true,
-                                    suffixIcon: const Icon(Icons.calendar_today, size: 18),
-                                    onTap: () async {
-                                      final date = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime(1900),
-                                        lastDate: DateTime.now(),
-                                      );
-                                      if (date != null) {
-                                        // Formato dd/mm/yyyy hh:mm requerido por el servidor
-                                        final formattedDate = '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} 00:00';
-                                        birthDateController.text = formattedDate;
-                                        viewModel.personInput.birthDate = formattedDate;
-                                      }
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: DropdownButtonFormField<Sex>(
-                                    value: selectedSex,
-                                    decoration: InputDecoration(
-                                      labelText: '${l10n.sex} (${l10n.optional})',
-                                      isDense: true,
-                                      border: const OutlineInputBorder(),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.info_outline, color: Colors.blue, size: 20),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        'Haga clic en "Mostrar" para ingresar los datos de facturación',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.blue[700],
+                                        ),
+                                      ),
                                     ),
-                                    items: Sex.values.map((Sex sex) {
-                                      return DropdownMenuItem<Sex>(
-                                        value: sex,
-                                        child: Text(getSexLabel(context, sex)),
-                                      );
-                                    }).toList(),
-                                    onChanged: (Sex? newValue) {
-                                      setState(() {
-                                        selectedSex = newValue;
-                                        viewModel.personInput.sex = newValue;
-                                      });
-                                    },
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
+                            
+                            if (showPersonForm) ...[
+                              const SizedBox(height: 16),
+                              const Divider(height: 1),
+                              const SizedBox(height: 16),
+                              
+                              // Nombre y Apellido en la misma fila
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      labelText: l10n.firstName,
+                                      controller: firstNameController,
+                                      isDense: true,
+                                      fieldLength: FormFieldLength.name,
+                                      counterText: "",
+                                      onChange: (value) => viewModel.personInput.firstName = value,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      labelText: l10n.lastName,
+                                      controller: lastNameController,
+                                      isDense: true,
+                                      fieldLength: FormFieldLength.name,
+                                      counterText: "",
+                                      onChange: (value) => viewModel.personInput.lastName = value,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              
+                              const SizedBox(height: 16),
+                              
+                              // DNI y Teléfono en la misma fila
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      labelText: l10n.dni,
+                                      controller: dniPersonController,
+                                      isDense: true,
+                                      fieldLength: FormFieldLength.password,
+                                      counterText: "",
+                                      onChange: (value) => viewModel.personInput.dni = value,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      labelText: '${l10n.phone} (${l10n.optional})',
+                                      controller: phoneController,
+                                      isDense: true,
+                                      fieldLength: FormFieldLength.password,
+                                      counterText: "",
+                                      onChange: (value) => viewModel.personInput.phone = value,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              
+                              const SizedBox(height: 16),
+                              
+                              // Email
+                              CustomTextFormField(
+                                labelText: '${l10n.email} (${l10n.optional})',
+                                controller: emailController,
+                                isDense: true,
+                                fieldLength: FormFieldLength.email,
+                                counterText: "",
+                                onChange: (value) => viewModel.personInput.email = value,
+                              ),
+                              
+                              const SizedBox(height: 16),
+                              
+                              // Dirección
+                              CustomTextFormField(
+                                labelText: '${l10n.address} (${l10n.optional})',
+                                controller: addressController,
+                                isDense: true,
+                                fieldLength: FormFieldLength.name,
+                                counterText: "",
+                                onChange: (value) => viewModel.personInput.address = value,
+                              ),
+                              
+                              const SizedBox(height: 16),
+                              
+                              // Fecha de nacimiento y Sexo en la misma fila
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      labelText: '${l10n.birthDate} (${l10n.optional})',
+                                      controller: birthDateController,
+                                      isDense: true,
+                                      fieldLength: FormFieldLength.password,
+                                      counterText: "",
+                                      readOnly: true,
+                                      suffixIcon: const Icon(Icons.calendar_today, size: 18),
+                                      onTap: () async {
+                                        final date = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime.now(),
+                                        );
+                                        if (date != null) {
+                                          // Formato dd/mm/yyyy hh:mm requerido por el servidor
+                                          final formattedDate = '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} 00:00';
+                                          birthDateController.text = formattedDate;
+                                          viewModel.personInput.birthDate = formattedDate;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: DropdownButtonFormField<Sex>(
+                                      value: selectedSex,
+                                      decoration: InputDecoration(
+                                        labelText: '${l10n.sex} (${l10n.optional})',
+                                        isDense: true,
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      items: Sex.values.map((Sex sex) {
+                                        return DropdownMenuItem<Sex>(
+                                          value: sex,
+                                          child: Text(getSexLabel(context, sex)),
+                                        );
+                                      }).toList(),
+                                      onChanged: (Sex? newValue) {
+                                        setState(() {
+                                          selectedSex = newValue;
+                                          viewModel.personInput.sex = newValue;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ],
                         ],
                       ),
@@ -645,6 +721,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                       ? null
                       : () async {
                           if (formKey.currentState!.validate()) {
+                            final usingExistingBillTo = viewModel.selectedBillTo != null;
+
                             // Validar que se haya seleccionado un paciente
                             if (viewModel.foundPatient == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -664,10 +742,11 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                               return;
                             }
                             
-                            // Validar que se hayan llenado los datos de Person
-                            if (viewModel.personInput.firstName.isEmpty ||
+                            // Validar que se haya seleccionado o se vayan a ingresar datos de facturación
+                            if (viewModel.selectedBillTo == null &&
+                                (viewModel.personInput.firstName.isEmpty ||
                                 viewModel.personInput.lastName.isEmpty ||
-                                viewModel.personInput.dni.isEmpty) {
+                                viewModel.personInput.dni.isEmpty)) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('${l10n.billToInformation}: ${l10n.firstName}, ${l10n.lastName} y ${l10n.dni} son requeridos'),
@@ -680,7 +759,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                               return;
                             }
 
-                            final isError = await viewModel.createInvoice();
+                            final isError = await viewModel.createInvoice(
+                              useExistingBillTo: usingExistingBillTo,
+                            );
 
                             if (!isError) {
                               if (!context.mounted) return;
@@ -825,6 +906,118 @@ class _ExamSelectorDialogState extends State<_ExamSelectorDialog> {
                   );
                 },
               ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(widget.l10n.cancel),
+        ),
+      ],
+    );
+  }
+}
+
+// Selector de pagadores existentes
+class BillToSelectorDialog extends StatefulWidget {
+  final List<Person> persons;
+  final AppLocalizations l10n;
+
+  const BillToSelectorDialog({
+    required this.persons,
+    required this.l10n,
+  });
+
+  @override
+  State<BillToSelectorDialog> createState() => _BillToSelectorDialogState();
+}
+
+class _BillToSelectorDialogState extends State<BillToSelectorDialog> {
+  final searchController = TextEditingController();
+  late List<Person> filteredPersons;
+
+  @override
+  void initState() {
+    super.initState();
+    filteredPersons = widget.persons;
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterPersons(String query) {
+    final q = query.toLowerCase().trim();
+
+    setState(() {
+      if (q.isEmpty) {
+        filteredPersons = widget.persons;
+      } else {
+        filteredPersons = widget.persons.where((person) {
+          final fullName = '${person.firstName} ${person.lastName}'.toLowerCase();
+          return person.dni.toLowerCase().contains(q) || fullName.contains(q);
+        }).toList();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.l10n.selectExistingPerson),
+      content: SizedBox(
+        width: 520,
+        height: 520,
+        child: Column(
+          children: [
+            TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                labelText: widget.l10n.searchByDNI,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
+                isDense: true,
+              ),
+              onChanged: _filterPersons,
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: filteredPersons.isEmpty
+                  ? Center(
+                      child: Text(widget.l10n.billToNotFound),
+                    )
+                  : ListView.builder(
+                      itemCount: filteredPersons.length,
+                      itemBuilder: (context, index) {
+                        final person = filteredPersons[index];
+
+                        return Card(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          child: ListTile(
+                            dense: true,
+                            leading: const Icon(Icons.badge_outlined),
+                            title: Text('${person.firstName} ${person.lastName}'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${widget.l10n.dni}: ${person.dni}'),
+                                if (person.address.isNotEmpty)
+                                  Text(
+                                    person.address,
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                              ],
+                            ),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => Navigator.of(context).pop(person),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),

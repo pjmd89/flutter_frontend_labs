@@ -156,6 +156,26 @@
   "@billToInformation": {
     "description": "Título de la sección de información de la persona que pagará"
   },
+  "useExistingBillTo": "Usar pagador existente",
+  "@useExistingBillTo": {
+    "description": "Opción para reutilizar un pagador ya creado"
+  },
+  "useExistingBillToHint": "Busca por cédula para reutilizar los datos de facturación",
+  "@useExistingBillToHint": {
+    "description": "Texto de ayuda para el toggle de pagador existente"
+  },
+  "billToSearchHint": "Ingresa la cédula y presiona buscar para reutilizar un pagador",
+  "@billToSearchHint": {
+    "description": "Mensaje guía para buscar pagadores existentes"
+  },
+  "billToNotFound": "No se encontró un pagador con esa cédula",
+  "@billToNotFound": {
+    "description": "Mensaje cuando no se encuentra el billTo buscado"
+  },
+  "billToSelectionRequired": "Selecciona un pagador existente o ingresa los datos de facturación",
+  "@billToSelectionRequired": {
+    "description": "Mensaje de error cuando falta elegir un pagador"
+  },
   "createNewPerson": "Crear Nueva Persona",
   "@createNewPerson": {
     "description": "Opción para crear una nueva persona para facturación"

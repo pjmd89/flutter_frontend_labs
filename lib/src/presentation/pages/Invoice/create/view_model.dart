@@ -25,6 +25,9 @@ class ViewModel extends ChangeNotifier {
   // Estado del paciente
   Patient? _foundPatient;
 
+  // BillTo existente seleccionado
+  Person? _selectedBillTo;
+
   // Estados de factura
   final CreateInvoiceInput invoiceInput = CreateInvoiceInput(
     patient: '',
@@ -52,9 +55,14 @@ class ViewModel extends ChangeNotifier {
   bool get loading => _loading;
   bool get searching => _searching;
   Patient? get foundPatient => _foundPatient;
+  Person? get selectedBillTo => _selectedBillTo;
   List<Exam> get availableExams => _availableExams;
   List<Exam> get selectedExams => _selectedExams;
   List<Patient> get allPatients => _allPatients;
+  List<Person> get billToCandidates => _allPatients
+      .where((patient) => patient.isPerson && patient.asPerson != null)
+      .map((patient) => patient.asPerson!)
+      .toList();
 
   // Setters
   set loading(bool value) {
@@ -69,6 +77,11 @@ class ViewModel extends ChangeNotifier {
 
   set foundPatient(Patient? value) {
     _foundPatient = value;
+    notifyListeners();
+  }
+
+  set selectedBillTo(Person? value) {
+    _selectedBillTo = value;
     notifyListeners();
   }
 
@@ -181,6 +194,34 @@ class ViewModel extends ChangeNotifier {
     }
   }
 
+  // Buscar billTo existente por DNI (usa pacientes humanos cargados)
+  Person? searchBillToByDni(String dni) {
+    final normalized = dni.trim();
+
+    if (normalized.isEmpty) {
+      selectedBillTo = null;
+      return null;
+    }
+
+    Person? match;
+
+    for (final patient in _allPatients) {
+      final person = patient.asPerson;
+
+      if (person != null && person.dni == normalized) {
+        match = person;
+        break;
+      }
+    }
+
+    selectedBillTo = match;
+    return match;
+  }
+
+  void clearSelectedBillTo() {
+    selectedBillTo = null;
+  }
+
   // Calcular total
   num get totalAmount {
     return _selectedExams.fold(0, (sum, exam) => sum + exam.baseCost);
@@ -206,7 +247,7 @@ class ViewModel extends ChangeNotifier {
   }
 
   // Crear factura
-  Future<bool> createInvoice() async {
+  Future<bool> createInvoice({bool useExistingBillTo = false}) async {
     bool isError = true;
     loading = true;
 
@@ -216,29 +257,38 @@ class ViewModel extends ChangeNotifier {
         throw Exception('No se ha seleccionado un paciente');
       }
 
-      // 1. Crear Person primero (para billTo)
-      debugPrint('🔵 Creando Person para billTo...');
-      final createPersonUseCase = CreatePersonUsecase(
-        operation: CreatePersonMutation(
-          builder: PersonFieldsBuilder().defaultValues(),
-        ),
-        conn: _gqlConn,
-      );
-
-      final personResponse = await createPersonUseCase.execute(
-        input: personInput,
-      );
-
-      if (personResponse is! Person) {
-        throw Exception('Error al crear la persona para facturación');
-      }
-
-      debugPrint('✅ Person creada con ID: ${personResponse.id}');
-
-      // 2. Preparar datos de la factura con el billTo
+      // 1. Preparar datos base de la factura
       invoiceInput.patient = foundPatient!.id;
       invoiceInput.examIDs = _selectedExams.map((e) => e.id).toList();
-      invoiceInput.billTo = personResponse.id; // Asignar ID de Person creada
+
+      // 2. Determinar billTo (existente o nuevo)
+      if (useExistingBillTo) {
+        if (_selectedBillTo == null) {
+          throw Exception('No se ha seleccionado un pagador existente');
+        }
+
+        invoiceInput.billTo = _selectedBillTo!.id;
+        debugPrint('🟦 Usando billTo existente con ID: ${_selectedBillTo!.id}');
+      } else {
+        debugPrint('🔵 Creando Person para billTo...');
+        final createPersonUseCase = CreatePersonUsecase(
+          operation: CreatePersonMutation(
+            builder: PersonFieldsBuilder().defaultValues(),
+          ),
+          conn: _gqlConn,
+        );
+
+        final personResponse = await createPersonUseCase.execute(
+          input: personInput,
+        );
+
+        if (personResponse is! Person) {
+          throw Exception('Error al crear la persona para facturación');
+        }
+
+        debugPrint('✅ Person creada con ID: ${personResponse.id}');
+        invoiceInput.billTo = personResponse.id; // Asignar ID de Person creada
+      }
 
       // 3. Crear factura
       debugPrint('🔵 Creando Invoice...');
