@@ -176,7 +176,7 @@ class ViewModel extends ChangeNotifier {
         isError = true;
         
         _errorService.showError(
-          message: 'Error inesperado al actualizar empresa',
+          message: '${l10n.errorUpdating} ${l10n.company.toLowerCase()}',
           type: ErrorType.error,
         );
       }
@@ -186,20 +186,20 @@ class ViewModel extends ChangeNotifier {
       isError = true;
 
       // Detectar tipos de error específicos por el mensaje
-      String errorMessage = 'Error al actualizar empresa';
+      String errorMessage;
       
       final errorStr = e.toString().toLowerCase();
       
       if (errorStr.contains('not found') || errorStr.contains('no encontrado')) {
         errorMessage = l10n.recordNotFound;
       } else if (errorStr.contains('permission') || errorStr.contains('unauthorized')) {
-        errorMessage = 'No tiene permisos para actualizar esta empresa';
+        errorMessage = '${l10n.errorUpdating}: sin permisos';
       } else if (errorStr.contains('timeout')) {
-        errorMessage = 'Tiempo de espera agotado. Intente nuevamente';
+        errorMessage = '${l10n.errorUpdating}: tiempo de espera agotado';
       } else if (errorStr.contains('validation')) {
-        errorMessage = 'Error de validación: ${e.toString()}';
+        errorMessage = '${l10n.errorUpdating}: ${e.toString()}';
       } else {
-        errorMessage = 'Error al actualizar empresa: ${e.toString()}';
+        errorMessage = '${l10n.errorUpdating} ${l10n.company.toLowerCase()}: ${e.toString()}';
       }
 
       _errorService.showError(

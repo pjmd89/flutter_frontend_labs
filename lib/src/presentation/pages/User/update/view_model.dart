@@ -222,7 +222,7 @@ class ViewModel extends ChangeNotifier {
         isError = true;
         
         _errorService.showError(
-          message: 'Error inesperado al actualizar usuario',
+          message: '${l10n.errorUpdating} ${l10n.user.toLowerCase()}',
           type: ErrorType.error,
         );
       }
@@ -232,7 +232,7 @@ class ViewModel extends ChangeNotifier {
       isError = true;
       
       _errorService.showError(
-        message: 'Error al actualizar usuario: ${e.toString()}',
+        message: '${l10n.errorUpdating} ${l10n.user.toLowerCase()}: ${e.toString()}',
         type: ErrorType.error,
       );
     } finally {

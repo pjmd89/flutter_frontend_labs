@@ -13,10 +13,12 @@ import 'package:labs/src/domain/extensions/edgepatient_fields_builder_extension.
 import 'package:labs/src/domain/extensions/patient_fields_builder_extension.dart';
 import 'package:labs/src/domain/extensions/person_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/infraestructure/services/error_service.dart';
 
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
+  late ErrorService _errorService;
   final BuildContext _context;
   bool _loading = false;
   bool _error = false;
@@ -44,6 +46,7 @@ class ViewModel extends ChangeNotifier {
     required String patientId,
   }) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _errorService = _context.read<ErrorService>();
     loadData(patientId);
   }
   
@@ -207,6 +210,19 @@ class ViewModel extends ChangeNotifier {
             created: _currentPatient!.created,
             updated: DateTime.now().millisecondsSinceEpoch ~/ 1000,
           );
+          
+          _errorService.showError(
+            message: l10n.thingUpdatedSuccessfully(l10n.patient),
+            type: ErrorType.success,
+          );
+        } else {
+          debugPrint('⚠️ Response NO es de tipo Person. Tipo: ${response.runtimeType}');
+          isError = true;
+          
+          _errorService.showError(
+            message: '${l10n.errorUpdating} ${l10n.patient.toLowerCase()}',
+            type: ErrorType.error,
+          );
         }
       } else if (_currentPatient!.isAnimal) {
         // 🟡 Paciente animal → usar updatePatient
@@ -223,15 +239,38 @@ class ViewModel extends ChangeNotifier {
           isError = false;
           _currentPatient = response;
           debugPrint('✅ Paciente (animal) actualizado exitosamente');
+          
+          _errorService.showError(
+            message: l10n.thingUpdatedSuccessfully(l10n.patient),
+            type: ErrorType.success,
+          );
+        } else {
+          debugPrint('⚠️ Response NO es de tipo Patient. Tipo: ${response.runtimeType}');
+          isError = true;
+          
+          _errorService.showError(
+            message: '${l10n.errorUpdating} ${l10n.patient.toLowerCase()}',
+            type: ErrorType.error,
+          );
         }
       } else {
         debugPrint('⚠️ Tipo de paciente desconocido');
         isError = true;
+        
+        _errorService.showError(
+          message: '${l10n.errorUpdating}: tipo de ${l10n.patient.toLowerCase()} desconocido',
+          type: ErrorType.error,
+        );
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en update: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
+      
+      _errorService.showError(
+        message: '${l10n.errorUpdating} ${l10n.patient.toLowerCase()}: ${e.toString()}',
+        type: ErrorType.error,
+      );
     } finally {
       loading = false;
     }
