@@ -16,11 +16,28 @@ class LaboratorySwitcher extends StatefulWidget {
 
 class _LaboratorySwitcherState extends State<LaboratorySwitcher> {
   late LaboratorySwitcherViewModel viewModel;
+  late LaboratoryNotifier _laboratoryNotifier;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     viewModel = LaboratorySwitcherViewModel(context: context);
+    _laboratoryNotifier = context.read<LaboratoryNotifier>();
+    
+    // Escuchar cambios en el LaboratoryNotifier para recargar lista
+    _laboratoryNotifier.addListener(_onLaboratoryChanged);
+  }
+
+  @override
+  void dispose() {
+    _laboratoryNotifier.removeListener(_onLaboratoryChanged);
+    super.dispose();
+  }
+
+  /// Callback cuando cambia el laboratorio (incluyendo cuando se crea uno nuevo)
+  void _onLaboratoryChanged() {
+    // Recargar la lista de laboratorios disponibles
+    viewModel.getLaboratories();
   }
 
   @override

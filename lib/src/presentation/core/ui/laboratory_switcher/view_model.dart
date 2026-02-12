@@ -58,6 +58,8 @@ class LaboratorySwitcherViewModel extends ChangeNotifier {
     await getLaboratories();
   }
 
+  /// Método público para recargar la lista de laboratorios
+  /// Se puede llamar desde fuera cuando se crea/actualiza/elimina un laboratorio
   Future<void> getLaboratories() async {
     loading = true;
     error = false;

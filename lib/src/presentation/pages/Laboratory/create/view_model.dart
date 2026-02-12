@@ -8,6 +8,7 @@ import '/src/domain/usecases/Laboratory/create_laboratory_usecase.dart';
 import '/src/domain/usecases/Company/read_company_usecase.dart';
 import '/src/domain/extensions/edgecompany_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/presentation/providers/laboratory_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
 
 
@@ -92,8 +93,10 @@ class ViewModel extends ChangeNotifier {
       if (response is Laboratory) {
         isError = false;
 
-        // Mostrar mensaje de éxito
-     
+        // Notificar que se creó un nuevo laboratorio para que el switcher recargue
+        if (_context.mounted) {
+          _context.read<LaboratoryNotifier>().notifyListeners();
+        }
         
       } else {
         isError = true;
