@@ -227,13 +227,17 @@ class _UserCreatePageState extends State<UserCreatePage> {
     }
     
     // Todos pueden crear roles de laboratorio (excepto ROOT)
-    options.addAll([
-      UserRoleOption(
+    // Los usuarios con rol owner no pueden crear más owners
+    if (currentUserRole != Role.uSER) {
+      options.add(UserRoleOption(
         id: 'owner',
         label: l10n.roleOwner,
         isAdmin: false,
         employeeRole: LabMemberRole.oWNER,
-      ),
+      ));
+    }
+    
+    options.addAll([
       UserRoleOption(
         id: 'technician',
         label: l10n.roleTechnician,

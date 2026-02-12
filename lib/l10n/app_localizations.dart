@@ -167,6 +167,36 @@ abstract class AppLocalizations {
   /// **'Inténtalo de nuevo'**
   String get tryAgain;
 
+  /// Respuesta afirmativa
+  ///
+  /// In es, this message translates to:
+  /// **'Sí'**
+  String get yes;
+
+  /// Respuesta negativa
+  ///
+  /// In es, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// Mensaje de éxito al subir la firma
+  ///
+  /// In es, this message translates to:
+  /// **'Firma subida exitosamente'**
+  String get signatureUploadedSuccessfully;
+
+  /// Mensaje cuando falla la subida de firma
+  ///
+  /// In es, this message translates to:
+  /// **'Error al subir firma'**
+  String get errorUploadingSignature;
+
+  /// Mensaje cuando falla la aprobación del paquete
+  ///
+  /// In es, this message translates to:
+  /// **'Error al aprobar paquete de evaluación'**
+  String get errorApprovingEvaluationPackage;
+
   /// Factura singular
   ///
   /// In es, this message translates to:
@@ -508,12 +538,6 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cambiar firma'**
   String get changeSignature;
-
-  /// Mensaje de éxito al subir la firma
-  ///
-  /// In es, this message translates to:
-  /// **'Firma subida exitosamente'**
-  String get signatureUploadedSuccessfully;
 
   /// Error cuando el archivo no tiene extensión
   ///
@@ -1808,7 +1832,7 @@ abstract class AppLocalizations {
   /// Error cuando falta la ruta de la firma del bioanalista
   ///
   /// In es, this message translates to:
-  /// **'Falta la ruta de la firma del bioanalista'**
+  /// **'Falta la firma del bioanalista'**
   String get error085;
 
   /// No description provided for @error086.

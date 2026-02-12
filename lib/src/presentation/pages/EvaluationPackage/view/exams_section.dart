@@ -193,8 +193,18 @@ class _IndicatorValueItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final indicatorName = indicatorValue.indicator?.name ?? l10n.indicator;
-    final value = indicatorValue.value;
+    final rawValue = indicatorValue.value;
     final unit = indicatorValue.indicator?.unit ?? '';
+    final valueType = indicatorValue.indicator?.valueType;
+    
+    // ✅ Convertir valores booleanos a Sí/No
+    String displayValue;
+    if (valueType?.normalize() == ValueType.bOOLEAN) {
+      final isTrueValue = rawValue.toLowerCase() == 'true';
+      displayValue = isTrueValue ? l10n.yes : l10n.no;
+    } else {
+      displayValue = rawValue;
+    }
     
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -226,7 +236,7 @@ class _IndicatorValueItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              '$value $unit',
+              valueType?.normalize() == ValueType.bOOLEAN ? displayValue : '$displayValue $unit',
               style: TextStyle(
                 color: theme.colorScheme.onPrimaryContainer,
                 fontWeight: FontWeight.bold,

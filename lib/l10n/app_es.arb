@@ -48,6 +48,26 @@
   "@tryAgain": {
     "description": ""
   },
+  "yes":"Sí",
+  "@yes": {
+    "description": "Respuesta afirmativa"
+  },
+  "no":"No",
+  "@no": {
+    "description": "Respuesta negativa"
+  },
+  "signatureUploadedSuccessfully":"Firma cargada exitosamente",
+  "@signatureUploadedSuccessfully": {
+    "description": "Mensaje cuando se sube la firma exitosamente"
+  },
+  "errorUploadingSignature":"Error al subir firma",
+  "@errorUploadingSignature": {
+    "description": "Mensaje cuando falla la subida de firma"
+  },
+  "errorApprovingEvaluationPackage":"Error al aprobar paquete de evaluación",
+  "@errorApprovingEvaluationPackage": {
+    "description": "Mensaje cuando falla la aprobación del paquete"
+  },
   "invoice": "Factura",
   "@invoice": {
     "description": "Entidad factura singular"
@@ -1261,7 +1281,7 @@
   "error082": "El paciente ya existe",
   "error083": "No se pueden actualizar datos de animal para un paciente que no es animal",
   "error084": "Error al intentar actualizar la persona",
-  "error085": "Falta la ruta de la firma del bioanalista",
+  "error085": "Falta la firma del bioanalista",
   "error086": "Error genérico 86",
   "error087": "Error genérico 87",
   "error088": "Error genérico 88",

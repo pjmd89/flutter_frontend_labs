@@ -45,6 +45,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tryAgain => 'Inténtalo de nuevo';
 
   @override
+  String get yes => 'Sí';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get signatureUploadedSuccessfully => 'Firma subida exitosamente';
+
+  @override
+  String get errorUploadingSignature => 'Error al subir firma';
+
+  @override
+  String get errorApprovingEvaluationPackage => 'Error al aprobar paquete de evaluación';
+
+  @override
   String get invoice => 'Factura';
 
   @override
@@ -214,9 +229,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get changeSignature => 'Cambiar firma';
-
-  @override
-  String get signatureUploadedSuccessfully => 'Firma subida exitosamente';
 
   @override
   String get fileNoExtension => 'El archivo no tiene extensión';
@@ -892,7 +904,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error084 => 'Error al intentar actualizar la persona';
 
   @override
-  String get error085 => 'Falta la ruta de la firma del bioanalista';
+  String get error085 => 'Falta la firma del bioanalista';
 
   @override
   String get error086 => 'Error genérico 86';

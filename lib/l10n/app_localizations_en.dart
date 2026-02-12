@@ -42,7 +42,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseTryLater => 'Please try later';
 
   @override
-  String get tryAgain => 'Inténtalo de nuevo';
+  String get tryAgain => 'Try again';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get signatureUploadedSuccessfully => 'Signature uploaded successfully';
+
+  @override
+  String get errorUploadingSignature => 'Error uploading signature';
+
+  @override
+  String get errorApprovingEvaluationPackage => 'Error approving evaluation package';
 
   @override
   String get invoice => 'Invoice';
@@ -214,9 +229,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changeSignature => 'Change signature';
-
-  @override
-  String get signatureUploadedSuccessfully => 'Firma subida exitosamente';
 
   @override
   String get fileNoExtension => 'El archivo no tiene extensión';
@@ -892,7 +904,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error084 => 'Error when trying to update person';
 
   @override
-  String get error085 => 'Missing bioanalyst signature filepath';
+  String get error085 => 'Missing bioanalyst signature';
 
   @override
   String get error086 => 'Generic error 86';

@@ -44,9 +44,29 @@
   "@pleaseTryLater": {
     "description": ""
   },
-  "tryAgain":"Inténtalo de nuevo",
+  "tryAgain":"Try again",
   "@tryAgain": {
     "description": ""
+  },
+  "yes":"Yes",
+  "@yes": {
+    "description": "Affirmative response"
+  },
+  "no":"No",
+  "@no": {
+    "description": "Negative response"
+  },
+  "signatureUploadedSuccessfully":"Signature uploaded successfully",
+  "@signatureUploadedSuccessfully": {
+    "description": "Message when signature is uploaded successfully"
+  },
+  "errorUploadingSignature":"Error uploading signature",
+  "@errorUploadingSignature": {
+    "description": "Message when signature upload fails"
+  },
+  "errorApprovingEvaluationPackage":"Error approving evaluation package",
+  "@errorApprovingEvaluationPackage": {
+    "description": "Message when evaluation package approval fails"
   },
   "undefinedError":"Undefined error",
   "@undefinedError": {
@@ -1089,9 +1109,9 @@
   "@error084": {
     "description": "Error during person update process"
   },
-  "error085": "Missing bioanalyst signature filepath",
+  "error085": "Missing bioanalyst signature",
   "@error085": {
-    "description": "Error when bioanalyst signature filepath is missing"
+    "description": "Error when bioanalyst signature is missing"
   },
   "error086": "Generic error 86",
   "@error086": {

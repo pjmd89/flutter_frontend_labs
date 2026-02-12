@@ -187,7 +187,7 @@ class ViewModel extends ChangeNotifier {
       final errorMessage = e.toString();
       if (!errorMessage.contains('Backend error handled')) {
         _errorService.showError(
-          message: 'Error al actualizar paquete de evaluación: $errorMessage',
+          message: '${l10n.errorUpdating}: $errorMessage',
           type: ErrorType.error,
         );
       }
@@ -261,7 +261,7 @@ class ViewModel extends ChangeNotifier {
       final errorMessage = e.toString();
       if (!errorMessage.contains('Backend error handled')) {
         _errorService.showError(
-          message: 'Error al aprobar paquete de evaluación: $errorMessage',
+          message: '${l10n.errorApprovingEvaluationPackage}: $errorMessage',
           type: ErrorType.error,
         );
       }
@@ -305,7 +305,7 @@ class ViewModel extends ChangeNotifier {
         debugPrint('✅ Firma subida exitosamente: $_uploadedSignaturePath');
 
         _errorService.showError(
-          message: 'Firma cargada exitosamente',
+          message: l10n.signatureUploadedSuccessfully,
           type: ErrorType.success,
         );
 
@@ -340,7 +340,7 @@ class ViewModel extends ChangeNotifier {
       debugPrint('📍 StackTrace: $stackTrace');
 
       _errorService.showError(
-        message: 'Error al subir firma: ${e.toString()}',
+        message: '${l10n.errorUploadingSignature}: ${e.toString()}',
         type: ErrorType.error,
       );
 
