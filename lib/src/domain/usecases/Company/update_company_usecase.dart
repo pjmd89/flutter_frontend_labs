@@ -35,12 +35,21 @@ class UpdateCompanyUsecase {
       );
 
       debugPrint('✅ Response recibido: $response');
+      debugPrint('🔍 Tipo de response: ${response.runtimeType}');
 
-      // Transformar respuesta a entidad
+      // Si el response ya es un Company, retornarlo directamente
+      if (response is Company) {
+        debugPrint('✅ Response es directamente un Company');
+        return response;
+      }
+
+      // Si es un Map, transformar con mutation.result()
       if (response != null && response is Map<String, dynamic>) {
+        debugPrint('🔄 Transformando Map a Company');
         return mutation.result(response);
       }
 
+      debugPrint('⚠️ Response es null o tipo inesperado');
       return null;
     } catch (e, stackTrace) {
       debugPrint('💥 Error en UpdateCompanyUsecase.execute: $e');

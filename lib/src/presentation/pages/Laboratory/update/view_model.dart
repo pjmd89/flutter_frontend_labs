@@ -57,7 +57,8 @@ class ViewModel extends ChangeNotifier {
         _currentLaboratory = response;
         
         _errorService.showError(
-          message: l10n.updateThing(l10n.laboratory),
+          message: l10n.thingUpdatedSuccessfully(l10n.laboratory),
+          type: ErrorType.success,
         );
       }
     } catch (e, stackTrace) {

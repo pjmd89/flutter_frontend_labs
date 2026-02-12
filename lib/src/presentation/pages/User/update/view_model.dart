@@ -9,9 +9,11 @@ import 'package:labs/src/domain/usecases/User/read_user_usecase.dart';
 import 'package:labs/src/domain/operation/queries/getLabMemberships/getlabmemberships_query.dart';
 import 'package:labs/src/domain/extensions/edgelabmembershipinfo_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/infraestructure/services/error_service.dart';
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
+  late ErrorService _errorService;
   final BuildContext _context;
   bool _loading = false;
   bool _error = false;
@@ -39,6 +41,7 @@ class ViewModel extends ChangeNotifier {
     String? membershipId,
   }) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _errorService = _context.read<ErrorService>();
     
     if (membership != null) {
       // Opción A (recomendada): Objeto completo disponible inmediatamente
@@ -209,14 +212,29 @@ class ViewModel extends ChangeNotifier {
           );
         }
         debugPrint('✅ Usuario actualizado exitosamente - isError: $isError');
+        
+        _errorService.showError(
+          message: l10n.thingUpdatedSuccessfully(l10n.user),
+          type: ErrorType.success,
+        );
       } else {
         debugPrint('⚠️ Response NO es de tipo User. Tipo: ${response.runtimeType}');
         isError = true;
+        
+        _errorService.showError(
+          message: 'Error inesperado al actualizar usuario',
+          type: ErrorType.error,
+        );
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Error en updateUser: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
+      
+      _errorService.showError(
+        message: 'Error al actualizar usuario: ${e.toString()}',
+        type: ErrorType.error,
+      );
     } finally {
       loading = false;
       debugPrint('🏁 Finalizando update - isError: $isError');

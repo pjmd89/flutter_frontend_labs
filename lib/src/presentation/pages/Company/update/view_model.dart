@@ -12,10 +12,12 @@ import 'package:labs/src/domain/usecases/upload/upload_usecase.dart';
 import 'package:labs/src/domain/operation/queries/getCompanies/getcompanies_query.dart';
 import 'package:labs/src/domain/extensions/edgecompany_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/infraestructure/services/error_service.dart';
 
 
 class ViewModel extends ChangeNotifier {
   late GqlConn _gqlConn;
+  late ErrorService _errorService;
   final BuildContext _context;
   bool _loading = false;
   bool _error = false;
@@ -77,6 +79,7 @@ class ViewModel extends ChangeNotifier {
   ViewModel({required BuildContext context, required String companyId})
     : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
+    _errorService = _context.read<ErrorService>();
     loadData(companyId);
   }
 
@@ -164,14 +167,45 @@ class ViewModel extends ChangeNotifier {
         _currentCompany = response;
         debugPrint('✅ Empresa actualizada exitosamente');
 
+        _errorService.showError(
+          message: l10n.thingUpdatedSuccessfully(l10n.company),
+          type: ErrorType.success,
+        );
+      } else {
+        debugPrint('⚠️ Response NO es de tipo Company. Tipo: ${response.runtimeType}');
+        isError = true;
         
+        _errorService.showError(
+          message: 'Error inesperado al actualizar empresa',
+          type: ErrorType.error,
+        );
       }
     } catch (e, stackTrace) {
-      debugPrint('💥 Error en updateCompany: $e');
+      debugPrint('💥 Error desconocido en updateCompany: $e');
       debugPrint('📍 StackTrace: $stackTrace');
       isError = true;
 
-     
+      // Detectar tipos de error específicos por el mensaje
+      String errorMessage = 'Error al actualizar empresa';
+      
+      final errorStr = e.toString().toLowerCase();
+      
+      if (errorStr.contains('not found') || errorStr.contains('no encontrado')) {
+        errorMessage = l10n.recordNotFound;
+      } else if (errorStr.contains('permission') || errorStr.contains('unauthorized')) {
+        errorMessage = 'No tiene permisos para actualizar esta empresa';
+      } else if (errorStr.contains('timeout')) {
+        errorMessage = 'Tiempo de espera agotado. Intente nuevamente';
+      } else if (errorStr.contains('validation')) {
+        errorMessage = 'Error de validación: ${e.toString()}';
+      } else {
+        errorMessage = 'Error al actualizar empresa: ${e.toString()}';
+      }
+
+      _errorService.showError(
+        message: errorMessage,
+        type: ErrorType.error,
+      );
     } finally {
       loading = false;
     }
