@@ -5,13 +5,9 @@ import '/src/presentation/providers/gql_notifier.dart';
 import '/src/presentation/providers/laboratory_notifier.dart';
 import '/src/presentation/providers/auth_notifier.dart';
 import '/src/domain/operation/queries/getLabMemberships/getlabmemberships_query.dart';
-import '/src/domain/operation/queries/getUsers/getusers_query.dart';
 import '/src/domain/operation/fields_builders/edgelabmembershipinfo_fields_builder.dart';
-import '/src/domain/operation/fields_builders/edgeuser_fields_builder.dart';
 import '/src/domain/extensions/edgelabmembershipinfo_fields_builder_extension.dart';
-import '/src/domain/extensions/edgeuser_fields_builder_extension.dart';
 import '/src/domain/usecases/LabMembership/read_labmembership_usecase.dart';
-import '/src/domain/usecases/User/read_user_usecase.dart';
 
 
 class ViewModel extends ChangeNotifier {
@@ -22,20 +18,14 @@ class ViewModel extends ChangeNotifier {
   PageInfo? _pageInfo;
 
   late GqlConn _gqlConn;
-  late ReadLabMembershipUsecase? _readMembershipUseCase;
-  late ReadUserUsecase? _readUserUseCase;
+  late ReadLabMembershipUsecase _readMembershipUseCase;
   late LaboratoryNotifier _laboratoryNotifier;
-  late bool _isRootUser;
+  late bool _isRootUser; // true si es ROOT o ADMIN
   final BuildContext _context;
 
   // Query con FieldsBuilder configurado para memberships
   final GetLabMembershipsQuery _membershipOperation = GetLabMembershipsQuery(
     builder: EdgeLabMembershipInfoFieldsBuilder().defaultValues(),
-  );
-  
-  // Query con FieldsBuilder configurado para users
-  final GetUsersQuery _userOperation = GetUsersQuery(
-    builder: EdgeUserFieldsBuilder().defaultValues(),
   );
 
   bool get loading => _loading;
@@ -43,7 +33,7 @@ class ViewModel extends ChangeNotifier {
   List<LabMembershipInfo>? get membershipList => _membershipList;
   List<User>? get userList => _userList;
   PageInfo? get pageInfo => _pageInfo;
-  bool get isRootUser => _isRootUser;
+  bool get isRootUser => _isRootUser; // true si es ROOT o ADMIN
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -74,20 +64,14 @@ class ViewModel extends ChangeNotifier {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
     _laboratoryNotifier = _context.read<LaboratoryNotifier>();
     
-    // Detectar si es usuario ROOT
+    // Detectar si es usuario ROOT o ADMIN
     final authNotifier = _context.read<AuthNotifier>();
-    _isRootUser = authNotifier.role == Role.rOOT;
+    _isRootUser = authNotifier.role == Role.rOOT || authNotifier.role == Role.aDMIN;
     
-    debugPrint('🔍 User ViewModel - Es ROOT? $_isRootUser');
+    debugPrint('🔍 User ViewModel - Es ROOT o ADMIN? $_isRootUser, Rol: ${authNotifier.role}');
     
-    // Inicializar el usecase apropiado según el rol
-    if (_isRootUser) {
-      _readUserUseCase = ReadUserUsecase(operation: _userOperation, conn: _gqlConn);
-      _readMembershipUseCase = null;
-    } else {
-      _readMembershipUseCase = ReadLabMembershipUsecase(operation: _membershipOperation, conn: _gqlConn);
-      _readUserUseCase = null;
-    }
+    // Inicializar usecase de memberships para todos los roles
+    _readMembershipUseCase = ReadLabMembershipUsecase(operation: _membershipOperation, conn: _gqlConn);
     
     // Escuchar cambios en el laboratorio seleccionado solo si NO es root
     if (!_isRootUser) {
@@ -121,22 +105,53 @@ class ViewModel extends ChangeNotifier {
 
     try {
       if (_isRootUser) {
-        // Usuario ROOT: usar getUsers
-        final response = await _readUserUseCase!.build();
+        // ROOT/ADMIN: Usar build() sin filtros para obtener TODAS las membresías
+        debugPrint('🔍 ROOT/ADMIN: Obteniendo todas las membresías del sistema (sin filtros)');
         
-        if (response is EdgeUser) {
-          userList = response.edges;
-          pageInfo = response.pageInfo;
-          membershipList = null; // Limpiar lista de memberships
-        }
-      } else {
-        // Otros usuarios: usar getLabMemberships
-        final response = await _readMembershipUseCase!.build();
+        final response = await _readMembershipUseCase.build();
 
         if (response is EdgeLabMembershipInfo) {
           membershipList = response.edges;
           pageInfo = response.pageInfo;
-          userList = null; // Limpiar lista de users
+          userList = null; // Limpiar userList, ahora usamos membershipList
+          
+          debugPrint('✅ Total membresías obtenidas: ${response.edges.length}');
+        }
+      } else {
+        // Otros usuarios: filtrar por laboratorio seleccionado
+        final selectedLaboratory = _laboratoryNotifier.selectedLaboratory;
+        
+        if (selectedLaboratory == null) {
+          debugPrint('⚠️ No hay laboratorio seleccionado');
+          membershipList = [];
+          userList = [];
+          loading = false;
+          return;
+        }
+
+        final searchInputs = [
+          SearchInput(
+            field: 'laboratory',
+            value: [
+              ValueInput(
+                value: selectedLaboratory.id,
+                operator: OperatorEnum.eq,
+                kind: KindEnum.iD,
+              )
+            ]
+          )
+        ];
+        
+        debugPrint('🔍 Buscando membresías del laboratorio: ${selectedLaboratory.id}');
+
+        final response = await _readMembershipUseCase.search(searchInputs, null);
+
+        if (response is EdgeLabMembershipInfo) {
+          membershipList = response.edges;
+          pageInfo = response.pageInfo;
+          userList = null;
+          
+          debugPrint('✅ Membresías obtenidas: ${response.edges.length}');
         }
       }
     } catch (e, stackTrace) {
@@ -158,22 +173,17 @@ class ViewModel extends ChangeNotifier {
     error = false;
 
     try {
-      if (_isRootUser) {
-        // Usuario ROOT: usar getUsers
-        final response = await _readUserUseCase!.search(searchInputs, _pageInfo);
+      // Usar getLabMemberships para todos los roles
+      final response = await _readMembershipUseCase.search(searchInputs, _pageInfo);
 
-        if (response is EdgeUser) {
-          userList = response.edges;
-          pageInfo = response.pageInfo;
-          membershipList = null;
-        }
-      } else {
-        // Otros usuarios: usar getLabMemberships
-        final response = await _readMembershipUseCase!.search(searchInputs, _pageInfo);
-
-        if (response is EdgeLabMembershipInfo) {
-          membershipList = response.edges;
-          pageInfo = response.pageInfo;
+      if (response is EdgeLabMembershipInfo) {
+        membershipList = response.edges;
+        pageInfo = response.pageInfo;
+        
+        // Para usuarios ROOT/ADMIN, extraer los usuarios de las memberships
+        if (_isRootUser) {
+          userList = response.edges.map((membership) => membership.member).whereType<User>().toList();
+        } else {
           userList = null;
         }
       }

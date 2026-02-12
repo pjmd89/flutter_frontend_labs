@@ -25,14 +25,6 @@ final List<GoRoute> laboratoryRoutes = [
         ),
       ),
       GoRoute(
-        path: '/:id',
-        pageBuilder: (context, state) => CustomDialogPage(
-          context: context, 
-          state: state, 
-          child: const LaboratoryCreatePage()
-        ),
-      ),
-      GoRoute(
         path: 'update',
         pageBuilder: (context, state) => CustomDialogPage(
           context: context, 

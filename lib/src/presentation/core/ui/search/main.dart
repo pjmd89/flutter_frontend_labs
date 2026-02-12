@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/infraestructure/utils/search_fields.dart';
 import 'package:labs/src/presentation/core/ui/custom_desktop_body/main.dart';
@@ -81,7 +82,7 @@ class _SearchTemplateState extends State<SearchTemplate> {
                           child: TextFormField(
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.search),
-                              labelText: 'Buscar',
+                              labelText: AppLocalizations.of(context)!.search,
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {

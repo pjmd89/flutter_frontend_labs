@@ -41,7 +41,23 @@ class ViewModel extends ChangeNotifier {
   String? get existingLogoUrl => _currentCompany?.logo;
   
   // ✅ Getter para mostrar el nombre del archivo en el campo
-  String? get displayFileName => _originalFileName ?? _currentCompany?.logo;
+  String? get displayFileName {
+    // Si hay un archivo recién subido, usar su nombre original
+    if (_originalFileName != null) {
+      return _originalFileName;
+    }
+    
+    // Si hay un logo existente, mostrar nombre genérico con la extensión correcta
+    if (_currentCompany?.logo != null && _currentCompany!.logo.isNotEmpty) {
+      final logoUrl = _currentCompany!.logo;
+      // Extraer la extensión del archivo
+      final extension = logoUrl.split('.').last.toLowerCase();
+      // Retornar nombre genérico traducido con la extensión correcta
+      return '${l10n.companyLogoFileName}.$extension';
+    }
+    
+    return null;
+  }
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -94,6 +110,8 @@ class ViewModel extends ChangeNotifier {
         if (companies.isNotEmpty) {
           _currentCompany = companies.first;
           debugPrint('✅ Empresa cargada: ${_currentCompany!.name}');
+          debugPrint('🖼️ Logo value: ${_currentCompany!.logo}');
+          debugPrint('📝 displayFileName: $displayFileName');
 
           // Prellenar input con datos existentes
           input.id = _currentCompany!.id;

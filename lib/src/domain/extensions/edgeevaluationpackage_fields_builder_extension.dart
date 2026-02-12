@@ -8,6 +8,8 @@ extension EdgeEvaluationPackageFieldsBuilderExtension on EdgeEvaluationPackageFi
           evaluationPackageBuilder
             ..id()
             ..status()
+            ..pdfFilepath()
+            ..completedAt()
             ..referred()
             ..observations()
             ..isApproved()

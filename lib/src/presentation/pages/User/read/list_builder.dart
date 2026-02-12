@@ -20,18 +20,19 @@ List<Widget> buildList({
     return [Center(child: Text(l10n.errorLoadingData))];
   }
 
-  // Usuario ROOT: mostrar lista de usuarios
+  // Usuario ROOT/ADMIN: mostrar lista de membresías con diseño especial
   if (viewModel.isRootUser) {
     // Estado: Sin datos
-    if (viewModel.userList == null || viewModel.userList!.isEmpty) {
-      return [Center(child: Text(l10n.noRegisteredMaleThings(l10n.users)))];
+    if (viewModel.membershipList == null || viewModel.membershipList!.isEmpty) {
+      return [Center(child: Text(l10n.noRegisteredFemaleThings('Membresías')))];
     }
 
-    // Estado: Con datos - mapea cada user a UserItem
-    return viewModel.userList!.map((user) {
-      return UserItem(
-        user: user,
+    // Estado: Con datos - mapea cada membership a MembershipItem con isRootView
+    return viewModel.membershipList!.map((membership) {
+      return MembershipItem(
+        membership: membership,
         l10n: l10n,
+        isRootView: true,  // ✅ Activar diseño especial para ROOT/ADMIN
         onUpdate: (user) async {
           final result = await context.push('/user/update/${user.id}', extra: user);
           if (result == true) {

@@ -134,6 +134,14 @@
   "@markAsCompletedDescription": {
     "description": "Description of the mark as completed switch"
   },
+  "markAsReviewed": "Mark as Reviewed",
+  "@markAsReviewed": {
+    "description": "Switch to mark as reviewed"
+  },
+  "markAsReviewedDescription": "Mark that you have reviewed all results of the evaluation package.",
+  "@markAsReviewedDescription": {
+    "description": "Description of the mark as reviewed switch"
+  },
   
   "isApproved": "Approved",
   "@isApproved": {
@@ -331,6 +339,59 @@
   "@logo": {
     "description": "Company logo"
   },
+  
+  "companyLogoFileName": "company_logo",
+  "@companyLogoFileName": {
+    "description": "Generic filename for company logo file"
+  },
+  
+  "upload": "Upload",
+  "@upload": {
+    "description": "Button to upload file"
+  },
+  
+  "changeLogo": "Change logo",
+  "@changeLogo": {
+    "description": "Button to change existing logo"
+  },
+  
+  "uploading": "Uploading...",
+  "@uploading": {
+    "description": "Message during file upload"
+  },
+  
+  "logoSelected": "Logo selected",
+  "@logoSelected": {
+    "description": "Message when a new logo is selected"
+  },
+  
+  "currentLogo": "Current logo",
+  "@currentLogo": {
+    "description": "Message for existing logo"
+  },
+  
+  "nonEditableInformation": "Non-editable information",
+  "@nonEditableInformation": {
+    "description": "Title for section with non-editable fields"
+  },
+  
+  "creationDate": "Creation date",
+  "@creationDate": {
+    "description": "Creation date field"
+  },
+  
+  "january": "January",
+  "february": "February",
+  "march": "March",
+  "april": "April",
+  "may": "May",
+  "june": "June",
+  "july": "July",
+  "august": "August",
+  "september": "September",
+  "october": "October",
+  "november": "November",
+  "december": "December",
   
   "owner": "Owner",
   "@owner": {

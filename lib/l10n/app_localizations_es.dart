@@ -198,6 +198,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get markAsCompletedDescription => 'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.';
 
   @override
+  String get markAsReviewed => 'Marcar como revisado';
+
+  @override
+  String get markAsReviewedDescription => 'Marca que has revisado todos los resultados del paquete de evaluación.';
+
+  @override
   String get isApproved => 'Aprobado';
 
   @override
@@ -307,6 +313,63 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get logo => 'Logo';
+
+  @override
+  String get companyLogoFileName => 'logo_empresa';
+
+  @override
+  String get upload => 'Subir';
+
+  @override
+  String get changeLogo => 'Cambiar logo';
+
+  @override
+  String get uploading => 'Subiendo...';
+
+  @override
+  String get logoSelected => 'Logo seleccionado';
+
+  @override
+  String get currentLogo => 'Logo actual';
+
+  @override
+  String get nonEditableInformation => 'Información no editable';
+
+  @override
+  String get january => 'enero';
+
+  @override
+  String get february => 'febrero';
+
+  @override
+  String get march => 'marzo';
+
+  @override
+  String get april => 'abril';
+
+  @override
+  String get may => 'mayo';
+
+  @override
+  String get june => 'junio';
+
+  @override
+  String get july => 'julio';
+
+  @override
+  String get august => 'agosto';
+
+  @override
+  String get september => 'septiembre';
+
+  @override
+  String get october => 'octubre';
+
+  @override
+  String get november => 'noviembre';
+
+  @override
+  String get december => 'diciembre';
 
   @override
   String get owner => 'Propietario';
@@ -880,9 +943,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get permissionDenied => 'No tiene permisos para realizar esta acción';
-
-  @override
-  String get nonEditableInformation => 'Información no editable';
 
   @override
   String get allResultsCompleted => 'Todos los resultados completados';

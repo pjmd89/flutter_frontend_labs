@@ -7,40 +7,40 @@ List<DrawerButtonConfig> getRootDrawerButtonList(
   BuildContext context,
   String currentPath,
 ) {
-  //final l10n = AppLocalizations.of(context)!;
+  final l10n = AppLocalizations.of(context)!;
   return [
     DrawerButtonConfig( 
-      buttonText: "Dashboard",
+      buttonText: l10n.dashboard,
       buttonRoute: "/home",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.dashboard),
     ),
     DrawerButtonConfig(
-      buttonText: "Empresas",
+      buttonText: AppLocalizations.of(context)!.companies,
       buttonRoute: "/company",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.business),
     ),
     DrawerButtonConfig(
-      buttonText: "Laboratorios",
+      buttonText: AppLocalizations.of(context)!.laboratories,
       buttonRoute: "/laboratory",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.science),
     ),
     DrawerButtonConfig(
-      buttonText: "Usuarios",
+      buttonText: AppLocalizations.of(context)!.users,
       buttonRoute: "/user",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.person),
     ),
     DrawerButtonConfig(
-      buttonText: "Lista de Exámenes",
+      buttonText: AppLocalizations.of(context)!.exam,
       buttonRoute: "/examtemplate",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.assignment), // icono de caja embalada
     ),
     DrawerButtonConfig(
-      buttonText: "Pacientes",
+      buttonText: AppLocalizations.of(context)!.patients,
       buttonRoute: "/patient",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.people),
@@ -52,7 +52,7 @@ List<DrawerButtonConfig> getRootDrawerButtonList(
       leadingIcon: const Icon(Icons.receipt),
     ),
     DrawerButtonConfig(
-      buttonText: "Paquetes de evaluación",
+      buttonText: AppLocalizations.of(context)!.evaluationPackages,
       buttonRoute: "/evaluationpackage",
       currentPath: currentPath,
       leadingIcon: const Icon(Icons.folder_special),

@@ -210,7 +210,7 @@ class InvoiceItem extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        invoice.evaluationPackage!.status?.name.toUpperCase() ?? 'N/A',
+                        _getEvaluationPackageStatusText(invoice.evaluationPackage!.status),
                         style: theme.textTheme.bodySmall,
                       ),
                     ),
@@ -301,5 +301,18 @@ class InvoiceItem extends StatelessWidget {
     }
     
     return '${l10n.patient} ${patient.id}';
+  }
+
+  String _getEvaluationPackageStatusText(ResultStatus? status) {
+    switch (status) {
+      case ResultStatus.cOMPLETED:
+        return l10n.statusCompleted;
+      case ResultStatus.iNPROGRESS:
+        return l10n.statusInProgress;
+      case ResultStatus.pENDING:
+        return l10n.statusPending;
+      default:
+        return 'N/A';
+    }
   }
 }

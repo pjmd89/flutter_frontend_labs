@@ -66,14 +66,17 @@ class BasicTemplate extends StatelessWidget {
     // Usar el nombre del laboratorio si está seleccionado, sino usar "Labs"
     final displayTitle = laboratoryNotifier.laboratoryName;
     
+    // Verificar si es usuario ROOT o ADMIN (usar la variable authNotifier ya existente)
+    final isRootOrAdmin = authNotifier.role == Role.rOOT || authNotifier.role == Role.aDMIN;
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(displayTitle),
         centerTitle: false,
         actions: [
-          // Laboratory Switcher - Similar al selector de cuentas de Google
-          const LaboratorySwitcher(),
-          const SizedBox(width: 8),
+          // Laboratory Switcher - Oculto para ROOT/ADMIN
+          if (!isRootOrAdmin) const LaboratorySwitcher(),
+          if (!isRootOrAdmin) const SizedBox(width: 8),
           const UserMenu(),
         ],
       ),

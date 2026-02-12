@@ -65,13 +65,16 @@ class _ExamTemplateUpdatePageState extends State<ExamTemplateUpdatePage> {
   
   String getValueTypeLabel(BuildContext context, ValueType valueType) {
     final l10n = AppLocalizations.of(context)!;
-    switch (valueType) {
+    // Normalizar a mayúsculas para manejar valores legacy en minúsculas
+    switch (valueType.normalize()) {
       case ValueType.nUMERIC:
         return l10n.valueTypeNumeric;
       case ValueType.tEXT:
         return l10n.valueTypeText;
       case ValueType.bOOLEAN:
         return l10n.valueTypeBoolean;
+      default:
+        return l10n.valueTypeText;
     }
   }
   

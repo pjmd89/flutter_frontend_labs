@@ -473,6 +473,18 @@ abstract class AppLocalizations {
   /// **'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.'**
   String get markAsCompletedDescription;
 
+  /// Switch para marcar como revisado
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar como revisado'**
+  String get markAsReviewed;
+
+  /// Descripción del switch de marcar como revisado
+  ///
+  /// In es, this message translates to:
+  /// **'Marca que has revisado todos los resultados del paquete de evaluación.'**
+  String get markAsReviewedDescription;
+
   /// Campo para indicar si está aprobado
   ///
   /// In es, this message translates to:
@@ -545,7 +557,7 @@ abstract class AppLocalizations {
   /// **'Información General'**
   String get generalInformation;
 
-  /// Etiqueta para fecha de creación
+  /// Campo de fecha de creación
   ///
   /// In es, this message translates to:
   /// **'Fecha de creación'**
@@ -694,6 +706,120 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Logo'**
   String get logo;
+
+  /// Nombre genérico para archivo de logo de empresa
+  ///
+  /// In es, this message translates to:
+  /// **'logo_empresa'**
+  String get companyLogoFileName;
+
+  /// Botón para subir archivo
+  ///
+  /// In es, this message translates to:
+  /// **'Subir'**
+  String get upload;
+
+  /// Botón para cambiar el logo existente
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar logo'**
+  String get changeLogo;
+
+  /// Mensaje durante la carga de archivo
+  ///
+  /// In es, this message translates to:
+  /// **'Subiendo...'**
+  String get uploading;
+
+  /// Mensaje cuando se selecciona un nuevo logo
+  ///
+  /// In es, this message translates to:
+  /// **'Logo seleccionado'**
+  String get logoSelected;
+
+  /// Mensaje para logo existente
+  ///
+  /// In es, this message translates to:
+  /// **'Logo actual'**
+  String get currentLogo;
+
+  /// Título para sección de campos de solo lectura
+  ///
+  /// In es, this message translates to:
+  /// **'Información no editable'**
+  String get nonEditableInformation;
+
+  /// No description provided for @january.
+  ///
+  /// In es, this message translates to:
+  /// **'enero'**
+  String get january;
+
+  /// No description provided for @february.
+  ///
+  /// In es, this message translates to:
+  /// **'febrero'**
+  String get february;
+
+  /// No description provided for @march.
+  ///
+  /// In es, this message translates to:
+  /// **'marzo'**
+  String get march;
+
+  /// No description provided for @april.
+  ///
+  /// In es, this message translates to:
+  /// **'abril'**
+  String get april;
+
+  /// No description provided for @may.
+  ///
+  /// In es, this message translates to:
+  /// **'mayo'**
+  String get may;
+
+  /// No description provided for @june.
+  ///
+  /// In es, this message translates to:
+  /// **'junio'**
+  String get june;
+
+  /// No description provided for @july.
+  ///
+  /// In es, this message translates to:
+  /// **'julio'**
+  String get july;
+
+  /// No description provided for @august.
+  ///
+  /// In es, this message translates to:
+  /// **'agosto'**
+  String get august;
+
+  /// No description provided for @september.
+  ///
+  /// In es, this message translates to:
+  /// **'septiembre'**
+  String get september;
+
+  /// No description provided for @october.
+  ///
+  /// In es, this message translates to:
+  /// **'octubre'**
+  String get october;
+
+  /// No description provided for @november.
+  ///
+  /// In es, this message translates to:
+  /// **'noviembre'**
+  String get november;
+
+  /// No description provided for @december.
+  ///
+  /// In es, this message translates to:
+  /// **'diciembre'**
+  String get december;
 
   /// Propietario de la empresa
   ///
@@ -1768,12 +1894,6 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No tiene permisos para realizar esta acción'**
   String get permissionDenied;
-
-  /// Título para sección de campos de solo lectura
-  ///
-  /// In es, this message translates to:
-  /// **'Información no editable'**
-  String get nonEditableInformation;
 
   /// Label para switch de completitud de resultados
   ///
