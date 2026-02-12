@@ -71,7 +71,10 @@ class ViewModel extends ChangeNotifier {
     
     // Prellenar input con datos existentes
     input.id = evaluationPackage.id;
-    input.observations = List.from(evaluationPackage.observations);
+    // ❌ NO prellenar observations aquí - se llenará solo cuando el usuario edite
+    // Las observaciones se muestran prellenadas en el controller del UI pero no se envían
+    // a menos que el usuario las modifique
+    
     // Prellenar allResultsCompleted basado en el estado actual
     input.allResultsCompleted = evaluationPackage.status == ResultStatus.cOMPLETED;
     

@@ -29,6 +29,8 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   final TextEditingController observationController = TextEditingController();
   // Map: examIndex -> List<TextEditingController> para cada indicador
   final Map<int, List<TextEditingController>> examValueControllers = {};
+  // Map: examIndex -> Map<indicatorIndex -> bool> para indicadores booleanos
+  final Map<int, Map<int, bool>> examBooleanValues = {};
   bool allResultsCompleted = false;
   final signatureController = TextEditingController();
   
@@ -40,7 +42,7 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       evaluationPackage: widget.evaluationPackage,
     );
     
-    // Inicializar controller de observaciones
+    // Inicializar controller de observaciones (solo prellenar el controller, no el input)
     if (observationController.text.isEmpty) {
       if (widget.evaluationPackage.observations.isNotEmpty) {
         observationController.text = widget.evaluationPackage.observations.join('\n');
@@ -52,12 +54,27 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       for (var i = 0; i < widget.evaluationPackage.valuesByExam.length; i++) {
         final examResult = widget.evaluationPackage.valuesByExam[i];
         final controllers = <TextEditingController>[];
+        final booleanValues = <int, bool>{};
         
-        for (var indicatorValue in examResult.indicatorValues) {
-          controllers.add(TextEditingController(text: indicatorValue.value));
+        for (var j = 0; j < examResult.indicatorValues.length; j++) {
+          final indicatorValue = examResult.indicatorValues[j];
+          final indicator = indicatorValue.indicator;
+          
+          // Si es booleano, inicializar en el map de booleanos
+          if (indicator?.valueType?.normalize() == ValueType.bOOLEAN) {
+            // Parsear el valor string a booleano
+            booleanValues[j] = indicatorValue.value.toLowerCase() == 'true';
+            // Crear controller vacío para mantener índices sincronizados
+            controllers.add(TextEditingController());
+          } else {
+            controllers.add(TextEditingController(text: indicatorValue.value));
+          }
         }
         
         examValueControllers[i] = controllers;
+        if (booleanValues.isNotEmpty) {
+          examBooleanValues[i] = booleanValues;
+        }
       }
     }
     
@@ -84,21 +101,42 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     for (var i = 0; i < widget.evaluationPackage.valuesByExam.length; i++) {
       final examResult = widget.evaluationPackage.valuesByExam[i];
       final controllers = examValueControllers[i];
+      final booleanValues = examBooleanValues[i];
       
       if (controllers != null) {
         final indicatorValues = <SetIndicatorValue>[];
         
         for (var j = 0; j < controllers.length; j++) {
-          indicatorValues.add(SetIndicatorValue(
-            indicatorIndex: j,
-            value: controllers[j].text,
-          ));
+          final indicator = examResult.indicatorValues[j].indicator;
+          
+          // ✅ Manejar indicadores booleanos
+          if (indicator?.valueType?.normalize() == ValueType.bOOLEAN) {
+            // Obtener valor del map de booleanos (si existe)
+            if (booleanValues != null && booleanValues.containsKey(j)) {
+              indicatorValues.add(SetIndicatorValue(
+                indicatorIndex: j,
+                value: booleanValues[j].toString(),
+              ));
+            }
+          } else {
+            // ✅ Manejar indicadores de texto/numéricos - Solo agregar si tiene valor no vacío
+            final value = controllers[j].text.trim();
+            if (value.isNotEmpty) {
+              indicatorValues.add(SetIndicatorValue(
+                indicatorIndex: j,
+                value: value,
+              ));
+            }
+          }
         }
         
-        examResults.add(ExamResultInput(
-          exam: examResult.exam?.id ?? '',
-          indicatorValues: indicatorValues,
-        ));
+        // ✅ Solo agregar ExamResult si tiene al menos un indicador con valor
+        if (indicatorValues.isNotEmpty) {
+          examResults.add(ExamResultInput(
+            exam: examResult.exam?.id ?? '',
+            indicatorValues: indicatorValues,
+          ));
+        }
       }
     }
     
@@ -196,6 +234,21 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
         return 'En Progreso';
       case ResultStatus.cOMPLETED:
         return 'Completado';
+    }
+  }
+  
+  String getValueTypeLabel(BuildContext context, ValueType? valueType) {
+    final l10n = AppLocalizations.of(context)!;
+    if (valueType == null) return l10n.valueTypeText;
+    switch (valueType.normalize()) {
+      case ValueType.nUMERIC:
+        return l10n.valueTypeNumeric;
+      case ValueType.tEXT:
+        return l10n.valueTypeText;
+      case ValueType.bOOLEAN:
+        return l10n.valueTypeBoolean;
+      default:
+        return l10n.valueTypeText;
     }
   }
   
@@ -366,10 +419,46 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                                       return const SizedBox.shrink();
                                     }
                                     
+                                    // ✅ Si es booleano, mostrar checkbox
+                                    if (indicator?.valueType?.normalize() == ValueType.bOOLEAN) {
+                                      final booleanValues = examBooleanValues[examIndex] ?? {};
+                                      final currentValue = booleanValues[indicatorIndex] ?? false;
+                                      
+                                      return Padding(
+                                        padding: const EdgeInsets.only(bottom: 12.0),
+                                        child: InputDecorator(
+                                          decoration: InputDecoration(
+                                            labelText: indicator?.name ?? 'Indicador ${indicatorIndex + 1}',
+                                            border: const OutlineInputBorder(),
+                                            isDense: true,
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Checkbox(
+                                                value: currentValue,
+                                                onChanged: canEdit ? (bool? value) {
+                                                  setState(() {
+                                                    if (examBooleanValues[examIndex] == null) {
+                                                      examBooleanValues[examIndex] = {};
+                                                    }
+                                                    examBooleanValues[examIndex]![indicatorIndex] = value ?? false;
+                                                    _updateExamValues();
+                                                  });
+                                                } : null,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    
+                                    // ✅ Para otros tipos, mostrar TextField
                                     return Padding(
                                       padding: const EdgeInsets.only(bottom: 12.0),
                                       child: CustomTextFormField(
-                                        labelText: '${indicator?.name ?? 'Indicador ${indicatorIndex + 1}'} ${indicator?.unit != null ? '(${indicator!.unit})' : ''}',
+                                        labelText: '${indicator?.name ?? 'Indicador ${indicatorIndex + 1}'} ${indicator?.unit != null && indicator!.unit.isNotEmpty ? '(${indicator.unit})' : ''} - ${getValueTypeLabel(context, indicator?.valueType)}',
                                         controller: controllers[indicatorIndex],
                                         isDense: true,
                                         fieldLength: FormFieldLength.name,
