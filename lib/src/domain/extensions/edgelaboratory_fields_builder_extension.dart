@@ -21,7 +21,8 @@ extension EdgeLaboratoryFieldsBuilderExtension on EdgeLaboratoryFieldsBuilder {
                       ..id()
                       ..firstName()
                       ..lastName()
-                      ..email();
+                      ..email()
+                      ..fee();
                   });
               },
             )

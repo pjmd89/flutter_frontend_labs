@@ -584,7 +584,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: CustomTextFormField(
-                                      labelText: '${l10n.phone} (${l10n.optional})',
+                                      labelText: l10n.phone,
                                       controller: phoneController,
                                       isDense: true,
                                       fieldLength: FormFieldLength.password,
@@ -599,7 +599,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                               
                               // Email
                               CustomTextFormField(
-                                labelText: '${l10n.email} (${l10n.optional})',
+                                labelText: l10n.email,
                                 controller: emailController,
                                 isDense: true,
                                 fieldLength: FormFieldLength.email,

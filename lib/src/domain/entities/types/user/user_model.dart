@@ -10,7 +10,7 @@ class User {
   final Role? role;
   final String email;
   final int cutOffDate;
-  final num fee;
+  final num? fee;
   final int created;
   final int updated;
   User({
@@ -20,7 +20,7 @@ class User {
     this.role,
     this.email = "",
     this.cutOffDate = 0,
-    this.fee = 0,
+    this.fee,
     this.created = 0,
     this.updated = 0,
   });

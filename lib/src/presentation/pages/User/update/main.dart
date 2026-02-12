@@ -9,7 +9,7 @@ import './view_model.dart';
 class UserUpdatePage extends StatefulWidget {
   const UserUpdatePage({super.key, required this.id, this.user});
   final String id;
-  final User? user;
+  final LabMembershipInfo? user;
 
   @override
   State<UserUpdatePage> createState() => _UserUpdatePageState();
@@ -25,7 +25,7 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
   late TextEditingController emailController;
   
   // Variables para campos opcionales
-  Role? selectedRole;
+  LabMemberRole? selectedRole;
   
   bool _controllersInitialized = false;
   bool _viewModelInitialized = false;
@@ -46,17 +46,19 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
       debugPrint('🎯 widget.user != null: ${widget.user != null}');
       
       if (widget.user != null) {
-        debugPrint('✅ Usuario pasado directamente (Opción A)');
+        debugPrint('✅ User pasado directamente (Opción A)');
         debugPrint('   - ID: ${widget.user!.id}');
-        debugPrint('   - Nombre: ${widget.user!.firstName} ${widget.user!.lastName}');
-        viewModel = ViewModel(context: context, user: widget.user!);
+        debugPrint('   - Member: ${widget.user!.member?.firstName} ${widget.user!.member?.lastName}');
+        debugPrint('   - Role: ${widget.user!.role}');
+        debugPrint('   - Fee: ${widget.user!.laboratory?.company?.owner?.fee}');
+        viewModel = ViewModel(context: context, membership: widget.user!);
         
         // ✅ Como los datos ya están disponibles, inicializar controllers inmediatamente
         debugPrint('\n🎮 Inicializando controllers inmediatamente (Opción A)');
         _initializeControllers();
       } else {
         debugPrint('⚠️ Solo ID disponible, cargando desde servidor (Opción B)');
-        viewModel = ViewModel(context: context, userId: widget.id);
+        viewModel = ViewModel(context: context, membershipId: widget.id);
       }
       
       // Escuchar cambios del ViewModel para inicializar controllers (para Opción B)
@@ -75,24 +77,31 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
   }
   
   void _initializeControllers() {
-    if (viewModel.currentUser != null && !_controllersInitialized) {
+    if (viewModel.currentMembership != null && !_controllersInitialized) {
+      final member = viewModel.currentMembership!.member;
+      if (member == null) {
+        debugPrint('❌ No hay member en currentMembership');
+        return;
+      }
+      
       debugPrint('✅ Inicializando controllers...');
-      debugPrint('   - firstName: ${viewModel.currentUser!.firstName}');
-      debugPrint('   - lastName: ${viewModel.currentUser!.lastName}');
-      debugPrint('   - email: ${viewModel.currentUser!.email}');
-      debugPrint('   - role: ${viewModel.currentUser!.role}');
+      debugPrint('   - firstName: ${member.firstName}');
+      debugPrint('   - lastName: ${member.lastName}');
+      debugPrint('   - email: ${member.email}');
+      debugPrint('   - role: ${viewModel.currentMembership!.role}');
+      debugPrint('   - fee: ${viewModel.currentMembership!.laboratory?.company?.owner?.fee}');
       
       setState(() {
         firstNameController = TextEditingController(
-          text: viewModel.currentUser!.firstName
+          text: member.firstName
         );
         lastNameController = TextEditingController(
-          text: viewModel.currentUser!.lastName
+          text: member.lastName
         );
         emailController = TextEditingController(
-          text: viewModel.currentUser!.email
+          text: member.email
         );
-        selectedRole = viewModel.currentUser!.role;
+        selectedRole = viewModel.currentMembership!.role;
         _controllersInitialized = true;
       });
       
@@ -102,12 +111,12 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
   
   void _updateControllers() {
     debugPrint('\n🎮 ========== _updateControllers LLAMADO ==========');
-    debugPrint('🎮 viewModel.currentUser != null: ${viewModel.currentUser != null}');
+    debugPrint('🎮 viewModel.currentMembership != null: ${viewModel.currentMembership != null}');
     debugPrint('🎮 viewModel.loading: ${viewModel.loading}');
     debugPrint('🎮 _controllersInitialized: $_controllersInitialized');
     
     // Inicializar controllers cuando los datos se carguen (solo para Opción B)
-    if (viewModel.currentUser != null && !viewModel.loading && !_controllersInitialized) {
+    if (viewModel.currentMembership != null && !viewModel.loading && !_controllersInitialized) {
       debugPrint('\n✅ Condiciones cumplidas, inicializando...');
       _initializeControllers();
     } else {
@@ -127,15 +136,17 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
     super.dispose();
   }
   
-  String getRoleLabel(BuildContext context, Role role) {
+  String getRoleLabel(BuildContext context, LabMemberRole role) {
     final l10n = AppLocalizations.of(context)!;
     switch (role) {
-      case Role.rOOT:
-        return l10n.roleRoot;
-      case Role.aDMIN:
-        return l10n.roleAdmin;
-      case Role.uSER:
-        return l10n.roleUser;
+      case LabMemberRole.oWNER:
+        return l10n.roleOwner;
+      case LabMemberRole.tECHNICIAN:
+        return l10n.roleTechnician;
+      case LabMemberRole.bILLING:
+        return l10n.roleBilling;
+      case LabMemberRole.bIOANALYST:
+        return l10n.roleBioanalyst;
     }
   }
   
@@ -205,7 +216,7 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
         }
         
         // Mostrar loading mientras carga datos iniciales
-        if (!_controllersInitialized || viewModel.currentUser == null) {
+        if (!_controllersInitialized || viewModel.currentMembership == null) {
           return ContentDialog(
             icon: Icons.person,
             title: l10n.updateThing(l10n.user),
@@ -293,13 +304,8 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
                           ),
                           const SizedBox(height: 8),
                           _buildReadOnlyField(
-                            l10n.cutOffDate, 
-                            formatTimestamp(viewModel.currentUser!.cutOffDate)
-                          ),
-                          const SizedBox(height: 8),
-                          _buildReadOnlyField(
                             l10n.fee, 
-                            viewModel.currentUser!.fee.toString()
+                            viewModel.currentMembership?.laboratory?.company?.owner?.fee?.toString() ?? '-'
                           ),
                         ],
                       ),

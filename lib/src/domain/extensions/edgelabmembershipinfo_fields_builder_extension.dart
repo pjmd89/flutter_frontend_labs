@@ -13,6 +13,7 @@ extension EdgeLabMembershipInfoFieldsBuilderExtension on EdgeLabMembershipInfoFi
               ..firstName()
               ..lastName()
               ..email();
+              
           })
           ..laboratory(builder: (labBuilder) {
             labBuilder
@@ -30,7 +31,9 @@ extension EdgeLabMembershipInfoFieldsBuilderExtension on EdgeLabMembershipInfoFi
                       ..id()
                       ..firstName()
                       ..lastName()
-                      ..email();
+                      ..email()
+                      ..fee();
+                      
                   });
               })
               ..created()

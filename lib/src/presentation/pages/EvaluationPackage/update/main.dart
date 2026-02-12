@@ -378,12 +378,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                                         onChange: (value) {
                                           _updateExamValues();
                                         },
-                                        validator: (value) {
-                                          if (canEdit && (value == null || value.isEmpty)) {
-                                            return l10n.fieldRequired;
-                                          }
-                                          return null;
-                                        },
                                       ),
                                     );
                                   },

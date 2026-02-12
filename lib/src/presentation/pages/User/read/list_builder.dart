@@ -33,8 +33,8 @@ List<Widget> buildList({
         membership: membership,
         l10n: l10n,
         isRootView: true,  // ✅ Activar diseño especial para ROOT/ADMIN
-        onUpdate: (user) async {
-          final result = await context.push('/user/update/${user.id}', extra: user);
+        onUpdate: (updatedMembership) async {
+          final result = await context.push('/user/update/${updatedMembership.id}', extra: updatedMembership);
           if (result == true) {
             viewModel.getMemberships();
           }
@@ -57,8 +57,8 @@ List<Widget> buildList({
     return MembershipItem(
       membership: membership,
       l10n: l10n,
-      onUpdate: (user) async {
-        final result = await context.push('/user/update/${user.id}', extra: user);
+      onUpdate: (updatedMembership) async {
+        final result = await context.push('/user/update/${updatedMembership.id}', extra: updatedMembership);
         if (result == true) {
           viewModel.getMemberships();
         }

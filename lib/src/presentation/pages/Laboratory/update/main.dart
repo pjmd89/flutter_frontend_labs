@@ -106,6 +106,11 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
                             l10n.company,
                             widget.laboratory.company?.name ?? '-',
                           ),
+                          const SizedBox(height: 8),
+                          _buildReadOnlyField(
+                            l10n.fee,
+                            widget.laboratory.company?.owner?.fee?.toString() ?? '-',
+                          ),
                         ],
                       ),
                     ),

@@ -13,7 +13,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
   role: $enumDecodeNullable(_$RoleEnumMap, json['role']),
   email: json['email'] as String? ?? "",
   cutOffDate: (json['cutOffDate'] as num?)?.toInt() ?? 0,
-  fee: json['fee'] as num? ?? 0,
+  fee: json['fee'] as num?,
   created: (json['created'] as num?)?.toInt() ?? 0,
   updated: (json['updated'] as num?)?.toInt() ?? 0,
 );
@@ -25,7 +25,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
   if (_$RoleEnumMap[instance.role] case final value?) 'role': value,
   'email': instance.email,
   'cutOffDate': instance.cutOffDate,
-  'fee': instance.fee,
+  if (instance.fee case final value?) 'fee': value,
   'created': instance.created,
   'updated': instance.updated,
 };

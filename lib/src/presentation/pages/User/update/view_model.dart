@@ -6,8 +6,8 @@ import 'package:labs/src/domain/operation/fields_builders/main.dart';
 import 'package:labs/src/domain/operation/mutations/updateUser/updateuser_mutation.dart';
 import 'package:labs/src/domain/usecases/User/update_user_usecase.dart';
 import 'package:labs/src/domain/usecases/User/read_user_usecase.dart';
-import 'package:labs/src/domain/operation/queries/getUsers/getusers_query.dart';
-import 'package:labs/src/domain/extensions/edgeuser_fields_builder_extension.dart';
+import 'package:labs/src/domain/operation/queries/getLabMemberships/getlabmemberships_query.dart';
+import 'package:labs/src/domain/extensions/edgelabmembershipinfo_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 
 class ViewModel extends ChangeNotifier {
@@ -17,9 +17,9 @@ class ViewModel extends ChangeNotifier {
   bool _error = false;
   
   final UpdateUserInput input = UpdateUserInput();
-  User? _currentUser;
+  LabMembershipInfo? _currentMembership;
   
-  User? get currentUser => _currentUser;
+  LabMembershipInfo? get currentMembership => _currentMembership;
   bool get loading => _loading;
   bool get error => _error;
   
@@ -35,41 +35,43 @@ class ViewModel extends ChangeNotifier {
   
   ViewModel({
     required BuildContext context,
-    User? user,
-    String? userId,
+    LabMembershipInfo? membership,
+    String? membershipId,
   }) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
     
-    if (user != null) {
+    if (membership != null) {
       // Opción A (recomendada): Objeto completo disponible inmediatamente
-      debugPrint('\n✅ ========== Opción A: Usuario prellenado ==========');
-      _currentUser = user;
-      _prellenarInput(user);
+      debugPrint('\n✅ ========== Opción A: Membership prellenado ==========');
+      _currentMembership = membership;
+      _prellenarInput(membership);
       loading = false;
       debugPrint('========================================\n');
-    } else if (userId != null) {
+    } else if (membershipId != null) {
       // Opción B: Cargar desde servidor
       debugPrint('\n⚠️ ========== Opción B: Cargando desde servidor ==========');
-      loadData(userId);
+      loadData(membershipId);
     } else {
-      debugPrint('\n❌ ERROR: Ni user ni userId fueron proporcionados');
+      debugPrint('\n❌ ERROR: Ni membership ni membershipId fueron proporcionados');
       error = true;
       loading = false;
     }
   }
   
-  void _prellenarInput(User user) {
+  void _prellenarInput(LabMembershipInfo membership) {
     debugPrint('📝 Prellenando input con datos existentes...');
-    input.id = user.id;
-    input.firstName = user.firstName;
-    input.lastName = user.lastName;
-    input.email = user.email;
+    input.id = membership.member?.id ?? '';
+    input.firstName = membership.member?.firstName ?? '';
+    input.lastName = membership.member?.lastName ?? '';
+    input.email = membership.member?.email ?? '';
     
     debugPrint('✅ Input prellenado:');
     debugPrint('   - id: ${input.id}');
     debugPrint('   - firstName: ${input.firstName}');
     debugPrint('   - lastName: ${input.lastName}');
     debugPrint('   - email: ${input.email}');
+    debugPrint('   - role: ${membership.role}');
+    debugPrint('   - fee: ${membership.laboratory?.company?.owner?.fee}');
   }
   
   AppLocalizations get l10n => AppLocalizations.of(_context)!;
@@ -84,11 +86,11 @@ class ViewModel extends ChangeNotifier {
     error = false;
     
     try {
-      debugPrint('🔍 Cargando usuario con ID: $id');
+      debugPrint('🔍 Cargando membership con ID: $id');
       
-      // Usar build() para obtener todos los usuarios y filtrar en memoria
+      // Usar build() para obtener todos los memberships y filtrar en memoria
       ReadUserUsecase useCase = ReadUserUsecase(
-        operation: GetUsersQuery(builder: EdgeUserFieldsBuilder().defaultValues()),
+        operation: GetLabMembershipsQuery(builder: EdgeLabMembershipInfoFieldsBuilder().defaultValues()),
         conn: _gqlConn,
       );
       
@@ -96,67 +98,65 @@ class ViewModel extends ChangeNotifier {
       
       debugPrint('\n📦 ========== RESPONSE RECIBIDA ==========');
       debugPrint('🔍 Tipo de response: ${response.runtimeType}');
-      debugPrint('🔍 Response es EdgeUser: ${response is EdgeUser}');
+      debugPrint('🔍 Response es EdgeLabMembershipInfo: ${response is EdgeLabMembershipInfo}');
       
-      if (response is EdgeUser) {
+      if (response is EdgeLabMembershipInfo) {
         debugPrint('📊 Cantidad de edges: ${response.edges.length}');
         debugPrint('🔍 Edges está vacío: ${response.edges.isEmpty}');
         
         if (response.edges.isNotEmpty) {
-          debugPrint('\n👥 ========== USUARIOS EN EDGES ==========');
+          debugPrint('\n👥 ========== MEMBERSHIPS EN EDGES ==========');
           for (int i = 0; i < response.edges.length; i++) {
-            final user = response.edges[i];
-            debugPrint('Usuario [$i]:');
-            debugPrint('  - ID: "${user.id}"');
-            debugPrint('  - Tipo ID: ${user.id.runtimeType}');
-            debugPrint('  - Longitud ID: ${user.id.length}');
-            debugPrint('  - Nombre: ${user.firstName} ${user.lastName}');
-            debugPrint('  - Email: ${user.email}');
-            debugPrint('  - Role: ${user.role}');
-            debugPrint('  - ¿Coincide con ID buscado? ${user.id == id}');
-            debugPrint('  - ¿IDs idénticos byte a byte? ${user.id.codeUnits == id.codeUnits}');
+            final membership = response.edges[i];
+            debugPrint('Membership [$i]:');
+            debugPrint('  - ID: "${membership.id}"');
+            debugPrint('  - Member ID: "${membership.member?.id}"');
+            debugPrint('  - Nombre: ${membership.member?.firstName} ${membership.member?.lastName}');
+            debugPrint('  - Role: ${membership.role}');
+            debugPrint('  - Fee: ${membership.laboratory?.company?.owner?.fee}');
+            debugPrint('  - ¿Coincide con ID buscado? ${membership.id == id}');
           }
         }
       }
       
-      if (response is EdgeUser && response.edges.isNotEmpty) {
-        debugPrint('\n🔎 ========== FILTRANDO USUARIO ==========');
+      if (response is EdgeLabMembershipInfo && response.edges.isNotEmpty) {
+        debugPrint('\n🔎 ========== FILTRANDO MEMBERSHIP ==========');
         
-        // Filtrar usuario por ID en memoria
-        final users = response.edges.where((user) {
-          final matches = user.id == id;
-          debugPrint('Comparando: "${user.id}" == "$id" → $matches');
+        // Filtrar membership por ID en memoria
+        final memberships = response.edges.where((membership) {
+          final matches = membership.id == id;
+          debugPrint('Comparando: "${membership.id}" == "$id" → $matches');
           return matches;
         }).toList();
         
-        debugPrint('🔍 Usuarios encontrados después del filtro: ${users.length}');
+        debugPrint('🔍 Memberships encontrados después del filtro: ${memberships.length}');
         
-        if (users.isNotEmpty) {
-          _currentUser = users.first;
-          debugPrint('\n✅ ========== USUARIO ENCONTRADO ==========');
-          debugPrint('✅ ID: ${_currentUser!.id}');
-          debugPrint('✅ Nombre: ${_currentUser!.firstName} ${_currentUser!.lastName}');
-          debugPrint('✅ Email: ${_currentUser!.email}');
-          debugPrint('✅ Role: ${_currentUser!.role}');
+        if (memberships.isNotEmpty) {
+          _currentMembership = memberships.first;
+          debugPrint('\n✅ ========== MEMBERSHIP ENCONTRADO ==========');
+          debugPrint('✅ ID: ${_currentMembership!.id}');
+          debugPrint('✅ Member: ${_currentMembership!.member?.firstName} ${_currentMembership!.member?.lastName}');
+          debugPrint('✅ Role: ${_currentMembership!.role}');
+          debugPrint('✅ Fee: ${_currentMembership!.laboratory?.company?.owner?.fee}');
           
           // Prellenar input con datos existentes
-          _prellenarInput(_currentUser!);
+          _prellenarInput(_currentMembership!);
         } else {
-          debugPrint('\n❌ ========== USUARIO NO ENCONTRADO ==========');
+          debugPrint('\n❌ ========== MEMBERSHIP NO ENCONTRADO ==========');
           debugPrint('❌ ID buscado: "$id"');
-          debugPrint('❌ Total de usuarios en lista: ${response.edges.length}');
+          debugPrint('❌ Total de memberships en lista: ${response.edges.length}');
           debugPrint('❌ IDs disponibles en la lista:');
-          for (var user in response.edges) {
-            debugPrint('   - "${user.id}" (${user.firstName} ${user.lastName})');
+          for (var membership in response.edges) {
+            debugPrint('   - "${membership.id}" (${membership.member?.firstName})');
           }
           error = true;
         }
-      } else if (response is EdgeUser && response.edges.isEmpty) {
-        debugPrint('⚠️ EdgeUser sin datos - edges está vacío');
+      } else if (response is EdgeLabMembershipInfo && response.edges.isEmpty) {
+        debugPrint('⚠️ EdgeLabMembershipInfo sin datos - edges está vacío');
         error = true;
         
       } else {
-        debugPrint('⚠️ Response no es EdgeUser. Tipo: ${response.runtimeType}');
+        debugPrint('⚠️ Response no es EdgeLabMembershipInfo. Tipo: ${response.runtimeType}');
         error = true;
        
       }
@@ -171,9 +171,10 @@ class ViewModel extends ChangeNotifier {
       debugPrint('\n🏁 ========== FIN loadData ==========');
       debugPrint('🏁 loading: $_loading');
       debugPrint('🏁 error: $_error');
-      debugPrint('🏁 currentUser != null: ${_currentUser != null}');
-      if (_currentUser != null) {
-        debugPrint('🏁 currentUser.id: ${_currentUser!.id}');
+      debugPrint('🏁 currentMembership != null: ${_currentMembership != null}');
+      if (_currentMembership != null) {
+        debugPrint('🏁 currentMembership.id: ${_currentMembership!.id}');
+        debugPrint('🏁 member.id: ${_currentMembership!.member?.id}');
       }
       debugPrint('========================================\n');
     }
@@ -195,7 +196,18 @@ class ViewModel extends ChangeNotifier {
  
       if (response is User) {
         isError = false;
-        _currentUser = response;
+        // Actualizar member dentro de currentMembership
+        if (_currentMembership != null) {
+          _currentMembership = LabMembershipInfo(
+            id: _currentMembership!.id,
+            role: _currentMembership!.role,
+            member: response,
+            laboratory: _currentMembership!.laboratory,
+            access: _currentMembership!.access,
+            created: _currentMembership!.created,
+            updated: _currentMembership!.updated,
+          );
+        }
         debugPrint('✅ Usuario actualizado exitosamente - isError: $isError');
       } else {
         debugPrint('⚠️ Response NO es de tipo User. Tipo: ${response.runtimeType}');

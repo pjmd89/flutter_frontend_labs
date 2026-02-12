@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class MembershipItem extends StatelessWidget {
   final LabMembershipInfo membership;
   final AppLocalizations l10n;
-  final Function(User user)? onUpdate;
+  final Function(LabMembershipInfo membership)? onUpdate;
   final Function(String id)? onDelete;
   final Function(String id)? onViewLabs;
   final bool isRootView;
@@ -69,14 +69,14 @@ class MembershipItem extends StatelessWidget {
                     : PopupMenuButton<String>(
                         icon: const Icon(Icons.more_vert),
                         onSelected: (value) {
-                          if (value == 'edit' && onUpdate != null && membership.member != null) {
+                          if (value == 'edit' && onUpdate != null) {
                             debugPrint('\n📤 ========== NAVEGANDO A UPDATE (MembershipItem ROOT) ==========');
                             debugPrint('📤 membership.id: "${membership.id}"');
-                            debugPrint('📤 membership.member.id: "${membership.member!.id}"');
-                            debugPrint('📤 Nombre: ${membership.member!.firstName} ${membership.member!.lastName}');
-                            debugPrint('📤 Pasando objeto User completo');
+                            debugPrint('📤 membership.member.id: "${membership.member?.id}"');
+                            debugPrint('📤 Nombre: ${membership.member?.firstName} ${membership.member?.lastName}');
+                            debugPrint('📤 Pasando objeto LabMembershipInfo completo');
                             debugPrint('========================================\n');
-                            onUpdate!(membership.member!);
+                            onUpdate!(membership);
                           }
                         },
                         itemBuilder: (context) => [
@@ -147,14 +147,14 @@ class MembershipItem extends StatelessWidget {
                   ? null // Ocultar el menú si es billing o bioanalista
                   : PopupMenuButton<String>(
                       onSelected: (value) {
-                        if (value == 'edit' && onUpdate != null && membership.member != null) {
+                        if (value == 'edit' && onUpdate != null) {
                           debugPrint('\n📤 ========== NAVEGANDO A UPDATE (MembershipItem) ==========');
                           debugPrint('📤 membership.id: "${membership.id}"');
-                          debugPrint('📤 membership.member.id: "${membership.member!.id}"');
-                          debugPrint('📤 Nombre: ${membership.member!.firstName} ${membership.member!.lastName}');
-                          debugPrint('📤 Pasando objeto User completo');
+                          debugPrint('📤 membership.member.id: "${membership.member?.id}"');
+                          debugPrint('📤 Nombre: ${membership.member?.firstName} ${membership.member?.lastName}');
+                          debugPrint('📤 Pasando objeto LabMembershipInfo completo');
                           debugPrint('========================================\n');
-                          onUpdate!(membership.member!);
+                          onUpdate!(membership);
                         }
                       },
                       itemBuilder: (context) => [

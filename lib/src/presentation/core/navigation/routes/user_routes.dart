@@ -42,7 +42,7 @@ final List<GoRoute> userRoutes = [
           debugPrint('🛣️ state.extra != null: ${state.extra != null}');
           debugPrint('🛣️ state.extra type: ${state.extra.runtimeType}');
           if (state.extra != null) {
-            debugPrint('🛣️ state.extra is User: ${state.extra is User}');
+            debugPrint('🛣️ state.extra is LabMembershipInfo: ${state.extra is LabMembershipInfo}');
           }
           debugPrint('========================================\n');
           
@@ -51,7 +51,7 @@ final List<GoRoute> userRoutes = [
             state: state, 
             child: UserUpdatePage(
               id: state.pathParameters['id']!,
-              user: state.extra as User?,
+              user: state.extra as LabMembershipInfo?,
             )
           );
         }
