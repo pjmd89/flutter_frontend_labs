@@ -13,21 +13,24 @@ class CustomSidebarPage extends CustomTransitionPage {
           begin: const Offset(1.0, 0.0),
           end: Offset.zero,
         ).animate(animation),
-        child: child,
+        child: FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
       );
     },
     transitionDuration: const Duration(milliseconds: 300),
-    child: Scaffold(
-      body: Row(
-        children: [
-          Expanded(child: Container()), // Espacio para el contenido principal
-          SizedBox(
-            width: 400, // Ancho de la barra lateral
-            child: Material(
-              child: child,
-            ),
-          ),
-        ],
+    opaque: false,
+    barrierDismissible: true,
+    barrierColor: Colors.black54,
+    child: Align(
+      alignment: Alignment.centerRight,
+      child: SizedBox(
+        width: 400,
+        height: double.infinity,
+        child: Material(
+          child: child,
+        ),
       ),
     ),
   );
