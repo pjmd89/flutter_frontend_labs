@@ -1,42 +1,36 @@
-import 'dart:typed_data';
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
-import 'package:labs/l10n/app_localizations.dart';
-import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
-import 'package:labs/src/presentation/core/ui/main.dart';
-import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:labs/src/domain/entities/main.dart';
+import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import './view_model.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-// Importación para web (package:web reemplaza dart:html)
-import 'package:web/web.dart' show HTMLInputElement, FileReader;
-import 'dart:js_interop';
 
-// Clase wrapper para combinar Role y LabMemberRole
-class UserRoleOption {
-  final String id;
-  final String label;
-  final bool isAdmin;
-  final LabMemberRole? employeeRole;
-  
-  UserRoleOption({
-    required this.id,
-    required this.label,
-    required this.isAdmin,
-    this.employeeRole,
-  });
-  
+void main() => runApp(const LabApp());
+
+class LabApp extends StatelessWidget {
+  const LabApp({super.key});
+
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UserRoleOption &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
-  
-  @override
-  int get hashCode => id.hashCode;
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark, // Cambiar a dark/light según desees
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF101922),
+        primaryColor: const Color(0xFF137fec),
+        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
+      ),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: const Color(0xFFf6f7f8),
+        primaryColor: const Color(0xFF137fec),
+        textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme),
+      ),
+      home: const UserCreatePage(),
+    );
+  }
 }
 
 class UserCreatePage extends StatefulWidget {
@@ -48,31 +42,26 @@ class UserCreatePage extends StatefulWidget {
 
 class _UserCreatePageState extends State<UserCreatePage> {
   late ViewModel viewModel;
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final cutOffDateController = TextEditingController();
-  final feeController = TextEditingController();
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
+  late TextEditingController _emailController;
+  late TextEditingController _companyNameController;
+  late TextEditingController _cutOffDateController;
+  late TextEditingController _managementFeeController;
 
-  // Controllers para CreateCompanyInput
-  final companyNameController = TextEditingController();
-  final companyTaxIDController = TextEditingController();
-  final companyLogoController = TextEditingController();
-  final labAddressController = TextEditingController();
-  final phoneController = TextEditingController();
-
+  bool _isAdmin = false;
+  String _selectedRole = "tECHNICIAN";
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  UserRoleOption? selectedRole;
-  DateTime? selectedCutOffDate;
-  // selectedLaboratoryID se eliminó porque CreateUserInput no tiene ese campo
-
-  // Lista para teléfonos múltiples del laboratorio
-  List<String> phoneNumbers = [];
 
   @override
   void initState() {
     super.initState();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _companyNameController = TextEditingController();
+    _cutOffDateController = TextEditingController();
+    _managementFeeController = TextEditingController();
   }
 
   @override
@@ -83,637 +72,344 @@ class _UserCreatePageState extends State<UserCreatePage> {
 
   @override
   void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
-    emailController.dispose();
-    cutOffDateController.dispose();
-    feeController.dispose();
-    companyNameController.dispose();
-    companyTaxIDController.dispose();
-    companyLogoController.dispose();
-    labAddressController.dispose();
-    phoneController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _companyNameController.dispose();
+    _cutOffDateController.dispose();
+    _managementFeeController.dispose();
     super.dispose();
-  }
-
-  void _addPhoneNumber() {
-    final phoneText = phoneController.text.trim();
-    if (phoneText.isNotEmpty) {
-      setState(() {
-        phoneNumbers.add(phoneText);
-        phoneController.clear();
-
-        viewModel.input.companyInfo ??= CreateCompanyInput();
-        viewModel.input.companyInfo!.laboratoryInfo.contactPhoneNumbers = 
-            List<String>.from(phoneNumbers);
-      });
-    }
-  }
-
-  void _removePhoneNumber(int index) {
-    setState(() {
-      phoneNumbers.removeAt(index);
-      if (viewModel.input.companyInfo != null) {
-        viewModel.input.companyInfo!.laboratoryInfo.contactPhoneNumbers = 
-            List<String>.from(phoneNumbers);
-      }
-    });
-  }
-
-  Future<void> _pickAndUploadLogo(BuildContext context) async {
-    try {
-      debugPrint('🔧 Iniciando selección de archivo... (kIsWeb: $kIsWeb)');
-      
-      if (kIsWeb) {
-        // Implementación específica para web usando dart:html (importado condicionalmente)
-        debugPrint('🌐 Usando implementación web nativa');
-        
-        final uploadInput = HTMLInputElement();
-        uploadInput.type = 'file';
-        uploadInput.accept = 'image/jpeg,image/jpg,image/png,image/gif';
-        uploadInput.click();
-
-        // Esperar a que se seleccione un archivo
-        await Future.delayed(const Duration(milliseconds: 100));
-        
-        // Usar completer para manejar el evento de cambio
-        final completer = Completer<void>();
-        uploadInput.addEventListener('change', ((JSAny event) {
-          completer.complete();
-        }).toJS);
-        
-        await completer.future;
-
-        final files = uploadInput.files;
-        if (files != null && files.length > 0) {
-          final file = files.item(0)!;
-          final reader = FileReader();
-          
-          // Usar completer para el evento onload
-          final loadCompleter = Completer<void>();
-          reader.addEventListener('load', ((JSAny event) {
-            loadCompleter.complete();
-          }).toJS);
-          
-          reader.readAsArrayBuffer(file);
-          await loadCompleter.future;
-
-          final result = reader.result;
-          final Uint8List fileBytes = (result as JSArrayBuffer).toDart.asUint8List();
-          final String fileName = file.name;
-
-          debugPrint('📄 Archivo web: $fileName, Bytes: ${fileBytes.length}');
-
-          // Validar extensión
-          final extension = fileName.split('.').last.toLowerCase();
-          if (!['jpg', 'jpeg', 'png', 'gif'].contains(extension)) {
-            if (!context.mounted) return;
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Formato no válido. Usa JPG, JPEG, PNG o GIF')),
-            );
-            return;
-          }
-
-          // Subir archivo
-          final success = await viewModel.uploadCompanyLogo(
-            fileBytes: fileBytes,
-            fileName: fileName,
-            userId: 'user_create',
-          );
-
-          // Actualizar controller con el nombre original del archivo
-          if (success && viewModel.displayFileName != null) {
-            setState(() {
-              companyLogoController.text = viewModel.displayFileName!;
-            });
-          }
-        } else {
-          debugPrint('ℹ️ Selección de archivo cancelada');
-        }
-      } else {
-        // Para plataformas nativas (mobile/desktop) - no debería llegar aquí en web
-        debugPrint('⚠️ Esta ruta solo funciona en web');
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Funcionalidad solo disponible en web')),
-        );
-      }
-    } catch (e, stackTrace) {
-      debugPrint('💥 Error al seleccionar archivo: $e');
-      debugPrint('💥 Tipo de error: ${e.runtimeType}');
-      debugPrint('📍 StackTrace: $stackTrace');
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
-  }
-
-  // Obtener roles permitidos según el rol del usuario loggeado
-  List<UserRoleOption> getAvailableRoles(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final authNotifier = context.read<AuthNotifier>();
-    final currentUserRole = authNotifier.role;
-
-    List<UserRoleOption> options = [];
-    
-    // Solo ROOT puede crear ADMIN
-    if (currentUserRole == Role.rOOT) {
-      options.add(UserRoleOption(
-        id: 'admin',
-        label: l10n.roleAdmin,
-        isAdmin: true,
-      ));
-    }
-    
-    // Todos pueden crear roles de laboratorio (excepto ROOT)
-    options.addAll([
-      UserRoleOption(
-        id: 'owner',
-        label: l10n.roleOwner,
-        isAdmin: false,
-        employeeRole: LabMemberRole.oWNER,
-      ),
-      UserRoleOption(
-        id: 'technician',
-        label: l10n.roleTechnician,
-        isAdmin: false,
-        employeeRole: LabMemberRole.tECHNICIAN,
-      ),
-      UserRoleOption(
-        id: 'billing',
-        label: l10n.roleBilling,
-        isAdmin: false,
-        employeeRole: LabMemberRole.bILLING,
-      ),
-      UserRoleOption(
-        id: 'bioanalyst',
-        label: l10n.roleBioanalyst,
-        isAdmin: false,
-        employeeRole: LabMemberRole.bIOANALYST,
-      ),
-    ]);
-    
-    return options;
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
-        return ContentDialog(
-          icon: Icons.person_add,
-          title: l10n.createThing(l10n.user),
-          loading: viewModel.loading,
-          maxWidth: 700,
-          minWidth: 700,
-          form: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Create New User"),
+            elevation: 0,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+          body: CreateUserDrawer(
+            isAdmin: _isAdmin,
+            onAdminChanged: (value) => setState(() => _isAdmin = value),
+            selectedRole: _selectedRole,
+            onRoleChanged: (value) {
+              setState(() {
+                if (value != null) {
+                  _selectedRole = value.toString().split('.').last;
+                  viewModel.input.employeeRole = value;
+                }
+              });
+            },
+            firstNameController: _firstNameController,
+            lastNameController: _lastNameController,
+            emailController: _emailController,
+            companyNameController: _companyNameController,
+            cutOffDateController: _cutOffDateController,
+            managementFeeController: _managementFeeController,
+            viewModel: viewModel,
+            formKey: formKey,
+            onFirstNameChanged: (value) => viewModel.input.firstName = value,
+            onLastNameChanged: (value) => viewModel.input.lastName = value,
+            onEmailChanged: (value) => viewModel.input.email = value,
+            onCompanyNameChanged: (value) {
+              viewModel.input.companyInfo ??= CreateCompanyInput();
+              viewModel.input.companyInfo?.name = value;
+            },
+            onCutOffDateChanged: (value) => viewModel.input.cutOffDate = value,
+            onManagementFeeChanged: (value) {
+              viewModel.input.fee = num.tryParse(value);
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class CreateUserDrawer extends StatelessWidget {
+  final bool isAdmin;
+  final Function(bool) onAdminChanged;
+  final String selectedRole;
+  final Function(LabMemberRole?) onRoleChanged;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
+  final TextEditingController emailController;
+  final TextEditingController companyNameController;
+  final TextEditingController cutOffDateController;
+  final TextEditingController managementFeeController;
+  final ViewModel viewModel;
+  final GlobalKey<FormState> formKey;
+  final Function(String) onFirstNameChanged;
+  final Function(String) onLastNameChanged;
+  final Function(String) onEmailChanged;
+  final Function(String) onCompanyNameChanged;
+  final Function(String) onCutOffDateChanged;
+  final Function(String) onManagementFeeChanged;
+
+  const CreateUserDrawer({
+    super.key,
+    required this.isAdmin,
+    required this.onAdminChanged,
+    required this.selectedRole,
+    required this.onRoleChanged,
+    required this.firstNameController,
+    required this.lastNameController,
+    required this.emailController,
+    required this.companyNameController,
+    required this.cutOffDateController,
+    required this.managementFeeController,
+    required this.viewModel,
+    required this.formKey,
+    required this.onFirstNameChanged,
+    required this.onLastNameChanged,
+    required this.onEmailChanged,
+    required this.onCompanyNameChanged,
+    required this.onCutOffDateChanged,
+    required this.onManagementFeeChanged,
+  });
+
+  LabMemberRole? _getSelectedRole() {
+    if (selectedRole.isEmpty) return LabMemberRole.tECHNICIAN;
+    return LabMemberRole.values.firstWhere(
+      (role) => role.toString().split('.').last.toLowerCase() == selectedRole.toLowerCase(),
+      orElse: () => LabMemberRole.tECHNICIAN,
+    );
+  }
+
+  bool _isUserAdminOrRoot(BuildContext context) {
+    final authNotifier = context.read<AuthNotifier>();
+    return authNotifier.role == Role.rOOT || authNotifier.role == Role.aDMIN;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _sectionTitle("Basic Information", Icons.person, context),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTextField(
+                    "First Name",
+                    "John",
+                    fieldBg,
+                    controller: firstNameController,
+                    context: context,
+                    onChanged: onFirstNameChanged,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildTextField(
+                    "Last Name",
+                    "Doe",
+                    fieldBg,
+                    controller: lastNameController,
+                    context: context,
+                    onChanged: onLastNameChanged,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildTextField(
+              "Email Address",
+              "john.doe@lablink.com",
+              fieldBg,
+              icon: Icons.mail_outline,
+              controller: emailController,
+              context: context,
+              onChanged: onEmailChanged,
+            ),
+            
+            const SizedBox(height: 32),
+            _sectionTitle("Employee Role", Icons.person_outline, context),
+            const SizedBox(height: 16),
+            _buildDropdown("Role", fieldBg, context),
+
+            if (_isUserAdminOrRoot(context)) ...[
+              const SizedBox(height: 32),
+              Divider(color: theme.dividerColor),
+              const SizedBox(height: 16),
+              _sectionTitle("Owner Configuration", Icons.business, context),
+              const SizedBox(height: 16),
+              _buildTextField(
+                "Company Name",
+                "Precision Labs Inc.",
+                fieldBg,
+                controller: companyNameController,
+                context: context,
+                onChanged: onCompanyNameChanged,
+              ),
+              const SizedBox(height: 16),
+              Row(
                 children: [
-                  // Nombre y Apellido en la misma fila
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.firstName,
-                          controller: firstNameController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.firstName = value;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.lastName,
-                          controller: lastNameController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.lastName = value;
-                          },
-                        ),
-                      ),
-                    ],
+                  Expanded(
+                    child: _buildTextField(
+                      "Cut-off Date",
+                      "YYYY-MM-DD",
+                      fieldBg,
+                      icon: Icons.calendar_today,
+                      controller: cutOffDateController,
+                      context: context,
+                      onChanged: onCutOffDateChanged,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  // Email y Rol en la misma fila
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: CustomTextFormField(
-                          labelText: l10n.email,
-                          controller: emailController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.email,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.email = value;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        flex: 1,
-                        child: DropdownButtonFormField<UserRoleOption>(
-                          value: selectedRole,
-                          decoration: InputDecoration(
-                            labelText: l10n.role,
-                            isDense: true,
-                            border: const OutlineInputBorder(),
-                          ),
-                          items: getAvailableRoles(context).map((UserRoleOption option) {
-                            return DropdownMenuItem<UserRoleOption>(
-                              value: option,
-                              child: Text(option.label),
-                            );
-                          }).toList(),
-                          onChanged: (UserRoleOption? newValue) {
-                            setState(() {
-                              selectedRole = newValue;
-                              
-                              if (newValue != null) {
-                                // Asignar isAdmin y employeeRole según el rol seleccionado
-                                viewModel.input.isAdmin = newValue.isAdmin;
-                                viewModel.input.employeeRole = newValue.employeeRole;
-                                
-                                // Limpiar campos según el rol
-                                if (newValue.id == 'owner') {
-                                  // Owner: inicializar companyInfo
-                                  viewModel.input.companyInfo ??= CreateCompanyInput();
-                                } else if (newValue.id == 'technician' || newValue.id == 'billing' || newValue.id == 'bioanalyst') {
-                                  // Employee roles: limpiar companyInfo, cutOffDate y fee
-                                  viewModel.input.companyInfo = null;
-                                  viewModel.input.cutOffDate = null;
-                                  viewModel.input.fee = null;
-                                  phoneNumbers.clear();
-                                  companyNameController.clear();
-                                  companyTaxIDController.clear();
-                                  companyLogoController.clear();
-                                  labAddressController.clear();
-                                  phoneController.clear();
-                                  cutOffDateController.clear();
-                                  feeController.clear();
-                                } else {
-                                  // Admin: limpiar todo
-                                  viewModel.input.companyInfo = null;
-                                  viewModel.input.cutOffDate = null;
-                                  viewModel.input.fee = null;
-                                  viewModel.input.employeeRole = null;
-                                  phoneNumbers.clear();
-                                  companyNameController.clear();
-                                  companyTaxIDController.clear();
-                                  companyLogoController.clear();
-                                  labAddressController.clear();
-                                  phoneController.clear();
-                                  cutOffDateController.clear();
-                                  feeController.clear();
-                                }
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                    ],
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildTextField(
+                      "Management Fee",
+                      "0.00",
+                      fieldBg,
+                      prefix: "\$",
+                      controller: managementFeeController,
+                      context: context,
+                      onChanged: onManagementFeeChanged,
+                    ),
                   ),
-                  if (selectedRole?.id == 'owner') ...[
-                    const SizedBox(height: 16),
-                    // CutOffDate y Fee en la misma fila
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextFormField(
-                            labelText: l10n.cutOffDate,
-                            controller: cutOffDateController,
-                            isDense: true,
-                            fieldLength: FormFieldLength.password,
-                            readOnly: true,
-                            counterText: "",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.fieldRequired;
-                              }
-                              return null;
-                            },
-                            onTap: () async {
-                              final pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate:
-                                    selectedCutOffDate ?? DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-
-                              if (pickedDate != null) {
-                                // Asignar hora fija 00:00
-                                final dateTime = DateTime(
-                                  pickedDate.year,
-                                  pickedDate.month,
-                                  pickedDate.day,
-                                  0,
-                                  0,
-                                );
-
-                                setState(() {
-                                  selectedCutOffDate = dateTime;
-                                  // Formato: dd/MM/yyyy HH:mm
-                                  final day = dateTime.day.toString().padLeft(
-                                    2,
-                                    '0',
-                                  );
-                                  final month = dateTime.month
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  final year = dateTime.year.toString();
-
-                                  cutOffDateController.text =
-                                      '$day/$month/$year 00:00';
-                                });
-                              }
-                            },
-                            onChange: (_) {}, // No hacer nada aquí
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CustomTextFormField(
-                            labelText: l10n.fee,
-                            controller: feeController,
-                            isDense: true,
-                            fieldLength: FormFieldLength.password,
-                            counterText: "",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.fieldRequired;
-                              }
-                              if (num.tryParse(value) == null) {
-                                return l10n.invalidNumber;
-                              }
-                              return null;
-                            },
-                            onChange: (value) {
-                              viewModel.input.fee = num.tryParse(value);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Sección: Información de la Empresa
-                    Text(
-                      l10n.companyInformation,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 12),
-                    // Nombre de empresa y TaxID en la misma fila
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: CustomTextFormField(
-                            labelText: l10n.name,
-                            controller: companyNameController,
-                            isDense: true,
-                            fieldLength: FormFieldLength.name,
-                            counterText: "",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.fieldRequired;
-                              }
-                              return null;
-                            },
-                            onChange: (value) {
-                              viewModel.input.companyInfo ??=
-                                  CreateCompanyInput();
-                              viewModel.input.companyInfo!.name = value;
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          flex: 1,
-                          child: CustomTextFormField(
-                            labelText: l10n.taxID,
-                            controller: companyTaxIDController,
-                            isDense: true,
-                            fieldLength: FormFieldLength.name,
-                            counterText: "",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.fieldRequired;
-                              }
-                              return null;
-                            },
-                            onChange: (value) {
-                              viewModel.input.companyInfo ??=
-                                  CreateCompanyInput();
-                              viewModel.input.companyInfo!.taxID = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    // Botón para cambiar logo
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.image,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            viewModel.hasLogo
-                                ? viewModel.displayFileName ?? ''
-                                : '${l10n.logo} (${l10n.optional})',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              fontWeight: viewModel.hasLogo ? FontWeight.normal : FontWeight.w500,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        FilledButton.icon(
-                          onPressed: viewModel.uploading
-                              ? null
-                              : () => _pickAndUploadLogo(context),
-                          icon: viewModel.uploading
-                              ? const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Icon(Icons.upload_file, size: 18),
-                          label: Text(
-                            viewModel.uploading
-                                ? l10n.uploading
-                                : (viewModel.hasLogo ? l10n.changeLogo : l10n.upload),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Sección: Información del Laboratorio
-                    Text(
-                      l10n.laboratoryInformation,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 12),
-                    CustomTextFormField(
-                      labelText: l10n.address,
-                      controller: labAddressController,
-                      isDense: true,
-                      fieldLength: FormFieldLength.email,
-                      counterText: "",
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return l10n.fieldRequired;
-                        }
-                        return null;
-                      },
-                      onChange: (value) {
-                        viewModel.input.companyInfo ??= CreateCompanyInput();
-                        viewModel.input.companyInfo!.laboratoryInfo.address = value;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Campo para agregar teléfonos
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: CustomTextFormField(
-                            labelText: l10n.phoneNumber,
-                            controller: phoneController,
-                            isDense: true,
-                            fieldLength: FormFieldLength.name,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        FilledButton.icon(
-                          onPressed: _addPhoneNumber,
-                          icon: const Icon(Icons.add, size: 18),
-                          label: Text(l10n.addPhoneNumber),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Lista de teléfonos agregados
-                    if (phoneNumbers.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: phoneNumbers.asMap().entries.map((entry) {
-                          return Chip(
-                            label: Text(entry.value),
-                            onDeleted: () => _removePhoneNumber(entry.key),
-                            deleteIcon: const Icon(Icons.close, size: 18),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ],
                 ],
               ),
-            ),
-          ),
-          actions: [
+            ],
+            
+            const SizedBox(height: 40),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  child: Text(l10n.cancel),
-                  onPressed: () {
-                    context.pop();
-                  },
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => context.pop(),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    child: const Text("Cancel"),
+                  ),
                 ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed:
-                      viewModel.loading
-                          ? null
-                          : () async {
-                            if (formKey.currentState!.validate()) {
-                              // Validar teléfonos para Owner
-                              if (selectedRole?.id == 'owner' && phoneNumbers.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(l10n.atLeastOnePhoneRequired),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                                return;
-                              }
-
-                              // Asignar cutOffDate como string en formato dd/MM/yyyy HH:mm
-                              if (selectedRole?.id == 'owner' &&
-                                  selectedCutOffDate != null) {
-                                final day = selectedCutOffDate!.day
-                                    .toString()
-                                    .padLeft(2, '0');
-                                final month = selectedCutOffDate!.month
-                                    .toString()
-                                    .padLeft(2, '0');
-                                final year =
-                                    selectedCutOffDate!.year.toString();
-
-                                // Formato: dd/MM/yyyy 00:00
-                                viewModel.input.cutOffDate =
-                                    '$day/$month/$year 00:00';
-                              } else if (selectedRole?.id == 'owner') {
-                                viewModel.input.cutOffDate = null;
-                              }
-                              var isErr = await viewModel.create();
-
-                              if (!isErr) {
-                                if (!context.mounted) return;
-                                context.pop(true);
-                              }
-                            }
-                          },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.createThing(l10n.user)),
-                      const SizedBox(width: 8),
-                      viewModel.loading
-                          ? const SizedBox(
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton.icon(
+                    onPressed: viewModel.loading ? null : () async {
+                      if (formKey.currentState!.validate()) {
+                        var isErr = await viewModel.create();
+                        
+                        if (!isErr) {
+                          if (!context.mounted) return;
+                          context.pop(true);
+                        }
+                      }
+                    },
+                    icon: viewModel.loading
+                        ? const SizedBox(
                             width: 16,
                             height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
                           )
-                          : const Icon(Icons.save),
-                    ],
+                        : const Icon(Icons.save, size: 18, color: Colors.white),
+                    label: const Text("Create User", style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.primaryColor,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      elevation: 10,
+                      shadowColor: theme.primaryColor.withOpacity(0.4),
+                    ),
                   ),
                 ),
               ],
             ),
           ],
-        );
-      },
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionTitle(String title, IconData icon, BuildContext context) {
+    final theme = Theme.of(context);
+    final titleColor = theme.textTheme.bodyLarge?.color ?? theme.primaryColor;
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: titleColor),
+        const SizedBox(width: 8),
+        Text(title.toUpperCase(), 
+          style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: titleColor, letterSpacing: 1.2)),
+      ],
+    );
+  }
+
+  Widget _buildTextField(String label, String hint, Color bg, {IconData? icon, String? prefix, TextEditingController? controller, required BuildContext context, Function(String)? onChanged}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 6),
+        TextField(
+          controller: controller,
+          onChanged: onChanged,
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: icon != null ? Icon(icon, size: 18) : (prefix != null ? Padding(padding: const EdgeInsets.all(12), child: Text(prefix)) : null),
+            filled: true,
+            fillColor: bg,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Theme.of(context).dividerColor)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdown(String label, Color bg, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Theme.of(context).dividerColor),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<LabMemberRole>(
+              value: _getSelectedRole(),
+              isExpanded: true,
+              items: [
+                DropdownMenuItem(
+                  value: LabMemberRole.tECHNICIAN,
+                  child: Text("Technician", style: const TextStyle(fontSize: 14)),
+                ),
+                DropdownMenuItem(
+                  value: LabMemberRole.bIOANALYST,
+                  child: Text("Bioanalyst", style: const TextStyle(fontSize: 14)),
+                ),
+                DropdownMenuItem(
+                  value: LabMemberRole.bILLING,
+                  child: Text("Billing", style: const TextStyle(fontSize: 14)),
+                ),
+              ],
+              onChanged: onRoleChanged,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

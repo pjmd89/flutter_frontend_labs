@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import '/src/domain/entities/main.dart';
 import '/src/presentation/pages/User/read/main.dart';
@@ -8,6 +7,7 @@ import '/src/presentation/pages/User/delete/main.dart';
 import '/src/presentation/pages/User/update/main.dart';
 import '/src/presentation/pages/User/laboratories/main.dart';
 import '/src/presentation/pages/User/billing/main.dart';
+import '../transitions/main.dart';
 
 final List<GoRoute> userRoutes = [
   GoRoute(
@@ -20,7 +20,7 @@ final List<GoRoute> userRoutes = [
     routes: [
       GoRoute(
         path: 'create',
-        pageBuilder: (context, state) => CustomDialogPage(
+        pageBuilder: (context, state) => CustomSidebarPage(
           context: context, 
           state: state, 
           child: const UserCreatePage()
@@ -37,15 +37,6 @@ final List<GoRoute> userRoutes = [
       GoRoute(
         path: 'update/:id',
         pageBuilder: (context, state) {
-          debugPrint('\n🛣️ ========== RUTA UPDATE ==========');
-          debugPrint('🛣️ state.pathParameters["id"]: ${state.pathParameters['id']}');
-          debugPrint('🛣️ state.extra != null: ${state.extra != null}');
-          debugPrint('🛣️ state.extra type: ${state.extra.runtimeType}');
-          if (state.extra != null) {
-            debugPrint('🛣️ state.extra is User: ${state.extra is User}');
-          }
-          debugPrint('========================================\n');
-          
           return CustomDialogPage(
             context: context, 
             state: state, 
