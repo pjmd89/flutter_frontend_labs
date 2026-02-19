@@ -15,19 +15,6 @@ class LabApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.dark, // Cambiar a dark/light según desees
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF101922),
-        primaryColor: const Color(0xFF137fec),
-        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
-      ),
-      theme: ThemeData(
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: const Color(0xFFf6f7f8),
-        primaryColor: const Color(0xFF137fec),
-        textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme),
-      ),
       home: const UserCreatePage(),
     );
   }
