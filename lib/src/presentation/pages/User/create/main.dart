@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
+import 'package:labs/l10n/app_localizations.dart';
 import './view_model.dart';
 
 void main() => runApp(const LabApp());
@@ -70,12 +71,14 @@ class _UserCreatePageState extends State<UserCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Create New User"),
+            title: Text(l10n.createThing(l10n.user)),
             elevation: 0,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
@@ -178,6 +181,7 @@ class CreateUserDrawer extends StatelessWidget {
     final theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
     final Color fieldBg = theme.inputDecorationTheme.fillColor ?? (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+    final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -186,14 +190,14 @@ class CreateUserDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _sectionTitle("Basic Information", Icons.person, context),
+            _sectionTitle(l10n.user, Icons.person, context),
             const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
                   child: _buildTextField(
-                    "First Name",
-                    "John",
+                    l10n.createThing(l10n.firstName),
+                    l10n.firstName,
                     fieldBg,
                     controller: firstNameController,
                     context: context,
@@ -203,8 +207,8 @@ class CreateUserDrawer extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: _buildTextField(
-                    "Last Name",
-                    "Doe",
+                    l10n.createThing(l10n.lastName),
+                    l10n.lastName,
                     fieldBg,
                     controller: lastNameController,
                     context: context,
@@ -215,8 +219,8 @@ class CreateUserDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             _buildTextField(
-              "Email Address",
-              "john.doe@lablink.com",
+              l10n.createThing(l10n.email),
+              l10n.email,
               fieldBg,
               icon: Icons.mail_outline,
               controller: emailController,
@@ -225,21 +229,21 @@ class CreateUserDrawer extends StatelessWidget {
             ),
             
             const SizedBox(height: 32),
-            _sectionTitle("Employee Role", Icons.person_outline, context),
+            _sectionTitle(l10n.role, Icons.person_outline, context),
             const SizedBox(height: 16),
-            _buildDropdown("Role", fieldBg, context),
+            _buildDropdown(l10n.role, fieldBg, context),
 
             if (_isUserAdminOrRoot(context)) ...[
               const SizedBox(height: 32),
               Divider(color: theme.dividerColor),
               const SizedBox(height: 16),
-              _sectionTitle("Owner Configuration", Icons.business, context),
+              _sectionTitle(l10n.createThing(""), Icons.business, context),
               const SizedBox(height: 16),
               _buildTextField(
-                "Company Name",
-                "Precision Labs Inc.",
+                l10n.createThing(""),//agregar traduccion 
+                l10n.createThing(""),//agregar traduccion            ,
                 fieldBg,
-                controller: companyNameController,
+                controller: companyNameController, 
                 context: context,
                 onChanged: onCompanyNameChanged,
               ),
@@ -248,8 +252,8 @@ class CreateUserDrawer extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildTextField(
-                      "Cut-off Date",
-                      "YYYY-MM-DD",
+                      l10n.cutOffDate,
+                      l10n.createThing("YYYY-MM-DD"),
                       fieldBg,
                       icon: Icons.calendar_today,
                       controller: cutOffDateController,
@@ -260,7 +264,7 @@ class CreateUserDrawer extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: _buildTextField(
-                      "Management Fee",
+                      l10n.fee,
                       "0.00",
                       fieldBg,
                       prefix: "\$",
@@ -283,7 +287,7 @@ class CreateUserDrawer extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
-                    child: const Text("Cancel"),
+                    child: Text(l10n.cancel),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -306,8 +310,8 @@ class CreateUserDrawer extends StatelessWidget {
                             height: 16,
                             child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
                           )
-                        : const Icon(Icons.save, size: 18, color: Colors.white),
-                    label: const Text("Create User", style: TextStyle(color: Colors.white)),
+                        : const Icon(Icons.save, size: 18),
+                    label: Text(l10n.createThing(l10n.user)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.primaryColor,
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -362,6 +366,7 @@ class CreateUserDrawer extends StatelessWidget {
   }
 
   Widget _buildDropdown(String label, Color bg, BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -381,15 +386,15 @@ class CreateUserDrawer extends StatelessWidget {
               items: [
                 DropdownMenuItem(
                   value: LabMemberRole.tECHNICIAN,
-                  child: Text("Technician", style: const TextStyle(fontSize: 14)),
+                  child: Text(l10n.roleTechnician, style: const TextStyle(fontSize: 14)),
                 ),
                 DropdownMenuItem(
                   value: LabMemberRole.bIOANALYST,
-                  child: Text("Bioanalyst", style: const TextStyle(fontSize: 14)),
+                  child: Text(l10n.roleBioanalyst, style: const TextStyle(fontSize: 14)),
                 ),
                 DropdownMenuItem(
                   value: LabMemberRole.bILLING,
-                  child: Text("Billing", style: const TextStyle(fontSize: 14)),
+                  child: Text(l10n.roleBilling, style: const TextStyle(fontSize: 14)),
                 ),
               ],
               onChanged: onRoleChanged,

@@ -92,9 +92,9 @@ class LaboratorySwitcherViewModel extends ChangeNotifier {
       error = true;
       laboratoryList = [];
 
-      _context.read<GQLNotifier>().errorService.showError(
-            message: 'Error al cargar laboratorios: ${e.toString()}',
-          );
+     // _context.read<GQLNotifier>().errorService.showError(
+     //       message: 'Error al cargar laboratorios: ${e.toString()}',
+     //     );
     } finally {
       loading = false;
     }

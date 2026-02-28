@@ -77,7 +77,7 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
               onPressed: () => context.pop(),
             ),
             title: Text(
-              l10n.createThing('Laboratorio'),
+              l10n.createThing(l10n.laboratory),
               style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             bottom: viewModel.loading
@@ -132,11 +132,11 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
                         const SizedBox(height: 24),
 
                         // Dirección
-                        _buildSectionLabel(context, 'Dirección', required: true),
+                        _buildSectionLabel(context, l10n.address, required: true),
                         const SizedBox(height: 8),
                         CustomTextFormField(
                           controller: addressController,
-                          labelText: 'Dirección completa',
+                          labelText: l10n.address,
                           isDense: true,
                           maxLines: 2,
                           fieldLength: FormFieldLength.email,
@@ -145,7 +145,7 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
                         const SizedBox(height: 24),
 
                         // --- SECCIÓN DE TELÉFONOS ---
-                        _buildSectionLabel(context, 'Contact Phone Numbers'),
+                        _buildSectionLabel(context, l10n.phoneNumber),
                         const SizedBox(height: 8),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +153,7 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
                             Expanded(
                               child: CustomTextFormField(
                                 controller: phoneController,
-                                labelText: '+1 (555) 000-0000',
+                                labelText: '+58 123 456 7890',
                                 isDense: true,
                                 fieldLength: FormFieldLength.name,
                                 // Eliminamos onEditingComplete para evitar errores de sintaxis
@@ -163,13 +163,15 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
                             // Botón para agregar teléfono
                             SizedBox(
                               height: 40, // Ajuste para alinear con CustomTextFormField
-                              child: FilledButton(
+                              child: FilledButton.icon(
                                 onPressed: _addPhone,
                                 style: FilledButton.styleFrom(
+                                  
                                   padding: const EdgeInsets.symmetric(horizontal: 12),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                 ),
-                                child: const Icon(Icons.add, size: 20),
+                               icon: Icon(Icons.add, size: 20),
+                               label: Text(l10n.add),
                               ),
                             ),
                           ],
@@ -178,8 +180,8 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
                         // Chips de teléfonos agregados
                         if (addedPhones.isNotEmpty) ...[
                           const SizedBox(height: 16),
-                          Text(
-                            "ADDED CONTACTS",
+                          Text(                       
+                            "ADDED CONTACTS", // agregar traduccion a esto 
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: theme.hintColor,
                               letterSpacing: 1.1,
@@ -221,22 +223,26 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
                     const SizedBox(width: 12),
                     Expanded(
                       flex: 2,
-                      child: FilledButton(
+                      child: ElevatedButton.icon( // Usamos .icon para que el spinner no reemplace al texto
                         onPressed: viewModel.loading ? null : _handleSave,
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        child: viewModel.loading
-                            ? SizedBox(
-                                width: 20, 
-                                height: 20, 
+                        icon: viewModel.loading
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
                                 child: CircularProgressIndicator(
-                                  strokeWidth: 2, 
-                                  color: colorScheme.onPrimary
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                 ),
                               )
-                            : Text(l10n.createThing('Laboratorio')),
+                            : const Icon(Icons.save, size: 18),
+                        label: Text(l10n.createThing(l10n.laboratory)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.primaryColor, // El color azul/primario
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          elevation: 10,                       // La sombra que mencionabas
+                          shadowColor: theme.primaryColor.withOpacity(0.4),
+                        ),
                       ),
                     ),
                   ],
@@ -290,7 +296,7 @@ class _LaboratoryCreatePageState extends State<LaboratoryCreatePage> {
         text: text,
         style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
         children: [
-          if (required) TextSpan(text: ' *', style: TextStyle(color: theme.colorScheme.error)),
+          if (required) TextSpan(text: '', style: TextStyle(color: theme.colorScheme.error)),
         ],
       ),
     );

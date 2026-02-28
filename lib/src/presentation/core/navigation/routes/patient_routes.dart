@@ -1,5 +1,6 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:go_router/go_router.dart';
+import 'package:labs/src/presentation/core/navigation/transitions/main.dart';
 import '/src/presentation/pages/Patient/read/main.dart';
 import '/src/presentation/pages/Patient/create/main.dart';
 import '/src/presentation/pages/Patient/delete/main.dart';
@@ -16,7 +17,7 @@ final List<GoRoute> patientRoutes = [
     routes: [
       GoRoute(
         path: 'create',
-        pageBuilder: (context, state) => CustomDialogPage(
+        pageBuilder: (context, state) => CustomSidebarPage(
           context: context, 
           state: state, 
           child: const PatientCreatePage()

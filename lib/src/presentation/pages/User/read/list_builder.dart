@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import './view_model.dart';
 import './membership_item.dart';
-import './user_item.dart';
 
 List<Widget> buildList({
   required BuildContext context,

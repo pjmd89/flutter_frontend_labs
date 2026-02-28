@@ -1,5 +1,4 @@
 import 'package:agile_front/agile_front.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/domain/operation/fields_builders/main.dart';
