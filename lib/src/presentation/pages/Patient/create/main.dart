@@ -247,7 +247,6 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
   Widget _buildFooterButtons(AppLocalizations l10n, ThemeData theme) {
     return Row(
       children: [
-        // Botón Cancelar (Ajustado a tus dimensiones/estilo)
         Expanded(
           child: OutlinedButton(
                     onPressed: () => context.pop(),
@@ -259,7 +258,6 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
                   ),
         ),
         const SizedBox(width: 16),
-        // Botón Crear (Ajustado exactamente a tu código)
         Expanded(
           child: ElevatedButton.icon(
             onPressed: viewModel.loading ? null : _submit,
@@ -319,18 +317,37 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
     );
   }
 
+  /// PICKER ACTUALIZADO CON FORMATO ESTRICTO: dd/mm/yyyy hh:mm
   void _pickDate() async {
     final date = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: Theme.of(context).primaryColor,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (date != null) {
+      // Formateo manual para asegurar ceros a la izquierda (01, 02...)
+      final String d = date.day.toString().padLeft(2, '0');
+      final String m = date.month.toString().padLeft(2, '0');
+      final String y = date.year.toString();
+      
+      final String formattedDate = "$d/$m/$y";
+      final String formattedFull = "$formattedDate 00:00";
+
       setState(() {
-        final formatted = "${date.day}/${date.month}/${date.year}";
-        birthDateController.text = formatted;
-        viewModel.input.birthDate = '$formatted 00:00';
+        birthDateController.text = formattedDate; // Para mostrar al usuario (puedes mostrar el full si prefieres)
+        viewModel.input.birthDate = formattedFull; // Para el servidor
       });
     }
   }

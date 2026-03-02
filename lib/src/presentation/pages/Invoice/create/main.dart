@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
@@ -20,8 +19,6 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   // Controllers
   final dniSearchController = TextEditingController();
   final referredController = TextEditingController();
-  
-  // Controllers para CreatePerson
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final dniPersonController = TextEditingController();
@@ -29,20 +26,10 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   final emailController = TextEditingController();
   final addressController = TextEditingController();
   final birthDateController = TextEditingController();
-  
-  // Estado para InvoiceKind
-  InvoiceKind? selectedInvoiceKind;
-  
-  // Estado para Sex (CreatePerson)
-  Sex? selectedSex;
-  
-  // Estado para expandir sección de Person
-  bool showPersonForm = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  InvoiceKind? selectedInvoiceKind;
+  Sex? selectedSex;
+  bool showPersonForm = false;
 
   @override
   void didChangeDependencies() {
@@ -63,44 +50,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
     birthDateController.dispose();
     super.dispose();
   }
-  
-  String getInvoiceKindLabel(BuildContext context, InvoiceKind kind) {
-    final l10n = AppLocalizations.of(context)!;
-    switch (kind) {
-      case InvoiceKind.iNVOICE:
-        return l10n.invoiceTypeInvoice;
-      case InvoiceKind.cREDIT_NOTE:
-        return l10n.invoiceTypeCreditNote;
-    }
-  }
-  
-  String getSexLabel(BuildContext context, Sex sex) {
-    final l10n = AppLocalizations.of(context)!;
-    switch (sex) {
-      case Sex.fEMALE:
-        return l10n.sexFemale;
-      case Sex.mALE:
-        return l10n.sexMale;
-      case Sex.iNTERSEX:
-        return l10n.sexIntersex;
-    }
-  }
-  
-  Widget _buildStepHeader(BuildContext context, String stepNumber, String title, IconData icon, bool required) {
-    return Row(
-      children: [
-        Icon(icon, size: 24, color: Theme.of(context).colorScheme.primary),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-  
+
+  // --- MÉTODOS DE APOYO ---
+
   String _getPatientName(Patient patient) {
     if (patient.isPerson && patient.asPerson != null) {
       final person = patient.asPerson!;
@@ -109,633 +61,401 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       final animal = patient.asAnimal!;
       return '${animal.firstName} ${animal.lastName}';
     }
-    return 'Paciente ${patient.id}';
+    return 'ID: ${patient.id}';
   }
-  
-  String _getPatientInfo(Patient patient, AppLocalizations l10n) {
-    if (patient.isPerson && patient.asPerson != null) {
-      final person = patient.asPerson!;
-      return '${l10n.dni}: ${person.dni}';
-    } else if (patient.isAnimal && patient.asAnimal != null) {
-      final animal = patient.asAnimal!;
-      return animal.species;
+
+  String getSexLabel(BuildContext context, Sex sex) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (sex) {
+      case Sex.fEMALE: return l10n.sexFemale;
+      case Sex.mALE: return l10n.sexMale;
+      case Sex.iNTERSEX: return l10n.sexIntersex;
     }
-    
-    // Traducir el tipo de paciente si no hay datos específicos
-    if (patient.patientType != null) {
-      switch (patient.patientType!) {
-        case PatientType.hUMAN:
-          return l10n.patientTypeHuman;
-        case PatientType.aNIMAL:
-          return l10n.patientTypeAnimal;
-      }
-    }
-    
-    return '';
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
-        return ContentDialog(
-          icon: Icons.receipt_long,
-          title: l10n.createThing(l10n.invoice),
-          loading: viewModel.loading,
-          maxWidth: 700,
-          minWidth: 700,
-          form: Form(
-            key: formKey,
+        return Scaffold(
+          backgroundColor: colorScheme.surface,
+          body: SelectionArea(
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // PASO 1: Seleccionar Paciente
-                  _buildStepHeader(context, '1', l10n.patient, Icons.person, true),
-                  const SizedBox(height: 12),
-                  
-                  Card(
-                    elevation: 0,
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CustomTextFormField(
-                                  labelText: l10n.searchByDNI,
-                                  controller: dniSearchController,
-                                  isDense: true,
-                                  fieldLength: FormFieldLength.password,
-                                  prefixIcon: const Icon(Icons.search),
-                                  counterText: "",
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              IconButton.filled(
-                                icon: viewModel.searching
-                                    ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(strokeWidth: 2),
-                                      )
-                                    : const Icon(Icons.search),
-                                onPressed: viewModel.searching
-                                    ? null
-                                    : () => viewModel.searchPatientByDNI(
-                                          dniSearchController.text,
-                                        ),
-                              ),
-                            ],
-                          ),
-                          
-                          if (viewModel.foundPatient != null) ...[
-                            const SizedBox(height: 12),
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withValues(alpha: 0.1),
-                                border: Border.all(color: Colors.green),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 32),
+              child: Center(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1300),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildNavHeader(
+                          title: l10n.createThing(l10n.invoice),
+                          colorScheme: colorScheme,
+                          onBack: () => context.pop(),
+                          trailing: _buildInvoiceTypeSelector(l10n, colorScheme),
+                        ),
+                        const SizedBox(height: 32),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Column(
                                 children: [
-                                  const Icon(Icons.check_circle, color: Colors.green),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _getPatientName(viewModel.foundPatient!),
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          _getPatientInfo(viewModel.foundPatient!, l10n),
-                                          style: Theme.of(context).textTheme.bodySmall,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  _buildPatientSearchCard(l10n, colorScheme),
+                                  const SizedBox(height: 24),
+                                  _buildExamsCard(l10n, colorScheme),
+                                  const SizedBox(height: 24),
+                                  _buildBillingDetailsCard(l10n, colorScheme),
+                                  const SizedBox(height: 24),
+                                  _buildReferredCard(l10n, colorScheme),
                                 ],
                               ),
                             ),
-                          ] else if (dniSearchController.text.isNotEmpty) ...[
-                            const SizedBox(height: 12),
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.orange.withValues(alpha: 0.1),
-                                border: Border.all(color: Colors.orange),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.warning, color: Colors.orange),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      l10n.patientNotFoundCreateFirst,
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            const SizedBox(width: 32),
+                            Expanded(
+                              flex: 1,
+                              child: _buildSummarySidebar(l10n, colorScheme),
                             ),
                           ],
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-
-                  const SizedBox(height: 24),
-
-                  // PASO 2: Seleccionar Exámenes
-                  _buildStepHeader(context, '2', l10n.selectExams, Icons.science, true),
-                  const SizedBox(height: 12),
-                  
-                  Card(
-                    elevation: 0,
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          FilledButton.tonalIcon(
-                            onPressed: () => _showExamSelector(context, l10n),
-                            icon: const Icon(Icons.add, size: 18),
-                            label: Text(l10n.addExam),
-                            style: FilledButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            ),
-                          ),
-                          
-                          const SizedBox(height: 12),
-                          
-                          if (viewModel.selectedExams.isEmpty)
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  l10n.noExamsSelected,
-                                  style: TextStyle(color: Colors.grey[600]),
-                                ),
-                              ),
-                            )
-                          else
-                            ...viewModel.selectedExams.map((exam) {
-                              return Card(
-                                margin: const EdgeInsets.only(bottom: 8),
-                                child: ListTile(
-                                  dense: true,
-                                  leading: const Icon(Icons.science, size: 20),
-                                  title: Text(
-                                    exam.template?.name ?? '',
-                                    style: const TextStyle(fontSize: 14),
-                                  ),
-                                  subtitle: Text(
-                                    exam.template?.description ?? '',
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        '\$${exam.baseCost.toStringAsFixed(2)}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      IconButton(
-                                        icon: const Icon(Icons.delete, size: 20),
-                                        color: Colors.red,
-                                        onPressed: () => viewModel.removeExam(exam.id),
-                                        padding: EdgeInsets.zero,
-                                        constraints: const BoxConstraints(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          
-                          if (viewModel.selectedExams.isNotEmpty) ...[
-                            const SizedBox(height: 12),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primaryContainer,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '${l10n.totalAmount}:',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    viewModel.formattedTotal,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            const Divider(height: 1),
-                            const SizedBox(height: 16),
-                            
-                            // Tipo de Factura
-                            DropdownButtonFormField<InvoiceKind>(
-                              value: selectedInvoiceKind ?? InvoiceKind.iNVOICE,
-                              decoration: InputDecoration(
-                                labelText: l10n.invoiceType,
-                                isDense: true,
-                                border: const OutlineInputBorder(),
-                              ),
-                              items: InvoiceKind.values.map((InvoiceKind kind) {
-                                return DropdownMenuItem<InvoiceKind>(
-                                  value: kind,
-                                  child: Text(getInvoiceKindLabel(context, kind)),
-                                );
-                              }).toList(),
-                              onChanged: (InvoiceKind? newValue) {
-                                setState(() {
-                                  selectedInvoiceKind = newValue;
-                                  viewModel.invoiceInput.kind = newValue ?? InvoiceKind.iNVOICE;
-                                });
-                              },
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // PASO 3: Información de Facturación
-                  _buildStepHeader(context, '3', l10n.billToInformation, Icons.receipt, true),
-                  const SizedBox(height: 12),
-                  
-                  Card(
-                    elevation: 0,
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                l10n.personForBilling,
-                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              TextButton.icon(
-                                icon: Icon(
-                                  showPersonForm ? Icons.expand_less : Icons.expand_more,
-                                  size: 20,
-                                ),
-                                label: Text(showPersonForm ? 'Ocultar' : 'Mostrar'),
-                                onPressed: () {
-                                  setState(() {
-                                    showPersonForm = !showPersonForm;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                          
-                          if (!showPersonForm) ...[
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.blue.withValues(alpha: 0.05),
-                                border: Border.all(
-                                  color: Colors.blue.withValues(alpha: 0.3),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.info_outline, color: Colors.blue, size: 20),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      'Haga clic en "Mostrar" para ingresar los datos de facturación',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: Colors.blue[700],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                          
-                          if (showPersonForm) ...[
-                            const SizedBox(height: 16),
-                            const Divider(height: 1),
-                            const SizedBox(height: 16),
-                            
-                            // Nombre y Apellido en la misma fila
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: l10n.firstName,
-                                    controller: firstNameController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.name,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.firstName = value,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: l10n.lastName,
-                                    controller: lastNameController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.name,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.lastName = value,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            
-                            // DNI y Teléfono en la misma fila
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: l10n.dni,
-                                    controller: dniPersonController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.password,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.dni = value,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: '${l10n.phone} (${l10n.optional})',
-                                    controller: phoneController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.password,
-                                    counterText: "",
-                                    onChange: (value) => viewModel.personInput.phone = value,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            
-                            // Email
-                            CustomTextFormField(
-                              labelText: '${l10n.email} (${l10n.optional})',
-                              controller: emailController,
-                              isDense: true,
-                              fieldLength: FormFieldLength.email,
-                              counterText: "",
-                              onChange: (value) => viewModel.personInput.email = value,
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            
-                            // Dirección
-                            CustomTextFormField(
-                              labelText: '${l10n.address} (${l10n.optional})',
-                              controller: addressController,
-                              isDense: true,
-                              fieldLength: FormFieldLength.name,
-                              counterText: "",
-                              onChange: (value) => viewModel.personInput.address = value,
-                            ),
-                            
-                            const SizedBox(height: 16),
-                            
-                            // Fecha de nacimiento y Sexo en la misma fila
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    labelText: '${l10n.birthDate} (${l10n.optional})',
-                                    controller: birthDateController,
-                                    isDense: true,
-                                    fieldLength: FormFieldLength.password,
-                                    counterText: "",
-                                    readOnly: true,
-                                    suffixIcon: const Icon(Icons.calendar_today, size: 18),
-                                    onTap: () async {
-                                      final date = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime(1900),
-                                        lastDate: DateTime.now(),
-                                      );
-                                      if (date != null) {
-                                        // Formato dd/mm/yyyy hh:mm requerido por el servidor
-                                        final formattedDate = '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} 00:00';
-                                        birthDateController.text = formattedDate;
-                                        viewModel.personInput.birthDate = formattedDate;
-                                      }
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: DropdownButtonFormField<Sex>(
-                                    value: selectedSex,
-                                    decoration: InputDecoration(
-                                      labelText: '${l10n.sex} (${l10n.optional})',
-                                      isDense: true,
-                                      border: const OutlineInputBorder(),
-                                    ),
-                                    items: Sex.values.map((Sex sex) {
-                                      return DropdownMenuItem<Sex>(
-                                        value: sex,
-                                        child: Text(getSexLabel(context, sex)),
-                                      );
-                                    }).toList(),
-                                    onChanged: (Sex? newValue) {
-                                      setState(() {
-                                        selectedSex = newValue;
-                                        viewModel.personInput.sex = newValue;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Referido (opcional)
-                  _buildStepHeader(context, '4', l10n.referred, Icons.medical_services, false),
-                  const SizedBox(height: 12),
-                  
-                  Card(
-                    elevation: 0,
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: CustomTextFormField(
-                        labelText: '${l10n.referred} (${l10n.optional})',
-                        controller: referredController,
-                        isDense: true,
-                        fieldLength: FormFieldLength.name,
-                        counterText: "",
-                        prefixIcon: const Icon(Icons.medical_services, size: 20),
-                        onChange: (value) => viewModel.invoiceInput.referred = value,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => context.pop(),
-                  child: Text(l10n.cancel),
-                ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed: viewModel.loading
-                      ? null
-                      : () async {
-                          if (formKey.currentState!.validate()) {
-                            // Validar que se haya seleccionado un paciente
-                            if (viewModel.foundPatient == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.patientRequired),
-                                  backgroundColor: Colors.orange,
-                                ),
-                              );
-                              return;
-                            }
-
-                            // Validar que haya exámenes seleccionados
-                            if (viewModel.selectedExams.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(l10n.noExamsSelected)),
-                              );
-                              return;
-                            }
-                            
-                            // Validar que se hayan llenado los datos de Person
-                            if (viewModel.personInput.firstName.isEmpty ||
-                                viewModel.personInput.lastName.isEmpty ||
-                                viewModel.personInput.dni.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('${l10n.billToInformation}: ${l10n.firstName}, ${l10n.lastName} y ${l10n.dni} son requeridos'),
-                                  backgroundColor: Colors.orange,
-                                ),
-                              );
-                              setState(() {
-                                showPersonForm = true;
-                              });
-                              return;
-                            }
-
-                            final isError = await viewModel.createInvoice();
-
-                            if (!isError) {
-                              if (!context.mounted) return;
-                              context.pop(true);
-                            }
-                          }
-                        },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.createThing(l10n.invoice)),
-                      const SizedBox(width: 8),
-                      viewModel.loading
-                          ? const SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.save),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
         );
       },
     );
   }
 
-  void _showExamSelector(BuildContext context, AppLocalizations l10n) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => _ExamSelectorDialog(
-        viewModel: viewModel,
-        l10n: l10n,
+  // --- UI COMPONENTS ---
+
+  Widget _buildNavHeader({required String title, required ColorScheme colorScheme, required VoidCallback onBack, Widget? trailing}) {
+    return SafeArea(
+      bottom: false,
+      child: SizedBox(
+        height: kToolbarHeight, 
+        child: Row(
+          children: [
+            IconButton(icon: const Icon(Icons.arrow_back), color: colorScheme.onSurface, onPressed: onBack),
+            const SizedBox(width: 8),
+            Expanded(child: Text(title, style: TextStyle(color: colorScheme.onSurface, fontSize: 20, fontWeight: FontWeight.w500), overflow: TextOverflow.ellipsis)),
+            if (trailing != null) trailing,
+          ],
+        ),
       ),
     );
   }
+
+  Widget _buildInvoiceTypeSelector(AppLocalizations l10n, ColorScheme colorScheme) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(color: colorScheme.surfaceContainerHighest, borderRadius: BorderRadius.circular(10), border: Border.all(color: colorScheme.outlineVariant)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildTypeToggle(l10n.invoiceTypeInvoice, (selectedInvoiceKind ?? InvoiceKind.iNVOICE) == InvoiceKind.iNVOICE, colorScheme, () {
+            setState(() => selectedInvoiceKind = InvoiceKind.iNVOICE);
+            viewModel.invoiceInput.kind = InvoiceKind.iNVOICE;
+          }),
+          _buildTypeToggle(l10n.invoiceTypeCreditNote, selectedInvoiceKind == InvoiceKind.cREDIT_NOTE, colorScheme, () {
+            setState(() => selectedInvoiceKind = InvoiceKind.cREDIT_NOTE);
+            viewModel.invoiceInput.kind = InvoiceKind.cREDIT_NOTE;
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTypeToggle(String label, bool active, ColorScheme colorScheme, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(color: active ? colorScheme.primary : Colors.transparent, borderRadius: BorderRadius.circular(6)),
+        child: Text(label, style: TextStyle(color: active ? colorScheme.onPrimary : colorScheme.onSurfaceVariant, fontSize: 12, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+
+  Widget _buildPatientSearchCard(AppLocalizations l10n, ColorScheme colorScheme) {
+    return _cardBase(
+      colorScheme: colorScheme,
+      title: l10n.patient,
+      icon: Icons.person_search,
+      child: Column(
+        children: [
+          _buildCustomTextField(
+            colorScheme: colorScheme,
+            label: l10n.searchByDNI,
+            controller: dniSearchController,
+            hint: "12345678...",
+            icon: Icons.search,
+            suffix: viewModel.searching 
+              ? const Padding(padding: EdgeInsets.all(12), child: CircularProgressIndicator(strokeWidth: 2))
+              : IconButton(onPressed: () => viewModel.searchPatientByDNI(dniSearchController.text), icon: Icon(Icons.arrow_forward, color: colorScheme.onSurfaceVariant)),
+          ),
+          if (viewModel.foundPatient != null) ...[
+            const SizedBox(height: 16),
+            _buildFoundPatientIndicator(colorScheme),
+          ]
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFoundPatientIndicator(ColorScheme colorScheme) {
+    final successColor = Colors.green; 
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: successColor.withOpacity(0.05), border: Border.all(color: successColor.withOpacity(0.3)), borderRadius: BorderRadius.circular(12)),
+      child: Row(
+        children: [
+          Icon(Icons.check_circle, color: successColor),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(_getPatientName(viewModel.foundPatient!), style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.bold)),
+              Text("Paciente verificado", style: TextStyle(color: successColor.withOpacity(0.7), fontSize: 12)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExamsCard(AppLocalizations l10n, ColorScheme colorScheme) {
+    return _cardBase(
+      colorScheme: colorScheme,
+      title: l10n.selectExams,
+      icon: Icons.biotech,
+      action: TextButton.icon(onPressed: () => _showExamSelector(context, l10n, colorScheme), icon: const Icon(Icons.add, size: 18), label: Text(l10n.addExam, style: const TextStyle(fontWeight: FontWeight.bold))),
+      child: viewModel.selectedExams.isEmpty
+          ? Padding(padding: const EdgeInsets.all(24), child: Center(child: Text(l10n.noExamsSelected, style: TextStyle(color: colorScheme.onSurfaceVariant.withOpacity(0.5)))))
+          : ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: viewModel.selectedExams.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (context, index) {
+                final exam = viewModel.selectedExams[index];
+                return _buildExamListItem(exam, colorScheme, () => viewModel.removeExam(exam.id));
+              },
+            ),
+    );
+  }
+
+  Widget _buildExamListItem(Exam exam, ColorScheme colorScheme, VoidCallback onDelete) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: colorScheme.surface, borderRadius: BorderRadius.circular(12), border: Border.all(color: colorScheme.outlineVariant)),
+      child: Row(
+        children: [
+          Icon(Icons.science, color: colorScheme.onSurfaceVariant, size: 20),
+          const SizedBox(width: 16),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(exam.template?.name ?? '', style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.w600)), Text(exam.template?.description ?? '', style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 11))])),
+          Text("\$${exam.baseCost.toStringAsFixed(2)}", style: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.bold)),
+          IconButton(onPressed: onDelete, icon: Icon(Icons.delete_outline, color: colorScheme.error, size: 20)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBillingDetailsCard(AppLocalizations l10n, ColorScheme colorScheme) {
+    return _cardBase(
+      colorScheme: colorScheme,
+      title: l10n.billToInformation,
+      icon: Icons.receipt_long,
+      action: TextButton(onPressed: () => setState(() => showPersonForm = !showPersonForm), child: Text(showPersonForm ? "Ocultar" : "Mostrar")),
+      child: !showPersonForm 
+        ? Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: colorScheme.onSurface.withOpacity(0.03), borderRadius: BorderRadius.circular(8)), child: Row(children: [Icon(Icons.info_outline, size: 16, color: colorScheme.onSurfaceVariant), const SizedBox(width: 8), Text("Configura los datos de facturación", style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13))]))
+        : Column(
+            children: [
+              Row(children: [
+                Expanded(child: _buildCustomTextField(colorScheme: colorScheme, label: l10n.firstName, controller: firstNameController, onChange: (v) => viewModel.personInput.firstName = v)),
+                const SizedBox(width: 16),
+                Expanded(child: _buildCustomTextField(colorScheme: colorScheme, label: l10n.lastName, controller: lastNameController, onChange: (v) => viewModel.personInput.lastName = v)),
+              ]),
+              const SizedBox(height: 16),
+              Row(children: [
+                Expanded(child: _buildCustomTextField(colorScheme: colorScheme, label: l10n.dni, controller: dniPersonController, onChange: (v) => viewModel.personInput.dni = v)),
+                const SizedBox(width: 16),
+                Expanded(child: _buildCustomTextField(colorScheme: colorScheme, label: l10n.phone, controller: phoneController, onChange: (v) => viewModel.personInput.phone = v)),
+              ]),
+              const SizedBox(height: 16),
+              _buildCustomTextField(colorScheme: colorScheme, label: l10n.email, controller: emailController, onChange: (v) => viewModel.personInput.email = v),
+              const SizedBox(height: 16),
+              _buildCustomTextField(colorScheme: colorScheme, label: l10n.address, controller: addressController, onChange: (v) => viewModel.personInput.address = v),
+              const SizedBox(height: 16),
+              Row(children: [
+                Expanded(child: _buildDatePickerField(l10n, colorScheme)),
+                const SizedBox(width: 16),
+                Expanded(child: _buildSexDropdown(l10n, colorScheme)),
+              ]),
+            ],
+          ),
+    );
+  }
+
+  Widget _buildReferredCard(AppLocalizations l10n, ColorScheme colorScheme) {
+    return _cardBase(colorScheme: colorScheme, title: l10n.referred, icon: Icons.medical_services, child: _buildCustomTextField(colorScheme: colorScheme, label: l10n.referred, controller: referredController, hint: "Dr. Nombre...", onChange: (v) => viewModel.invoiceInput.referred = v));
+  }
+
+  Widget _buildSummarySidebar(AppLocalizations l10n, ColorScheme colorScheme) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(color: colorScheme.surfaceContainerHighest, borderRadius: BorderRadius.circular(20), border: Border.all(color: colorScheme.outlineVariant), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 40, offset: const Offset(0, 20))]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("RESUMEN", style: TextStyle(color: colorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold)),
+          Text("Cálculo automático", style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 12)),
+          Divider(height: 40, color: colorScheme.outlineVariant),
+          ...viewModel.selectedExams.map((e) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(e.template?.name ?? '', style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)), Text("\$${e.baseCost.toStringAsFixed(2)}", style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.bold))]))),
+          const SizedBox(height: 16),
+          Divider(height: 1, color: colorScheme.outlineVariant),
+          const SizedBox(height: 24),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end, children: [Text("TOTAL", style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.w900, fontSize: 12)), Text(viewModel.formattedTotal, style: TextStyle(color: colorScheme.primary, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1))]),
+          const SizedBox(height: 32),
+          ElevatedButton(
+            onPressed: viewModel.loading ? null : () async {
+              if (formKey.currentState!.validate()) {
+                if (viewModel.foundPatient == null) { _showToast(l10n.patientRequired, colorScheme); return; }
+                final isError = await viewModel.createInvoice();
+                if (!isError && mounted) context.pop(true);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary, minimumSize: const Size(double.infinity, 56), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+            child: viewModel.loading ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: colorScheme.onPrimary, strokeWidth: 2)) : Text(l10n.createThing(l10n.invoice), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- REUSABLE ATOMS ---
+
+  Widget _cardBase({required ColorScheme colorScheme, required String title, required IconData icon, required Widget child, Widget? action}) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(color: colorScheme.surfaceContainerHighest, borderRadius: BorderRadius.circular(16), border: Border.all(color: colorScheme.outlineVariant)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [Icon(icon, color: colorScheme.primary, size: 20), const SizedBox(width: 12), Text(title, style: TextStyle(color: colorScheme.onSurface, fontSize: 16, fontWeight: FontWeight.bold)), const Spacer(), if (action != null) action]),
+          const SizedBox(height: 20),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomTextField({required ColorScheme colorScheme, required String label, required TextEditingController controller, String? hint, IconData? icon, Widget? suffix, Function(String)? onChange}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label.toUpperCase(), style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          onChanged: onChange,
+          style: TextStyle(color: colorScheme.onSurface),
+          decoration: InputDecoration(hintText: hint, hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withOpacity(0.3)), prefixIcon: icon != null ? Icon(icon, color: colorScheme.onSurfaceVariant, size: 20) : null, suffixIcon: suffix, filled: true, fillColor: colorScheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none), contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)),
+        ),
+      ],
+    );
+  }
+
+  /// DATE PICKER FIELD - FORMATO: dd/mm/yyyy hh:mm
+  Widget _buildDatePickerField(AppLocalizations l10n, ColorScheme colorScheme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.birthDate.toUpperCase(), style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        const SizedBox(height: 8),
+        TextField(
+          controller: birthDateController,
+          readOnly: true, 
+          style: TextStyle(color: colorScheme.onSurface),
+          onTap: () async {
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+              builder: (context, child) => Theme(data: Theme.of(context).copyWith(colorScheme: colorScheme), child: child!),
+            );
+
+            if (pickedDate != null) {
+              // Formateo manual para asegurar ceros a la izquierda y el formato dd/mm/yyyy hh:mm
+              final String d = pickedDate.day.toString().padLeft(2, '0');
+              final String m = pickedDate.month.toString().padLeft(2, '0');
+              final String y = pickedDate.year.toString();
+              final String formatted = "$d/$m/$y 00:00";
+
+              setState(() {
+                birthDateController.text = formatted;
+                viewModel.personInput.birthDate = formatted;
+              });
+            }
+          },
+          decoration: InputDecoration(hintText: "DD/MM/YYYY HH:MM", prefixIcon: Icon(Icons.calendar_today, color: colorScheme.onSurfaceVariant, size: 20), suffixIcon: Icon(Icons.expand_more, color: colorScheme.onSurfaceVariant), filled: true, fillColor: colorScheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none), contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSexDropdown(AppLocalizations l10n, ColorScheme colorScheme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.sex.toUpperCase(), style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 10, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<Sex>(
+          dropdownColor: colorScheme.surfaceContainerHighest,
+          style: TextStyle(color: colorScheme.onSurface),
+          decoration: InputDecoration(filled: true, fillColor: colorScheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none)),
+          items: Sex.values.map((s) => DropdownMenuItem(value: s, child: Text(getSexLabel(context, s)))).toList(),
+          onChanged: (v) => setState(() => viewModel.personInput.sex = v),
+        ),
+      ],
+    );
+  }
+
+  void _showToast(String msg, ColorScheme colorScheme) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: colorScheme.primary));
+  }
+
+  void _showExamSelector(BuildContext context, AppLocalizations l10n, ColorScheme colorScheme) {
+    showDialog(context: context, builder: (dialogContext) => _ExamSelectorDialog(viewModel: viewModel, l10n: l10n, colorScheme: colorScheme));
+  }
 }
 
-// Modal de selección de exámenes
+// --- MODAL: SELECTOR DE EXAMENES ---
+
 class _ExamSelectorDialog extends StatefulWidget {
   final ViewModel viewModel;
   final AppLocalizations l10n;
-
-  const _ExamSelectorDialog({
-    required this.viewModel,
-    required this.l10n,
-  });
-
+  final ColorScheme colorScheme;
+  const _ExamSelectorDialog({required this.viewModel, required this.l10n, required this.colorScheme});
   @override
   State<_ExamSelectorDialog> createState() => _ExamSelectorDialogState();
 }
 
 class _ExamSelectorDialogState extends State<_ExamSelectorDialog> {
   final searchController = TextEditingController();
-  List<Exam> filteredExams = [];
+  late List<Exam> filteredExams;
 
   @override
   void initState() {
@@ -743,95 +463,37 @@ class _ExamSelectorDialogState extends State<_ExamSelectorDialog> {
     filteredExams = widget.viewModel.availableExams;
   }
 
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
-
-  void _filterExams(String query) {
-    setState(() {
-      if (query.isEmpty) {
-        filteredExams = widget.viewModel.availableExams;
-      } else {
-        filteredExams = widget.viewModel.availableExams.where((exam) {
-          final name = exam.template?.name.toLowerCase() ?? '';
-          final desc = exam.template?.description.toLowerCase() ?? '';
-          final q = query.toLowerCase();
-          return name.contains(q) || desc.contains(q);
-        }).toList();
-      }
-    });
-  }
+  void _filter(String q) => setState(() => filteredExams = widget.viewModel.availableExams.where((e) => (e.template?.name ?? '').toLowerCase().contains(q.toLowerCase())).toList());
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.l10n.selectExams),
-      content: SizedBox(
-        width: 500,
-        height: 600,
+    final colorScheme = widget.colorScheme;
+    return Dialog(
+      backgroundColor: colorScheme.surfaceContainerHighest,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        width: 600, height: 700, padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                labelText: widget.l10n.searchExam,
-                prefixIcon: const Icon(Icons.search),
-                border: const OutlineInputBorder(),
-                isDense: true,
-              ),
-              onChanged: _filterExams,
-            ),
+            Row(children: [Text(widget.l10n.selectExams, style: TextStyle(color: colorScheme.onSurface, fontSize: 20, fontWeight: FontWeight.bold)), const Spacer(), IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.close, color: colorScheme.onSurfaceVariant))]),
             const SizedBox(height: 16),
+            TextField(controller: searchController, onChanged: _filter, style: TextStyle(color: colorScheme.onSurface), decoration: InputDecoration(prefixIcon: Icon(Icons.search, color: colorScheme.onSurfaceVariant), hintText: widget.l10n.searchExam, filled: true, fillColor: colorScheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredExams.length,
                 itemBuilder: (context, index) {
                   final exam = filteredExams[index];
-                  final isSelected = widget.viewModel.selectedExams.any(
-                    (e) => e.id == exam.id,
-                  );
-
-                  return CheckboxListTile(
-                    dense: true,
-                    title: Text(exam.template?.name ?? ''),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          exam.template?.description ?? '',
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        Text(
-                          '\$${exam.baseCost.toStringAsFixed(2)}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                    value: isSelected,
-                    onChanged: (value) {
-                      setState(() {
-                        widget.viewModel.toggleExam(exam);
-                      });
-                    },
-                  );
+                  final isSelected = widget.viewModel.selectedExams.any((e) => e.id == exam.id);
+                  return Container(margin: const EdgeInsets.only(bottom: 8), decoration: BoxDecoration(color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent, borderRadius: BorderRadius.circular(10), border: Border.all(color: isSelected ? colorScheme.primary : colorScheme.outlineVariant)), child: CheckboxListTile(activeColor: colorScheme.primary, checkColor: colorScheme.onPrimary, value: isSelected, onChanged: (_) => setState(() => widget.viewModel.toggleExam(exam)), title: Text(exam.template?.name ?? '', style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.bold)), subtitle: Text("\$${exam.baseCost.toStringAsFixed(2)}", style: TextStyle(color: colorScheme.primary, fontSize: 12))));
                 },
               ),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(onPressed: () => Navigator.pop(context), style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary, minimumSize: const Size(double.infinity, 50)), child: const Text("Confirmar Selección", style: TextStyle(fontWeight: FontWeight.bold)))
           ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(widget.l10n.cancel),
-        ),
-      ],
     );
   }
 }
