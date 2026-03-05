@@ -26,7 +26,7 @@ class CustomSidebarPage extends CustomTransitionPage {
     child: Align(
       alignment: Alignment.centerRight,
       child: SizedBox(
-        width: 400,
+        width: 500,
         height: double.infinity,
         child: Material(
           child: child,
