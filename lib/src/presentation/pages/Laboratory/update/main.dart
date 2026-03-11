@@ -21,6 +21,9 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
   late TextEditingController addressController;
   final List<TextEditingController> phoneControllers = [];
 
+  bool _juanPerezRemoved = false;
+  bool _mariaGomezRemoved = true;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -78,186 +81,367 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final isDesktop = MediaQuery.of(context).size.width > 900;
 
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, _) {
-        return Dialog(
-          backgroundColor: colorScheme.surface,
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1000),
-            child: Padding(
+        return Scaffold(
+          backgroundColor: colorScheme.surfaceContainerLowest, // Fondo ligeramente gris/crema para resaltar las cards blancas
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            title: Text(l10n.updateThing(l10n.laboratory)),
+          ),
+          body: Form(
+            key: formKey,
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Header del Dialog
-                    _buildHeader(l10n, colorScheme),
-                    const Divider(height: 32),
-                    
-                    // Contenido Scrolleable
-                    Flexible(
-                      child: SingleChildScrollView(
-                        child: Column(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200), // Un poco más ancho para estilo screen
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //_buildBreadcrumbs(l10n, textTheme),
+                      const SizedBox(height: 24),
+                      
+                      // Layout Principal
+                      if (isDesktop)
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildTitleSection(l10n, textTheme),
+                            Expanded(flex: 7, child: _buildMainForm(l10n, colorScheme, textTheme)),
+                            const SizedBox(width: 24),
+                            Expanded(flex: 3, child: _buildSidePanel(l10n, colorScheme, textTheme)),
+                            const SizedBox(width: 24),
+                            Expanded(flex: 4, child: _buildEmployeeInfo(l10n, colorScheme, textTheme)),
+                          ],
+                        )
+                      else
+                        Column(
+                          children: [
+                            _buildMainForm(l10n, colorScheme, textTheme),
                             const SizedBox(height: 24),
-                            _buildResponsiveGrid(l10n, colorScheme, textTheme),
-                            const SizedBox(height: 24),
+                            _buildSidePanel(l10n, colorScheme, textTheme),
+                            const SizedBox(height: 24), 
+                            _buildEmployeeInfo(l10n, colorScheme, textTheme)
                           ],
                         ),
-                      ),
-                    ),
-                    
-                    // Footer / Acciones
-                    const SizedBox(height: 8),
-                    _buildFooterActionCard(l10n, colorScheme, textTheme),
-                  ],
+                        const SizedBox(height: 32),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children:[    
+                            OutlinedButton(
+                              onPressed: () => context.pop(),
+                              child: Text(l10n.cancel)),   
+                              const SizedBox(width: 12),            
+                          viewModel.loading
+                          ? const Center(
+                             child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2)
+                              )
+                            ) 
+                            : FilledButton.icon(
+                              onPressed: _handleSave,
+                              icon: const Icon(Icons.save_outlined, size: 18),
+                              label: Text(l10n.save))    
+                    ]
+                  )
+                    ],
+                  ),
                 ),
               ),
             ),
+          
           ),
         );
       },
     );
   }
 
-  Widget _buildHeader(AppLocalizations l10n, ColorScheme colorScheme) {
-    return Row(
-      children: [
-        Icon(Icons.biotech, color: colorScheme.primary, size: 28),
-        const SizedBox(width: 12),
-        Text(
-          l10n.updateThing(l10n.laboratory),
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const Spacer(),
-        IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.close),
-          tooltip: l10n.cancel,
-        ),
-      ],
-    );
-  }
 
-  Widget _buildTitleSection(AppLocalizations l10n, TextTheme textTheme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.laboratoryInformation,
-          style: textTheme.titleMedium?.copyWith(
-            color: textTheme.bodySmall?.color?.withOpacity(0.7),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildResponsiveGrid(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
-    // En un diálogo solemos preferir una columna si el ancho es limitado
-    bool isWide = MediaQuery.of(context).size.width > 900;
-
-    return Wrap(
-      spacing: 20,
-      runSpacing: 20,
-      children: [
-        SizedBox(
-          width: isWide ? 580 : double.infinity,
-          child: _buildMainFormCard(l10n, colorScheme),
-        ),
-        SizedBox(
-          width: isWide ? 350 : double.infinity,
-          child: _buildSideInfoCard(l10n, colorScheme, textTheme),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMainFormCard(AppLocalizations l10n, ColorScheme colorScheme) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colorScheme.outlineVariant),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildEmployeeCard({
+  required String name,
+  required String role,
+  required AppLocalizations l10n,
+  required ColorScheme colorScheme,
+  required TextTheme textTheme,
+  required bool isRemoved,
+  required Function(bool) onChanged,
+}) {
+  return Card(
+    margin: const EdgeInsets.only(bottom: 12),
+    elevation: 0,
+    // Fondo oscuro profundo para replicar la imagen
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: Row(
         children: [
-          CustomTextFormField(
-            labelText: l10n.address,
-            controller: addressController,
-            isDense: true,
-            fieldLength: FormFieldLength.email,
-            onChange: (value) => viewModel.input.address = value,
-            validator: (value) => (value == null || value.isEmpty) ? l10n.emptyFieldError : null,
+          // Avatar con borde sutil
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all( width: 1),
+            ),
+            child: const CircleAvatar(
+              radius: 26,      
+              child: Icon(Icons.person_outline),
+            ),
           ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          const SizedBox(width: 16),
+          
+          // Información de texto
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  name,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  role,
+                  style: textTheme.bodySmall?.copyWith(                 
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Control de eliminación (Switch)
+          Column(
             children: [
-              Text(l10n.phoneNumber.toUpperCase(), 
-                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-              TextButton.icon(
-                onPressed: _addPhoneField,
-                icon: const Icon(Icons.add, size: 16),
-                label: Text(l10n.addPhoneNumber),
+              Transform.scale(
+                scale: 0.8, // Un poco más pequeño para que luzca más elegante
+                child: Switch(
+                  value: isRemoved,
+                  onChanged: (bool value) {
+                    onChanged(value);
+                    setState(() {}); // Para actualizar el estado visual del switch y el texto
+                  },                
+                ),
+              ),
+              Text(
+                l10n.remove, // Podrías usar l10n.remove si lo tienes definido
+                style: textTheme.labelSmall?.copyWith(
+                  fontSize: 10,
+                ),
               ),
             ],
           ),
-          ...List.generate(phoneControllers.length, (index) => _buildPhoneItem(index, l10n, colorScheme)),
         ],
+      ),
+    ),
+  );
+}
+
+
+
+
+
+
+  Widget _buildMainForm(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
+    return Card(
+      elevation: 0,
+      color: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: colorScheme.outlineVariant),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Información de Ubicación", style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text("Actualice la dirección física y los métodos de contacto directo.", style: textTheme.bodyMedium),
+            const Divider(height: 48),
+            
+            CustomTextFormField(
+              labelText: l10n.address,
+              controller: addressController,
+              fieldLength: FormFieldLength.email,
+              isDense: true,
+              prefixIcon: const Icon(Icons.location_on_outlined),
+              onChange: (value) => viewModel.input.address = value,
+              validator: (value) => (value == null || value.isEmpty) ? l10n.emptyFieldError : null,
+            ),
+            
+            const SizedBox(height: 40),
+            
+            Row(
+              children: [
+                Text("Números de contacto", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                const Spacer(),
+                TextButton.icon(
+                  onPressed: _addPhoneField,
+                  icon: const Icon(Icons.add),
+                  label: Text(l10n.addPhoneNumber),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            ...List.generate(phoneControllers.length, (index) => _buildPhoneItem(index, l10n, colorScheme)),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildSideInfoCard(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
-    return Container(
+ Widget _buildEmployeeInfo(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
+  return Card(
+    elevation: 0,
+    color: colorScheme.surface,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+      side: BorderSide(color: colorScheme.outlineVariant),
+    ),
+    child: Padding(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colorScheme.outlineVariant),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _readOnlyInfo(l10n.company, widget.laboratory.company?.name ?? '-', textTheme),
-          const SizedBox(height: 16),
-          _readOnlyInfo("ID Interno", "LAB-${widget.laboratory.id}", textTheme),
+           _buildCustomTextField(
+            colorScheme: colorScheme,
+            label: "Información de Empleados",
+            controller: TextEditingController(),
+            hint: " Ej: Juan Perez", // No es editable, así que no necesitamos un controller real
+            icon: Icons.search
+          ),
+          const SizedBox(height: 24),
+          _buildEmployeeCard(
+            name: "Juan Pérez",
+            role: "Tecnico de Laboratorio",
+            l10n: l10n,
+            colorScheme: colorScheme,
+            textTheme: textTheme,
+            isRemoved: _juanPerezRemoved,
+            onChanged: (val) {
+              setState(() => _juanPerezRemoved = val);
+            },
+          ),
+          _buildEmployeeCard(
+            name: "María Gómez",
+            role: "Bioanalista de Laboratorio",
+            l10n: l10n,
+            colorScheme: colorScheme,
+            textTheme: textTheme,
+            isRemoved: _mariaGomezRemoved,
+            onChanged: (val) {
+              setState(() => _mariaGomezRemoved = val);
+            },
+          ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildFooterActionCard(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        TextButton(
-          onPressed: () => context.pop(),
-          child: Text(l10n.cancel),
+Widget _buildCustomTextField({
+  required ColorScheme colorScheme,
+  required String label,
+  required TextEditingController controller,
+  String? hint,
+  IconData? icon,
+  Widget? suffix,
+  Function(String)? onChange,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label.toUpperCase(),
+        style: TextStyle(
+          color: colorScheme.onSurfaceVariant,
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1,
         ),
-        const SizedBox(width: 12),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: colorScheme.primary,
-            foregroundColor: colorScheme.onPrimary,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      const SizedBox(height: 8),
+      Card(
+        margin: const EdgeInsets.only(bottom: 12),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: TextField(
+          controller: controller,
+          onChanged: onChange,
+          style: TextStyle(color: colorScheme.onSurface),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withOpacity(0.3)),
+            prefixIcon: icon != null ? Icon(icon, color: colorScheme.onSurfaceVariant, size: 20) : null,
+            suffixIcon: suffix,
+            filled: false,
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), // Mismo padding que antes
           ),
-          onPressed: viewModel.loading ? null : _handleSave,
-          child: viewModel.loading
-              ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: colorScheme.onPrimary, strokeWidth: 2))
-              : Text(l10n.save, style: const TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ),
+    ],
+  );
+}
+
+
+
+  Widget _buildSidePanel(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
+    return Column(
+      children: [
+        Card(
+          elevation: 0,
+          color: colorScheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: colorScheme.outlineVariant),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Datos de Referencia", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 24),
+                _readOnlyInfo(l10n.company, widget.laboratory.company?.name ?? '-', textTheme, Icons.business),
+                const SizedBox(height: 20),
+                _readOnlyInfo("ID de Sucursal", "LAB-${widget.laboratory.id}", textTheme, Icons.fingerprint),
+                const SizedBox(height: 20),
+                _readOnlyInfo("Última Actualización", "Hace 2 días", textTheme, Icons.history),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Card de ayuda o estado rápida
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: colorScheme.primaryContainer.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.info_outline, color: colorScheme.primary),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  "Los cambios realizados serán visibles para todos los operarios inmediatamente.",
+                  style: textTheme.bodySmall?.copyWith(color: colorScheme.onPrimaryContainer),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -265,22 +449,23 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
 
   Widget _buildPhoneItem(int index, AppLocalizations l10n, ColorScheme colorScheme) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
           Expanded(
             child: CustomTextFormField(
               labelText: '${l10n.phoneNumber} ${index + 1}',
               controller: phoneControllers[index],
-              isDense: true,
               fieldLength: FormFieldLength.name,
+              isDense: true,
+              prefixIcon: const Icon(Icons.phone_outlined),
               onChange: (v) => _updateViewModelPhones(),
             ),
           ),
           if (phoneControllers.length > 1) ...[
             const SizedBox(width: 8),
             IconButton(
-              icon: Icon(Icons.delete_outline, color: colorScheme.error),
+              icon: Icon(Icons.delete_sweep_outlined, color: colorScheme.error),
               onPressed: () => _removePhoneField(index),
             ),
           ],
@@ -289,13 +474,21 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
     );
   }
 
-  Widget _readOnlyInfo(String label, String value, TextTheme textTheme) {
-    return Column(
+  Widget _readOnlyInfo(String label, String value, TextTheme textTheme, IconData icon) {
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label.toUpperCase(), style: textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold, letterSpacing: 0.5)),
-        const SizedBox(height: 4),
-        Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+        Icon(icon, size: 20, color: textTheme.bodySmall?.color?.withOpacity(0.6)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: textTheme.labelMedium?.copyWith(color: textTheme.bodySmall?.color)),
+              Text(value, style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
       ],
     );
   }

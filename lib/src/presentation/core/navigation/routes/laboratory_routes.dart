@@ -27,7 +27,7 @@ final List<GoRoute> laboratoryRoutes = [
       ),
       GoRoute(
         path: 'update',
-        pageBuilder: (context, state) => CustomDialogPage(
+        pageBuilder: (context, state) => CustomSlideTransition(
           context: context, 
           state: state, 
           child: LaboratoryUpdatePage(
