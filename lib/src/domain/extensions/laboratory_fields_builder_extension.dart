@@ -6,6 +6,15 @@ extension LaboratoryFieldsBuilderExtension on LaboratoryFieldsBuilder {
       ..id()
       ..address()
       ..contactPhoneNumbers()
+      ..employees(builder: (edgeUserBuilder) {
+        edgeUserBuilder.edges(builder: (userBuilder) {
+          userBuilder
+            ..id()
+            ..firstName()
+            ..lastName()
+            ..email();
+        });
+      })
       ..company(builder: (companyBuilder) {
         companyBuilder
           ..id()

@@ -9,6 +9,15 @@ extension EdgeLaboratoryFieldsBuilderExtension on EdgeLaboratoryFieldsBuilder {
             ..id()
             ..address()
             ..contactPhoneNumbers()
+            ..employees(builder: (edgeUserBuilder) {
+              edgeUserBuilder.edges(builder: (userBuilder) {
+                userBuilder
+                  ..id()
+                  ..firstName()
+                  ..lastName()
+                  ..email();
+              });
+            })
             ..company(
               builder: (companyBuilder) {
                 companyBuilder

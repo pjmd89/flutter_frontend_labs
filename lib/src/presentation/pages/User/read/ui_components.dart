@@ -19,8 +19,8 @@ class UserManagementHeader extends StatelessWidget {
     return Container(
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 32),
-      decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.white10)),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +39,7 @@ class UserManagementHeader extends StatelessWidget {
                     hintText: "${l10n.search} ${l10n.users.toLowerCase()}...",
                     prefixIcon: const Icon(Icons.search, size: 20),
                     filled: true,
-                    fillColor: Colors.white.withOpacity(0.05),
+                    fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide.none,
@@ -55,7 +55,7 @@ class UserManagementHeader extends StatelessWidget {
                 label: Text(l10n.newThing(l10n.user)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 18,
@@ -103,25 +103,21 @@ class UserFilterBar extends StatelessWidget {
           children: [
             // Dropdown de Roles
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white10),
+                border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: DropdownButton<String?>(
                 value: selectedRole,
                 underline: const SizedBox.shrink(),
                 icon: const Icon(Icons.arrow_drop_down, size: 20),
-                dropdownColor: const Color(0xFF1E293B),
-                style: const TextStyle(fontSize: 13, color: Colors.white),
+                dropdownColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
                 items: [
                   const DropdownMenuItem(
                     value: null,
                     child: Text("Todos los Roles"),
-                  ),
-                  DropdownMenuItem(
-                    value: "OWNER",
-                    child: Text(l10n.roleOwner),
                   ),
                   DropdownMenuItem(
                     value: "TECHNICIAN",
@@ -139,42 +135,11 @@ class UserFilterBar extends StatelessWidget {
                 onChanged: onRoleChanged,
               ),
             ),
-            const SizedBox(width: 12),
-            // Dropdown de Estado
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white10),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: DropdownButton<bool>(
-                value: showActiveOnly,
-                underline: const SizedBox.shrink(),
-                icon: const Icon(Icons.arrow_drop_down, size: 20),
-                dropdownColor: const Color(0xFF1E293B),
-                style: const TextStyle(fontSize: 13, color: Colors.white),
-                items: [
-                  DropdownMenuItem(
-                    value: false,
-                    child: Text("Todos (${l10n.status})"),
-                  ),
-                  const DropdownMenuItem(
-                    value: true,
-                    child: Text("Solo Activos"),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value != null && onStatusChanged != null) {
-                    onStatusChanged!(value);
-                  }
-                },
-              ),
-            ),
           ],
         ),
         Text(
           "Mostrando $displayedUsers de $totalUsers ${l10n.users.toLowerCase()}",
-          style: const TextStyle(color: Colors.grey, fontSize: 13),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),
         ),
       ],
     );
@@ -197,6 +162,7 @@ class UserStatsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -212,21 +178,21 @@ class UserStatsGrid extends StatelessWidget {
               "TOTAL ${l10n.users.toUpperCase()}",
               totalUsers.toString(),
               Icons.groups,
-              Colors.blue,
+              colorScheme.primary,
               "+12%",
             ),
             _statCard(
               "ACTIVOS ESTE MES",
               activeUsers.toString(),
               Icons.check_circle,
-              Colors.green,
+              colorScheme.secondary,
               "${((activeUsers / totalUsers) * 100).toStringAsFixed(0)}%",
             ),
             _statCard(
               "LABORATORIOS",
               "15",
               Icons.science,
-              Colors.amber,
+              colorScheme.tertiary,
               "Activos",
             ),
           ],
@@ -242,50 +208,52 @@ class UserStatsGrid extends StatelessWidget {
     Color color,
     String trend,
   ) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withOpacity(0.3),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
+    return Builder(
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
-              ),
-              Icon(icon, color: color, size: 20),
-            ],
-          ),
-          const Spacer(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                Icon(icon, color: color, size: 20),
+              ],
+            ),
+            const Spacer(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                trend,
-                style: TextStyle(color: color, fontSize: 12),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 8),
+                Text(
+                  trend,
+                  style: TextStyle(color: color, fontSize: 12),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -297,10 +265,10 @@ class UserManagementFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
         "© 2026 LabOS Laboratory Management Systems. All rights reserved.",
-        style: TextStyle(color: Colors.grey, fontSize: 12),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12),
       ),
     );
   }
@@ -317,9 +285,9 @@ class UserTableHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.02),
-        border: const Border(
-          bottom: BorderSide(color: Colors.white10),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.2),
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
         ),
       ),
       child: Row(
@@ -328,10 +296,10 @@ class UserTableHeader extends StatelessWidget {
             flex: 3,
             child: Text(
               l10n.user.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -339,10 +307,10 @@ class UserTableHeader extends StatelessWidget {
             flex: 2,
             child: Text(
               l10n.role.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -350,32 +318,21 @@ class UserTableHeader extends StatelessWidget {
             flex: 2,
             child: Text(
               "LABORATORIO",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
           Expanded(
-            flex: 2,
-            child: Text(
-              l10n.status.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          const Expanded(
             flex: 1,
             child: Text(
               "ACCIONES",
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),

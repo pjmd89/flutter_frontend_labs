@@ -21,8 +21,9 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
   late TextEditingController addressController;
   final List<TextEditingController> phoneControllers = [];
 
-  bool _juanPerezRemoved = false;
-  bool _mariaGomezRemoved = true;
+  // Mapa para trackear qué empleados están marcados para remover
+  // Key: employeeId, Value: true si debe ser removido
+  Map<String, bool> employeeRemovalStatus = {};
 
   @override
   void didChangeDependencies() {
@@ -36,6 +37,13 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
     
     if (phoneControllers.isEmpty) {
       phoneControllers.add(TextEditingController());
+    }
+
+    // Inicializar el estado de remoción de empleados (todos inicialmente NO removidos)
+    if (widget.laboratory.employees != null) {
+      for (var employee in widget.laboratory.employees!.edges) {
+        employeeRemovalStatus[employee.id] = false;
+      }
     }
   }
 
@@ -69,9 +77,26 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
 
   Future<void> _handleSave() async {
     if (formKey.currentState!.validate()) {
+      // 1. Actualizar datos básicos del laboratorio
       var isErr = await viewModel.update();
-      if (!isErr && mounted) {
-        context.pop(true);
+      
+      if (!isErr) {
+        // 2. Gestionar empleados marcados para remover
+        final employeesToRemove = employeeRemovalStatus.entries
+            .where((entry) => entry.value == true)
+            .map((entry) => entry.key)
+            .toList();
+        
+        if (employeesToRemove.isNotEmpty) {
+          await viewModel.manageEmployees(
+            employeeIds: employeesToRemove,
+            remove: true,
+          );
+        }
+        
+        if (mounted) {
+          context.pop(true);
+        }
       }
     }
   }
@@ -114,7 +139,7 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
                             const SizedBox(width: 24),
                             Expanded(flex: 3, child: _buildSidePanel(l10n, colorScheme, textTheme)),
                             const SizedBox(width: 24),
-                            Expanded(flex: 4, child: _buildEmployeeInfo(l10n, colorScheme, textTheme)),
+                            Expanded(flex: 5, child: _buildEmployeeInfo(l10n, colorScheme, textTheme)),
                           ],
                         )
                       else
@@ -172,14 +197,14 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
   required Function(bool) onChanged,
 }) {
   return Card(
-    margin: const EdgeInsets.only(bottom: 12),
+    margin: const EdgeInsets.only(bottom: 8),
     elevation: 0,
     // Fondo oscuro profundo para replicar la imagen
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(8),
     ),
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: Row(
         children: [
           // Avatar con borde sutil
@@ -189,11 +214,11 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
               border: Border.all( width: 1),
             ),
             child: const CircleAvatar(
-              radius: 26,      
-              child: Icon(Icons.person_outline),
+              radius: 18,      
+              child: Icon(Icons.person_outline, size: 18),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
           
           // Información de texto
           Expanded(
@@ -203,13 +228,14 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
               children: [
                 Text(
                   name,
-                  style: textTheme.titleMedium?.copyWith(
+                  style: textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 Text(
                   role,
-                  style: textTheme.bodySmall?.copyWith(                 
+                  style: textTheme.bodySmall?.copyWith(
+                    fontSize: 11,                 
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -221,7 +247,7 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
           Column(
             children: [
               Transform.scale(
-                scale: 0.8, // Un poco más pequeño para que luzca más elegante
+                scale: 0.7,
                 child: Switch(
                   value: isRemoved,
                   onChanged: (bool value) {
@@ -231,9 +257,9 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
                 ),
               ),
               Text(
-                l10n.remove, // Podrías usar l10n.remove si lo tienes definido
+                l10n.remove,
                 style: textTheme.labelSmall?.copyWith(
-                  fontSize: 10,
+                  fontSize: 9,
                 ),
               ),
             ],
@@ -299,6 +325,8 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
   }
 
  Widget _buildEmployeeInfo(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
+  final employees = widget.laboratory.employees?.edges ?? [];
+  
   return Card(
     elevation: 0,
     color: colorScheme.surface,
@@ -311,35 +339,51 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           _buildCustomTextField(
+          _buildCustomTextField(
             colorScheme: colorScheme,
             label: "Información de Empleados",
             controller: TextEditingController(),
-            hint: " Ej: Juan Perez", // No es editable, así que no necesitamos un controller real
+            hint: " Ej: Juan Perez",
             icon: Icons.search
           ),
-          const SizedBox(height: 24),
-          _buildEmployeeCard(
-            name: "Juan Pérez",
-            role: "Tecnico de Laboratorio",
-            l10n: l10n,
-            colorScheme: colorScheme,
-            textTheme: textTheme,
-            isRemoved: _juanPerezRemoved,
-            onChanged: (val) {
-              setState(() => _juanPerezRemoved = val);
-            },
-          ),
-          _buildEmployeeCard(
-            name: "María Gómez",
-            role: "Bioanalista de Laboratorio",
-            l10n: l10n,
-            colorScheme: colorScheme,
-            textTheme: textTheme,
-            isRemoved: _mariaGomezRemoved,
-            onChanged: (val) {
-              setState(() => _mariaGomezRemoved = val);
-            },
+          const SizedBox(height: 16),
+          
+          // Contenedor con scroll para empleados
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 200),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Mostrar empleados reales del laboratorio
+                  if (employees.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "No hay empleados asignados a este laboratorio",
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                      ),
+                    )
+                  else
+                    ...employees.map((employee) {
+                      return _buildEmployeeCard(
+                        name: "${employee.firstName} ${employee.lastName}",
+                        role: employee.email,
+                        l10n: l10n,
+                        colorScheme: colorScheme,
+                        textTheme: textTheme,
+                        isRemoved: employeeRemovalStatus[employee.id] ?? false,
+                        onChanged: (val) {
+                          setState(() {
+                            employeeRemovalStatus[employee.id] = val;
+                          });
+                        },
+                      );
+                    }).toList(),
+                ],
+              ),
+            ),
           ),
         ],
       ),

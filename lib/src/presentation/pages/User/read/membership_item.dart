@@ -37,14 +37,15 @@ class MembershipItem extends StatelessWidget {
     }
   }
 
-  Color _getAvatarColor(int index) {
+  Color _getAvatarColor(BuildContext context, int index) {
+    final colorScheme = Theme.of(context).colorScheme;
     final colors = [
-      Colors.blue,
-      Colors.green,
-      Colors.purple,
-      Colors.pink,
-      Colors.orange,
-      Colors.teal,
+      colorScheme.primary,
+      colorScheme.secondary,
+      colorScheme.tertiary,
+      colorScheme.primaryContainer,
+      colorScheme.secondaryContainer,
+      colorScheme.tertiaryContainer,
     ];
     return colors[index % colors.length];
   }
@@ -64,7 +65,7 @@ class MembershipItem extends StatelessWidget {
     final fullName = '${membership.member!.firstName} ${membership.member!.lastName}'.trim();
     final roleText = _getRoleTranslation(membership.role);
     final initials = _getInitials(membership.member!.firstName, membership.member!.lastName);
-    final avatarColor = _getAvatarColor(membership.member!.id.hashCode);
+    final avatarColor = _getAvatarColor(context, membership.member!.id.hashCode);
     final labName = membership.laboratory?.address ?? 'N/A';
     
     // Obtener el rol del usuario logueado
@@ -74,7 +75,7 @@ class MembershipItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
+          bottom: BorderSide(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
         ),
       ),
       padding: const EdgeInsets.all(16),
@@ -113,8 +114,8 @@ class MembershipItem extends StatelessWidget {
                       ),
                       Text(
                         membership.member!.email,
-                        style: const TextStyle(
-                          color: Colors.grey,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 12,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -145,28 +146,6 @@ class MembershipItem extends StatelessWidget {
             ),
           ),
           
-          // Estado
-          Expanded(
-            flex: 2,
-            child: Row(
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Text(
-                  "Activo",
-                  style: TextStyle(fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-          
           // Acciones
           Expanded(
             flex: 1,
@@ -186,28 +165,12 @@ class MembershipItem extends StatelessWidget {
                             onUpdate!(membership.member!);
                           }
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.edit,
                             size: 18,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      InkWell(
-                        onTap: () {
-                          if (onDelete != null) {
-                            onDelete!(membership.member!.id);
-                          }
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.delete_outline,
-                            size: 18,
-                            color: Colors.redAccent,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),

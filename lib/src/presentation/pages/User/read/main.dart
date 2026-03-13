@@ -41,7 +41,8 @@ class _UserPageState extends State<UserPage> {
       // Filtrar por rol
       if (selectedRole != null) {
         if (widget is MembershipItem) {
-          final roleMatches = widget.membership.role?.toString().contains(selectedRole!) ?? false;
+          final memberRole = widget.membership.role?.name.toUpperCase();
+          final roleMatches = memberRole == selectedRole;
           if (!roleMatches) return false;
         }
       }
@@ -120,9 +121,9 @@ class _UserPageState extends State<UserPage> {
                         // User Table
                         Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1E293B).withOpacity(0.3),
+                            color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.white10),
+                            border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
                           ),
                           child: Column(
                             children: [
