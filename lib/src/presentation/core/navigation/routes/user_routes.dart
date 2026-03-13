@@ -37,7 +37,7 @@ final List<GoRoute> userRoutes = [
       GoRoute(
         path: 'update/:id',
         pageBuilder: (context, state) {
-          return CustomDialogPage(
+          return CustomSlideTransition(
             context: context, 
             state: state, 
             child: UserUpdatePage(

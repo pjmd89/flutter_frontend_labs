@@ -37,134 +37,184 @@ class MembershipItem extends StatelessWidget {
     }
   }
 
+  Color _getAvatarColor(int index) {
+    final colors = [
+      Colors.blue,
+      Colors.green,
+      Colors.purple,
+      Colors.pink,
+      Colors.orange,
+      Colors.teal,
+    ];
+    return colors[index % colors.length];
+  }
+
+  String _getInitials(String firstName, String lastName) {
+    final first = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';
+    final last = lastName.isNotEmpty ? lastName[0].toUpperCase() : '';
+    return '$first$last';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final fullName = membership.member != null 
-        ? '${membership.member!.firstName} ${membership.member!.lastName}'.trim()
-        : 'Sin miembro';
+    if (membership.member == null) {
+      return const SizedBox.shrink();
+    }
+
+    final fullName = '${membership.member!.firstName} ${membership.member!.lastName}'.trim();
     final roleText = _getRoleTranslation(membership.role);
+    final initials = _getInitials(membership.member!.firstName, membership.member!.lastName);
+    final avatarColor = _getAvatarColor(membership.member!.id.hashCode);
+    final labName = membership.laboratory?.address ?? 'N/A';
     
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
     final isBilling = loggedUser?.labRole == LabMemberRole.bILLING;
 
-    // Diseño para ROOT/ADMIN (similar a UserItem)
-    if (isRootView) {
-      return ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 360, maxHeight: 150),
-        child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.person_outline)),
-                title: Text(fullName, style: theme.textTheme.titleMedium),
-                subtitle: Text(roleText),
-                trailing: isBilling
-                    ? null
-                    : PopupMenuButton<String>(
-                        icon: const Icon(Icons.more_vert),
-                        onSelected: (value) {
-                          if (value == 'edit' && onUpdate != null && membership.member != null) {
-                            debugPrint('\n📤 ========== NAVEGANDO A UPDATE (MembershipItem ROOT) ==========');
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
+        ),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          // Usuario con avatar
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 18,
+                  backgroundColor: avatarColor.withOpacity(0.1),
+                  child: Text(
+                    initials,
+                    style: TextStyle(
+                      color: avatarColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        fullName,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        membership.member!.email,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Rol
+          Expanded(
+            flex: 2,
+            child: Text(
+              roleText,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+          
+          // Laboratorio
+          Expanded(
+            flex: 2,
+            child: Text(
+              labName,
+              style: const TextStyle(fontSize: 14),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          
+          // Estado
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: [
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  "Activo",
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          
+          // Acciones
+          Expanded(
+            flex: 1,
+            child: isBilling
+                ? const SizedBox.shrink()
+                : Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          if (onUpdate != null) {
+                            debugPrint('\n📤 ========== NAVEGANDO A UPDATE (MembershipItem) ==========');
                             debugPrint('📤 membership.id: "${membership.id}"');
                             debugPrint('📤 membership.member.id: "${membership.member!.id}"');
-                            debugPrint('📤 Nombre: ${membership.member!.firstName} ${membership.member!.lastName}');
+                            debugPrint('📤 Nombre: ${fullName}');
                             debugPrint('📤 Pasando objeto User completo');
                             debugPrint('========================================\n');
                             onUpdate!(membership.member!);
                           }
                         },
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 'edit',
-                            child: Row(
-                              children: [
-                                const Icon(Icons.edit),
-                                const SizedBox(width: 8),
-                                Text(l10n.edit),
-                              ],
-                            ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.edit,
+                            size: 18,
+                            color: Colors.grey,
                           ),
-                        ],
-                      ),
-              ),
-              const Divider(height: 1),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (membership.laboratory != null)
-                      Expanded(
-                        child: Text(
-                          '${l10n.laboratory}: ${membership.laboratory!.address}',
-                          style: theme.textTheme.bodySmall,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    if (onViewLabs != null && membership.member != null)
-                      OutlinedButton(
-                        onPressed: () => onViewLabs!(membership.member!.id),
-                        child: Text(l10n.viewLaboratories),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () {
+                          if (onDelete != null) {
+                            onDelete!(membership.member!.id);
+                          }
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.delete_outline,
+                            size: 18,
+                            color: Colors.redAccent,
+                          ),
+                        ),
                       ),
-                  ],
-                ),
-              ),
-            ],
+                    ],
+                  ),
           ),
-        ),
-      );
-    }
-
-    // Diseño original para usuarios normales
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 360),
-      child: Card(
-        child: Column(
-          children: [
-            ListTile(
-              leading: const CircleAvatar(child: Icon(Icons.group_outlined)),
-              title: Text(
-                membership.member != null 
-                    ? '${membership.member!.firstName} ${membership.member!.lastName}'
-                    : 'Sin miembro'
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (membership.laboratory != null)
-                    Text('Lab: ${membership.laboratory!.address}'),
-                  if (membership.role != null)
-                    Text('${l10n.role}: ${_getRoleTranslation(membership.role)}'),
-                ],
-              ),
-              trailing: isBilling
-                  ? null
-                  : PopupMenuButton<String>(
-                      onSelected: (value) {
-                        if (value == 'edit' && onUpdate != null && membership.member != null) {
-                          debugPrint('\n📤 ========== NAVEGANDO A UPDATE (MembershipItem) ==========');
-                          debugPrint('📤 membership.id: "${membership.id}"');
-                          debugPrint('📤 membership.member.id: "${membership.member!.id}"');
-                          debugPrint('📤 Nombre: ${membership.member!.firstName} ${membership.member!.lastName}');
-                          debugPrint('📤 Pasando objeto User completo');
-                          debugPrint('========================================\n');
-                          onUpdate!(membership.member!);
-                        }
-                      },
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: Text(l10n.edit),
-                        ),
-                      ],
-                    ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

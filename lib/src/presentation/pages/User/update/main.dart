@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
@@ -172,186 +171,264 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
     }
   }
 
+    Future<void> _handleSave() async {
+    if (formKey.currentState!.validate()) {
+      final isErr = await viewModel.update();
+      if (!isErr && context.mounted) {
+        context.pop(true);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final isDesktop = MediaQuery.of(context).size.width > 900;
     
-    return ListenableBuilder(
-      listenable: viewModel,
-      builder: (context, child) {
-        // Mostrar error si ocurrió
-        if (viewModel.error && !viewModel.loading) {
-          return ContentDialog(
-            icon: Icons.error_outline,
-            title: l10n.somethingWentWrong,
-            loading: false,
-            form: Form(
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(l10n.somethingWentWrong),
-                    const SizedBox(height: 16),
-                    FilledButton(
-                      onPressed: () => context.pop(false),
-                      child: Text(l10n.cancel),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [],
-          );
-        }
-        
-        // Mostrar loading mientras carga datos iniciales
-        if (!_controllersInitialized || viewModel.currentUser == null) {
-          return ContentDialog(
-            icon: Icons.person,
-            title: l10n.updateThing(l10n.user),
-            loading: true,
-            form: Form(child: const Center(child: CircularProgressIndicator())),
-            actions: [],
-          );
-        }
-        
-        // Formulario con datos prellenados
-        return ContentDialog(
-          icon: Icons.person,
-          title: l10n.updateThing(l10n.user),
-          loading: viewModel.loading,
-          maxWidth: 600,
-          form: Form(
-            key: formKey,
-            child: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: colorScheme.surfaceContainerLowest,
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        title: Text(l10n.updateThing(l10n.user)),
+      ),
+      body: ListenableBuilder(
+        listenable: viewModel,
+        builder: (context, child) {
+          // Mostrar error si ocurrió
+          if (viewModel.error && !viewModel.loading) {
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Nombre y Apellido en la misma fila
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.firstName,
-                          controller: firstNameController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.firstName = value;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.lastName,
-                          controller: lastNameController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.lastName = value;
-                          },
-                        ),
-                      ),
-                    ],
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: colorScheme.error,
                   ),
                   const SizedBox(height: 16),
-                  
-                  // Email
-                  CustomTextFormField(
-                    labelText: l10n.email,
-                    controller: emailController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.email,
-                    counterText: "",
-                    onChange: (value) {
-                      viewModel.input.email = value;
-                    },
+                  Text(
+                    l10n.somethingWentWrong,
+                    style: textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
-                  
-                  // Campos de solo lectura (no están en UpdateUserInput)
-                  Card(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.nonEditableInformation,
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                          const SizedBox(height: 12),
-                          _buildReadOnlyField(
-                            l10n.role,
-                            selectedRole != null 
-                              ? getRoleLabel(context, selectedRole!)
-                              : '-'
-                          ),
-                          const SizedBox(height: 8),
-                          _buildReadOnlyField(
-                            l10n.cutOffDate, 
-                            formatTimestamp(viewModel.currentUser!.cutOffDate)
-                          ),
-                          const SizedBox(height: 8),
-                          _buildReadOnlyField(
-                            l10n.fee, 
-                            viewModel.currentUser!.fee.toString()
-                          ),
-                        ],
-                      ),
+                  FilledButton(
+                    onPressed: () => context.pop(false),
+                    child: Text(l10n.cancel),
+                  ),
+                ],
+              ),
+            );
+          }
+          
+          // Mostrar loading mientras carga datos iniciales
+          if (!_controllersInitialized || viewModel.currentUser == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          // Formulario con datos prellenados
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: isDesktop
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(flex: 9, child: _buildMainForm(l10n, colorScheme, textTheme)),
+                        const SizedBox(width: 24),
+                        Expanded(flex: 5, child: _buildSidePanel(l10n, colorScheme, textTheme)),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        _buildMainForm(l10n, colorScheme, textTheme),
+                        const SizedBox(height: 24),
+                        _buildSidePanel(l10n, colorScheme, textTheme),
+                      ],
+                    ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildMainForm(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
+    return Card(
+      elevation: 0,
+      color: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: colorScheme.outlineVariant),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Información Personal", style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Text("Actualice los datos personales del usuario.", style: textTheme.bodyMedium),
+              const Divider(height: 48),
+              
+              // Nombre y Apellido en la misma fila
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextFormField(
+                      labelText: l10n.firstName,
+                      controller: firstNameController,
+                      isDense: true,
+                      fieldLength: FormFieldLength.name,
+                      counterText: "",
+                      onChange: (value) {
+                        viewModel.input.firstName = value;
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: CustomTextFormField(
+                      labelText: l10n.lastName,
+                      controller: lastNameController,
+                      isDense: true,
+                      fieldLength: FormFieldLength.name,
+                      counterText: "",
+                      onChange: (value) {
+                        viewModel.input.lastName = value;
+                      },
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 16),
+              
+              // Email
+              CustomTextFormField(
+                labelText: l10n.email,
+                controller: emailController,
+                isDense: true,
+                fieldLength: FormFieldLength.email,
+                counterText: "",
+                onChange: (value) {
+                  viewModel.input.email = value;
+                },
+              ),
+            ],
           ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSidePanel(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme) {
+    return Column(
+      children: [
+        Card(
+          elevation: 0,
+          color: colorScheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: colorScheme.outlineVariant),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextButton(
-                  child: Text(l10n.cancel),
-                  onPressed: () => context.pop(false),
+                Text("Datos de Referencia", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 24),
+                _readOnlyInfo(l10n.user, viewModel.currentUser?.id ?? '-', textTheme, Icons.fingerprint),
+                const SizedBox(height: 20),
+                _readOnlyInfo("Email", viewModel.currentUser?.email ?? '-', textTheme, Icons.email_outlined),
+                const SizedBox(height: 20),
+                _readOnlyInfo(
+                  l10n.role,
+                  selectedRole != null ? getRoleLabel(context, selectedRole!) : '-',
+                  textTheme,
+                  Icons.admin_panel_settings_outlined
                 ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed: viewModel.loading ? null : () async {
-                    if (formKey.currentState!.validate()) {
-                      var isErr = await viewModel.update();
-                      
-                      if (!isErr) {
-                        if (!context.mounted) return;
-                        context.pop(true);
-                      }
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.save),
-                      if (viewModel.loading) ...[
-                        const SizedBox(width: 8),
-                        const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                      ] else ...[
-                        const SizedBox(width: 8),
-                        const Icon(Icons.save, size: 18),
-                      ],
-                    ],
-                  ),
+                const SizedBox(height: 20),
+                _readOnlyInfo(
+                  l10n.cutOffDate,
+                  formatTimestamp(viewModel.currentUser!.cutOffDate),
+                  textTheme,
+                  Icons.calendar_today_outlined
+                ),
+                const SizedBox(height: 20),
+                _readOnlyInfo(
+                  l10n.fee,
+                  viewModel.currentUser!.fee.toString(),
+                  textTheme,
+                  Icons.attach_money_outlined
                 ),
               ],
             ),
-          ],
-        );
-      },
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Botones de acción  
+          Padding(
+          padding: const EdgeInsets.all(24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              // Botón Cancelar
+              OutlinedButton(
+                onPressed: () => context.pop(),
+                child: Text(l10n.cancel),
+              ),
+              
+              const SizedBox(width: 12), // Espaciado horizontal
+              
+              // Botón Guardar o Loader
+              viewModel.loading
+                  ? const SizedBox(
+                      width: 40, // Un ancho fijo similar al botón ayuda a evitar saltos visuales
+                      height: 40,
+                      child: Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                    )
+                  : FilledButton.icon(
+                      onPressed: _handleSave,
+                      icon: const Icon(Icons.save_outlined, size: 18),
+                      label: Text(l10n.save),
+                    ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _readOnlyInfo(String label, String value, TextTheme textTheme, IconData icon) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 20, color: textTheme.bodySmall?.color?.withOpacity(0.6)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: textTheme.labelMedium?.copyWith(color: textTheme.bodySmall?.color)),
+              Text(value, style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ],
     );
   }
   
