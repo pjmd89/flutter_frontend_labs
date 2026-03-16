@@ -95,7 +95,7 @@ class _UserPageState extends State<UserPage> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(32.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -116,7 +116,7 @@ class _UserPageState extends State<UserPage> {
                             });
                           },
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 8),
                         
                         // User Table
                         Container(

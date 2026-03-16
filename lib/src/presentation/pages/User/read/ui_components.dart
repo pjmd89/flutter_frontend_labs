@@ -97,49 +97,41 @@ class UserFilterBar extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Row(
-          children: [
-            // Dropdown de Roles
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
-                borderRadius: BorderRadius.circular(8),
+        // Dropdown de Roles
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: DropdownButton<String?>(
+            value: selectedRole,
+            underline: const SizedBox.shrink(),
+            icon: const Icon(Icons.arrow_drop_down, size: 20),
+            dropdownColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+            style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
+            items: [
+              const DropdownMenuItem(
+                value: null,
+                child: Text("Todos los Roles"),
               ),
-              child: DropdownButton<String?>(
-                value: selectedRole,
-                underline: const SizedBox.shrink(),
-                icon: const Icon(Icons.arrow_drop_down, size: 20),
-                dropdownColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
-                items: [
-                  const DropdownMenuItem(
-                    value: null,
-                    child: Text("Todos los Roles"),
-                  ),
-                  DropdownMenuItem(
-                    value: "TECHNICIAN",
-                    child: Text(l10n.roleTechnician),
-                  ),
-                  DropdownMenuItem(
-                    value: "BILLING",
-                    child: Text(l10n.roleBilling),
-                  ),
-                  DropdownMenuItem(
-                    value: "BIOANALYST",
-                    child: Text(l10n.roleBioanalyst),
-                  ),
-                ],
-                onChanged: onRoleChanged,
+              DropdownMenuItem(
+                value: "TECHNICIAN",
+                child: Text(l10n.roleTechnician),
               ),
-            ),
-          ],
-        ),
-        Text(
-          "Mostrando $displayedUsers de $totalUsers ${l10n.users.toLowerCase()}",
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),
+              DropdownMenuItem(
+                value: "BILLING",
+                child: Text(l10n.roleBilling),
+              ),
+              DropdownMenuItem(
+                value: "BIOANALYST",
+                child: Text(l10n.roleBioanalyst),
+              ),
+            ],
+            onChanged: onRoleChanged,
+          ),
         ),
       ],
     );
