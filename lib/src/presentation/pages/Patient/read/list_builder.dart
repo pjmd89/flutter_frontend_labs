@@ -11,17 +11,33 @@ List<Widget> buildList({
 }) {
   // Estado: Cargando
   if (viewModel.loading) {
-    return [const Center(child: CircularProgressIndicator())];
+    return [
+      const Padding(
+        padding: EdgeInsets.all(48.0),
+        child: Center(child: CircularProgressIndicator()),
+      )
+    ];
   }
 
   // Estado: Error
   if (viewModel.error) {
-    return [Center(child: Text(l10n.errorLoadingData))];
+    return [
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(child: Text(l10n.errorLoadingData)),
+      )
+    ];
   }
 
   // Estado: Sin datos
   if (viewModel.patientList == null || viewModel.patientList!.isEmpty) {
-    return [Center(child: Text(l10n.noRegisteredMaleThings(l10n.patients)))];
+    return [
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(
+            child: Text(l10n.noRegisteredMaleThings(l10n.patients))),
+      )
+    ];
   }
 
   // Estado: Con datos - mapea cada item a su widget

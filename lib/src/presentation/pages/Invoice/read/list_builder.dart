@@ -11,11 +11,9 @@ List<Widget> buildList({
   // Estado: Cargando
   if (viewModel.loading) {
     return [
-      const Center(
-        child: Padding(
-          padding: EdgeInsets.all(32.0),
-          child: CircularProgressIndicator(),
-        ),
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(child: CircularProgressIndicator()),
       ),
     ];
   }
@@ -23,18 +21,20 @@ List<Widget> buildList({
   // Estado: Error
   if (viewModel.error) {
     return [
-      Center(
-        child: Text(l10n.errorLoadingData),
-      )
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(child: Text(l10n.errorLoadingData)),
+      ),
     ];
   }
 
   // Estado: Sin datos
   if (viewModel.invoiceList == null || viewModel.invoiceList!.isEmpty) {
     return [
-      Center(
-        child: Text(l10n.noRegisteredFemaleThings(l10n.invoices)),
-      )
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(child: Text(l10n.noRegisteredFemaleThings(l10n.invoices))),
+      ),
     ];
   }
 
@@ -48,3 +48,4 @@ List<Widget> buildList({
     );
   }).toList();
 }
+
