@@ -156,40 +156,17 @@ class UserStatsGrid extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: constraints.maxWidth > 800 ? 3 : 1,
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
-          childAspectRatio: 2.5,
-          children: [
-            _statCard(
-              "TOTAL ${l10n.users.toUpperCase()}",
-              totalUsers.toString(),
-              Icons.groups,
-              colorScheme.primary,
-              "+12%",
-            ),
-            _statCard(
-              "ACTIVOS ESTE MES",
-              activeUsers.toString(),
-              Icons.check_circle,
-              colorScheme.secondary,
-              "${((activeUsers / totalUsers) * 100).toStringAsFixed(0)}%",
-            ),
-            _statCard(
-              "LABORATORIOS",
-              "15",
-              Icons.science,
-              colorScheme.tertiary,
-              "Activos",
-            ),
-          ],
-        );
-      },
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 280),
+        child: _statCard(
+          "TOTAL ${l10n.users.toUpperCase()}",
+          totalUsers.toString(),
+          Icons.groups,
+          colorScheme.primary,
+        ),
+      ),
     );
   }
 
@@ -198,11 +175,10 @@ class UserStatsGrid extends StatelessWidget {
     String value,
     IconData icon,
     Color color,
-    String trend,
   ) {
     return Builder(
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
           borderRadius: BorderRadius.circular(12),
@@ -210,39 +186,31 @@ class UserStatsGrid extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
                 Icon(icon, color: color, size: 20),
               ],
             ),
-            const Spacer(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  trend,
-                  style: TextStyle(color: color, fontSize: 12),
-                ),
-              ],
+            const SizedBox(height: 16),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -259,7 +227,7 @@ class UserManagementFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        "© 2026 LabOS Laboratory Management Systems. All rights reserved.",
+        "",
         style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12),
       ),
     );

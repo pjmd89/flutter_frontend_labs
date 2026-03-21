@@ -160,6 +160,7 @@ class _InvoiceItemState extends State<InvoiceItem> {
                     color: amountColor,
                   ),
                   textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               // Kind Badge
@@ -167,18 +168,21 @@ class _InvoiceItemState extends State<InvoiceItem> {
                 flex: 2,
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: kindBg,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      kindLabel,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: kindColor,
-                        fontWeight: FontWeight.w600,
+                  child: Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: kindBg,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        kindLabel,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: kindColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -208,11 +212,14 @@ class _InvoiceItemState extends State<InvoiceItem> {
                           ),
                         ),
                         const SizedBox(width: 6),
-                        Text(
-                          statusLabel,
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: statusColor,
-                            fontWeight: FontWeight.w600,
+                        Flexible(
+                          child: Text(
+                            statusLabel,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: statusColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -228,6 +235,7 @@ class _InvoiceItemState extends State<InvoiceItem> {
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               // Actions
