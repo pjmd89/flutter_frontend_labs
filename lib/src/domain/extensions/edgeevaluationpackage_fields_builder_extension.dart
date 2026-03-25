@@ -7,8 +7,22 @@ extension EdgeEvaluationPackageFieldsBuilderExtension on EdgeEvaluationPackageFi
         builder: (evaluationPackageBuilder) {
           evaluationPackageBuilder
             ..id()
+            ..patient(
+              builder: (patientBuilder) {
+                patientBuilder
+                  ..patientData(
+                    personBuilder: (personBuilder) {
+                      personBuilder..firstName(alias: 'personFirstName');
+                    },
+                    animalBuilder: (animalBuilder) {
+                      animalBuilder..firstName(alias: 'animalFirstName');
+                    },
+                  );
+              },
+            )
             ..status()
             ..pdfFilepath()
+            ..pdfToken()
             ..completedAt()
             ..referred()
             ..observations()

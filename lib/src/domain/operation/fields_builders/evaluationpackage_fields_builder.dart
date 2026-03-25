@@ -9,6 +9,13 @@ class EvaluationPackageFieldsBuilder {
     _fields.add(fieldStr);
     return this;
   }
+  EvaluationPackageFieldsBuilder patient({String? alias, Map<String, dynamic>? args, List<Directive>? directives, void Function(PatientFieldsBuilder)? builder}) {
+    final child = PatientFieldsBuilder();
+    if (builder != null) builder(child);
+    final fieldStr = formatField("patient", alias: alias, args: args, directives: directives, selection: child.build());
+    _fields.add(fieldStr);
+    return this;
+  }
   EvaluationPackageFieldsBuilder valuesByExam({String? alias, Map<String, dynamic>? args, List<Directive>? directives, void Function(ExamResultFieldsBuilder)? builder}) {
     final child = ExamResultFieldsBuilder();
     if (builder != null) builder(child);
@@ -23,6 +30,11 @@ class EvaluationPackageFieldsBuilder {
   }
   EvaluationPackageFieldsBuilder pdfFilepath({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
     final fieldStr = formatField("pdfFilepath", alias: alias, args: args, directives: directives);
+    _fields.add(fieldStr);
+    return this;
+  }
+  EvaluationPackageFieldsBuilder pdfToken({String? alias, Map<String, dynamic>? args, List<Directive>? directives}) {
+    final fieldStr = formatField("pdfToken", alias: alias, args: args, directives: directives);
     _fields.add(fieldStr);
     return this;
   }

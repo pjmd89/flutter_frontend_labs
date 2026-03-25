@@ -20,6 +20,7 @@ EvaluationPackage _$EvaluationPackageFromJson(Map<String, dynamic> json) =>
           const [],
       status: $enumDecodeNullable(_$ResultStatusEnumMap, json['status']),
       pdfFilepath: json['pdfFilepath'] as String? ?? "",
+      pdfToken: json['pdfToken'] as String? ?? "",
       completedAt: (json['completedAt'] as num?)?.toInt() ?? 0,
       referred: json['referred'] as String? ?? "",
       observations:
@@ -46,6 +47,7 @@ Map<String, dynamic> _$EvaluationPackageToJson(
   'valuesByExam': instance.valuesByExam,
   if (_$ResultStatusEnumMap[instance.status] case final value?) 'status': value,
   'pdfFilepath': instance.pdfFilepath,
+  'pdfToken': instance.pdfToken,
   'completedAt': instance.completedAt,
   'referred': instance.referred,
   'observations': instance.observations,
