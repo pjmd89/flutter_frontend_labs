@@ -1458,5 +1458,69 @@
   "selectLaboratory": "Seleccionar Laboratorio",
   "@selectLaboratory": {
     "description": "Título del diálogo de selección de laboratorio"
+  },
+  "valueTypeText": "TEXTO",
+  "@valueTypeText": {
+    "description": "Tipo de valor texto"
+  },
+  "valueTypeNumeric": "NUMÉRICO",
+  "@valueTypeNumeric": {
+    "description": "Tipo de valor numérico"
+  },
+  "valueTypeBoolean": "BOOLEANO",
+  "@valueTypeBoolean": {
+    "description": "Tipo de valor booleano"
+  },
+  "yes": "Sí",
+  "@yes": {
+    "description": "Respuesta afirmativa"
+  },
+  "no": "No",
+  "@no": {
+    "description": "Respuesta negativa"
+  },
+  "mustBeNumeric": "Debe ser un valor numérico",
+  "@mustBeNumeric": {
+    "description": "Mensaje de validación para campo numérico"
+  },
+  "approved": "Aprobado",
+  "@approved": {
+    "description": "Estado aprobado"
+  },
+  "examResultsTitle": "Resultados de Exámenes",
+  "@examResultsTitle": {
+    "description": "Título de sección de resultados de exámenes"
+  },
+  "examResultsDescription": "Complete los valores de los indicadores para cada examen del paquete",
+  "@examResultsDescription": {
+    "description": "Descripción de sección de resultados"
+  },
+  "exam": "Examen",
+  "@exam": {
+    "description": "Palabra examen singular"
+  },
+  "indicators": "indicadores",
+  "@indicators": {
+    "description": "Palabra indicadores en minúscula"
+  },
+  "indicator": "Indicador",
+  "@indicator": {
+    "description": "Palabra indicador singular"
+  },
+  "referenceData": "Datos de Referencia",
+  "@referenceData": {
+    "description": "Título para datos de referencia"
+  },
+  "pending": "Pendiente",
+  "@pending": {
+    "description": "Estado pendiente"
+  },
+  "inProgress": "En Progreso",
+  "@inProgress": {
+    "description": "Estado en progreso"
+  },
+  "completed": "Completado",
+  "@completed": {
+    "description": "Estado completado"
   }
 }

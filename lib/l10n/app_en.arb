@@ -1320,5 +1320,69 @@
   "selectLaboratory": "Select Laboratory",
   "@selectLaboratory": {
     "description": "Title of laboratory selection dialog"
+  },
+  "valueTypeText": "TEXT",
+  "@valueTypeText": {
+    "description": "Text value type"
+  },
+  "valueTypeNumeric": "NUMERIC",
+  "@valueTypeNumeric": {
+    "description": "Numeric value type"
+  },
+  "valueTypeBoolean": "BOOLEAN",
+  "@valueTypeBoolean": {
+    "description": "Boolean value type"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Affirmative answer"
+  },
+  "no": "No",
+  "@no": {
+    "description": "Negative answer"
+  },
+  "mustBeNumeric": "Must be a numeric value",
+  "@mustBeNumeric": {
+    "description": "Validation message for numeric field"
+  },
+  "approved": "Approved",
+  "@approved": {
+    "description": "Approved status"
+  },
+  "examResultsTitle": "Exam Results",
+  "@examResultsTitle": {
+    "description": "Title for exam results section"
+  },
+  "examResultsDescription": "Enter the indicator values for each exam in the package",
+  "@examResultsDescription": {
+    "description": "Description for results section"
+  },
+  "exam": "Exam",
+  "@exam": {
+    "description": "Singular word exam"
+  },
+  "indicators": "indicators",
+  "@indicators": {
+    "description": "Word indicators in lowercase"
+  },
+  "indicator": "Indicator",
+  "@indicator": {
+    "description": "Singular word indicator"
+  },
+  "referenceData": "Reference Data",
+  "@referenceData": {
+    "description": "Title for reference data"
+  },
+  "pending": "Pending",
+  "@pending": {
+    "description": "Pending status"
+  },
+  "inProgress": "In Progress",
+  "@inProgress": {
+    "description": "In progress status"
+  },
+  "completed": "Completed",
+  "@completed": {
+    "description": "Completed status"
   }
 }

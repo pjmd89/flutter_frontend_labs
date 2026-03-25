@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:agile_front/agile_front.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
 import 'package:labs/src/presentation/core/ui/custom_text_form_fields/custom_text_form_field.dart';
 import 'package:labs/src/presentation/core/ui/custom_text_form_fields/utils/form_field_length/main.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
@@ -22,7 +21,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   
   final List<TextEditingController> observationControllers = [];
-  // Map: examIndex -> List<TextEditingController> para cada indicador
   final Map<int, List<TextEditingController>> examValueControllers = {};
   bool allResultsCompleted = false;
   
@@ -34,7 +32,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       evaluationPackage: widget.evaluationPackage,
     );
     
-    // Inicializar controllers de observaciones
     if (observationControllers.isEmpty) {
       if (widget.evaluationPackage.observations.isNotEmpty) {
         for (var observation in widget.evaluationPackage.observations) {
@@ -45,7 +42,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       }
     }
     
-    // Inicializar controllers de valores de exámenes
     if (examValueControllers.isEmpty) {
       for (var i = 0; i < widget.evaluationPackage.valuesByExam.length; i++) {
         final examResult = widget.evaluationPackage.valuesByExam[i];
@@ -59,7 +55,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       }
     }
     
-    // Inicializar estado de completitud
     allResultsCompleted = widget.evaluationPackage.status == ResultStatus.cOMPLETED;
   }
   
@@ -87,7 +82,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
       observationControllers[index].dispose();
       observationControllers.removeAt(index);
       
-      // Actualizar input
       viewModel.input.observations = observationControllers
         .map((c) => c.text)
         .where((text) => text.isNotEmpty)
@@ -96,7 +90,6 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   }
   
   void _updateExamValues() {
-    // Actualizar valuesByExam en el input con los valores de los controllers
     final examResults = <ExamResultInput>[];
     
     for (var i = 0; i < widget.evaluationPackage.valuesByExam.length; i++) {
@@ -128,12 +121,19 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     if (status == null) return l10n.status;
     switch (status) {
       case ResultStatus.pENDING:
-        return 'Pendiente';
+        return l10n.pending;
       case ResultStatus.iNPROGRESS:
-        return 'En Progreso';
+        return l10n.inProgress;
       case ResultStatus.cOMPLETED:
-        return 'Completado';
+        return l10n.completed;
     }
+  }
+  
+  String _getValueTypeLabel(ValueType valueType, AppLocalizations l10n) {
+    final normalized = valueType.normalize();
+    if (normalized.isNumeric) return l10n.valueTypeNumeric;
+    if (normalized.isBoolean) return l10n.valueTypeBoolean;
+    return l10n.valueTypeText;
   }
   
   @override
@@ -144,426 +144,744 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     final isTechnician = authNotifier.labRole == LabMemberRole.tECHNICIAN;
     final isOwner = authNotifier.userIsLabOwner;
     final canEdit = (isOwner || isTechnician) && !isBioanalyst;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final isDesktop = MediaQuery.of(context).size.width > 900;
     
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
-        return ContentDialog(
-          icon: Icons.assessment,
-          title: l10n.updateThing(l10n.evaluationPackage),
-          loading: viewModel.loading,
-          form: Form(
+        return Scaffold(
+          backgroundColor: colorScheme.surfaceContainerLowest,
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            backgroundColor: colorScheme.surface,
+            title: Row(
+              children: [
+                Icon(Icons.edit_note_outlined, size: 24, color: colorScheme.primary),
+                const SizedBox(width: 12),
+                Text(l10n.updateThing(l10n.evaluationPackage)),
+              ],
+            ),
+            actions: [
+              if (viewModel.currentEvaluationPackage?.isApproved == true)
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Chip(
+                    avatar: Icon(Icons.verified, size: 16, color: colorScheme.primary),
+                    label: Text(
+                      l10n.approved,
+                      style: textTheme.labelSmall?.copyWith(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    backgroundColor: colorScheme.primaryContainer.withOpacity(0.5),
+                    side: BorderSide.none,
+                  ),
+                ),
+            ],
+          ),
+          body: Form(
             key: formKey,
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Mensaje informativo para usuarios según su rol
-                  if (!canEdit && !isBioanalyst) ...[
-                    Card(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.info_outline,
-                              color: Theme.of(context).colorScheme.onSecondaryContainer,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                l10n.viewOnlyMode,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                  
-                  if (isBioanalyst) ...[  
-                    Card(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.verified_user,
-                              color: Theme.of(context).colorScheme.onPrimaryContainer,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                l10n.bioanalystViewMode,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                  
-                  // Sección de información no editable
-                  if (viewModel.currentEvaluationPackage != null) ...[
-                    Card(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
+              padding: const EdgeInsets.all(24.0),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 24),
+                      
+                      // Layout Principal
+                      if (isDesktop)
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              l10n.nonEditableInformation,
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            _buildReadOnlyField(
-                              l10n.status,
-                              getStatusLabel(context, viewModel.currentEvaluationPackage!.status),
-                            ),
-                            _buildReadOnlyField(
-                              l10n.referred,
-                              viewModel.currentEvaluationPackage!.referred.isEmpty
-                                ? 'N/A'
-                                : viewModel.currentEvaluationPackage!.referred,
-                            ),
-                            _buildReadOnlyField(
-                              l10n.examsCount,
-                              viewModel.currentEvaluationPackage!.valuesByExam.length.toString(),
-                            ),
+                            Expanded(flex: 8, child: _buildMainContent(l10n, colorScheme, textTheme, canEdit)),
+                            const SizedBox(width: 24),
+                            Expanded(flex: 4, child: _buildSidePanel(l10n, colorScheme, textTheme, isBioanalyst, canEdit)),
+                          ],
+                        )
+                      else
+                        Column(
+                          children: [
+                            _buildMainContent(l10n, colorScheme, textTheme, canEdit),
+                            const SizedBox(height: 24),
+                            _buildSidePanel(l10n, colorScheme, textTheme, isBioanalyst, canEdit),
                           ],
                         ),
+                      
+                      const SizedBox(height: 32),
+                      
+                      // Botones de acción
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: () => context.pop(false),
+                            icon: const Icon(Icons.close, size: 18),
+                            label: Text(l10n.cancel),
+                          ),
+                          const SizedBox(width: 12),
+                          
+                          // Botón de aprobación
+                          if (isBioanalyst && 
+                              viewModel.currentEvaluationPackage?.isApproved == false &&
+                              viewModel.currentEvaluationPackage?.status == ResultStatus.cOMPLETED) ...[
+                            FilledButton.tonalIcon(
+                              onPressed: viewModel.loading ? null : () async {
+                                final shouldApprove = await showDialog<bool>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      icon: Icon(Icons.verified_outlined, size: 48, color: colorScheme.primary),
+                                      title: Text(l10n.approveEvaluationPackage),
+                                      content: Text(l10n.approveEvaluationPackageConfirmation),
+                                      actions: [
+                                        TextButton(
+                                          child: Text(l10n.cancel),
+                                          onPressed: () => Navigator.of(context).pop(false),
+                                        ),
+                                        FilledButton.icon(
+                                          icon: const Icon(Icons.check, size: 18),
+                                          label: Text(l10n.approve),
+                                          onPressed: () => Navigator.of(context).pop(true),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                
+                                if (shouldApprove == true) {
+                                  var isErr = await viewModel.approve();
+                                  if (!isErr && context.mounted) context.pop(true);
+                                }
+                              },
+                              icon: const Icon(Icons.verified, size: 18),
+                              label: Text(l10n.approve),
+                            ),
+                            const SizedBox(width: 12),
+                          ],
+                          
+                          // Botón de actualizar
+                          if (canEdit)
+                            viewModel.loading
+                              ? Container(
+                                  padding: const EdgeInsets.all(12),
+                                  child: const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(strokeWidth: 2),
+                                  ),
+                                )
+                              : FilledButton.icon(
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      _updateExamValues();
+                                      var isErr = await viewModel.update();
+                                      if (!isErr && context.mounted) context.pop(true);
+                                    }
+                                  },
+                                  icon: const Icon(Icons.save_outlined, size: 18),
+                                  label: Text(l10n.save),
+                                ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMainContent(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme, bool canEdit) {
+    return Card(
+      elevation: 0,
+      color: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: colorScheme.outlineVariant),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.examResultsTitle,
+              style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.examResultsDescription,
+              style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+            ),
+            const Divider(height: 48),
+            
+            // Exámenes con diseño mejorado
+            if (viewModel.currentEvaluationPackage!.valuesByExam.isNotEmpty)
+              ...List.generate(
+                viewModel.currentEvaluationPackage!.valuesByExam.length,
+                (examIndex) {
+                  final examResult = viewModel.currentEvaluationPackage!.valuesByExam[examIndex];
+                  final controllers = examValueControllers[examIndex] ?? [];
+                  
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    decoration: BoxDecoration(
+                      color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: colorScheme.outlineVariant,
+                        width: 1,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                  ],
-                  
-                  // Sección de valores de exámenes
-                  if (viewModel.currentEvaluationPackage!.valuesByExam.isNotEmpty) ...[
-                    Text(
-                      l10n.examResults,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 12),
-                    
-                    ...List.generate(
-                      viewModel.currentEvaluationPackage!.valuesByExam.length,
-                      (examIndex) {
-                        final examResult = viewModel.currentEvaluationPackage!.valuesByExam[examIndex];
-                        final controllers = examValueControllers[examIndex] ?? [];
-                        
-                        return Card(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Header del examen
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primaryContainer.withOpacity(0.3),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primary.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  Icons.biotech_outlined,
+                                  color: colorScheme.primary,
+                                  size: 22,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(
-                                      Icons.science_outlined,
-                                      color: Theme.of(context).colorScheme.primary,
-                                      size: 20,
+                                    Text(
+                                      examResult.exam?.template?.name ?? '${l10n.exam} #${examIndex + 1}',
+                                      style: textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: colorScheme.onSurface,
+                                      ),
                                     ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        examResult.exam?.template?.name ?? 'Examen #${examIndex + 1}',
-                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      '${examResult.indicatorValues.length} ${l10n.indicators}',
+                                      style: textTheme.bodySmall?.copyWith(
+                                        color: colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 12),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primary.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  '#${examIndex + 1}',
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        // Indicadores
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            children: List.generate(
+                              examResult.indicatorValues.length,
+                              (indicatorIndex) {
+                                final indicatorValue = examResult.indicatorValues[indicatorIndex];
+                                final indicator = indicatorValue.indicator;
                                 
-                                // Campos para cada indicador (solo edición de valores)
-                                ...List.generate(
-                                  examResult.indicatorValues.length,
-                                  (indicatorIndex) {
-                                    final indicatorValue = examResult.indicatorValues[indicatorIndex];
-                                    final indicator = indicatorValue.indicator;
-                                    
-                                    if (indicatorIndex >= controllers.length) {
-                                      return const SizedBox.shrink();
-                                    }
-                                    
-                                    return Padding(
-                                      padding: const EdgeInsets.only(bottom: 12.0),
-                                      child: CustomTextFormField(
-                                        labelText: '${indicator?.name ?? 'Indicador ${indicatorIndex + 1}'} ${indicator?.unit != null ? '(${indicator!.unit})' : ''}',
+                                if (indicatorIndex >= controllers.length) {
+                                  return const SizedBox.shrink();
+                                }
+                                
+                                final valueType = indicator?.valueType?.normalize();
+                                final isBoolean = valueType?.isBoolean ?? false;
+                                
+                                // Si es booleano, usar un Switch
+                                if (isBoolean) {
+                                  // Parsear el valor actual como bool
+                                  bool currentValue = controllers[indicatorIndex].text.toLowerCase() == 'true' ||
+                                                      controllers[indicatorIndex].text == '1';
+                                  
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 16.0),
+                                    child: Card(
+                                      elevation: 0,
+                                      color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    indicator?.name ?? '${l10n.indicator} ${indicatorIndex + 1}',
+                                                    style: textTheme.titleSmall?.copyWith(
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 2),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                                        decoration: BoxDecoration(
+                                                          color: colorScheme.tertiaryContainer,
+                                                          borderRadius: BorderRadius.circular(4),
+                                                        ),
+                                                        child: Text(
+                                                          l10n.valueTypeBoolean,
+                                                          style: textTheme.labelSmall?.copyWith(
+                                                            color: colorScheme.onTertiaryContainer,
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 10,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      if (indicator?.unit != null && indicator!.unit.isNotEmpty) ...[
+                                                        const SizedBox(width: 8),
+                                                        Text(
+                                                          '(${indicator.unit})',
+                                                          style: textTheme.bodySmall?.copyWith(
+                                                            color: colorScheme.onSurfaceVariant,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Transform.scale(
+                                                  scale: 0.9,
+                                                  child: Switch(
+                                                    value: currentValue,
+                                                    onChanged: canEdit ? (value) {
+                                                      setState(() {
+                                                        controllers[indicatorIndex].text = value.toString();
+                                                        _updateExamValues();
+                                                      });
+                                                    } : null,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  currentValue ? l10n.yes : l10n.no,
+                                                  style: textTheme.labelSmall?.copyWith(
+                                                    color: colorScheme.onSurfaceVariant,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                
+                                // Para tipos TEXT y NUMERIC, usar TextField
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 12.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      if (valueType != null) ...[
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 6),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color: valueType.isNumeric 
+                                                ? colorScheme.secondaryContainer 
+                                                : colorScheme.tertiaryContainer,
+                                              borderRadius: BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              _getValueTypeLabel(valueType, l10n),
+                                              style: textTheme.labelSmall?.copyWith(
+                                                color: valueType.isNumeric
+                                                  ? colorScheme.onSecondaryContainer
+                                                  : colorScheme.onTertiaryContainer,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                      CustomTextFormField(
+                                        labelText: '${indicator?.name ?? '${l10n.indicator} ${indicatorIndex + 1}'} ${indicator?.unit != null && indicator!.unit.isNotEmpty ? '(${indicator.unit})' : ''}',
                                         controller: controllers[indicatorIndex],
                                         isDense: true,
                                         fieldLength: FormFieldLength.name,
                                         counterText: "",
                                         readOnly: !canEdit,
-                                        onChange: (value) {
-                                          _updateExamValues();
-                                        },
+                                        type: valueType?.isNumeric ?? false 
+                                          ? TextInputType.number 
+                                          : TextInputType.text,
+                                        onChange: (value) => _updateExamValues(),
                                         validator: (value) {
                                           if (canEdit && (value == null || value.isEmpty)) {
                                             return l10n.fieldRequired;
                                           }
+                                          
+                                          // Validar que sea numérico si el tipo es NUMERIC
+                                          if (canEdit && valueType?.isNumeric == true) {
+                                            final numValue = double.tryParse(value!);
+                                            if (numValue == null) {
+                                              return l10n.mustBeNumeric;
+                                            }
+                                          }
+                                          
                                           return null;
                                         },
                                       ),
-                                    );
-                                  },
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        );
-                      },
-                    ),
-                    
-                    const SizedBox(height: 16),
-                  ],
-                  
-                  // Switch de completitud - Solo para OWNER y TECHNICIAN
-                  if (canEdit) ...[
-                    SwitchListTile(
-                      title: Text(l10n.allResultsCompleted),
-                      subtitle: Text(l10n.markAsCompletedDescription),
-                      value: allResultsCompleted,
-                      onChanged: (bool value) {
-                        setState(() {
-                          allResultsCompleted = value;
-                          viewModel.input.allResultsCompleted = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                  
-                  // Sección de observaciones
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.observations,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      if (canEdit)
-                        FilledButton.icon(
-                          icon: const Icon(Icons.add, size: 18),
-                          label: Text(l10n.addObservation),
-                          onPressed: _addObservationField,
                         ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            
+            const SizedBox(height: 24),
+            
+            // Switch con Card mejorado
+            if (canEdit) ...[
+              Card(
+                elevation: 0,
+                color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline,
+                        color: allResultsCompleted ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                        size: 24,
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              l10n.allResultsCompleted,
+                              style: textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              l10n.markAsCompletedDescription,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Transform.scale(
+                        scale: 0.9,
+                        child: Switch(
+                          value: allResultsCompleted,
+                          onChanged: (bool value) {
+                            setState(() {
+                              allResultsCompleted = value;
+                              viewModel.input.allResultsCompleted = value;
+                            });
+                          },
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  
-                  if (observationControllers.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: Text(
-                          l10n.noObservations,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
+                ),
+              ),
+              const SizedBox(height: 32),
+            ],
+            
+            // Observaciones
+            Row(
+              children: [
+                Icon(Icons.note_alt_outlined, size: 20, color: colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(
+                  l10n.observations,
+                  style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                if (canEdit)
+                  TextButton.icon(
+                    onPressed: _addObservationField,
+                    icon: const Icon(Icons.add, size: 18),
+                    label: Text(l10n.addObservation),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            if (observationControllers.isEmpty)
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: colorScheme.outlineVariant.withOpacity(0.5),
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.note_outlined,
+                        size: 48,
+                        color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.noObservations,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
-                    )
-                  else
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: observationControllers.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: CustomTextFormField(
-                                  labelText: '${l10n.observation} ${index + 1}',
-                                  controller: observationControllers[index],
-                                  isDense: true,
-                                  fieldLength: FormFieldLength.name,
-                                  counterText: "",
-                                  readOnly: !canEdit,
-                                  onChange: (value) {
-                                    viewModel.input.observations = observationControllers
-                                      .map((c) => c.text)
-                                      .where((text) => text.isNotEmpty)
-                                      .toList();
-                                  },
-                                ),
-                              ),
-                              if (canEdit && observationControllers.length > 1) ...[
-                                const SizedBox(width: 8),
-                                IconButton(
-                                  icon: const Icon(Icons.remove_circle_outline),
-                                  onPressed: () => _removeObservationField(index),
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                              ],
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                ],
+                    ],
+                  ),
+                ),
+              )
+            else
+              ...List.generate(
+                observationControllers.length,
+                (index) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: '${l10n.observation} ${index + 1}',
+                          controller: observationControllers[index],
+                          isDense: true,
+                          fieldLength: FormFieldLength.name,
+                          counterText: "",
+                          readOnly: !canEdit,
+                          onChange: (value) {
+                            viewModel.input.observations = observationControllers
+                              .map((c) => c.text)
+                              .where((text) => text.isNotEmpty)
+                              .toList();
+                          },
+                        ),
+                      ),
+                      if (canEdit && observationControllers.length > 1) ...[
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: Icon(Icons.delete_sweep_outlined, color: colorScheme.error),
+                          onPressed: () => _removeObservationField(index),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSidePanel(AppLocalizations l10n, ColorScheme colorScheme, TextTheme textTheme, bool isBioanalyst, bool canEdit) {
+    return Column(
+      children: [
+        // Mensaje según rol - estilo mejorado
+        if (!canEdit && !isBioanalyst)
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: colorScheme.tertiaryContainer.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: colorScheme.tertiary.withOpacity(0.3),
               ),
             ),
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            child: Row(
               children: [
-                TextButton(
-                  child: Text(l10n.cancel),
-                  onPressed: () => context.pop(false),
+                Icon(
+                  Icons.visibility_outlined,
+                  color: colorScheme.onTertiaryContainer,
+                  size: 20,
                 ),
-                const SizedBox(width: 8),
-                
-                // Botón de aprobación - Solo visible para bioanalistas cuando el paquete está completado
-                if (isBioanalyst && 
-                    viewModel.currentEvaluationPackage?.isApproved == false &&
-                    viewModel.currentEvaluationPackage?.status == ResultStatus.cOMPLETED) ...[
-                  FilledButton.tonal(
-                    onPressed: viewModel.loading
-                      ? null
-                      : () async {
-                        // Mostrar diálogo de confirmación
-                        final shouldApprove = await showDialog<bool>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(l10n.approveEvaluationPackage),
-                              content: Text(l10n.approveEvaluationPackageConfirmation),
-                              actions: [
-                                TextButton(
-                                  child: Text(l10n.cancel),
-                                  onPressed: () => Navigator.of(context).pop(false),
-                                ),
-                                FilledButton(
-                                  child: Text(l10n.approve),
-                                  onPressed: () => Navigator.of(context).pop(true),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                        
-                        if (shouldApprove == true) {
-                          var isErr = await viewModel.approve();
-                          
-                          if (!isErr) {
-                            if (!context.mounted) return;
-                            context.pop(true);
-                          }
-                        }
-                      },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(l10n.approve),
-                        if (viewModel.loading) ...[
-                          const SizedBox(width: 8),
-                          const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          ),
-                        ] else ...[
-                          const SizedBox(width: 8),
-                          const Icon(Icons.verified, size: 18),
-                        ],
-                      ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    l10n.viewOnlyMode,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onTertiaryContainer,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                ],
-                
-                // Botón de actualizar - Solo para técnicos y bioanalistas
-                if (canEdit)
-                  FilledButton(
-                    onPressed: viewModel.loading
-                      ? null
-                      : () async {
-                        if (formKey.currentState!.validate()) {
-                          // Actualizar valores de exámenes antes de guardar
-                          _updateExamValues();
-                          
-                          var isErr = await viewModel.update();
-                          
-                          if (!isErr) {
-                            if (!context.mounted) return;
-                            context.pop(true);
-                          }
-                        }
-                      },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.updateThing(l10n.evaluationPackage)),
-                      if (viewModel.loading) ...[
-                        const SizedBox(width: 8),
-                        const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        ),
-                      ] else ...[
-                        const SizedBox(width: 8),
-                        const Icon(Icons.save, size: 18),
-                      ],
-                    ],
                   ),
                 ),
               ],
             ),
-          ],
-        );
-      },
-    );
-  }
-  
-  Widget _buildReadOnlyField(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              '$label:',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
+          ),
+        
+        if (isBioanalyst)
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: colorScheme.primary.withOpacity(0.3),
               ),
             ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodyMedium,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.verified_user_outlined,
+                  color: colorScheme.onPrimaryContainer,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    l10n.bioanalystViewMode,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onPrimaryContainer,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        
+        // Información - Card mejorado
+        Card(
+          elevation: 0,
+          color: colorScheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: colorScheme.outlineVariant),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.referenceData,
+                  style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 24),
+                _readOnlyInfo(
+                  l10n.status,
+                  getStatusLabel(context, viewModel.currentEvaluationPackage!.status),
+                  textTheme,
+                  Icons.sync_outlined,
+                  colorScheme,
+                ),
+                const SizedBox(height: 20),
+                _readOnlyInfo(
+                  l10n.referred,
+                  viewModel.currentEvaluationPackage!.referred.isEmpty
+                      ? 'N/A'
+                      : viewModel.currentEvaluationPackage!.referred,
+                  textTheme,
+                  Icons.person_outline,
+                  colorScheme,
+                ),
+                const SizedBox(height: 20),
+                _readOnlyInfo(
+                  l10n.examsCount,
+                  viewModel.currentEvaluationPackage!.valuesByExam.length.toString(),
+                  textTheme,
+                  Icons.science_outlined,
+                  colorScheme,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _readOnlyInfo(String label, String value, TextTheme textTheme, IconData icon, ColorScheme colorScheme) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 20, color: colorScheme.primary.withOpacity(0.7)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: textTheme.labelMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

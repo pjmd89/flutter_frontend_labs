@@ -263,7 +263,7 @@ abstract class AppLocalizations {
   /// **'Pagado'**
   String get paid;
 
-  /// Estado de pago: pendiente
+  /// Estado pendiente
   ///
   /// In es, this message translates to:
   /// **'Pendiente'**
@@ -395,7 +395,7 @@ abstract class AppLocalizations {
   /// **'Empresas'**
   String get companies;
 
-  /// Término para examen en singular
+  /// Palabra examen singular
   ///
   /// In es, this message translates to:
   /// **'Examen'**
@@ -599,7 +599,7 @@ abstract class AppLocalizations {
   /// **'Examen sin nombre'**
   String get examWithoutName;
 
-  /// Término para indicador en singular
+  /// Palabra indicador singular
   ///
   /// In es, this message translates to:
   /// **'Indicador'**
@@ -1010,19 +1010,19 @@ abstract class AppLocalizations {
   /// Tipo de valor numérico
   ///
   /// In es, this message translates to:
-  /// **'Numérico'**
+  /// **'NUMÉRICO'**
   String get valueTypeNumeric;
 
-  /// Tipo de valor de texto
+  /// Tipo de valor texto
   ///
   /// In es, this message translates to:
-  /// **'Texto'**
+  /// **'TEXTO'**
   String get valueTypeText;
 
   /// Tipo de valor booleano
   ///
   /// In es, this message translates to:
-  /// **'Booleano'**
+  /// **'BOOLEANO'**
   String get valueTypeBoolean;
 
   /// Etiqueta para campo de unidad de medida
@@ -1037,10 +1037,10 @@ abstract class AppLocalizations {
   /// **'Rango Normal'**
   String get normalRange;
 
-  /// Término para indicadores en plural
+  /// Palabra indicadores en minúscula
   ///
   /// In es, this message translates to:
-  /// **'Indicadores'**
+  /// **'indicadores'**
   String get indicators;
 
   /// Botón para agregar nuevo indicador
@@ -1990,6 +1990,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Seleccionar Laboratorio'**
   String get selectLaboratory;
+
+  /// Respuesta afirmativa
+  ///
+  /// In es, this message translates to:
+  /// **'Sí'**
+  String get yes;
+
+  /// Respuesta negativa
+  ///
+  /// In es, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// Mensaje de validación para campo numérico
+  ///
+  /// In es, this message translates to:
+  /// **'Debe ser un valor numérico'**
+  String get mustBeNumeric;
+
+  /// Título de sección de resultados de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Resultados de Exámenes'**
+  String get examResultsTitle;
+
+  /// Descripción de sección de resultados
+  ///
+  /// In es, this message translates to:
+  /// **'Complete los valores de los indicadores para cada examen del paquete'**
+  String get examResultsDescription;
+
+  /// Título para datos de referencia
+  ///
+  /// In es, this message translates to:
+  /// **'Datos de Referencia'**
+  String get referenceData;
+
+  /// Estado en progreso
+  ///
+  /// In es, this message translates to:
+  /// **'En Progreso'**
+  String get inProgress;
+
+  /// Estado completado
+  ///
+  /// In es, this message translates to:
+  /// **'Completado'**
+  String get completed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

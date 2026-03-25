@@ -493,13 +493,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get valueType => 'Tipo de Valor';
 
   @override
-  String get valueTypeNumeric => 'Numérico';
+  String get valueTypeNumeric => 'NUMÉRICO';
 
   @override
-  String get valueTypeText => 'Texto';
+  String get valueTypeText => 'TEXTO';
 
   @override
-  String get valueTypeBoolean => 'Booleano';
+  String get valueTypeBoolean => 'BOOLEANO';
 
   @override
   String get unit => 'Unidad';
@@ -508,7 +508,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get normalRange => 'Rango Normal';
 
   @override
-  String get indicators => 'Indicadores';
+  String get indicators => 'indicadores';
 
   @override
   String get addIndicator => 'Agregar indicador';
@@ -991,4 +991,28 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get selectLaboratory => 'Seleccionar Laboratorio';
+
+  @override
+  String get yes => 'Sí';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get mustBeNumeric => 'Debe ser un valor numérico';
+
+  @override
+  String get examResultsTitle => 'Resultados de Exámenes';
+
+  @override
+  String get examResultsDescription => 'Complete los valores de los indicadores para cada examen del paquete';
+
+  @override
+  String get referenceData => 'Datos de Referencia';
+
+  @override
+  String get inProgress => 'En Progreso';
+
+  @override
+  String get completed => 'Completado';
 }

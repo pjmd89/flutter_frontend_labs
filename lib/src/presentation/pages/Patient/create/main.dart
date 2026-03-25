@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
 class PatientCreatePage extends StatefulWidget {
@@ -77,12 +77,15 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(l10n.createThing(l10n.patient)),           
+            title: Text(l10n.createThing(l10n.patient)),
+            elevation: 0,
+            backgroundColor: theme.scaffoldBackgroundColor,
+            foregroundColor: theme.textTheme.bodyLarge?.color,
           ),
           body: Form(
             key: formKey,
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              padding: const EdgeInsets.all(24),
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 800),
@@ -110,10 +113,7 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.patientType.toUpperCase(),
-          style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        _sectionTitle(l10n.patientType, Icons.category, context),
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(4),
@@ -157,89 +157,97 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
 
   Widget _buildFormBody(AppLocalizations l10n, ThemeData theme) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _sectionTitle(l10n.patient, Icons.person, context),
+        const SizedBox(height: 16),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _inputWrapper(l10n.firstName, theme, CustomTextFormField(
+            Expanded(child: _buildTextField(
+              l10n.firstName,
+              l10n.firstName,
+              context,
               controller: firstNameController,
-              isDense: true,
-              fieldLength: FormFieldLength.name,
-              counterText: "",
-              onChange: (v) => viewModel.input.firstName = v,
-            ))),
+              onChanged: (v) => viewModel.input.firstName = v,
+            )),
             const SizedBox(width: 16),
-            Expanded(child: _inputWrapper(l10n.lastName, theme, CustomTextFormField(
+            Expanded(child: _buildTextField(
+              l10n.lastName,
+              l10n.lastName,
+              context,
               controller: lastNameController,
-              isDense: true,
-              fieldLength: FormFieldLength.name,
-              counterText: "",
-              onChange: (v) => viewModel.input.lastName = v,
-            ))),
+              onChanged: (v) => viewModel.input.lastName = v,
+            )),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 16),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _inputWrapper(l10n.sex, theme, DropdownButtonFormField<Sex>(
+            Expanded(child: _buildDropdownField<Sex>(
+              label: l10n.sex,
+              hint: "",
+              context: context,
               value: selectedSex,
-              dropdownColor: theme.colorScheme.surface,
-              style: theme.textTheme.bodyLarge,
-              decoration: _inputDecoration(theme),
               items: Sex.values.map((s) => DropdownMenuItem(value: s, child: Text(getSexLabel(context, s)))).toList(),
               onChanged: (v) => setState(() { selectedSex = v; viewModel.input.sex = v!; }),
-            ))),
+            )),
             const SizedBox(width: 16),
-            Expanded(child: _inputWrapper(l10n.birthDate, theme, CustomTextFormField(
+            Expanded(child: _buildTextField(
+              l10n.birthDate,
+              "DD/MM/YYYY",
+              context,
+              icon: Icons.calendar_today,
               controller: birthDateController,
-              isDense: true,
-              fieldLength: FormFieldLength.name,
               readOnly: true,
-              counterText: "",
-              prefixIcon: Icon(Icons.calendar_today, size: 18, color: theme.colorScheme.onSurfaceVariant),
               onTap: _pickDate,
-              onChange: (_) {},
-            ))),
+              onChanged: (_) {},
+            )),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          child: Divider(color: theme.colorScheme.outlineVariant.withOpacity(0.3)),
-        ),
+        const SizedBox(height: 32),
+        Divider(color: theme.dividerColor),
+        const SizedBox(height: 16),
         if (selectedPatientType == PatientType.hUMAN) ...[
-          _inputWrapper(l10n.dni, theme, CustomTextFormField(
+          _sectionTitle(l10n.dni, Icons.badge, context),
+          const SizedBox(height: 16),
+          _buildTextField(
+            l10n.dni,
+            l10n.dni,
+            context,
             controller: dniController,
-            isDense: true,
-            fieldLength: FormFieldLength.name,
-            counterText: "",
-            onChange: (v) => viewModel.input.dni = v,
-          )),
-          const SizedBox(height: 20),
-          _inputWrapper(l10n.email, theme, CustomTextFormField(
+            onChanged: (v) => viewModel.input.dni = v,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            l10n.email,
+            l10n.email,
+            context,
+            icon: Icons.mail_outline,
             controller: emailController,
-            isDense: true,
-            fieldLength: FormFieldLength.email,
-            counterText: "",
-            onChange: (v) => viewModel.input.email = v,
-          )),
+            onChanged: (v) => viewModel.input.email = v,
+          ),
         ] else if (selectedPatientType == PatientType.aNIMAL) ...[
-          _inputWrapper(l10n.species, theme, CustomTextFormField(
+          _sectionTitle(l10n.species, Icons.pets, context),
+          const SizedBox(height: 16),
+          _buildTextField(
+            l10n.species,
+            l10n.species,
+            context,
             controller: speciesController,
-            isDense: true,
-            fieldLength: FormFieldLength.name,
-            counterText: "",
-            onChange: (v) => viewModel.input.species = v,
-          )),
+            onChanged: (v) => viewModel.input.species = v,
+          ),
         ],
-        const SizedBox(height: 20),
-        _inputWrapper(l10n.address, theme, CustomTextFormField(
+        const SizedBox(height: 16),
+        _buildTextField(
+          l10n.address,
+          l10n.address,
+          context,
+          icon: Icons.location_on,
           controller: addressController,
-          isDense: true,
-          fieldLength: FormFieldLength.email,
-          counterText: "",
-          onChange: (v) => viewModel.input.address = v,
-        )),
+          onChanged: (v) => viewModel.input.address = v,
+        ),
       ],
     );
   }
@@ -249,16 +257,17 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
       children: [
         Expanded(
           child: OutlinedButton(
-                    onPressed: () => context.pop(),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    ),
-                    child: Text(l10n.cancel),
-                  ),
+            onPressed: () => context.pop(),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            child: Text(l10n.cancel),
+          ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 12),
         Expanded(
+          flex: 2,
           child: ElevatedButton.icon(
             onPressed: viewModel.loading ? null : _submit,
             icon: viewModel.loading
@@ -284,36 +293,104 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
     );
   }
 
-  Widget _inputWrapper(String label, ThemeData theme, Widget child) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _sectionTitle(String title, IconData icon, BuildContext context) {
+    final theme = Theme.of(context);
+    final titleColor = theme.textTheme.bodyLarge?.color ?? theme.primaryColor;
+    return Row(
       children: [
-        Text(
-          label.toUpperCase(),
-          style: theme.textTheme.labelSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 8),
-        child,
+        Icon(icon, size: 16, color: titleColor),
+        const SizedBox(width: 8),
+        Text(title.toUpperCase(), 
+          style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: titleColor, letterSpacing: 1.2)),
       ],
     );
   }
 
-  InputDecoration _inputDecoration(ThemeData theme) {
-    return InputDecoration(
-      filled: true,
-      fillColor: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12), 
-        borderSide: BorderSide(color: theme.colorScheme.outlineVariant.withOpacity(0.5))
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12), 
-        borderSide: BorderSide(color: theme.colorScheme.outlineVariant.withOpacity(0.5))
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+  Widget _buildTextField(
+    String label, 
+    String hint, 
+    BuildContext context,
+    {
+      IconData? icon, 
+      String? prefix, 
+      TextEditingController? controller, 
+      Function(String)? onChanged,
+      String? Function(String?)? validator,
+      bool readOnly = false,
+      VoidCallback? onTap,
+    }
+  ) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: controller,
+          onChanged: onChanged,
+          validator: validator,
+          readOnly: readOnly,
+          onTap: onTap,
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: icon != null ? Icon(icon, size: 18) : (prefix != null ? Padding(padding: const EdgeInsets.all(12), child: Text(prefix)) : null),
+            filled: true,
+            fillColor: fieldBg,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: theme.dividerColor)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdownField<T>({
+    required String label,
+    required String hint,
+    required BuildContext context,
+    required T? value,
+    required List<DropdownMenuItem<T>> items,
+    required void Function(T?) onChanged,
+    String? Function(T?)? validator,
+  }) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: fieldBg,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: theme.dividerColor),
+          ),
+          child: DropdownButtonFormField<T>(
+            value: value,
+            isExpanded: true,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.zero,
+            ),
+            items: items,
+            onChanged: onChanged,
+            validator: validator,
+          ),
+        ),
+        if (hint.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(hint, style: TextStyle(fontSize: 11, color: theme.hintColor)),
+        ],
+      ],
     );
   }
 
