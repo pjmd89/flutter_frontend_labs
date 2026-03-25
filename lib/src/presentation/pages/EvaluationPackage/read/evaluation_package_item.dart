@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:provider/provider.dart';
-import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
 import 'dart:html' as html;
 
 class EvaluationPackageItem extends StatefulWidget {
@@ -73,9 +71,6 @@ class _EvaluationPackageItemState extends State<EvaluationPackageItem> {
     final theme = Theme.of(context);
     final l10n = widget.l10n;
     final pkg = widget.evaluationPackage;
-    final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
-    final userRole = loggedUser?.labRole;
-    final canManage = userRole != LabMemberRole.tECHNICIAN;
 
     // Status
     final statusLabel = _getStatusText(pkg.status);
@@ -262,7 +257,7 @@ class _EvaluationPackageItemState extends State<EvaluationPackageItem> {
                           ),
                         ),
                       // Edit Button
-                      if (widget.onUpdate != null && canManage)
+                      if (widget.onUpdate != null)
                         _ActionButton(
                           label: l10n.edit,
                           icon: Icons.edit_outlined,
