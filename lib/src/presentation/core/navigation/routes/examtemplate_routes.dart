@@ -25,7 +25,7 @@ final List<GoRoute> examtemplateRoutes = [
       ),
       GoRoute(
         path: 'update/:id',
-        pageBuilder: (context, state) => CustomDialogPage(
+        pageBuilder: (context, state) => CustomSlideTransition(
           context: context, 
           state: state, 
           child: ExamTemplateUpdatePage(

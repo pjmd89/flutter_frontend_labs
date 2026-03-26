@@ -1445,6 +1445,10 @@
   "@updateUserData": {
     "description": "Description for updating user data"
   },
+  "updateExamTemplateData": "Update exam template information",
+  "@updateExamTemplateData": {
+    "description": "Description for updating exam template data"
+  },
   "locationInformation": "Location Information",
   "@locationInformation": {
     "description": "Location information section title"

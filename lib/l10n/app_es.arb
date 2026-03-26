@@ -1583,6 +1583,10 @@
   "@updateUserData": {
     "description": "Descripción para actualizar datos del usuario"
   },
+  "updateExamTemplateData": "Actualiza la información del template de examen",
+  "@updateExamTemplateData": {
+    "description": "Descripción para actualizar datos del template de examen"
+  },
   "locationInformation": "Información de Ubicación",
   "@locationInformation": {
     "description": "Título de sección de información de ubicación"

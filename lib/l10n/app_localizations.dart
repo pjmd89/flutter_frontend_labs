@@ -2129,6 +2129,12 @@ abstract class AppLocalizations {
   /// **'Actualice los datos personales del usuario.'**
   String get updateUserData;
 
+  /// Descripción para actualizar datos del template de examen
+  ///
+  /// In es, this message translates to:
+  /// **'Actualiza la información del template de examen'**
+  String get updateExamTemplateData;
+
   /// Título de sección de información de ubicación
   ///
   /// In es, this message translates to:

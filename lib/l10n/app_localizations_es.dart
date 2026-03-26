@@ -1062,6 +1062,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updateUserData => 'Actualice los datos personales del usuario.';
 
   @override
+  String get updateExamTemplateData => 'Actualiza la información del template de examen';
+
+  @override
   String get locationInformation => 'Información de Ubicación';
 
   @override
