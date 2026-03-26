@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
-import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
 class ExamTemplateCreatePage extends StatefulWidget {
@@ -58,100 +57,184 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
     final indicatorUnitController = TextEditingController();
     final indicatorRangeController = TextEditingController();
     ValueType selectedValueType = ValueType.nUMERIC;
+    final theme = Theme.of(context);
 
     showDialog(
       context: context,
-      builder:
-          (dialogContext) => StatefulBuilder(
-            builder:
-                (context, setDialogState) => AlertDialog(
-                  title: Text(l10n.addIndicator),
-                  content: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomTextFormField(
-                          labelText: l10n.name,
-                          controller: indicatorNameController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                        ),
-                        const SizedBox(height: 16),
-                        DropdownButtonFormField<ValueType>(
-                          value: selectedValueType,
-                          decoration: InputDecoration(
-                            labelText: l10n.valueType,
-                            isDense: true,
-                            border: const OutlineInputBorder(),
-                          ),
-                          items: [
-                            ValueType.nUMERIC,
-                            ValueType.tEXT,
-                            ValueType.bOOLEAN
-                          ].map((ValueType type) {
-                            return DropdownMenuItem<ValueType>(
-                              value: type,
-                              child: Text(getValueTypeLabel(context, type)),
-                            );
-                          }).toList(),
-                          onChanged: (ValueType? newValue) {
-                            if (newValue != null) {
-                              setDialogState(() {
-                                selectedValueType = newValue;
-                              });
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextFormField(
-                          labelText: l10n.unit,
-                          controller: indicatorUnitController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextFormField(
-                          labelText: l10n.normalRange,
-                          controller: indicatorRangeController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                        ),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text(l10n.cancel),
-                      onPressed: () {
-                        Navigator.of(dialogContext).pop();
-                      },
-                    ),
-                    FilledButton(
-                      child: Text(l10n.add),
-                      onPressed: () {
-                        if (indicatorNameController.text.isNotEmpty) {
-                          final newIndicator = CreateExamIndicator(
-                            name: indicatorNameController.text,
-                            valueType: selectedValueType,
-                            unit: indicatorUnitController.text,
-                            normalRange: indicatorRangeController.text,
-                          );
-                          setState(() {
-                            viewModel.input.indicators = [
-                              ...viewModel.input.indicators,
-                              newIndicator,
-                            ];
-                          });
-                          Navigator.of(dialogContext).pop();
-                        }
-                      },
-                    ),
-                  ],
-                ),
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.add_circle_outline, color: theme.primaryColor),
+              const SizedBox(width: 8),
+              Text(l10n.addIndicator),
+            ],
           ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildDialogTextField(
+                  l10n.name,
+                  l10n.name,
+                  context,
+                  controller: indicatorNameController,
+                  icon: Icons.science,
+                ),
+                const SizedBox(height: 16),
+                _buildDialogDropdown(
+                  l10n.valueType,
+                  selectedValueType,
+                  context,
+                  onChanged: (ValueType? newValue) {
+                    if (newValue != null) {
+                      setDialogState(() {
+                        selectedValueType = newValue;
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+                _buildDialogTextField(
+                  l10n.unit,
+                  l10n.unit,
+                  context,
+                  controller: indicatorUnitController,
+                  icon: Icons.straighten,
+                ),
+                const SizedBox(height: 16),
+                _buildDialogTextField(
+                  l10n.normalRange,
+                  l10n.normalRange,
+                  context,
+                  controller: indicatorRangeController,
+                  icon: Icons.analytics_outlined,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            OutlinedButton(
+              child: Text(l10n.cancel),
+              onPressed: () => Navigator.of(dialogContext).pop(),
+            ),
+            FilledButton.icon(
+              icon: const Icon(Icons.check, size: 18),
+              label: Text(l10n.add),
+              onPressed: () {
+                if (indicatorNameController.text.isNotEmpty) {
+                  final newIndicator = CreateExamIndicator(
+                    name: indicatorNameController.text,
+                    valueType: selectedValueType,
+                    unit: indicatorUnitController.text,
+                    normalRange: indicatorRangeController.text,
+                  );
+                  setState(() {
+                    viewModel.input.indicators = [
+                      ...viewModel.input.indicators,
+                      newIndicator,
+                    ];
+                  });
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDialogTextField(
+    String label,
+    String hint,
+    BuildContext context, {
+    TextEditingController? controller,
+    IconData? icon,
+  }) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? 
+        (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 6),
+        TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: icon != null ? Icon(icon, size: 18) : null,
+            filled: true,
+            fillColor: fieldBg,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: theme.dividerColor),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDialogDropdown(
+    String label,
+    ValueType selectedValue,
+    BuildContext context, {
+    required Function(ValueType?) onChanged,
+  }) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? 
+        (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: fieldBg,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: theme.dividerColor),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<ValueType>(
+              value: selectedValue,
+              isExpanded: true,
+              items: [
+                ValueType.nUMERIC,
+                ValueType.tEXT,
+                ValueType.bOOLEAN,
+              ].map((ValueType type) {
+                return DropdownMenuItem<ValueType>(
+                  value: type,
+                  child: Text(
+                    getValueTypeLabel(context, type),
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                );
+              }).toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -162,46 +245,45 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
-        return ContentDialog(
-          icon: Icons.assignment_outlined,
-          title: l10n.createThing(l10n.examTemplate),
-          loading: viewModel.loading,
-          form: Form(
-            key: formKey,
-            child: SingleChildScrollView(
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(l10n.createThing(l10n.examTemplate)),
+            elevation: 0,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: formKey,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomTextFormField(
-                    labelText: l10n.name,
+                  _sectionTitle(l10n.examTemplate, Icons.assignment_outlined, context),
+                  const SizedBox(height: 16),
+                  _buildTextField(
+                    l10n.name,
+                    l10n.name,
+                    context,
                     controller: nameController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.name,
-                    counterText: "",
-                    onChange: (value) {
-                      viewModel.input.name = value;
-                    },
+                    onChanged: (value) => viewModel.input.name = value,
                   ),
                   const SizedBox(height: 16),
-                  CustomTextFormField(
-                    labelText: l10n.description,
+                  _buildTextField(
+                    l10n.description,
+                    l10n.description,
+                    context,
                     controller: descriptionController,
-                    isDense: true,
-                    fieldLength: FormFieldLength.description,
-                    counterText: "",
-                    onChange: (value) {
-                      viewModel.input.description = value;
-                    },
+                    onChanged: (value) => viewModel.input.description = value,
+                    maxLines: 3,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
+                  Divider(color: Theme.of(context).dividerColor),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        l10n.indicators,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      _sectionTitle(l10n.indicators, Icons.list_alt, context),
                       FilledButton.icon(
                         icon: const Icon(Icons.add, size: 18),
                         label: Text(l10n.addIndicator),
@@ -209,19 +291,26 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   if (viewModel.input.indicators.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 32),
                       child: Center(
-                        child: Text(
-                          l10n.noRegisteredThings(l10n.indicators),
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.list_alt,
+                              size: 48,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              l10n.noRegisteredThings(l10n.indicators),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     )
@@ -234,20 +323,34 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
                         final indicator = viewModel.input.indicators[index];
                         return Card(
                           margin: const EdgeInsets.only(bottom: 8),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Theme.of(context).dividerColor),
+                          ),
                           child: ListTile(
-                            dense: true,
-                            title: Text(indicator.name),
-                            subtitle: Text(
-                              '${getValueTypeLabel(context, indicator.valueType)} • ${indicator.unit ?? ''} • ${indicator.normalRange ?? ''}',
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            title: Text(
+                              indicator.name,
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                '${getValueTypeLabel(context, indicator.valueType)} • ${indicator.unit ?? ''} • ${indicator.normalRange ?? ''}',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ),
                             trailing: IconButton(
-                              icon: const Icon(Icons.delete_outline),
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                               onPressed: () {
                                 setState(() {
-                                  final newList =
-                                      List<CreateExamIndicator>.from(
-                                        viewModel.input.indicators,
-                                      );
+                                  final newList = List<CreateExamIndicator>.from(
+                                    viewModel.input.indicators,
+                                  );
                                   newList.removeAt(index);
                                   viewModel.input.indicators = newList;
                                 });
@@ -257,26 +360,26 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
                         );
                       },
                     ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  child: Text(l10n.cancel),
-                  onPressed: () {
-                    context.pop();
-                  },
-                ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed:
-                      viewModel.loading
-                          ? null
-                          : () async {
+                  const SizedBox(height: 40),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => context.pop(),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(l10n.cancel),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        flex: 2,
+                        child: ElevatedButton.icon(
+                          onPressed: viewModel.loading ? null : () async {
                             if (formKey.currentState!.validate()) {
                               var isErr = await viewModel.create();
 
@@ -286,26 +389,102 @@ class _ExamTemplateCreatePageState extends State<ExamTemplateCreatePage> {
                               }
                             }
                           },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.createThing(l10n.examTemplate)),
-                      const SizedBox(width: 8),
-                      viewModel.loading
-                          ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                          : const Icon(Icons.save),
+                          icon: viewModel.loading
+                              ? const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  ),
+                                )
+                              : const Icon(Icons.save, size: 18),
+                          label: Text(l10n.createThing(l10n.examTemplate)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 10,
+                            shadowColor: Theme.of(context).primaryColor.withOpacity(0.4),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
+          ),
         );
       },
+    );
+  }
+
+  Widget _sectionTitle(String title, IconData icon, BuildContext context) {
+    final theme = Theme.of(context);
+    final titleColor = theme.textTheme.bodyLarge?.color ?? theme.primaryColor;
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: titleColor),
+        const SizedBox(width: 8),
+        Text(
+          title.toUpperCase(),
+          style: GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: titleColor,
+            letterSpacing: 1.2,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTextField(
+    String label,
+    String hint,
+    BuildContext context, {
+    TextEditingController? controller,
+    Function(String)? onChanged,
+    IconData? icon,
+    int maxLines = 1,
+  }) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? 
+        (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 6),
+        TextField(
+          controller: controller,
+          onChanged: onChanged,
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: icon != null ? Icon(icon, size: 18) : null,
+            filled: true,
+            fillColor: fieldBg,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: theme.dividerColor),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

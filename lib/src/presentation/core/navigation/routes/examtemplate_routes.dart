@@ -1,5 +1,6 @@
 import 'package:agile_front/agile_front.dart';
 import 'package:go_router/go_router.dart';
+import 'package:labs/src/presentation/core/navigation/transitions/main.dart';
 import '/src/presentation/pages/ExamTemplate/read/main.dart';
 import '/src/presentation/pages/ExamTemplate/create/main.dart';
 import '/src/presentation/pages/ExamTemplate/delete/main.dart';
@@ -16,7 +17,7 @@ final List<GoRoute> examtemplateRoutes = [
     routes: [
       GoRoute(
         path: 'create',
-        pageBuilder: (context, state) => CustomDialogPage(
+        pageBuilder: (context, state) => CustomSidebarPage(
           context: context, 
           state: state, 
           child: const ExamTemplateCreatePage()

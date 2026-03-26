@@ -719,10 +719,10 @@ abstract class AppLocalizations {
   /// **'Subir'**
   String get upload;
 
-  /// Botón para cambiar el logo existente
+  /// Botón para cambiar logo
   ///
   /// In es, this message translates to:
-  /// **'Cambiar logo'**
+  /// **'Cambiar Logo'**
   String get changeLogo;
 
   /// Mensaje durante la carga de archivo
@@ -2260,6 +2260,72 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Confirmar Selección'**
   String get confirmSelection;
+
+  /// Mensaje de error para formato de archivo inválido
+  ///
+  /// In es, this message translates to:
+  /// **'Formato no válido. Usa JPG, JPEG, PNG o GIF'**
+  String get invalidFileFormat;
+
+  /// Mensaje indicando que la función solo está disponible en web
+  ///
+  /// In es, this message translates to:
+  /// **'Funcionalidad solo disponible en web'**
+  String get onlyAvailableOnWeb;
+
+  /// Título de sección de información de empresa
+  ///
+  /// In es, this message translates to:
+  /// **'INFORMACIÓN DE LA EMPRESA'**
+  String get companyInfo;
+
+  /// Campo de nombre de empresa
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre de la Empresa'**
+  String get companyName;
+
+  /// Campo de RUC o Tax ID
+  ///
+  /// In es, this message translates to:
+  /// **'RUC / Tax ID'**
+  String get taxIDRUC;
+
+  /// Título de sección de información de laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'INFORMACIÓN DEL LABORATORIO'**
+  String get laboratoryInfo;
+
+  /// Campo de dirección del laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección del Laboratorio'**
+  String get laboratoryAddress;
+
+  /// Hint para campo de teléfonos de contacto
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfonos de Contacto (separados por comas)'**
+  String get contactPhonesHint;
+
+  /// Placeholder para teléfonos de contacto
+  ///
+  /// In es, this message translates to:
+  /// **'555-1234, 555-5678'**
+  String get contactPhonesPlaceholder;
+
+  /// Título de sección de información de facturación
+  ///
+  /// In es, this message translates to:
+  /// **'INFORMACIÓN DE FACTURACIÓN'**
+  String get billingInfo;
+
+  /// Formato corto de fecha
+  ///
+  /// In es, this message translates to:
+  /// **'DD/MM/AAAA'**
+  String get dateFormatShort;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

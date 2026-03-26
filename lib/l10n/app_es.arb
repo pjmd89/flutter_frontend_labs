@@ -1675,5 +1675,53 @@
   "confirmSelection": "Confirmar Selección",
   "@confirmSelection": {
     "description": "Botón para confirmar selección"
+  },
+  "invalidFileFormat": "Formato no válido. Usa JPG, JPEG, PNG o GIF",
+  "@invalidFileFormat": {
+    "description": "Mensaje de error para formato de archivo inválido"
+  },
+  "onlyAvailableOnWeb": "Funcionalidad solo disponible en web",
+  "@onlyAvailableOnWeb": {
+    "description": "Mensaje indicando que la función solo está disponible en web"
+  },
+  "changeLogo": "Cambiar Logo",
+  "@changeLogo": {
+    "description": "Botón para cambiar logo"
+  },
+  "companyInfo": "INFORMACIÓN DE LA EMPRESA",
+  "@companyInfo": {
+    "description": "Título de sección de información de empresa"
+  },
+  "companyName": "Nombre de la Empresa",
+  "@companyName": {
+    "description": "Campo de nombre de empresa"
+  },
+  "taxIDRUC": "RUC / Tax ID",
+  "@taxIDRUC": {
+    "description": "Campo de RUC o Tax ID"
+  },
+  "laboratoryInfo": "INFORMACIÓN DEL LABORATORIO",
+  "@laboratoryInfo": {
+    "description": "Título de sección de información de laboratorio"
+  },
+  "laboratoryAddress": "Dirección del Laboratorio",
+  "@laboratoryAddress": {
+    "description": "Campo de dirección del laboratorio"
+  },
+  "contactPhonesHint": "Teléfonos de Contacto (separados por comas)",
+  "@contactPhonesHint": {
+    "description": "Hint para campo de teléfonos de contacto"
+  },
+  "contactPhonesPlaceholder": "555-1234, 555-5678",
+  "@contactPhonesPlaceholder": {
+    "description": "Placeholder para teléfonos de contacto"
+  },
+  "billingInfo": "INFORMACIÓN DE FACTURACIÓN",
+  "@billingInfo": {
+    "description": "Título de sección de información de facturación"
+  },
+  "dateFormatShort": "DD/MM/AAAA",
+  "@dateFormatShort": {
+    "description": "Formato corto de fecha"
   }
 }

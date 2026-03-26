@@ -1537,5 +1537,53 @@
   "confirmSelection": "Confirm Selection",
   "@confirmSelection": {
     "description": "Button to confirm selection"
+  },
+  "invalidFileFormat": "Invalid format. Use JPG, JPEG, PNG or GIF",
+  "@invalidFileFormat": {
+    "description": "Error message for invalid file format"
+  },
+  "onlyAvailableOnWeb": "Functionality only available on web",
+  "@onlyAvailableOnWeb": {
+    "description": "Message indicating function is only available on web"
+  },
+  "changeLogo": "Change Logo",
+  "@changeLogo": {
+    "description": "Button to change logo"
+  },
+  "companyInfo": "COMPANY INFO",
+  "@companyInfo": {
+    "description": "Company information section title"
+  },
+  "companyName": "Company Name",
+  "@companyName": {
+    "description": "Company name field"
+  },
+  "taxIDRUC": "Tax ID / RUC",
+  "@taxIDRUC": {
+    "description": "Tax ID or RUC field"
+  },
+  "laboratoryInfo": "LABORATORY INFO",
+  "@laboratoryInfo": {
+    "description": "Laboratory information section title"
+  },
+  "laboratoryAddress": "Laboratory Address",
+  "@laboratoryAddress": {
+    "description": "Laboratory address field"
+  },
+  "contactPhonesHint": "Contact Phones (comma separated)",
+  "@contactPhonesHint": {
+    "description": "Hint for contact phones field"
+  },
+  "contactPhonesPlaceholder": "555-1234, 555-5678",
+  "@contactPhonesPlaceholder": {
+    "description": "Placeholder for contact phones"
+  },
+  "billingInfo": "BILLING INFO",
+  "@billingInfo": {
+    "description": "Billing information section title"
+  },
+  "dateFormatShort": "DD/MM/YYYY",
+  "@dateFormatShort": {
+    "description": "Short date format"
   }
 }

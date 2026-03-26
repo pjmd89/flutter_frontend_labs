@@ -321,7 +321,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get upload => 'Subir';
 
   @override
-  String get changeLogo => 'Cambiar logo';
+  String get changeLogo => 'Cambiar Logo';
 
   @override
   String get uploading => 'Subiendo...';
@@ -1128,4 +1128,37 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get confirmSelection => 'Confirmar Selección';
+
+  @override
+  String get invalidFileFormat => 'Formato no válido. Usa JPG, JPEG, PNG o GIF';
+
+  @override
+  String get onlyAvailableOnWeb => 'Funcionalidad solo disponible en web';
+
+  @override
+  String get companyInfo => 'INFORMACIÓN DE LA EMPRESA';
+
+  @override
+  String get companyName => 'Nombre de la Empresa';
+
+  @override
+  String get taxIDRUC => 'RUC / Tax ID';
+
+  @override
+  String get laboratoryInfo => 'INFORMACIÓN DEL LABORATORIO';
+
+  @override
+  String get laboratoryAddress => 'Dirección del Laboratorio';
+
+  @override
+  String get contactPhonesHint => 'Teléfonos de Contacto (separados por comas)';
+
+  @override
+  String get contactPhonesPlaceholder => '555-1234, 555-5678';
+
+  @override
+  String get billingInfo => 'INFORMACIÓN DE FACTURACIÓN';
+
+  @override
+  String get dateFormatShort => 'DD/MM/AAAA';
 }
