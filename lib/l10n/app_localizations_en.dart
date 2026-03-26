@@ -1015,4 +1015,117 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get completed => 'Completed';
+
+  @override
+  String get patientInformation => 'Patient Information';
+
+  @override
+  String get updatePatientData => 'Update patient data.';
+
+  @override
+  String get allPatients => 'All patients';
+
+  @override
+  String get actions => 'Actions';
+
+  @override
+  String get examTemplateHint => 'E.g: Complete blood count, Lipid profile...';
+
+  @override
+  String get costMustBeGreaterThanZero => 'Cost must be greater than zero';
+
+  @override
+  String get examCreationInfo => 'Once created, the laboratory and template will be read-only. Only the base cost can be adjusted later.';
+
+  @override
+  String get examInformation => 'Exam Information';
+
+  @override
+  String get updateExamData => 'Update exam data.';
+
+  @override
+  String get updateCompanyData => 'Update company data.';
+
+  @override
+  String get generalLaboratory => 'General Lab';
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get allRoles => 'All Roles';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get updateUserData => 'Update user personal data.';
+
+  @override
+  String get locationInformation => 'Location Information';
+
+  @override
+  String get updateLocationData => 'Update physical address and direct contact methods.';
+
+  @override
+  String get contactNumbers => 'Contact Numbers';
+
+  @override
+  String get employeeInformation => 'Employee Information';
+
+  @override
+  String get noEmployeesAssigned => 'No employees assigned to this laboratory';
+
+  @override
+  String get branchId => 'Branch ID';
+
+  @override
+  String get lastUpdate => 'Last Update';
+
+  @override
+  String daysAgo(int days) {
+    return '$days days ago';
+  }
+
+  @override
+  String get changesVisibleImmediately => 'Changes made will be visible to all operators immediately.';
+
+  @override
+  String get searchEmployeePlaceholder => ' e.g: John Doe';
+
+  @override
+  String get employees => 'Employees';
+
+  @override
+  String get totalLabs => 'Total Labs';
+
+  @override
+  String get patientVerified => 'Patient verified';
+
+  @override
+  String get hide => 'Hide';
+
+  @override
+  String get show => 'Show';
+
+  @override
+  String get configureBillingData => 'Configure billing data';
+
+  @override
+  String get doctorNamePlaceholder => 'Dr. Name...';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get automaticCalculation => 'Automatic calculation';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get dateTimeFormat => 'DD/MM/YYYY HH:MM';
+
+  @override
+  String get confirmSelection => 'Confirm Selection';
 }

@@ -206,14 +206,14 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
           ),
           if (viewModel.foundPatient != null) ...[
             const SizedBox(height: 16),
-            _buildFoundPatientIndicator(colorScheme),
+            _buildFoundPatientIndicator(l10n, colorScheme),
           ]
         ],
       ),
     );
   }
 
-  Widget _buildFoundPatientIndicator(ColorScheme colorScheme) {
+  Widget _buildFoundPatientIndicator(AppLocalizations l10n, ColorScheme colorScheme) {
     final successColor = Colors.green; 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -226,7 +226,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(_getPatientName(viewModel.foundPatient!), style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.bold)),
-              Text("Paciente verificado", style: TextStyle(color: successColor.withOpacity(0.7), fontSize: 12)),
+              Text(l10n.patientVerified, style: TextStyle(color: successColor.withOpacity(0.7), fontSize: 12)),
             ],
           ),
         ],
@@ -276,9 +276,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       colorScheme: colorScheme,
       title: l10n.billToInformation,
       icon: Icons.receipt_long,
-      action: TextButton(onPressed: () => setState(() => showPersonForm = !showPersonForm), child: Text(showPersonForm ? "Ocultar" : "Mostrar")),
+      action: TextButton(onPressed: () => setState(() => showPersonForm = !showPersonForm), child: Text(showPersonForm ? l10n.hide : l10n.show)),
       child: !showPersonForm 
-        ? Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: colorScheme.onSurface.withOpacity(0.03), borderRadius: BorderRadius.circular(8)), child: Row(children: [Icon(Icons.info_outline, size: 16, color: colorScheme.onSurfaceVariant), const SizedBox(width: 8), Text("Configura los datos de facturación", style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13))]))
+        ? Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: colorScheme.onSurface.withOpacity(0.03), borderRadius: BorderRadius.circular(8)), child: Row(children: [Icon(Icons.info_outline, size: 16, color: colorScheme.onSurfaceVariant), const SizedBox(width: 8), Text(l10n.configureBillingData, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13))]))
         : Column(
             children: [
               Row(children: [
@@ -308,7 +308,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   }
 
   Widget _buildReferredCard(AppLocalizations l10n, ColorScheme colorScheme) {
-    return _cardBase(colorScheme: colorScheme, title: l10n.referred, icon: Icons.medical_services, child: _buildCustomTextField(colorScheme: colorScheme, label: l10n.referred, controller: referredController, hint: "Dr. Nombre...", onChange: (v) => viewModel.invoiceInput.referred = v));
+    return _cardBase(colorScheme: colorScheme, title: l10n.referred, icon: Icons.medical_services, child: _buildCustomTextField(colorScheme: colorScheme, label: l10n.referred, controller: referredController, hint: l10n.doctorNamePlaceholder, onChange: (v) => viewModel.invoiceInput.referred = v));
   }
 
   Widget _buildSummarySidebar(AppLocalizations l10n, ColorScheme colorScheme) {
@@ -318,14 +318,14 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("RESUMEN", style: TextStyle(color: colorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold)),
-          Text("Cálculo automático", style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 12)),
+          Text(l10n.summary.toUpperCase(), style: TextStyle(color: colorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(l10n.automaticCalculation, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 12)),
           Divider(height: 40, color: colorScheme.outlineVariant),
           ...viewModel.selectedExams.map((e) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(e.template?.name ?? '', style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)), Text("\$${e.baseCost.toStringAsFixed(2)}", style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.bold))]))),
           const SizedBox(height: 16),
           Divider(height: 1, color: colorScheme.outlineVariant),
           const SizedBox(height: 24),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end, children: [Text("TOTAL", style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.w900, fontSize: 12)), Text(viewModel.formattedTotal, style: TextStyle(color: colorScheme.primary, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1))]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end, children: [Text(l10n.total.toUpperCase(), style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.w900, fontSize: 12)), Text(viewModel.formattedTotal, style: TextStyle(color: colorScheme.primary, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1))]),
           const SizedBox(height: 32),
           ElevatedButton(
             onPressed: viewModel.loading ? null : () async {
@@ -409,7 +409,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
               });
             }
           },
-          decoration: InputDecoration(hintText: "DD/MM/YYYY HH:MM", prefixIcon: Icon(Icons.calendar_today, color: colorScheme.onSurfaceVariant, size: 20), suffixIcon: Icon(Icons.expand_more, color: colorScheme.onSurfaceVariant), filled: true, fillColor: colorScheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none), contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)),
+          decoration: InputDecoration(hintText: l10n.dateTimeFormat, prefixIcon: Icon(Icons.calendar_today, color: colorScheme.onSurfaceVariant, size: 20), suffixIcon: Icon(Icons.expand_more, color: colorScheme.onSurfaceVariant), filled: true, fillColor: colorScheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none), contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)),
         ),
       ],
     );
@@ -489,7 +489,7 @@ class _ExamSelectorDialogState extends State<_ExamSelectorDialog> {
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: () => Navigator.pop(context), style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary, minimumSize: const Size(double.infinity, 50)), child: const Text("Confirmar Selección", style: TextStyle(fontWeight: FontWeight.bold)))
+            ElevatedButton(onPressed: () => Navigator.pop(context), style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary, minimumSize: const Size(double.infinity, 50)), child: Text(widget.l10n.confirmSelection, style: const TextStyle(fontWeight: FontWeight.bold)))
           ],
         ),
       ),

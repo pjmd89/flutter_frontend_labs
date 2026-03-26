@@ -144,7 +144,7 @@ class _InvoiceTableHeader extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: Text('ACCIONES', style: style),
+            child: Text(l10n.actions.toUpperCase(), style: style),
           ),
         ],
       ),

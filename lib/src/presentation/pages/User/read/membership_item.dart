@@ -66,7 +66,7 @@ class MembershipItem extends StatelessWidget {
     final roleText = _getRoleTranslation(membership.role);
     final initials = _getInitials(membership.member!.firstName, membership.member!.lastName);
     final avatarColor = _getAvatarColor(context, membership.member!.id.hashCode);
-    final labName = membership.laboratory?.address ?? 'N/A';
+    final labName = membership.laboratory?.address ?? l10n.notAvailable;
     
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;

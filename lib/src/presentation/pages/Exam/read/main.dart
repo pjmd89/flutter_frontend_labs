@@ -130,8 +130,7 @@ class _ExamTableHeader extends StatelessWidget {
               label: l10n.baseCost.toUpperCase(), flex: 2),
           _HeaderCell(
               label: l10n.created.toUpperCase(), flex: 2),
-          _HeaderCell(
-              label: 'ACCIONES', flex: 2, alignEnd: true),
+          _HeaderCell(label: l10n.actions.toUpperCase(), flex: 2, alignEnd: true),
         ],
       ),
     );

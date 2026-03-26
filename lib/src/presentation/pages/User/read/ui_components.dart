@@ -113,9 +113,9 @@ class UserFilterBar extends StatelessWidget {
             dropdownColor: Theme.of(context).colorScheme.surfaceContainerHighest,
             style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
-                child: Text("Todos los Roles"),
+                child: Text(l10n.allRoles),
               ),
               DropdownMenuItem(
                 value: "TECHNICIAN",
@@ -277,7 +277,7 @@ class UserTableHeader extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              "LABORATORIO",
+              l10n.laboratory.toUpperCase(),
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
@@ -288,7 +288,7 @@ class UserTableHeader extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Text(
-              "ACCIONES",
+              l10n.actions.toUpperCase(),
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.bold,

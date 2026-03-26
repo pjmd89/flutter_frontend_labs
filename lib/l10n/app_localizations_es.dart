@@ -1015,4 +1015,117 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get completed => 'Completado';
+
+  @override
+  String get patientInformation => 'Información del Paciente';
+
+  @override
+  String get updatePatientData => 'Actualice los datos del paciente.';
+
+  @override
+  String get allPatients => 'Todos los pacientes';
+
+  @override
+  String get actions => 'Acciones';
+
+  @override
+  String get examTemplateHint => 'Ej: Hemograma completo, Perfil lipídico...';
+
+  @override
+  String get costMustBeGreaterThanZero => 'El costo debe ser mayor a cero';
+
+  @override
+  String get examCreationInfo => 'Una vez creado, el laboratorio y la plantilla serán de solo lectura. Solo el costo base podrá ajustarse posteriormente.';
+
+  @override
+  String get examInformation => 'Información del Examen';
+
+  @override
+  String get updateExamData => 'Actualice los datos del examen.';
+
+  @override
+  String get updateCompanyData => 'Actualice los datos de la empresa.';
+
+  @override
+  String get generalLaboratory => 'Lab General';
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get allRoles => 'Todos los Roles';
+
+  @override
+  String get personalInformation => 'Información Personal';
+
+  @override
+  String get updateUserData => 'Actualice los datos personales del usuario.';
+
+  @override
+  String get locationInformation => 'Información de Ubicación';
+
+  @override
+  String get updateLocationData => 'Actualice la dirección física y los métodos de contacto directo.';
+
+  @override
+  String get contactNumbers => 'Números de contacto';
+
+  @override
+  String get employeeInformation => 'Información de Empleados';
+
+  @override
+  String get noEmployeesAssigned => 'No hay empleados asignados a este laboratorio';
+
+  @override
+  String get branchId => 'ID de Sucursal';
+
+  @override
+  String get lastUpdate => 'Última Actualización';
+
+  @override
+  String daysAgo(int days) {
+    return 'Hace $days días';
+  }
+
+  @override
+  String get changesVisibleImmediately => 'Los cambios realizados serán visibles para todos los operarios inmediatamente.';
+
+  @override
+  String get searchEmployeePlaceholder => ' Ej: Juan Perez';
+
+  @override
+  String get employees => 'Empleados';
+
+  @override
+  String get totalLabs => 'Total Laboratorios';
+
+  @override
+  String get patientVerified => 'Paciente verificado';
+
+  @override
+  String get hide => 'Ocultar';
+
+  @override
+  String get show => 'Mostrar';
+
+  @override
+  String get configureBillingData => 'Configura los datos de facturación';
+
+  @override
+  String get doctorNamePlaceholder => 'Dr. Nombre...';
+
+  @override
+  String get summary => 'Resumen';
+
+  @override
+  String get automaticCalculation => 'Cálculo automático';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get dateTimeFormat => 'DD/MM/YYYY HH:MM';
+
+  @override
+  String get confirmSelection => 'Confirmar Selección';
 }

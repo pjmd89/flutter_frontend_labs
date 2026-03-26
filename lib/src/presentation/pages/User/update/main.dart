@@ -273,9 +273,9 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Información Personal", style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+              Text(l10n.personalInformation, style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              Text("Actualice los datos personales del usuario.", style: textTheme.bodyMedium),
+              Text(l10n.updateUserData, style: textTheme.bodyMedium),
               const Divider(height: 48),
               
               // Nombre y Apellido en la misma fila
@@ -343,11 +343,11 @@ class _UserUpdatePageState extends State<UserUpdatePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Datos de Referencia", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text(l10n.referenceData, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 24),
                 _readOnlyInfo(l10n.user, viewModel.currentUser?.id ?? '-', textTheme, Icons.fingerprint),
                 const SizedBox(height: 20),
-                _readOnlyInfo("Email", viewModel.currentUser?.email ?? '-', textTheme, Icons.email_outlined),
+                _readOnlyInfo(l10n.email, viewModel.currentUser?.email ?? '-', textTheme, Icons.email_outlined),
                 const SizedBox(height: 20),
                 _readOnlyInfo(
                   l10n.role,

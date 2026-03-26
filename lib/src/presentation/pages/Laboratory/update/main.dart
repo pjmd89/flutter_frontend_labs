@@ -288,9 +288,9 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Información de Ubicación", style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            Text(l10n.locationInformation, style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Text("Actualice la dirección física y los métodos de contacto directo.", style: textTheme.bodyMedium),
+            Text(l10n.updateLocationData, style: textTheme.bodyMedium),
             const Divider(height: 48),
             
             CustomTextFormField(
@@ -307,7 +307,7 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
             
             Row(
               children: [
-                Text("Números de contacto", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text(l10n.contactNumbers, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                 const Spacer(),
                 TextButton.icon(
                   onPressed: _addPhoneField,
@@ -341,9 +341,9 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
         children: [
           _buildCustomTextField(
             colorScheme: colorScheme,
-            label: "Información de Empleados",
+            label: l10n.employeeInformation,
             controller: TextEditingController(),
-            hint: " Ej: Juan Perez",
+            hint: l10n.searchEmployeePlaceholder,
             icon: Icons.search
           ),
           const SizedBox(height: 16),
@@ -359,7 +359,7 @@ class _LaboratoryUpdatePageState extends State<LaboratoryUpdatePage> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        "No hay empleados asignados a este laboratorio",
+                        l10n.noEmployeesAssigned,
                         style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurface.withOpacity(0.6),
                         ),
@@ -455,13 +455,13 @@ Widget _buildCustomTextField({
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Datos de Referencia", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text(l10n.referenceData, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 24),
                 _readOnlyInfo(l10n.company, widget.laboratory.company?.name ?? '-', textTheme, Icons.business),
                 const SizedBox(height: 20),
-                _readOnlyInfo("ID de Sucursal", "LAB-${widget.laboratory.id}", textTheme, Icons.fingerprint),
+                _readOnlyInfo(l10n.branchId, "LAB-${widget.laboratory.id}", textTheme, Icons.fingerprint),
                 const SizedBox(height: 20),
-                _readOnlyInfo("Última Actualización", "Hace 2 días", textTheme, Icons.history),
+                _readOnlyInfo(l10n.lastUpdate, l10n.daysAgo(2), textTheme, Icons.history),
               ],
             ),
           ),
@@ -480,7 +480,7 @@ Widget _buildCustomTextField({
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  "Los cambios realizados serán visibles para todos los operarios inmediatamente.",
+                  l10n.changesVisibleImmediately,
                   style: textTheme.bodySmall?.copyWith(color: colorScheme.onPrimaryContainer),
                 ),
               ),

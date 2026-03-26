@@ -1384,5 +1384,158 @@
   "completed": "Completed",
   "@completed": {
     "description": "Completed status"
+  },
+  "patientInformation": "Patient Information",
+  "@patientInformation": {
+    "description": "Patient information section title"
+  },
+  "updatePatientData": "Update patient data.",
+  "@updatePatientData": {
+    "description": "Description for updating patient data action"
+  },
+  "allPatients": "All patients",
+  "@allPatients": {
+    "description": "Option to show all patients without filter"
+  },
+  "actions": "Actions",
+  "@actions": {
+    "description": "Actions column in tables"
+  },
+  "examTemplateHint": "E.g: Complete blood count, Lipid profile...",
+  "@examTemplateHint": {
+    "description": "Help text for exam template selection"
+  },
+  "costMustBeGreaterThanZero": "Cost must be greater than zero",
+  "@costMustBeGreaterThanZero": {
+    "description": "Validation message for base cost"
+  },
+  "examCreationInfo": "Once created, the laboratory and template will be read-only. Only the base cost can be adjusted later.",
+  "@examCreationInfo": {
+    "description": "Information about restrictions when creating an exam"
+  },
+  "examInformation": "Exam Information",
+  "@examInformation": {
+    "description": "Exam information section title"
+  },
+  "updateExamData": "Update exam data.",
+  "@updateExamData": {
+    "description": "Description for updating exam data"
+  },
+  "updateCompanyData": "Update company data.",
+  "@updateCompanyData": {
+    "description": "Description for updating company data"
+  },
+  "generalLaboratory": "General Lab",
+  "@generalLaboratory": {
+    "description": "Text for general laboratory"
+  },
+  "notAvailable": "N/A",
+  "@notAvailable": {
+    "description": "Text to indicate no data available"
+  },
+  "allRoles": "All Roles",
+  "@allRoles": {
+    "description": "Option to show all roles without filter"
+  },
+  "personalInformation": "Personal Information",
+  "@personalInformation": {
+    "description": "Personal information section title"
+  },
+  "updateUserData": "Update user personal data.",
+  "@updateUserData": {
+    "description": "Description for updating user data"
+  },
+  "locationInformation": "Location Information",
+  "@locationInformation": {
+    "description": "Location information section title"
+  },
+  "updateLocationData": "Update physical address and direct contact methods.",
+  "@updateLocationData": {
+    "description": "Description for updating location data"
+  },
+  "contactNumbers": "Contact Numbers",
+  "@contactNumbers": {
+    "description": "Contact numbers section title"
+  },
+  "employeeInformation": "Employee Information",
+  "@employeeInformation": {
+    "description": "Employee information section title"
+  },
+  "noEmployeesAssigned": "No employees assigned to this laboratory",
+  "@noEmployeesAssigned": {
+    "description": "Message when no employees are assigned"
+  },
+  "branchId": "Branch ID",
+  "@branchId": {
+    "description": "Label for branch ID"
+  },
+  "lastUpdate": "Last Update",
+  "@lastUpdate": {
+    "description": "Label for last update"
+  },
+  "daysAgo": "{days} days ago",
+  "@daysAgo": {
+    "description": "Format to show elapsed days",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "changesVisibleImmediately": "Changes made will be visible to all operators immediately.",
+  "@changesVisibleImmediately": {
+    "description": "Informational message about change visibility"
+  },
+  "searchEmployeePlaceholder": " e.g: John Doe",
+  "@searchEmployeePlaceholder": {
+    "description": "Placeholder for employee search"
+  },
+  "employees": "Employees",
+  "@employees": {
+    "description": "Label for employees"
+  },
+  "totalLabs": "Total Labs",
+  "@totalLabs": {
+    "description": "Label for total laboratories"
+  },
+  "patientVerified": "Patient verified",
+  "@patientVerified": {
+    "description": "Message when patient is verified"
+  },
+  "hide": "Hide",
+  "@hide": {
+    "description": "Action to hide"
+  },
+  "show": "Show",
+  "@show": {
+    "description": "Action to show"
+  },
+  "configureBillingData": "Configure billing data",
+  "@configureBillingData": {
+    "description": "Message to configure billing data"
+  },
+  "doctorNamePlaceholder": "Dr. Name...",
+  "@doctorNamePlaceholder": {
+    "description": "Placeholder for doctor name"
+  },
+  "summary": "Summary",
+  "@summary": {
+    "description": "Summary title"
+  },
+  "automaticCalculation": "Automatic calculation",
+  "@automaticCalculation": {
+    "description": "Automatic calculation text"
+  },
+  "total": "Total",
+  "@total": {
+    "description": "Total label"
+  },
+  "dateTimeFormat": "DD/MM/YYYY HH:MM",
+  "@dateTimeFormat": {
+    "description": "Date and time format"
+  },
+  "confirmSelection": "Confirm Selection",
+  "@confirmSelection": {
+    "description": "Button to confirm selection"
   }
 }

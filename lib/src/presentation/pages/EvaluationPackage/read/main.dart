@@ -132,7 +132,7 @@ class _EvaluationPackageTableHeader extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: Text('APROBADO', style: style),
+            child: Text(l10n.approved.toUpperCase(), style: style),
           ),
           Expanded(
             flex: 2,
@@ -140,7 +140,7 @@ class _EvaluationPackageTableHeader extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: Text('ACCIONES', style: style),
+            child: Text(l10n.actions.toUpperCase(), style: style),
           ),
         ],
       ),

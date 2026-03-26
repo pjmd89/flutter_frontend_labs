@@ -126,7 +126,7 @@ class _CompanyTableHeader extends StatelessWidget {
           _HeaderCell(label: l10n.taxID.toUpperCase(), flex: 2),
           _HeaderCell(label: l10n.owner.toUpperCase(), flex: 3),
           _HeaderCell(label: l10n.created.toUpperCase(), flex: 2),
-          _HeaderCell(label: 'ACCIONES', flex: 2, alignEnd: true),
+          _HeaderCell(label: l10n.actions.toUpperCase(), flex: 2, alignEnd: true),
         ],
       ),
     );

@@ -158,9 +158,9 @@ class _PatientFilterBar extends StatelessWidget {
             style: TextStyle(
                 fontSize: 13, color: colorScheme.onSurface),
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
-                child: Text('Todos los pacientes'),
+                child: Text(l10n.allPatients),
               ),
               DropdownMenuItem(
                 value: PatientType.hUMAN,
@@ -205,7 +205,7 @@ class _PatientTableHeader extends StatelessWidget {
           _HeaderCell(label: l10n.gender.toUpperCase(), flex: 3),
           _HeaderCell(label: l10n.birthDate.toUpperCase(), flex: 2),
           _HeaderCell(label: '${l10n.phone} / ${l10n.dni}'.toUpperCase(), flex: 3),
-          _HeaderCell(label: 'ACCIONES', flex: 2, centered: true),
+          _HeaderCell(label: l10n.actions.toUpperCase(), flex: 2, centered: true),
         ],
       ),
     );

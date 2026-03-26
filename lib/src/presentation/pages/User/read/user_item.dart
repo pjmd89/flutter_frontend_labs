@@ -129,11 +129,11 @@ class UserItem extends StatelessWidget {
           ),
           
           // Laboratorio / Fecha (placeholder)
-          const Expanded(
+          Expanded(
             flex: 2,
             child: Text(
-              "Lab General",
-              style: TextStyle(fontSize: 14),
+              l10n.generalLaboratory,
+              style: const TextStyle(fontSize: 14),
             ),
           ),
           

@@ -1522,5 +1522,158 @@
   "completed": "Completado",
   "@completed": {
     "description": "Estado completado"
+  },
+  "patientInformation": "Información del Paciente",
+  "@patientInformation": {
+    "description": "Título de la sección de información del paciente"
+  },
+  "updatePatientData": "Actualice los datos del paciente.",
+  "@updatePatientData": {
+    "description": "Descripción de la acción de actualizar datos del paciente"
+  },
+  "allPatients": "Todos los pacientes",
+  "@allPatients": {
+    "description": "Opción para mostrar todos los pacientes sin filtro"
+  },
+  "actions": "Acciones",
+  "@actions": {
+    "description": "Columna de acciones en tablas"
+  },
+  "examTemplateHint": "Ej: Hemograma completo, Perfil lipídico...",
+  "@examTemplateHint": {
+    "description": "Texto de ayuda para selección de plantilla de examen"
+  },
+  "costMustBeGreaterThanZero": "El costo debe ser mayor a cero",
+  "@costMustBeGreaterThanZero": {
+    "description": "Mensaje de validación para costo base"
+  },
+  "examCreationInfo": "Una vez creado, el laboratorio y la plantilla serán de solo lectura. Solo el costo base podrá ajustarse posteriormente.",
+  "@examCreationInfo": {
+    "description": "Información sobre restricciones al crear un examen"
+  },
+  "examInformation": "Información del Examen",
+  "@examInformation": {
+    "description": "Título de sección de información del examen"
+  },
+  "updateExamData": "Actualice los datos del examen.",
+  "@updateExamData": {
+    "description": "Descripción para actualizar datos del examen"
+  },
+  "updateCompanyData": "Actualice los datos de la empresa.",
+  "@updateCompanyData": {
+    "description": "Descripción para actualizar datos de la empresa"
+  },
+  "generalLaboratory": "Lab General",
+  "@generalLaboratory": {
+    "description": "Texto para laboratorio general"
+  },
+  "notAvailable": "N/A",
+  "@notAvailable": {
+    "description": "Texto para indicar que no hay datos disponibles"
+  },
+  "allRoles": "Todos los Roles",
+  "@allRoles": {
+    "description": "Opción para mostrar todos los roles sin filtro"
+  },
+  "personalInformation": "Información Personal",
+  "@personalInformation": {
+    "description": "Título de la sección de información personal"
+  },
+  "updateUserData": "Actualice los datos personales del usuario.",
+  "@updateUserData": {
+    "description": "Descripción para actualizar datos del usuario"
+  },
+  "locationInformation": "Información de Ubicación",
+  "@locationInformation": {
+    "description": "Título de sección de información de ubicación"
+  },
+  "updateLocationData": "Actualice la dirección física y los métodos de contacto directo.",
+  "@updateLocationData": {
+    "description": "Descripción para actualizar datos de ubicación"
+  },
+  "contactNumbers": "Números de contacto",
+  "@contactNumbers": {
+    "description": "Título para sección de números de contacto"
+  },
+  "employeeInformation": "Información de Empleados",
+  "@employeeInformation": {
+    "description": "Título de sección de información de empleados"
+  },
+  "noEmployeesAssigned": "No hay empleados asignados a este laboratorio",
+  "@noEmployeesAssigned": {
+    "description": "Mensaje cuando no hay empleados asignados"
+  },
+  "branchId": "ID de Sucursal",
+  "@branchId": {
+    "description": "Etiqueta para ID de sucursal"
+  },
+  "lastUpdate": "Última Actualización",
+  "@lastUpdate": {
+    "description": "Etiqueta para última actualización"
+  },
+  "daysAgo": "Hace {days} días",
+  "@daysAgo": {
+    "description": "Formato para mostrar días transcurridos",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "changesVisibleImmediately": "Los cambios realizados serán visibles para todos los operarios inmediatamente.",
+  "@changesVisibleImmediately": {
+    "description": "Mensaje informativo sobre visibilidad de cambios"
+  },
+  "searchEmployeePlaceholder": " Ej: Juan Perez",
+  "@searchEmployeePlaceholder": {
+    "description": "Placeholder para búsqueda de empleados"
+  },
+  "employees": "Empleados",
+  "@employees": {
+    "description": "Etiqueta para empleados"
+  },
+  "totalLabs": "Total Laboratorios",
+  "@totalLabs": {
+    "description": "Etiqueta para total de laboratorios"
+  },
+  "patientVerified": "Paciente verificado",
+  "@patientVerified": {
+    "description": "Mensaje cuando el paciente es verificado"
+  },
+  "hide": "Ocultar",
+  "@hide": {
+    "description": "Acción para ocultar"
+  },
+  "show": "Mostrar",
+  "@show": {
+    "description": "Acción para mostrar"
+  },
+  "configureBillingData": "Configura los datos de facturación",
+  "@configureBillingData": {
+    "description": "Mensaje para configurar datos de facturación"
+  },
+  "doctorNamePlaceholder": "Dr. Nombre...",
+  "@doctorNamePlaceholder": {
+    "description": "Placeholder para nombre de doctor"
+  },
+  "summary": "Resumen",
+  "@summary": {
+    "description": "Título de resumen"
+  },
+  "automaticCalculation": "Cálculo automático",
+  "@automaticCalculation": {
+    "description": "Texto de cálculo automático"
+  },
+  "total": "Total",
+  "@total": {
+    "description": "Etiqueta de total"
+  },
+  "dateTimeFormat": "DD/MM/YYYY HH:MM",
+  "@dateTimeFormat": {
+    "description": "Formato de fecha y hora"
+  },
+  "confirmSelection": "Confirmar Selección",
+  "@confirmSelection": {
+    "description": "Botón para confirmar selección"
   }
 }

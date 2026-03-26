@@ -64,7 +64,7 @@ class _ExamCreatePageState extends State<ExamCreatePage> {
                   const SizedBox(height: 16),
                   _buildDropdownField(
                     label: l10n.examTemplate,
-                    hint: "Ej: Hemograma completo, Perfil lipídico...",
+                    hint: l10n.examTemplateHint,
                     context: context,
                     value: selectedExamTemplate,
                     items: viewModel.examTemplates.map((template) {
@@ -123,7 +123,7 @@ class _ExamCreatePageState extends State<ExamCreatePage> {
                     },
                     validator: (value) {
                       final n = num.tryParse(value ?? '');
-                      if (n == null || n <= 0) return "El costo debe ser mayor a cero";
+                      if (n == null || n <= 0) return l10n.costMustBeGreaterThanZero;
                       return null;
                     },
                   ),
@@ -146,7 +146,7 @@ class _ExamCreatePageState extends State<ExamCreatePage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            "Una vez creado, el laboratorio y la plantilla serán de solo lectura. Solo el costo base podrá ajustarse posteriormente.",
+                            l10n.examCreationInfo,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                               height: 1.4,

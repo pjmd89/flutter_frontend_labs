@@ -8,6 +8,7 @@ import '/src/domain/usecases/Patient/create_patient_usecase.dart';
 import '/src/domain/usecases/Laboratory/read_laboratory_usecase.dart';
 import '/src/domain/extensions/edgelaboratory_fields_builder_extension.dart';
 import '/src/presentation/providers/gql_notifier.dart';
+import '/src/presentation/providers/laboratory_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
 
 
@@ -34,6 +35,18 @@ class ViewModel extends ChangeNotifier {
   ViewModel({required BuildContext context}) : _context = context {
     _gqlConn = _context.read<GQLNotifier>().gqlConn;
     _errorService = _context.read<ErrorService>();
+    
+    // Obtener el laboratoryID del usuario actual y asignarlo al input
+    final laboratoryNotifier = _context.read<LaboratoryNotifier>();
+    final currentLaboratoryID = laboratoryNotifier.loggedUser?.currentLaboratory?.id;
+    
+    if (currentLaboratoryID != null) {
+      input.laboratory = currentLaboratoryID;
+      debugPrint('🏥 LaboratoryID asignado automáticamente: $currentLaboratoryID');
+    } else {
+      debugPrint('⚠️ No se pudo obtener el laboratoryID actual');
+    }
+    
     _loadLaboratories();
   }
 

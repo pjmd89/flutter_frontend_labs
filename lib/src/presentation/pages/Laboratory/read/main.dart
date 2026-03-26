@@ -82,7 +82,7 @@ class _LaboratoryPageState extends State<LaboratoryPage> {
               const SizedBox(height: 32),
 
               // ── Stats grid ───────────────────────────────────────────
-              _LaboratoryStatsGrid(totalLabs: totalLabs),
+              _LaboratoryStatsGrid(totalLabs: totalLabs, l10n: l10n),
 
               const SizedBox(height: 48),
             ],
@@ -117,9 +117,9 @@ class _LaboratoryTableHeader extends StatelessWidget {
           _HeaderCell(label: l10n.laboratory.toUpperCase(), flex: 4),
           _HeaderCell(label: l10n.address.toUpperCase(), flex: 3),
           _HeaderCell(label: l10n.phone.toUpperCase(), flex: 3),
-          _HeaderCell(label: 'EMPLEADOS', flex: 1, centered: true),
+          _HeaderCell(label: l10n.employees.toUpperCase(), flex: 1, centered: true),
           _HeaderCell(label: l10n.created.toUpperCase(), flex: 2),
-          _HeaderCell(label: 'ACCIONES', flex: 2, alignEnd: true),
+          _HeaderCell(label: l10n.actions.toUpperCase(), flex: 2, alignEnd: true),
         ],
       ),
     );
@@ -163,7 +163,8 @@ class _HeaderCell extends StatelessWidget {
 
 class _LaboratoryStatsGrid extends StatelessWidget {
   final int totalLabs;
-  const _LaboratoryStatsGrid({required this.totalLabs});
+  final AppLocalizations l10n;
+  const _LaboratoryStatsGrid({required this.totalLabs, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +175,7 @@ class _LaboratoryStatsGrid extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 350),
         child: _statCard(
           context,
-          'TOTAL LABS',
+          l10n.totalLabs.toUpperCase(),
           totalLabs.toString(),
           Icons.science_outlined,
           colorScheme.primary,
