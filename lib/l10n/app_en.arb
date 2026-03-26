@@ -1589,5 +1589,25 @@
   "dateFormatShort": "DD/MM/YYYY",
   "@dateFormatShort": {
     "description": "Short date format"
+  },
+  "signature": "Signature",
+  "@signature": {
+    "description": "Bioanalyst signature"
+  },
+  "bioanalystSignature": "Bioanalyst Signature",
+  "@bioanalystSignature": {
+    "description": "Bioanalyst signature field"
+  },
+  "uploadSignature": "Upload Signature",
+  "@uploadSignature": {
+    "description": "Button to upload signature"
+  },
+  "changeSignature": "Change Signature",
+  "@changeSignature": {
+    "description": "Button to change signature"
+  },
+  "signatureRequired": "Signature required to approve",
+  "@signatureRequired": {
+    "description": "Message for required signature"
   }
 }

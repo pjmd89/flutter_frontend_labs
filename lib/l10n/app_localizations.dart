@@ -2332,6 +2332,36 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'DD/MM/AAAA'**
   String get dateFormatShort;
+
+  /// Firma del bioanalista
+  ///
+  /// In es, this message translates to:
+  /// **'Firma'**
+  String get signature;
+
+  /// Campo de firma del bioanalista
+  ///
+  /// In es, this message translates to:
+  /// **'Firma del Bioanalista'**
+  String get bioanalystSignature;
+
+  /// Botón para subir firma
+  ///
+  /// In es, this message translates to:
+  /// **'Subir Firma'**
+  String get uploadSignature;
+
+  /// Botón para cambiar firma
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar Firma'**
+  String get changeSignature;
+
+  /// Mensaje de firma requerida
+  ///
+  /// In es, this message translates to:
+  /// **'Firma requerida para aprobar'**
+  String get signatureRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

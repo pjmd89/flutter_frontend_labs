@@ -11,6 +11,7 @@ export './inputs/valueinput_input.dart';
 export './inputs/employeesinput_input.dart';
 export './inputs/centeroperatorinput_input.dart';
 export './inputs/updateevaluationinput_input.dart';
+export './inputs/approveevaluationinput_input.dart';
 export './inputs/geospatialinput_input.dart';
 export './inputs/geometryoperatorinput_input.dart';
 export './inputs/searchinput_input.dart';

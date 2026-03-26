@@ -1727,5 +1727,25 @@
   "dateFormatShort": "DD/MM/AAAA",
   "@dateFormatShort": {
     "description": "Formato corto de fecha"
+  },
+  "signature": "Firma",
+  "@signature": {
+    "description": "Firma del bioanalista"
+  },
+  "bioanalystSignature": "Firma del Bioanalista",
+  "@bioanalystSignature": {
+    "description": "Campo de firma del bioanalista"
+  },
+  "uploadSignature": "Subir Firma",
+  "@uploadSignature": {
+    "description": "Botón para subir firma"
+  },
+  "changeSignature": "Cambiar Firma",
+  "@changeSignature": {
+    "description": "Botón para cambiar firma"
+  },
+  "signatureRequired": "Firma requerida para aprobar",
+  "@signatureRequired": {
+    "description": "Mensaje de firma requerida"
   }
 }

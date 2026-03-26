@@ -227,7 +227,7 @@ class _EvaluationPackageItemState extends State<EvaluationPackageItem> {
                             color: theme.colorScheme.primary,
                             onTap: () {
                               final token = pkg.pdfToken;
-                              final url = 'https://localhost:8443/evaluation-pdf/$token';
+                              final url = 'https://localhost:8443/evaluation-pdf?t=$token';
                               html.window.open(url, '_blank');
                             },
                           ),

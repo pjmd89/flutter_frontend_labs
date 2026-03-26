@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:agile_front/agile_front.dart';
@@ -7,6 +9,9 @@ import 'package:labs/src/presentation/core/ui/custom_text_form_fields/custom_tex
 import 'package:labs/src/presentation/core/ui/custom_text_form_fields/utils/form_field_length/main.dart';
 import 'package:labs/src/presentation/providers/auth_notifier.dart';
 import './view_model.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:web/web.dart' show HTMLInputElement, FileReader;
+import 'dart:js_interop';
 
 class EvaluationPackageUpdatePage extends StatefulWidget {
   const EvaluationPackageUpdatePage({super.key, required this.evaluationPackage});
@@ -114,6 +119,88 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     }
     
     viewModel.input.valuesByExam = examResults;
+  }
+  
+  Future<void> _pickAndUploadSignature(BuildContext context) async {
+    try {
+      final authNotifier = context.read<AuthNotifier>();
+      final userId = authNotifier.id.isEmpty ? 'bioanalyst' : authNotifier.id;
+      
+      debugPrint('🔧 Iniciando selección de firma... (kIsWeb: $kIsWeb)');
+      
+      if (kIsWeb) {
+        debugPrint('🌐 Usando implementación web nativa');
+        
+        final uploadInput = HTMLInputElement();
+        uploadInput.type = 'file';
+        uploadInput.accept = 'image/jpeg,image/jpg,image/png,image/gif';
+        uploadInput.click();
+
+        await Future.delayed(const Duration(milliseconds: 100));
+        
+        final completer = Completer<void>();
+        uploadInput.addEventListener('change', ((JSAny event) {
+          completer.complete();
+        }).toJS);
+        
+        await completer.future;
+
+        final files = uploadInput.files;
+        if (files != null && files.length > 0) {
+          final file = files.item(0)!;
+          final reader = FileReader();
+          
+          final loadCompleter = Completer<void>();
+          reader.addEventListener('load', ((JSAny event) {
+            loadCompleter.complete();
+          }).toJS);
+          
+          reader.readAsArrayBuffer(file);
+          await loadCompleter.future;
+
+          final result = reader.result;
+          final Uint8List fileBytes = (result as JSArrayBuffer).toDart.asUint8List();
+          final String fileName = file.name;
+
+          debugPrint('📄 Archivo web: $fileName, Bytes: ${fileBytes.length}');
+
+          final extension = fileName.split('.').last.toLowerCase();
+          if (!['jpg', 'jpeg', 'png', 'gif'].contains(extension)) {
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Formato no válido. Usa JPG, JPEG, PNG o GIF')),
+            );
+            return;
+          }
+
+          final success = await viewModel.uploadBioanalystSignature(
+            fileBytes: fileBytes,
+            fileName: fileName,
+            userId: userId,
+          );
+
+          if (success) {
+            setState(() {});
+          }
+        } else {
+          debugPrint('ℹ️ Selección de archivo cancelada');
+        }
+      } else {
+        debugPrint('⚠️ Esta ruta solo funciona en web');
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Funcionalidad solo disponible en web')),
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error al seleccionar archivo: $e');
+      debugPrint('💥 Tipo de error: ${e.runtimeType}');
+      debugPrint('📍 StackTrace: $stackTrace');
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
   
   String getStatusLabel(BuildContext context, ResultStatus? status) {
@@ -232,6 +319,14 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
                               viewModel.currentEvaluationPackage?.status == ResultStatus.cOMPLETED) ...[
                             FilledButton.tonalIcon(
                               onPressed: viewModel.loading ? null : () async {
+                                // ✅ Validar que haya firma antes de aprobar
+                                if (!viewModel.hasSignature) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(l10n.signatureRequired)),
+                                  );
+                                  return;
+                                }
+                                
                                 final shouldApprove = await showDialog<bool>(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -802,6 +897,110 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
               ],
             ),
           ),
+        
+        // ✅ Campo de firma - SOLO para bioanalistas
+        if (isBioanalyst &&
+            viewModel.currentEvaluationPackage?.isApproved == false &&
+            viewModel.currentEvaluationPackage?.status == ResultStatus.cOMPLETED)
+          Card(
+            elevation: 0,
+            color: colorScheme.primaryContainer.withOpacity(0.1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: colorScheme.primary.withOpacity(0.3)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.draw_outlined,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          l10n.bioanalystSignature,
+                          style: textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  if (viewModel.hasSignature) ...[
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: colorScheme.primary,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              viewModel.displaySignatureFileName ?? l10n.signature,
+                              style: textTheme.bodySmall,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  
+                  FilledButton.tonalIcon(
+                    onPressed: viewModel.loading || viewModel.uploading
+                        ? null
+                        : () => _pickAndUploadSignature(context),
+                    icon: viewModel.uploading
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            viewModel.hasSignature ? Icons.edit : Icons.upload,
+                            size: 18,
+                          ),
+                    label: Text(
+                      viewModel.hasSignature
+                          ? l10n.changeSignature
+                          : l10n.uploadSignature,
+                    ),
+                  ),
+                  
+                  if (!viewModel.hasSignature) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.signatureRequired,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.error,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        
+        const SizedBox(height: 16),
         
         // Información - Card mejorado
         Card(

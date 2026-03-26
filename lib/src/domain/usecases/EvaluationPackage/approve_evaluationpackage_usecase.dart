@@ -23,22 +23,22 @@ class ApproveEvaluationPackageUsecase implements af.UseCase {
     //final thisObject = ob as EvaluationPackage;
   }
 
-  Future<dynamic> execute({required String evaluationPackageId, bool isApproved = true}) async {
+  Future<dynamic> execute({required ApproveEvaluationInput input}) async {
     try {
       // Crear nueva mutation con declarativeArgs
       final mutation = _operation as ApproveEvaluationPackageMutation;
       final newMutation = ApproveEvaluationPackageMutation(
         builder: mutation.builder,
-        declarativeArgs: {"id": "ID!", "isApproved": "Boolean!"},
-        opArgs: {"_id": GqlVar("id"), "isApproved": GqlVar("isApproved")},
+        declarativeArgs: {"input": "ApproveEvaluationInput!"},
+        opArgs: {"input": GqlVar("input")},
       );
 
-      debugPrint('🔧 Ejecutando ApproveEvaluationPackageMutation con _id: $evaluationPackageId, isApproved: $isApproved');
+      debugPrint('🔧 Ejecutando ApproveEvaluationPackageMutation con input: ${input.toJson()}');
 
-      // Ejecutar operación con ID del paquete y estado de aprobación
+      // Ejecutar operación con input
       final response = await _conn.operation(
         operation: newMutation,
-        variables: {"id": evaluationPackageId, "isApproved": isApproved},
+        variables: {"input": input.toJson()},
       );
 
       debugPrint('✅ Response recibido: $response');

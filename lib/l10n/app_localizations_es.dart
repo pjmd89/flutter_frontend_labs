@@ -1164,4 +1164,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dateFormatShort => 'DD/MM/AAAA';
+
+  @override
+  String get signature => 'Firma';
+
+  @override
+  String get bioanalystSignature => 'Firma del Bioanalista';
+
+  @override
+  String get uploadSignature => 'Subir Firma';
+
+  @override
+  String get changeSignature => 'Cambiar Firma';
+
+  @override
+  String get signatureRequired => 'Firma requerida para aprobar';
 }

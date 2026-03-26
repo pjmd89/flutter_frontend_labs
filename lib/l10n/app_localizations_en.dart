@@ -1164,4 +1164,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dateFormatShort => 'DD/MM/YYYY';
+
+  @override
+  String get signature => 'Signature';
+
+  @override
+  String get bioanalystSignature => 'Bioanalyst Signature';
+
+  @override
+  String get uploadSignature => 'Upload Signature';
+
+  @override
+  String get changeSignature => 'Change Signature';
+
+  @override
+  String get signatureRequired => 'Signature required to approve';
 }
