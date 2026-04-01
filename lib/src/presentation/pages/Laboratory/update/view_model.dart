@@ -87,10 +87,13 @@ class ViewModel extends ChangeNotifier {
     bool isError = true;
     loading = true;
 
+    // Convertir IDs a EmployeeInput
+    final employeeInputs = employeeIds.map((id) => EmployeeInput(id: id)).toList();
+
     // Crear el input
-    final employeesInput = EmployeesInput(
+    final employeesInput = LaboratoryEmployeesInput(
       id: _currentLaboratory?.id,
-      employees: employeeIds,
+      employees: employeeInputs,
       remove: remove,
     );
 

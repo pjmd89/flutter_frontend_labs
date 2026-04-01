@@ -25,12 +25,12 @@ class ManageEmployeesUsecase implements af.UseCase {
     // final thisObject = ob as Laboratory;
   }
 
-  Future<dynamic> execute({required EmployeesInput input}) async {
+  Future<dynamic> execute({required LaboratoryEmployeesInput input}) async {
     LaboratoryFieldsBuilder fieldsBuilder = LaboratoryFieldsBuilder().defaultValues();
 
     ManageLaboratoryEmployeesMutation mutation = ManageLaboratoryEmployeesMutation(
       declarativeArgs: {
-        "name": 'EmployeesInput!',
+        "name": 'LaboratoryEmployeesInput!',
       },
       builder: fieldsBuilder,
       opArgs: {

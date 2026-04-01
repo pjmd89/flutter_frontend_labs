@@ -8,6 +8,7 @@ export './inputs/sortinput_input.dart';
 export './inputs/coordinatesinput_input.dart';
 export './inputs/elemmatchinput_input.dart';
 export './inputs/valueinput_input.dart';
+export './inputs/employeeinput_input.dart';
 export './inputs/employeesinput_input.dart';
 export './inputs/centeroperatorinput_input.dart';
 export './inputs/updateevaluationinput_input.dart';

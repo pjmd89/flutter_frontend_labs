@@ -1,8 +1,9 @@
 import "package:flutter/foundation.dart";
 import "package:json_annotation/json_annotation.dart";
+import "employeeinput_input.dart";
 part "employeesinput_input.g.dart";
 @JsonSerializable(includeIfNull: false)
-class EmployeesInput extends ChangeNotifier {
+class LaboratoryEmployeesInput extends ChangeNotifier {
   String? _id;
   @JsonKey(name: "_id")
   String? get id => _id;
@@ -10,9 +11,9 @@ class EmployeesInput extends ChangeNotifier {
     _id = value;
     notifyListeners();
   }
-  List<String> _employees = const [];
-  List<String> get employees => _employees;
-  set employees(List<String> value) {
+  List<EmployeeInput> _employees = const [];
+  List<EmployeeInput> get employees => _employees;
+  set employees(List<EmployeeInput> value) {
     _employees = value;
     notifyListeners();
   }
@@ -22,15 +23,15 @@ class EmployeesInput extends ChangeNotifier {
     _remove = value;
     notifyListeners();
   }
-  EmployeesInput({
+  LaboratoryEmployeesInput({
     String? id,
-    List<String>? employees,
+    List<EmployeeInput>? employees,
     bool? remove,
   }) {
     this.id = id ?? "";
     this.employees = employees ?? const [];
     this.remove = remove ?? false;
   }
-  factory EmployeesInput.fromJson(Map<String, dynamic> json) => _$EmployeesInputFromJson(json);
-  Map<String, dynamic> toJson() => _$EmployeesInputToJson(this);
+  factory LaboratoryEmployeesInput.fromJson(Map<String, dynamic> json) => _$LaboratoryEmployeesInputFromJson(json);
+  Map<String, dynamic> toJson() => _$LaboratoryEmployeesInputToJson(this);
 }
