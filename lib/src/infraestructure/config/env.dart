@@ -29,10 +29,25 @@ class Environment{
     return _resolveByPlatform(web: web, mobile: mobile, desktop: desktop);
   }
 
+  static String get backendMailcowAuthUrl {
+    const String mobile = String.fromEnvironment("mobileMailcowAuthURL");
+    const String web = String.fromEnvironment("webMailcowAuthURL");
+    const String desktop = String.fromEnvironment("desktopMailcowAuthURL");
+    return _resolveByPlatform(web: web, mobile: mobile, desktop: desktop);
+  }
+
   static String get webAuthCallbackPath {
     const String callbackPath = String.fromEnvironment("webAuthCallbackPath");
     if (callbackPath.isEmpty) {
       return "/auth/callback";
+    }
+    return callbackPath.startsWith('/') ? callbackPath : '/$callbackPath';
+  }
+
+  static String get webMailcowAuthCallbackPath {
+    const String callbackPath = String.fromEnvironment("webMailcowAuthCallbackPath");
+    if (callbackPath.isEmpty) {
+      return "/auth/mailcow/callback";
     }
     return callbackPath.startsWith('/') ? callbackPath : '/$callbackPath';
   }

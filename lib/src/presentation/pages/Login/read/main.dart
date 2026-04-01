@@ -52,6 +52,32 @@ class _LoginPageState extends State<LoginPage> {
     redirectToOAuthProvider(loginUri);
   }
 
+  void _startMailcowLogin() {
+    if (!kIsWeb) {
+      setState(() {
+        _errorMessage = 'El flujo de inicio de sesión web solo está disponible en compilaciones web.';
+        _isRedirecting = false;
+      });
+      return;
+    }
+
+    final authUrl = Environment.backendMailcowAuthUrl;
+    if (authUrl.isEmpty || authUrl == 'Undefined Platform') {
+      setState(() {
+        _errorMessage = 'Debe configurarse la variable webMailcowAuthURL para apuntar al endpoint /auth/mailcow del backend.';
+      });
+      return;
+    }
+
+    setState(() {
+      _isRedirecting = true;
+      _errorMessage = null;
+    });
+
+    // El backend maneja todo el flujo OAuth, solo redirigir a la URL
+    redirectToOAuthProvider(Uri.parse(authUrl));
+  }
+
   Uri _buildRedirectUri() {
     final base = Uri.base;
     final callbackPath = Environment.webAuthCallbackPath;
@@ -87,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                   fit: BoxFit.contain,
                 ),
                 Text(
-                  'Inicia sesión con Google',
+                  'Inicia sesión',
                   style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
@@ -101,6 +127,17 @@ class _LoginPageState extends State<LoginPage> {
                     semanticsLabel: 'Google logo',
                   ),
                   label: Text(_isRedirecting ? 'Redirigiendo…' : 'Continuar con Google'),
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton.icon(
+                  onPressed: _isRedirecting ? null : _startMailcowLogin,
+                  icon: SvgPicture.asset(
+                    'assets/images/mailcow.svg',
+                    height: 24,
+                    width: 24,
+                    semanticsLabel: 'Mailcow logo',
+                  ),
+                  label: Text(_isRedirecting ? 'Redirigiendo…' : 'Continuar con Mailcow'),
                 ),
                 const SizedBox(height: 16),
                 if (_errorMessage != null)

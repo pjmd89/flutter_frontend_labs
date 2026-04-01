@@ -9,5 +9,9 @@
     "mobileAuthURL":"https://localhost:8443/auth/google",
     "webAuthURL":"https://localhost:8443/auth/google",
     "desktopAuthURL":"https://localhost:8443/auth/google",
-    "webAuthCallbackPath":"https://localhost:8443/auth/google/callback"
+    "mobileMailcowAuthURL":"https://localhost:8443/auth/mailcow",
+    "webMailcowAuthURL":"https://localhost:8443/auth/mailcow",
+    "desktopMailcowAuthURL":"https://localhost:8443/auth/mailcow",
+    "webAuthCallbackPath": "/auth/callback",
+    "webMailcowAuthCallbackPath": "/auth/mailcow/callback"
 }
