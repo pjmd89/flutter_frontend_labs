@@ -57,7 +57,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorUploadingSignature => 'Error uploading signature';
 
   @override
-  String get errorApprovingEvaluationPackage => 'Error approving evaluation package';
+  String get errorApprovingEvaluationPackage =>
+      'Error approving evaluation package';
 
   @override
   String get invoice => 'Invoice';
@@ -144,16 +145,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get useExistingBillTo => 'Use existing payer';
 
   @override
-  String get useExistingBillToHint => 'Search by ID number to reuse billing details';
+  String get useExistingBillToHint =>
+      'Search by ID number to reuse billing details';
 
   @override
-  String get billToSearchHint => 'Enter the ID number and search to reuse a payer';
+  String get billToSearchHint =>
+      'Enter the ID number and search to reuse a payer';
 
   @override
   String get billToNotFound => 'No payer found with that ID';
 
   @override
-  String get billToSelectionRequired => 'Select an existing payer or enter the billing data';
+  String get billToSelectionRequired =>
+      'Select an existing payer or enter the billing data';
 
   @override
   String get billingFormToggleHint => 'Click \"Show\" to enter billing details';
@@ -216,25 +220,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get approveEvaluationPackage => 'Approve Evaluation Package';
 
   @override
-  String get approveEvaluationPackageConfirmation => 'Are you sure you want to approve this evaluation package? This action will register your review as a bioanalyst.';
+  String get approveEvaluationPackageConfirmation =>
+      'Are you sure you want to approve this evaluation package? This action will register your review as a bioanalyst.';
 
   @override
-  String get evaluationPackageApprovedSuccessfully => 'Evaluation package approved successfully';
+  String get evaluationPackageApprovedSuccessfully =>
+      'Evaluation package approved successfully';
 
   @override
-  String get bioanalystSignature => 'Firma del Bioanalista';
+  String get bioanalystSignature => 'Bioanalyst Signature';
 
   @override
   String get signature => 'Signature';
 
   @override
-  String get changeSignature => 'Change signature';
+  String get changeSignature => 'Change Signature';
 
   @override
   String get fileNoExtension => 'El archivo no tiene extensión';
 
   @override
-  String get invalidImageExtension => 'Extensión no válida. Use: jpeg, jpg, png, gif';
+  String get invalidImageExtension =>
+      'Extensión no válida. Use: jpeg, jpg, png, gif';
 
   @override
   String get uploadError => 'Error al subir el archivo';
@@ -249,19 +256,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get imageLoadError => 'Error al cargar la imagen';
 
   @override
-  String get viewOnlyMode => 'You can only view this evaluation package. Only owners and technicians can edit the results.';
+  String get viewOnlyMode =>
+      'You can only view this evaluation package. Only owners and technicians can edit the results.';
 
   @override
-  String get bioanalystViewMode => 'As a bioanalyst, you can review the results and approve the evaluation package when it\'s complete.';
+  String get bioanalystViewMode =>
+      'As a bioanalyst, you can review the results and approve the evaluation package when it\'s complete.';
 
   @override
-  String get markAsCompletedDescription => 'Mark that all exam results have been completed and are ready for bioanalyst review.';
+  String get markAsCompletedDescription =>
+      'Mark that all exam results have been completed and are ready for bioanalyst review.';
 
   @override
   String get markAsReviewed => 'Mark as Reviewed';
 
   @override
-  String get markAsReviewedDescription => 'Mark that you have reviewed all results of the evaluation package.';
+  String get markAsReviewedDescription =>
+      'Mark that you have reviewed all results of the evaluation package.';
 
   @override
   String get isApproved => 'Approved';
@@ -706,7 +717,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error018 => 'Error when trying to delete company';
 
   @override
-  String get error019 => 'Once you log in for the first time, you cannot update your email';
+  String get error019 =>
+      'Once you log in for the first time, you cannot update your email';
 
   @override
   String get error020 => 'The employee is not part of the laboratory';
@@ -751,7 +763,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error033 => 'Exam template not found';
 
   @override
-  String get error034 => 'The exam template is being used in one or more laboratory exams';
+  String get error034 =>
+      'The exam template is being used in one or more laboratory exams';
 
   @override
   String get error035 => 'An exam template with the same name already exists';
@@ -784,13 +797,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error044 => 'Exam base cost must be a positive value';
 
   @override
-  String get error045 => 'The exam is being used in one or more evaluation packages and cannot be deleted';
+  String get error045 =>
+      'The exam is being used in one or more evaluation packages and cannot be deleted';
 
   @override
   String get error046 => 'Missing human patient fields';
 
   @override
-  String get error047 => 'The date time provided cannot be greater than the current time';
+  String get error047 =>
+      'The date time provided cannot be greater than the current time';
 
   @override
   String get error048 => 'Error when trying to create patient';
@@ -802,7 +817,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error050 => 'Patient not found';
 
   @override
-  String get error051 => 'An account already exists with the phone number provided';
+  String get error051 =>
+      'An account already exists with the phone number provided';
 
   @override
   String get error052 => 'Error when trying to delete patient';
@@ -835,7 +851,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error061 => 'Invoice payment has already been canceled';
 
   @override
-  String get error062 => 'Indicator #%d for input exam #%d has out of range index (%d)';
+  String get error062 =>
+      'Indicator #%d for input exam #%d has out of range index (%d)';
 
   @override
   String get error063 => 'Invalid value for indicator #%d in input exam #%d';
@@ -847,19 +864,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error065 => 'Input exam #%d is not part of the evaluation package';
 
   @override
-  String get error066 => 'All the exams for this evaluation package have already been completed';
+  String get error066 =>
+      'All the exams for this evaluation package have already been completed';
 
   @override
-  String get error067 => 'The payment for this evaluation package has been canceled. Cannot manage exam values';
+  String get error067 =>
+      'The payment for this evaluation package has been canceled. Cannot manage exam values';
 
   @override
   String get error068 => 'Results of exam #%d are still missing';
 
   @override
-  String get error069 => 'Input exam #%d contains more indicator values than the exam allows';
+  String get error069 =>
+      'Input exam #%d contains more indicator values than the exam allows';
 
   @override
-  String get error070 => 'The number of input exams exceeds the number of exams included in the evaluation package';
+  String get error070 =>
+      'The number of input exams exceeds the number of exams included in the evaluation package';
 
   @override
   String get error071 => 'File type can\'t be blank';
@@ -880,13 +901,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error076 => 'Type access not found';
 
   @override
-  String get error077 => 'Insufficient laboratory permissions for this operation';
+  String get error077 =>
+      'Insufficient laboratory permissions for this operation';
 
   @override
   String get error078 => 'Missing laboratory assignment for employee user';
 
   @override
-  String get error079 => 'Cannot approve an evaluation package that is not completed';
+  String get error079 =>
+      'Cannot approve an evaluation package that is not completed';
 
   @override
   String get error080 => 'Error when trying to create person';
@@ -994,10 +1017,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get patientNotFound => 'Patient not found';
 
   @override
-  String get patientNotFoundCreateFirst => 'Patient not found. Please create it first in the Patients module.';
+  String get patientNotFoundCreateFirst =>
+      'Patient not found. Please create it first in the Patients module.';
 
   @override
-  String get patientRequired => 'You must select a patient to create the invoice';
+  String get patientRequired =>
+      'You must select a patient to create the invoice';
 
   @override
   String get completePatientData => 'Complete patient data';
@@ -1074,7 +1099,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionIsIrreversible => 'This action is irreversible';
 
   @override
-  String get cannotDeleteHasDependencies => 'Cannot delete because it has related records';
+  String get cannotDeleteHasDependencies =>
+      'Cannot delete because it has related records';
 
   @override
   String get cannotDeleteInUse => 'Cannot delete because it is in use';
@@ -1083,13 +1109,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recordNotFound => 'Record not found';
 
   @override
-  String get permissionDenied => 'You do not have permission to perform this action';
+  String get permissionDenied =>
+      'You do not have permission to perform this action';
 
   @override
   String get allResultsCompleted => 'All results completed';
 
   @override
-  String get allResultsCompletedDescription => 'Check if all exam results have been completed and verified correctly';
+  String get allResultsCompletedDescription =>
+      'Check if all exam results have been completed and verified correctly';
 
   @override
   String get addObservation => 'Add observation';
@@ -1104,7 +1132,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get writeObservationsHere => 'Write your observations here...';
 
   @override
-  String get examResultsNote => 'Note: Exam results are edited in their corresponding module';
+  String get examResultsNote =>
+      'Note: Exam results are edited in their corresponding module';
 
   @override
   String get examResults => 'Exam results';
@@ -1131,16 +1160,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get templateDescription => 'Template description';
 
   @override
-  String get atLeastOnePhoneRequired => 'You must add at least one contact phone';
+  String get atLeastOnePhoneRequired =>
+      'You must add at least one contact phone';
 
   @override
   String get selectLaboratory => 'Select Laboratory';
-
-  @override
-  String get yes => 'Yes';
-
-  @override
-  String get no => 'No';
 
   @override
   String get mustBeNumeric => 'Must be a numeric value';
@@ -1149,7 +1173,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examResultsTitle => 'Exam Results';
 
   @override
-  String get examResultsDescription => 'Enter the indicator values for each exam in the package';
+  String get examResultsDescription =>
+      'Enter the indicator values for each exam in the package';
 
   @override
   String get referenceData => 'Reference Data';
@@ -1179,7 +1204,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get costMustBeGreaterThanZero => 'Cost must be greater than zero';
 
   @override
-  String get examCreationInfo => 'Once created, the laboratory and template will be read-only. Only the base cost can be adjusted later.';
+  String get examCreationInfo =>
+      'Once created, the laboratory and template will be read-only. Only the base cost can be adjusted later.';
 
   @override
   String get examInformation => 'Exam Information';
@@ -1212,7 +1238,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationInformation => 'Location Information';
 
   @override
-  String get updateLocationData => 'Update physical address and direct contact methods.';
+  String get updateLocationData =>
+      'Update physical address and direct contact methods.';
 
   @override
   String get contactNumbers => 'Contact Numbers';
@@ -1235,7 +1262,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get changesVisibleImmediately => 'Changes made will be visible to all operators immediately.';
+  String get changesVisibleImmediately =>
+      'Changes made will be visible to all operators immediately.';
 
   @override
   String get searchEmployeePlaceholder => ' e.g: John Doe';
@@ -1310,16 +1338,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dateFormatShort => 'DD/MM/YYYY';
 
   @override
-  String get signature => 'Signature';
-
-  @override
-  String get bioanalystSignature => 'Bioanalyst Signature';
-
-  @override
   String get uploadSignature => 'Upload Signature';
-
-  @override
-  String get changeSignature => 'Change Signature';
 
   @override
   String get signatureRequired => 'Signature required to approve';

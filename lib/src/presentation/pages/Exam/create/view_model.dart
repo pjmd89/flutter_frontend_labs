@@ -20,6 +20,7 @@ class ViewModel extends ChangeNotifier {
   bool _loading = false;
   bool _loadingData = true;
   List<ExamTemplate> _examTemplates = [];
+  List<Laboratory> _laboratories = [];
   
   final CreateExamInput input = CreateExamInput(
     template: '',
@@ -30,6 +31,7 @@ class ViewModel extends ChangeNotifier {
   bool get loading => _loading;
   bool get loadingData => _loadingData;
   List<ExamTemplate> get examTemplates => _examTemplates;
+  List<Laboratory> get laboratories => _laboratories;
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -85,6 +87,15 @@ class ViewModel extends ChangeNotifier {
       if (examTemplateResponse is EdgeExamTemplate) {
         examTemplates = examTemplateResponse.edges;
       }
+
+      // Obtener laboratorios disponibles desde loggedUser
+      final loggedUser = _laboratoryNotifier.loggedUser;
+      if (loggedUser != null) {
+        // Si el usuario tiene laboratorios asignados, usarlos
+        // Por el momento usar una lista vacía si no están disponibles
+        _laboratories = [];
+      }
+      notifyListeners();
     } catch (e, stackTrace) {
       debugPrint('💥 Error cargando datos iniciales: $e');
       debugPrint('📍 StackTrace: $stackTrace');

@@ -25,6 +25,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   final emailController = TextEditingController();
   final addressController = TextEditingController();
   final birthDateController = TextEditingController();
+  final dniSearchController = TextEditingController();
 
   InvoiceKind? selectedInvoiceKind;
   Sex? selectedSex;
@@ -46,6 +47,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
     emailController.dispose();
     addressController.dispose();
     birthDateController.dispose();
+    dniSearchController.dispose();
     super.dispose();
   }
 

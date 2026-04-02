@@ -71,6 +71,7 @@ class MembershipItem extends StatelessWidget {
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
     final userRole = loggedUser?.labRole;
+    final isBilling = userRole == LabMemberRole.bILLING;
     final shouldHideMenu = userRole == LabMemberRole.bILLING || 
                           userRole == LabMemberRole.bIOANALYST;
 

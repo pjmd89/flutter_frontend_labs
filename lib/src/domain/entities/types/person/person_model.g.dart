@@ -15,7 +15,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) => Person(
   email: json['email'] as String? ?? "",
   address: json['address'] as String? ?? "",
   birthDate: (json['birthDate'] as num?)?.toInt() ?? 0,
-  sex: $enumDecodeNullable(_$SexEnumMap, json['sex']),
+  sex: _sexFromJson(json['sex'] as String?),
   laboratory:
       json['laboratory'] == null
           ? null
@@ -33,14 +33,8 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'email': instance.email,
   'address': instance.address,
   'birthDate': instance.birthDate,
-  if (_$SexEnumMap[instance.sex] case final value?) 'sex': value,
+  if (_sexToJson(instance.sex) case final value?) 'sex': value,
   if (instance.laboratory case final value?) 'laboratory': value,
   'created': instance.created,
   'updated': instance.updated,
-};
-
-const _$SexEnumMap = {
-  Sex.fEMALE: 'FEMALE',
-  Sex.mALE: 'MALE',
-  Sex.iNTERSEX: 'INTERSEX',
 };

@@ -62,7 +62,8 @@ import 'app_localizations_es.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,17 +84,18 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('es')
+    Locale('es'),
   ];
 
   ///
@@ -521,22 +524,22 @@ abstract class AppLocalizations {
   /// **'Paquete de evaluación aprobado exitosamente'**
   String get evaluationPackageApprovedSuccessfully;
 
-  /// Título para la sección de firma del bioanalista
+  /// Campo de firma del bioanalista
   ///
   /// In es, this message translates to:
   /// **'Firma del Bioanalista'**
   String get bioanalystSignature;
 
-  /// Etiqueta para el campo de firma
+  /// Firma del bioanalista
   ///
   /// In es, this message translates to:
   /// **'Firma'**
   String get signature;
 
-  /// Botón para cambiar la firma
+  /// Botón para cambiar firma
   ///
   /// In es, this message translates to:
-  /// **'Cambiar firma'**
+  /// **'Cambiar Firma'**
   String get changeSignature;
 
   /// Error cuando el archivo no tiene extensión
@@ -2279,18 +2282,6 @@ abstract class AppLocalizations {
   /// **'Seleccionar Laboratorio'**
   String get selectLaboratory;
 
-  /// Respuesta afirmativa
-  ///
-  /// In es, this message translates to:
-  /// **'Sí'**
-  String get yes;
-
-  /// Respuesta negativa
-  ///
-  /// In es, this message translates to:
-  /// **'No'**
-  String get no;
-
   /// Mensaje de validación para campo numérico
   ///
   /// In es, this message translates to:
@@ -2621,29 +2612,11 @@ abstract class AppLocalizations {
   /// **'DD/MM/AAAA'**
   String get dateFormatShort;
 
-  /// Firma del bioanalista
-  ///
-  /// In es, this message translates to:
-  /// **'Firma'**
-  String get signature;
-
-  /// Campo de firma del bioanalista
-  ///
-  /// In es, this message translates to:
-  /// **'Firma del Bioanalista'**
-  String get bioanalystSignature;
-
   /// Botón para subir firma
   ///
   /// In es, this message translates to:
   /// **'Subir Firma'**
   String get uploadSignature;
-
-  /// Botón para cambiar firma
-  ///
-  /// In es, this message translates to:
-  /// **'Cambiar Firma'**
-  String get changeSignature;
 
   /// Mensaje de firma requerida
   ///
@@ -2652,7 +2625,8 @@ abstract class AppLocalizations {
   String get signatureRequired;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -2661,25 +2635,26 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'es': return AppLocalizationsEs();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

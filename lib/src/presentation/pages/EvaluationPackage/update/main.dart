@@ -41,9 +41,11 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
     );
     
     if (observationControllers.isEmpty) {
+      final obsController = TextEditingController();
       if (widget.evaluationPackage.observations.isNotEmpty) {
-        observationController.text = widget.evaluationPackage.observations.join('\n');
+        obsController.text = widget.evaluationPackage.observations.join('\n');
       }
+      observationControllers.add(obsController);
     }
     
     if (examValueControllers.isEmpty) {
@@ -79,7 +81,9 @@ class _EvaluationPackageUpdatePageState extends State<EvaluationPackageUpdatePag
   
   @override
   void dispose() {
-    observationController.dispose();
+    for (var c in observationControllers) {
+      c.dispose();
+    }
     for (var controllers in examValueControllers.values) {
       for (var controller in controllers) {
         controller.dispose();

@@ -35,7 +35,6 @@ EvaluationPackage _$EvaluationPackageFromJson(Map<String, dynamic> json) =>
               : BioanalystReview.fromJson(
                 json['bioanalystReview'] as Map<String, dynamic>,
               ),
-      pdfToken: json['pdfToken'] as String? ?? "",
       created: (json['created'] as num?)?.toInt() ?? 0,
       updated: (json['updated'] as num?)?.toInt() ?? 0,
     );
@@ -54,7 +53,6 @@ Map<String, dynamic> _$EvaluationPackageToJson(
   'observations': instance.observations,
   'isApproved': instance.isApproved,
   if (instance.bioanalystReview case final value?) 'bioanalystReview': value,
-  'pdfToken': instance.pdfToken,
   'created': instance.created,
   'updated': instance.updated,
 };

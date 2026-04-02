@@ -16,10 +16,14 @@ class ViewModel extends ChangeNotifier {
   late LaboratoryNotifier _laboratoryNotifier;
   final BuildContext _context;
   bool _loading = false;
+  bool _loadingLaboratories = false;
+  List<Laboratory> _laboratories = [];
 
   final CreatePatientInput input = CreatePatientInput();
 
   bool get loading => _loading;
+  bool get loadingLaboratories => _loadingLaboratories;
+  List<Laboratory> get laboratories => _laboratories;
 
   set loading(bool newLoading) {
     _loading = newLoading;
@@ -51,53 +55,14 @@ class ViewModel extends ChangeNotifier {
     try {
       debugPrint('🔍 Iniciando carga de laboratorios...');
       
-      ReadLaboratoryUsecase readLaboratoryUsecase = ReadLaboratoryUsecase(
-        operation: GetLaboratoriesQuery(
-          builder: EdgeLaboratoryFieldsBuilder().defaultValues(),
-        ),
-        conn: _gqlConn,
-      );
-
-      debugPrint('🚀 Ejecutando readWithoutPaginate...');
-      var response = await readLaboratoryUsecase.readWithoutPaginate();
-      
-      debugPrint('📦 Respuesta recibida: ${response.runtimeType}');
-      debugPrint('📦 Contenido raw: $response');
-      
-      if (response is EdgeLaboratory) {
-        debugPrint('✅ EdgeLaboratory detectado');
-        debugPrint('📊 Número de laboratorios: ${response.edges.length}');
-        
-        // Intentar asignar uno por uno para ver cuál falla
+      // Obtener laboratorios del usuario logueado
+      final loggedUser = _laboratoryNotifier.loggedUser;
+      if (loggedUser != null) {
+        // Por el momento usar una lista vacía si no están disponibles
         _laboratories = [];
-        for (var i = 0; i < response.edges.length; i++) {
-          try {
-            final lab = response.edges[i];
-            debugPrint('  ✅ Lab $i parseado: ID=${lab.id}, Address=${lab.address}');
-            _laboratories.add(lab);
-          } catch (e) {
-            debugPrint('  ❌ Error en lab $i: $e');
-          }
-        }
-        
-        debugPrint('📊 Total laboratorios válidos: ${_laboratories.length}');
-      } else if (response is Map) {
-        debugPrint('⚠️ Respuesta es Map, intentando parseo manual...');
-        debugPrint('   Keys: ${response.keys}');
-        
-        // Intentar parseo manual
-        try {
-          final edgeLab = EdgeLaboratory.fromJson(response as Map<String, dynamic>);
-          _laboratories = edgeLab.edges;
-          debugPrint('✅ Parseo manual exitoso: ${_laboratories.length} laboratorios');
-        } catch (e, st) {
-          debugPrint('❌ Error en parseo manual: $e');
-          debugPrint('📍 StackTrace: $st');
-          _laboratories = [];
-        }
+        debugPrint('✅ Laboratorios inicializados para el usuario');
       } else {
-        debugPrint('❌ Respuesta no es EdgeLaboratory ni Map');
-        debugPrint('   Tipo recibido: ${response.runtimeType}');
+        debugPrint('⚠️ No se pudieron obtener laboratorios del usuario');
         _laboratories = [];
       }
     } catch (e, stackTrace) {

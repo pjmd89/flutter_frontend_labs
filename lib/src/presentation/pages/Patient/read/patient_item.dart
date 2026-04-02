@@ -26,6 +26,18 @@ class PatientItem extends StatefulWidget {
 class _PatientItemState extends State<PatientItem> {
   bool _isHovered = false;
 
+  // ── Computed Properties ──────────────────────────────────────────────────
+
+  bool get isTechnician {
+    final loggedUser = context.read<LaboratoryNotifier>().loggedUser;
+    return loggedUser?.labRole == LabMemberRole.tECHNICIAN;
+  }
+
+  bool get isBilling {
+    final loggedUser = context.read<LaboratoryNotifier>().loggedUser;
+    return loggedUser?.labRole == LabMemberRole.bILLING;
+  }
+
   // ── Helpers ──────────────────────────────────────────────────────────────
 
   bool get _isHuman => widget.patient.isPerson;

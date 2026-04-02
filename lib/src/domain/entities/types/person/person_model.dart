@@ -1,5 +1,6 @@
 import "/src/domain/entities/main.dart";
 import "package:json_annotation/json_annotation.dart";
+import "/src/domain/entities/enums/sex_enum.dart";
 part "person_model.g.dart";
 @JsonSerializable(includeIfNull: false)
 class Person {
@@ -44,16 +45,29 @@ class Person {
   Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
 
+// Mapa local para conversión de Sex enum
+const _sexEnumMap = {
+  'FEMALE': Sex.fEMALE,
+  'MALE': Sex.mALE,
+  'INTERSEX': Sex.iNTERSEX,
+};
+
+const _sexEnumMapReverse = {
+  Sex.fEMALE: 'FEMALE',
+  Sex.mALE: 'MALE',
+  Sex.iNTERSEX: 'INTERSEX',
+};
+
 // Permite que sex venga vacío o null sin romper el decode
 Sex? _sexFromJson(String? value) {
   if (value == null || value.isEmpty) return null;
   try {
-    return $enumDecodeNullable(_$SexEnumMap, value);
+    return _sexEnumMap[value];
   } catch (_) {
     return null;
   }
 }
 
 String? _sexToJson(Sex? sex) {
-  return sex == null ? null : _$SexEnumMap[sex];
+  return sex == null ? null : _sexEnumMapReverse[sex];
 }

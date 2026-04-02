@@ -22,6 +22,7 @@ class ViewModel extends ChangeNotifier {
   LabMembershipInfo? _currentMembership;
   
   LabMembershipInfo? get currentMembership => _currentMembership;
+  User? get currentUser => _currentMembership?.member;
   bool get loading => _loading;
   bool get error => _error;
   
