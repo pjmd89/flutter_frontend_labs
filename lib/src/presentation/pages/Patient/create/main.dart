@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
-import 'package:labs/src/presentation/core/ui/content_dialog/content_dialog.dart';
-import 'package:labs/src/presentation/core/ui/main.dart';
 import './view_model.dart';
 
 class PatientCreatePage extends StatefulWidget {
@@ -15,6 +14,7 @@ class PatientCreatePage extends StatefulWidget {
 
 class _PatientCreatePageState extends State<PatientCreatePage> {
   late ViewModel viewModel;
+  
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final speciesController = TextEditingController();
@@ -29,11 +29,7 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
   Sex? selectedSex;
   PatientType? selectedPatientType;
   DateTime? selectedBirthDate;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  String? selectedLaboratoryID;
 
   @override
   void didChangeDependencies() {
@@ -57,313 +53,376 @@ class _PatientCreatePageState extends State<PatientCreatePage> {
   String getSexLabel(BuildContext context, Sex sex) {
     final l10n = AppLocalizations.of(context)!;
     switch (sex) {
-      case Sex.fEMALE:
-        return l10n.sexFemale;
-      case Sex.mALE:
-        return l10n.sexMale;
-      case Sex.iNTERSEX:
-        return l10n.sexIntersex;
+      case Sex.fEMALE: return l10n.sexFemale;
+      case Sex.mALE: return l10n.sexMale;
+      case Sex.iNTERSEX: return l10n.sexIntersex;
     }
   }
 
   String getPatientTypeLabel(BuildContext context, PatientType type) {
     final l10n = AppLocalizations.of(context)!;
     switch (type) {
-      case PatientType.hUMAN:
-        return l10n.patientTypeHuman;
-      case PatientType.aNIMAL:
-        return l10n.patientTypeAnimal;
+      case PatientType.hUMAN: return l10n.patientTypeHuman;
+      case PatientType.aNIMAL: return l10n.patientTypeAnimal;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
-        return ContentDialog(
-          icon: Icons.person_add,
-          title: l10n.createThing(l10n.patient),
-          loading: viewModel.loading,
-          maxWidth: 700,
-          minWidth: 700,
-          form: Form(
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(l10n.createThing(l10n.patient)),
+            elevation: 0,
+            backgroundColor: theme.scaffoldBackgroundColor,
+            foregroundColor: theme.textTheme.bodyLarge?.color,
+          ),
+          body: Form(
             key: formKey,
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Nombre y Apellido en la misma fila
-                  Row(
+              padding: const EdgeInsets.all(24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.firstName,
-                          controller: firstNameController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.firstName = value;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.lastName,
-                          controller: lastNameController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          counterText: "",
-                          onChange: (value) {
-                            viewModel.input.lastName = value;
-                          },
-                        ),
-                      ),
+                      _buildSegmentedSelector(l10n, theme),
+                      const SizedBox(height: 32),
+                      _buildFormBody(l10n, theme),
+                      const SizedBox(height: 40),
+                      _buildFooterButtons(l10n, theme),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  // Tipo de Paciente y Fecha de Nacimiento en la misma fila
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField<PatientType>(
-                          value: selectedPatientType,
-                          decoration: InputDecoration(
-                            labelText: l10n.patientType,
-                            isDense: true,
-                            border: const OutlineInputBorder(),
-                          ),
-                          items: PatientType.values.map((PatientType type) {
-                            return DropdownMenuItem<PatientType>(
-                              value: type,
-                              child: Text(getPatientTypeLabel(context, type)),
-                            );
-                          }).toList(),
-                          onChanged: (PatientType? newValue) {
-                            setState(() {
-                              selectedPatientType = newValue;
-                              viewModel.input.patientType = newValue ?? PatientType.hUMAN;
-                              
-                              // Si cambia a HUMAN, limpiar campo species
-                              if (newValue == PatientType.hUMAN) {
-                                speciesController.clear();
-                                viewModel.input.species = null;
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CustomTextFormField(
-                          labelText: l10n.birthDate,
-                          controller: birthDateController,
-                          isDense: true,
-                          fieldLength: FormFieldLength.name,
-                          readOnly: true,
-                          counterText: "",
-                          onTap: () async {
-                            final pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: selectedBirthDate ?? DateTime.now(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now(),
-                            );
-
-                            if (pickedDate != null) {
-                              final dateTime = DateTime(
-                                pickedDate.year,
-                                pickedDate.month,
-                                pickedDate.day,
-                                0,
-                                0,
-                              );
-
-                              setState(() {
-                                selectedBirthDate = dateTime;
-                                final day = dateTime.day.toString().padLeft(2, '0');
-                                final month = dateTime.month.toString().padLeft(2, '0');
-                                final year = dateTime.year.toString();
-
-                                birthDateController.text = '$day/$month/$year';
-                                viewModel.input.birthDate = '$day/$month/$year 00:00';
-                              });
-                            }
-                          },
-                          onChange: (_) {},
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // Sexo
-                  DropdownButtonFormField<Sex>(
-                    value: selectedSex,
-                    decoration: InputDecoration(
-                      labelText: l10n.sex,
-                      isDense: true,
-                      border: const OutlineInputBorder(),
-                    ),
-                    items: Sex.values.map((Sex sex) {
-                      return DropdownMenuItem<Sex>(
-                        value: sex,
-                        child: Text(getSexLabel(context, sex)),
-                      );
-                    }).toList(),
-                    onChanged: (Sex? newValue) {
-                      setState(() {
-                        selectedSex = newValue;
-                        viewModel.input.sex = newValue!;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return l10n.emptyFieldError;
-                      }
-                      return null;
-                    },
-                  ),
-                  
-                  // Campos condicionales según tipo de paciente
-                  if (selectedPatientType == PatientType.hUMAN) ...[
-                    const SizedBox(height: 16),
-                    // DNI, Teléfono, Email para HUMAN
-                    CustomTextFormField(
-                      labelText: l10n.dni,
-                      controller: dniController,
-                      isDense: true,
-                      fieldLength: FormFieldLength.name,
-                      counterText: "",
-                      onChange: (value) {
-                        viewModel.input.dni = value;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextFormField(
-                            labelText: l10n.phone,
-                            controller: phoneController,
-                            isDense: true,
-                            fieldLength: FormFieldLength.name,
-                            counterText: "",
-                            onChange: (value) {
-                              viewModel.input.phone = value;
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CustomTextFormField(
-                            labelText: l10n.email,
-                            controller: emailController,
-                            isDense: true,
-                            fieldLength: FormFieldLength.email,
-                            counterText: "",
-                            onChange: (value) {
-                              viewModel.input.email = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    CustomTextFormField(
-                      labelText: l10n.address,
-                      controller: addressController,
-                      isDense: true,
-                      fieldLength: FormFieldLength.email,
-                      counterText: "",
-                      onChange: (value) {
-                        viewModel.input.address = value;
-                      },
-                    ),
-                  ] else if (selectedPatientType == PatientType.aNIMAL) ...[
-                    const SizedBox(height: 16),
-                    // Species para ANIMAL
-                    CustomTextFormField(
-                      labelText: l10n.species,
-                      controller: speciesController,
-                      isDense: true,
-                      fieldLength: FormFieldLength.name,
-                      counterText: "",
-                      onChange: (value) {
-                        viewModel.input.species = value;
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return l10n.emptyFieldError;
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    CustomTextFormField(
-                      labelText: l10n.address,
-                      controller: addressController,
-                      isDense: true,
-                      fieldLength: FormFieldLength.email,
-                      counterText: "",
-                      onChange: (value) {
-                        viewModel.input.address = value;
-                      },
-                    ),
-                  ],
-                  
-                  // Laboratory is taken from current context; no manual selection needed
-                ],
+                ),
               ),
             ),
           ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  child: Text(l10n.cancel),
-                  onPressed: () {
-                    context.pop();
-                  },
-                ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed: viewModel.loading
-                      ? null
-                      : () async {
-                          if (formKey.currentState!.validate()) {
-                            var isErr = await viewModel.create();
-
-                            if (!isErr) {
-                              if (!context.mounted) return;
-                              context.pop(true);
-                            }
-                          }
-                        },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.createThing(l10n.patient)),
-                      const SizedBox(width: 8),
-                      viewModel.loading
-                          ? const SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.save),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
         );
       },
     );
+  }
+
+  Widget _buildSegmentedSelector(AppLocalizations l10n, ThemeData theme) {
+    final colorScheme = theme.colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionTitle(l10n.patientType, Icons.category, context),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest.withOpacity(0.5), 
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: PatientType.values.map((type) {
+              final isSelected = selectedPatientType == type;
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () => setState(() {
+                    selectedPatientType = type;
+                    viewModel.input.patientType = type;
+                  }),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      color: isSelected ? colorScheme.primary : Colors.transparent,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Text(
+                        getPatientTypeLabel(context, type),
+                        style: TextStyle(
+                          color: isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant, 
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFormBody(AppLocalizations l10n, ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionTitle(l10n.patient, Icons.person, context),
+        const SizedBox(height: 16),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: _buildTextField(
+              l10n.firstName,
+              l10n.firstName,
+              context,
+              controller: firstNameController,
+              onChanged: (v) => viewModel.input.firstName = v,
+            )),
+            const SizedBox(width: 16),
+            Expanded(child: _buildTextField(
+              l10n.lastName,
+              l10n.lastName,
+              context,
+              controller: lastNameController,
+              onChanged: (v) => viewModel.input.lastName = v,
+            )),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: _buildDropdownField<Sex>(
+              label: l10n.sex,
+              hint: "",
+              context: context,
+              value: selectedSex,
+              items: Sex.values.map((s) => DropdownMenuItem(value: s, child: Text(getSexLabel(context, s)))).toList(),
+              onChanged: (v) => setState(() { selectedSex = v; viewModel.input.sex = v!; }),
+            )),
+            const SizedBox(width: 16),
+            Expanded(child: _buildTextField(
+              l10n.birthDate,
+              "DD/MM/YYYY",
+              context,
+              icon: Icons.calendar_today,
+              controller: birthDateController,
+              readOnly: true,
+              onTap: _pickDate,
+              onChanged: (_) {},
+            )),
+          ],
+        ),
+        const SizedBox(height: 32),
+        Divider(color: theme.dividerColor),
+        const SizedBox(height: 16),
+        if (selectedPatientType == PatientType.hUMAN) ...[
+          _sectionTitle(l10n.dni, Icons.badge, context),
+          const SizedBox(height: 16),
+          _buildTextField(
+            l10n.dni,
+            l10n.dni,
+            context,
+            controller: dniController,
+            onChanged: (v) => viewModel.input.dni = v,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            l10n.email,
+            l10n.email,
+            context,
+            icon: Icons.mail_outline,
+            controller: emailController,
+            onChanged: (v) => viewModel.input.email = v,
+          ),
+        ] else if (selectedPatientType == PatientType.aNIMAL) ...[
+          _sectionTitle(l10n.species, Icons.pets, context),
+          const SizedBox(height: 16),
+          _buildTextField(
+            l10n.species,
+            l10n.species,
+            context,
+            controller: speciesController,
+            onChanged: (v) => viewModel.input.species = v,
+          ),
+        ],
+        const SizedBox(height: 16),
+        _buildTextField(
+          l10n.address,
+          l10n.address,
+          context,
+          icon: Icons.location_on,
+          controller: addressController,
+          onChanged: (v) => viewModel.input.address = v,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooterButtons(AppLocalizations l10n, ThemeData theme) {
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton(
+            onPressed: () => context.pop(),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            child: Text(l10n.cancel),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          flex: 2,
+          child: ElevatedButton.icon(
+            onPressed: viewModel.loading ? null : _submit,
+            icon: viewModel.loading
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2, 
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                  )
+                : const Icon(Icons.save, size: 18),
+            label: Text(l10n.createThing(l10n.patient)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: theme.primaryColor,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              elevation: 10,
+              shadowColor: theme.primaryColor.withOpacity(0.4),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _sectionTitle(String title, IconData icon, BuildContext context) {
+    final theme = Theme.of(context);
+    final titleColor = theme.textTheme.bodyLarge?.color ?? theme.primaryColor;
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: titleColor),
+        const SizedBox(width: 8),
+        Text(title.toUpperCase(), 
+          style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: titleColor, letterSpacing: 1.2)),
+      ],
+    );
+  }
+
+  Widget _buildTextField(
+    String label, 
+    String hint, 
+    BuildContext context,
+    {
+      IconData? icon, 
+      String? prefix, 
+      TextEditingController? controller, 
+      Function(String)? onChanged,
+      String? Function(String?)? validator,
+      bool readOnly = false,
+      VoidCallback? onTap,
+    }
+  ) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: controller,
+          onChanged: onChanged,
+          validator: validator,
+          readOnly: readOnly,
+          onTap: onTap,
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: icon != null ? Icon(icon, size: 18) : (prefix != null ? Padding(padding: const EdgeInsets.all(12), child: Text(prefix)) : null),
+            filled: true,
+            fillColor: fieldBg,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: theme.dividerColor)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdownField<T>({
+    required String label,
+    required String hint,
+    required BuildContext context,
+    required T? value,
+    required List<DropdownMenuItem<T>> items,
+    required void Function(T?) onChanged,
+    String? Function(T?)? validator,
+  }) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final Color fieldBg = theme.inputDecorationTheme.fillColor ?? (isDark ? theme.scaffoldBackgroundColor : theme.cardColor);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: fieldBg,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: theme.dividerColor),
+          ),
+          child: DropdownButtonFormField<T>(
+            value: value,
+            isExpanded: true,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.zero,
+            ),
+            items: items,
+            onChanged: onChanged,
+            validator: validator,
+          ),
+        ),
+        if (hint.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(hint, style: TextStyle(fontSize: 11, color: theme.hintColor)),
+        ],
+      ],
+    );
+  }
+
+  /// PICKER ACTUALIZADO CON FORMATO ESTRICTO: dd/mm/yyyy hh:mm
+  void _pickDate() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (date != null) {
+      // Formateo manual para asegurar ceros a la izquierda (01, 02...)
+      final String d = date.day.toString().padLeft(2, '0');
+      final String m = date.month.toString().padLeft(2, '0');
+      final String y = date.year.toString();
+      
+      final String formattedDate = "$d/$m/$y";
+      final String formattedFull = "$formattedDate 00:00";
+
+      setState(() {
+        birthDateController.text = formattedDate; // Para mostrar al usuario (puedes mostrar el full si prefieres)
+        viewModel.input.birthDate = formattedFull; // Para el servidor
+      });
+    }
+  }
+
+  void _submit() async {
+    if (formKey.currentState!.validate()) {
+      bool isErr = await viewModel.create();
+      if (!isErr && mounted) context.pop(true);
+    }
   }
 }

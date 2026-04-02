@@ -34,11 +34,31 @@ class UserItem extends StatelessWidget {
     }
   }
 
+  Color _getAvatarColor(BuildContext context, int index) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final colors = [
+      colorScheme.primary,
+      colorScheme.secondary,
+      colorScheme.tertiary,
+      colorScheme.primaryContainer,
+      colorScheme.secondaryContainer,
+      colorScheme.tertiaryContainer,
+    ];
+    return colors[index % colors.length];
+  }
+
+  String _getInitials(String firstName, String lastName) {
+    final first = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';
+    final last = lastName.isNotEmpty ? lastName[0].toUpperCase() : '';
+    return '$first$last';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final fullName = '${user.firstName} ${user.lastName}'.trim();
     final roleText = _getRoleText();
+    final initials = _getInitials(user.firstName, user.lastName);
+    final avatarColor = _getAvatarColor(context, user.id.hashCode);
     
     // Obtener el rol del usuario logueado
     final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
@@ -46,63 +66,111 @@ class UserItem extends StatelessWidget {
     final shouldHideMenu = userRole == LabMemberRole.bILLING || 
                           userRole == LabMemberRole.bIOANALYST;
 
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 360, maxHeight: 150),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const CircleAvatar(child: Icon(Icons.person_outline)),
-              title: Text(fullName, style: theme.textTheme.titleMedium),
-              subtitle: Text(roleText),
-              trailing: shouldHideMenu
-                  ? null // Ocultar el menú si es billing o bioanalista
-                  : PopupMenuButton<String>(
-                      icon: const Icon(Icons.more_vert),
-                      onSelected: (value) {
-                        if (value == 'edit' && onUpdate != null) {
-                          debugPrint('\n📤 ========== NAVEGANDO A UPDATE (UserItem) ==========');
-                          debugPrint('📤 user.id: "${user.id}"');
-                          debugPrint('📤 user.firstName: ${user.firstName}');
-                          debugPrint('📤 user.lastName: ${user.lastName}');
-                          debugPrint('📤 Pasando objeto User completo');
-                          debugPrint('========================================\n');
-                          onUpdate!(user);
-                        }
-                      },
-                      itemBuilder:
-                          (context) => [
-                            PopupMenuItem(
-                              value: 'edit',
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.edit),
-                                  const SizedBox(width: 8),
-                                  Text(l10n.edit),
-                                ],
-                              ),
-                            ),
-                          ],
-                    ),
-            ),
-            const Divider(height: 1),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (onViewLabs != null)
-                    OutlinedButton(
-                      onPressed: () => onViewLabs!(user.id),
-                      child: Text(l10n.viewLaboratories),
-                    ),
-                ],
-              ),
-            ),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
         ),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          // Usuario con avatar
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 18,
+                  backgroundColor: avatarColor.withOpacity(0.1),
+                  child: Text(
+                    initials,
+                    style: TextStyle(
+                      color: avatarColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        fullName,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        user.email,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontSize: 12,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Rol
+          Expanded(
+            flex: 2,
+            child: Text(
+              roleText,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+          
+          // Laboratorio / Fecha (placeholder)
+          Expanded(
+            flex: 2,
+            child: Text(
+              l10n.generalLaboratory,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+          
+          // Acciones
+          Expanded(
+            flex: 1,
+            child: isBilling
+                ? const SizedBox.shrink()
+                : Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          if (onUpdate != null) {
+                            debugPrint('\n📤 ========== NAVEGANDO A UPDATE (UserItem) ==========');
+                            debugPrint('📤 user.id: "${user.id}"');
+                            debugPrint('📤 user.firstName: ${user.firstName}');
+                            debugPrint('📤 user.lastName: ${user.lastName}');
+                            debugPrint('📤 Pasando objeto User completo');
+                            debugPrint('========================================\n');
+                            onUpdate!(user);
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.edit,
+                            size: 18,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        ],
       ),
     );
   }

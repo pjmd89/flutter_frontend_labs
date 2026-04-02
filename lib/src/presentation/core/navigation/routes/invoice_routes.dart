@@ -15,7 +15,7 @@ final List<GoRoute> invoiceRoutes = [
     routes: [
       GoRoute(
         path: 'create',
-        pageBuilder: (context, state) => CustomDialogPage(
+        pageBuilder: (context, state) => CustomSlideTransition(
           context: context, 
           state: state, 
           child: const InvoiceCreatePage()

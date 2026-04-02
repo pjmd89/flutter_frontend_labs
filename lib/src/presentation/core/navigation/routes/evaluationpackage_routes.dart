@@ -36,7 +36,7 @@ final List<GoRoute> evaluationpackageRoutes = [
       ),
       GoRoute(
         path: 'update',
-        pageBuilder: (context, state) => CustomDialogPage(
+        pageBuilder: (context, state) => CustomSlideTransition(
           context: context, 
           state: state, 
           child: EvaluationPackageUpdatePage(

@@ -381,7 +381,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get upload => 'Subir';
 
   @override
-  String get changeLogo => 'Cambiar logo';
+  String get changeLogo => 'Cambiar Logo';
 
   @override
   String get uploading => 'Subiendo...';
@@ -553,13 +553,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get valueType => 'Tipo de Valor';
 
   @override
-  String get valueTypeNumeric => 'Numérico';
+  String get valueTypeNumeric => 'NUMÉRICO';
 
   @override
-  String get valueTypeText => 'Texto';
+  String get valueTypeText => 'TEXTO';
 
   @override
-  String get valueTypeBoolean => 'Booleano';
+  String get valueTypeBoolean => 'BOOLEANO';
 
   @override
   String get unit => 'Unidad';
@@ -568,7 +568,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get normalRange => 'Rango Normal';
 
   @override
-  String get indicators => 'Indicadores';
+  String get indicators => 'indicadores';
 
   @override
   String get addIndicator => 'Agregar indicador';
@@ -1135,4 +1135,192 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get selectLaboratory => 'Seleccionar Laboratorio';
+
+  @override
+  String get yes => 'Sí';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get mustBeNumeric => 'Debe ser un valor numérico';
+
+  @override
+  String get examResultsTitle => 'Resultados de Exámenes';
+
+  @override
+  String get examResultsDescription => 'Complete los valores de los indicadores para cada examen del paquete';
+
+  @override
+  String get referenceData => 'Datos de Referencia';
+
+  @override
+  String get inProgress => 'En Progreso';
+
+  @override
+  String get completed => 'Completado';
+
+  @override
+  String get patientInformation => 'Información del Paciente';
+
+  @override
+  String get updatePatientData => 'Actualice los datos del paciente.';
+
+  @override
+  String get allPatients => 'Todos los pacientes';
+
+  @override
+  String get actions => 'Acciones';
+
+  @override
+  String get examTemplateHint => 'Ej: Hemograma completo, Perfil lipídico...';
+
+  @override
+  String get costMustBeGreaterThanZero => 'El costo debe ser mayor a cero';
+
+  @override
+  String get examCreationInfo => 'Una vez creado, el laboratorio y la plantilla serán de solo lectura. Solo el costo base podrá ajustarse posteriormente.';
+
+  @override
+  String get examInformation => 'Información del Examen';
+
+  @override
+  String get updateExamData => 'Actualice los datos del examen.';
+
+  @override
+  String get updateCompanyData => 'Actualice los datos de la empresa.';
+
+  @override
+  String get generalLaboratory => 'Lab General';
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get allRoles => 'Todos los Roles';
+
+  @override
+  String get personalInformation => 'Información Personal';
+
+  @override
+  String get updateUserData => 'Actualice los datos personales del usuario.';
+
+  @override
+  String get updateExamTemplateData => 'Actualiza la información del template de examen';
+
+  @override
+  String get locationInformation => 'Información de Ubicación';
+
+  @override
+  String get updateLocationData => 'Actualice la dirección física y los métodos de contacto directo.';
+
+  @override
+  String get contactNumbers => 'Números de contacto';
+
+  @override
+  String get employeeInformation => 'Información de Empleados';
+
+  @override
+  String get noEmployeesAssigned => 'No hay empleados asignados a este laboratorio';
+
+  @override
+  String get branchId => 'ID de Sucursal';
+
+  @override
+  String get lastUpdate => 'Última Actualización';
+
+  @override
+  String daysAgo(int days) {
+    return 'Hace $days días';
+  }
+
+  @override
+  String get changesVisibleImmediately => 'Los cambios realizados serán visibles para todos los operarios inmediatamente.';
+
+  @override
+  String get searchEmployeePlaceholder => ' Ej: Juan Perez';
+
+  @override
+  String get employees => 'Empleados';
+
+  @override
+  String get totalLabs => 'Total Laboratorios';
+
+  @override
+  String get patientVerified => 'Paciente verificado';
+
+  @override
+  String get hide => 'Ocultar';
+
+  @override
+  String get show => 'Mostrar';
+
+  @override
+  String get configureBillingData => 'Configura los datos de facturación';
+
+  @override
+  String get doctorNamePlaceholder => 'Dr. Nombre...';
+
+  @override
+  String get summary => 'Resumen';
+
+  @override
+  String get automaticCalculation => 'Cálculo automático';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get dateTimeFormat => 'DD/MM/YYYY HH:MM';
+
+  @override
+  String get confirmSelection => 'Confirmar Selección';
+
+  @override
+  String get invalidFileFormat => 'Formato no válido. Usa JPG, JPEG, PNG o GIF';
+
+  @override
+  String get onlyAvailableOnWeb => 'Funcionalidad solo disponible en web';
+
+  @override
+  String get companyInfo => 'INFORMACIÓN DE LA EMPRESA';
+
+  @override
+  String get companyName => 'Nombre de la Empresa';
+
+  @override
+  String get taxIDRUC => 'RUC / Tax ID';
+
+  @override
+  String get laboratoryInfo => 'INFORMACIÓN DEL LABORATORIO';
+
+  @override
+  String get laboratoryAddress => 'Dirección del Laboratorio';
+
+  @override
+  String get contactPhonesHint => 'Teléfonos de Contacto (separados por comas)';
+
+  @override
+  String get contactPhonesPlaceholder => '555-1234, 555-5678';
+
+  @override
+  String get billingInfo => 'INFORMACIÓN DE FACTURACIÓN';
+
+  @override
+  String get dateFormatShort => 'DD/MM/AAAA';
+
+  @override
+  String get signature => 'Firma';
+
+  @override
+  String get bioanalystSignature => 'Firma del Bioanalista';
+
+  @override
+  String get uploadSignature => 'Subir Firma';
+
+  @override
+  String get changeSignature => 'Cambiar Firma';
+
+  @override
+  String get signatureRequired => 'Firma requerida para aprobar';
 }

@@ -4,7 +4,9 @@ import 'package:labs/l10n/app_localizations.dart';
 import '/src/domain/entities/main.dart';
 import '/src/domain/operation/fields_builders/main.dart';
 import '/src/domain/operation/mutations/updateLaboratory/updatelaboratory_mutation.dart';
+import '/src/domain/operation/mutations/manageLaboratoryEmployees/managelaboratoryemployees_mutation.dart';
 import '/src/domain/usecases/Laboratory/update_laboratory_usecase.dart';
+import '/src/domain/usecases/Laboratory/manage_employees_usecase.dart';
 import '/src/presentation/providers/gql_notifier.dart';
 import '/src/infraestructure/services/error_service.dart';
 
@@ -68,6 +70,58 @@ class ViewModel extends ChangeNotifier {
       
       _errorService.showError(
         message: 'Error al actualizar laboratorio: ${e.toString()}',
+      );
+    } finally {
+      loading = false;
+    }
+
+    return isError;
+  }
+
+  /// Gestiona los empleados del laboratorio (agregar o remover)
+  /// [employeeIds] Lista de IDs de empleados a gestionar
+  /// [remove] true para remover, false para agregar
+  Future<bool> manageEmployees({
+    required List<String> employeeIds,
+    required bool remove,
+  }) async {
+    bool isError = true;
+    loading = true;
+
+    // Convertir IDs a EmployeeInput
+    final employeeInputs = employeeIds.map((id) => EmployeeInput(id: id)).toList();
+
+    // Crear el input
+    final employeesInput = LaboratoryEmployeesInput(
+      id: _currentLaboratory?.id,
+      employees: employeeInputs,
+      remove: remove,
+    );
+
+    ManageEmployeesUsecase useCase = ManageEmployeesUsecase(
+      operation: ManageLaboratoryEmployeesMutation(builder: LaboratoryFieldsBuilder()),
+      conn: _gqlConn,
+    );
+
+    try {
+      var response = await useCase.execute(input: employeesInput);
+      
+      if (response is Laboratory) {
+        isError = false;
+        _currentLaboratory = response;
+        
+        final action = remove ? 'removidos' : 'agregados';
+        _errorService.showError(
+          message: 'Empleados $action correctamente',
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('💥 Error en manageEmployees: $e');
+      debugPrint('📍 StackTrace: $stackTrace');
+      isError = true;
+      
+      _errorService.showError(
+        message: 'Error al gestionar empleados: ${e.toString()}',
       );
     } finally {
       loading = false;

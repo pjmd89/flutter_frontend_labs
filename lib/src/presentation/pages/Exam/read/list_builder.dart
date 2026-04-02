@@ -11,14 +11,20 @@ List<Widget> buildList({
 }) {
   // Estado: Cargando
   if (viewModel.loading) {
-    return [const Center(child: CircularProgressIndicator())];
+    return [
+      const Padding(
+        padding: EdgeInsets.all(48.0),
+        child: Center(child: CircularProgressIndicator()),
+      )
+    ];
   }
 
   // Estado: Error
   if (viewModel.error) {
     return [
-      Center(
-        child: Text(l10n.errorLoadingData),
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(child: Text(l10n.errorLoadingData)),
       )
     ];
   }
@@ -26,8 +32,10 @@ List<Widget> buildList({
   // Estado: Sin datos
   if (viewModel.examList == null || viewModel.examList!.isEmpty) {
     return [
-      Center(
-        child: Text(l10n.noRegisteredMaleThings(l10n.exams)),
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(
+            child: Text(l10n.noRegisteredMaleThings(l10n.exams))),
       )
     ];
   }

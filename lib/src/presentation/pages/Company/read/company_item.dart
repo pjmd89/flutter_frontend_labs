@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
 import 'package:labs/src/infraestructure/config/env.dart';
+import 'package:intl/intl.dart';
 
-class CompanyItem extends StatelessWidget {
+class CompanyItem extends StatefulWidget {
   final Company company;
   final AppLocalizations l10n;
   final Function(String id)? onUpdate;
@@ -16,6 +17,13 @@ class CompanyItem extends StatelessWidget {
     this.onUpdate,
     this.onDelete,
   });
+
+  @override
+  State<CompanyItem> createState() => _CompanyItemState();
+}
+
+class _CompanyItemState extends State<CompanyItem> {
+  bool _isHovered = false;
 
   /// Construye la URL completa del logo
   String _buildLogoUrl(String logoPath) {
@@ -33,69 +41,213 @@ class CompanyItem extends StatelessWidget {
     return '$baseUrl/files/$logoPath';
   }
 
+  String get _formattedDate {
+    try {
+      if (widget.company.created == 0) return '—';
+      final date =
+          DateTime.fromMillisecondsSinceEpoch(widget.company.created * 1000);
+      return DateFormat('MMM dd, yyyy').format(date);
+    } catch (_) {
+      return '—';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Construir URL completa del logo
-    final String? logoUrl = company.logo.isNotEmpty ? _buildLogoUrl(company.logo) : null;
+    final colorScheme = Theme.of(context).colorScheme;
+    final String? logoUrl = widget.company.logo.isNotEmpty 
+        ? _buildLogoUrl(widget.company.logo) 
+        : null;
     
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 360),
-      child: Card(
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            child: logoUrl != null
-                ? ClipOval(
-                    child: Image.network(
-                      logoUrl,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        debugPrint('❌ Error cargando logo de ${company.name}: $error');
-                        return Icon(
-                          Icons.business_outlined,
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        );
-                      },
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        }
-                        return SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                : Icon(
-                    Icons.business_outlined,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        decoration: BoxDecoration(
+          color: _isHovered
+              ? colorScheme.surfaceContainerHighest.withOpacity(0.35)
+              : Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: colorScheme.onSurface.withOpacity(0.08),
+            ),
           ),
-          title: Text(company.name),
-          subtitle: Text('${l10n.taxID}: ${company.taxID}'),
-          trailing: PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'edit' && onUpdate != null) {
-                onUpdate!(company.id);
-              } else if (value == 'delete' && onDelete != null) {
-                onDelete!(company.id);
-              }
-            },
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem(value: 'edit', child: Text(l10n.edit)),
-                  PopupMenuItem(value: 'delete', child: Text(l10n.delete)),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        child: Row(
+          children: [
+            // Col 1: Company name with logo
+            Expanded(
+              flex: 4,
+              child: Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: logoUrl != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              logoUrl,
+                              width: 36,
+                              height: 36,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(
+                                  Icons.business_outlined,
+                                  color: colorScheme.onPrimaryContainer,
+                                  size: 18,
+                                );
+                              },
+                            ),
+                          )
+                        : Icon(
+                            Icons.business_outlined,
+                            color: colorScheme.onPrimaryContainer,
+                            size: 18,
+                          ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      widget.company.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
+              ),
+            ),
+
+            // Col 2: Tax ID
+            Expanded(
+              flex: 2,
+              child: Text(
+                widget.company.taxID,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'monospace',
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+
+            // Col 3: Owner
+            Expanded(
+              flex: 3,
+              child: Text(
+                widget.company.owner != null
+                    ? '${widget.company.owner!.firstName} ${widget.company.owner!.lastName}'.trim()
+                    : '—',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+
+            // Col 4: Creation date
+            Expanded(
+              flex: 2,
+              child: Text(
+                _formattedDate,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+
+            // Col 6: Actions
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  AnimatedOpacity(
+                    opacity: _isHovered ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 150),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (widget.onUpdate != null)
+                          _ActionButton(
+                            icon: Icons.edit_outlined,
+                            color: colorScheme.primary,
+                            hoverBg: colorScheme.primary.withOpacity(0.1),
+                            tooltip: widget.l10n.edit,
+                            onTap: () => widget.onUpdate!(widget.company.id),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Action button ────────────────────────────────────────────────────
+
+class _ActionButton extends StatefulWidget {
+  final IconData icon;
+  final Color color;
+  final Color hoverBg;
+  final String tooltip;
+  final VoidCallback onTap;
+
+  const _ActionButton({
+    required this.icon,
+    required this.color,
+    required this.hoverBg,
+    required this.tooltip,
+    required this.onTap,
+  });
+
+  @override
+  State<_ActionButton> createState() => _ActionButtonState();
+}
+
+class _ActionButtonState extends State<_ActionButton> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 4),
+      child: Tooltip(
+        message: widget.tooltip,
+        child: MouseRegion(
+          onEnter: (_) => setState(() => _isHovered = true),
+          onExit: (_) => setState(() => _isHovered = false),
+          child: GestureDetector(
+            onTap: widget.onTap,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: _isHovered ? widget.hoverBg : Colors.transparent,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Icon(
+                widget.icon,
+                size: 18,
+                color: widget.color,
+              ),
+            ),
           ),
         ),
       ),

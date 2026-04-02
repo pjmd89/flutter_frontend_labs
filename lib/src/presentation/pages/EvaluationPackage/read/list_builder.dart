@@ -11,21 +11,34 @@ List<Widget> buildList({
 }) {
   // Estado: Cargando
   if (viewModel.loading) {
-    return [const Center(child: CircularProgressIndicator())];
+    return [
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(child: CircularProgressIndicator()),
+      ),
+    ];
   }
 
   // Estado: Error
   if (viewModel.error) {
-    return [Center(child: Text(l10n.errorLoadingData))];
+    return [
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(child: Text(l10n.errorLoadingData)),
+      ),
+    ];
   }
 
   // Estado: Sin datos
   if (viewModel.evaluationPackageList == null ||
       viewModel.evaluationPackageList!.isEmpty) {
     return [
-      Center(
-        child: Text(l10n.noRegisteredMaleThings(l10n.evaluationPackages)),
-      )
+      Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: Center(
+          child: Text(l10n.noRegisteredMaleThings(l10n.evaluationPackages)),
+        ),
+      ),
     ];
   }
 

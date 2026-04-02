@@ -17,7 +17,7 @@ final List<GoRoute> companyRoutes = [
       GoRoute(
         path: 'update/:id',
         pageBuilder:
-            (context, state) => CustomDialogPage(
+            (context, state) => CustomSlideTransition(
               context: context,
               state: state,
               child: CompanyUpdatePage(id: state.pathParameters['id']!),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:labs/l10n/app_localizations.dart';
 import 'package:labs/src/domain/entities/main.dart';
+import 'package:provider/provider.dart';
+import 'package:labs/src/presentation/providers/laboratory_notifier.dart';
 
-class InvoiceItem extends StatelessWidget {
+class InvoiceItem extends StatefulWidget {
   final Invoice invoice;
   final AppLocalizations l10n;
   final Function(String id, PaymentStatus newStatus)? onUpdatePaymentStatus;
@@ -15,304 +18,324 @@ class InvoiceItem extends StatelessWidget {
   });
 
   @override
+  State<InvoiceItem> createState() => _InvoiceItemState();
+}
+
+class _InvoiceItemState extends State<InvoiceItem> {
+  bool _isHovered = false;
+
+  String _getPatientName() {
+    if (widget.invoice.patient == null) return widget.l10n.patient;
+    final patient = widget.invoice.patient!;
+    if (patient.isPerson && patient.asPerson != null) {
+      final p = patient.asPerson!;
+      return '${p.firstName} ${p.lastName}';
+    } else if (patient.isAnimal && patient.asAnimal != null) {
+      final a = patient.asAnimal!;
+      return '${a.firstName} ${a.lastName}';
+    }
+    return widget.l10n.patient;
+  }
+
+  String _getBillToName() {
+    if (widget.invoice.billTo == null) return '—';
+    final bt = widget.invoice.billTo!;
+    return '${bt.firstName} ${bt.lastName}';
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
-    // Determinar label, color e icono del estado de pago
-    String paymentStatusLabel;
-    Color paymentStatusColor;
-    IconData paymentStatusIcon;
-    
+    final l10n = widget.l10n;
+    final invoice = widget.invoice;
+    final loggedUser = context.watch<LaboratoryNotifier>().loggedUser;
+    final userRole = loggedUser?.labRole;
+    final canManage = userRole != LabMemberRole.tECHNICIAN;
+
+    // Status colors
+    Color statusColor;
+    Color statusBg;
+    String statusLabel;
     switch (invoice.paymentStatus) {
       case PaymentStatus.pAID:
-        paymentStatusLabel = l10n.paid;
-        paymentStatusColor = Colors.green;
-        paymentStatusIcon = Icons.check_circle;
+        statusColor = const Color(0xFF059669);
+        statusBg = const Color(0xFFD1FAE5);
+        statusLabel = l10n.paid;
         break;
       case PaymentStatus.pENDING:
-        paymentStatusLabel = l10n.pending;
-        paymentStatusColor = Colors.orange;
-        paymentStatusIcon = Icons.schedule;
+        statusColor = const Color(0xFFD97706);
+        statusBg = const Color(0xFFFEF3C7);
+        statusLabel = l10n.pending;
         break;
       case PaymentStatus.cANCELED:
-        paymentStatusLabel = l10n.canceled;
-        paymentStatusColor = Colors.red;
-        paymentStatusIcon = Icons.cancel;
+        statusColor = const Color(0xFFE11D48);
+        statusBg = const Color(0xFFFFE4E6);
+        statusLabel = l10n.canceled;
         break;
-      case null:
-        paymentStatusLabel = 'N/A';
-        paymentStatusColor = Colors.grey;
-        paymentStatusIcon = Icons.help_outline;
-        break;
-    }
-    
-    // Determinar label y color del tipo de factura
-    String invoiceTypeLabel;
-    Color invoiceTypeColor;
-    
-    if (invoice.kind == InvoiceKind.cREDIT_NOTE) {
-      invoiceTypeLabel = l10n.invoiceTypeCreditNote;
-      invoiceTypeColor = Colors.orange;
-    } else {
-      invoiceTypeLabel = l10n.invoiceTypeInvoice;
-      invoiceTypeColor = Colors.blue;
+      default:
+        statusColor = theme.colorScheme.outline;
+        statusBg = theme.colorScheme.surfaceContainerHighest;
+        statusLabel = 'N/A';
     }
 
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 360),
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    // Kind badge colors
+    final isCredit = invoice.kind == InvoiceKind.cREDIT_NOTE;
+    final kindLabel =
+        isCredit ? l10n.invoiceTypeCreditNote : l10n.invoiceTypeInvoice;
+    final kindColor = theme.colorScheme.primary;
+    final kindBg = theme.colorScheme.primary.withOpacity(0.08);
+
+    // Amount color: red for credit notes
+    final amountColor =
+        isCredit ? theme.colorScheme.error : theme.colorScheme.onSurface;
+    final formattedAmount = '\$${invoice.totalAmount.toStringAsFixed(2)}';
+
+    // Date
+    final createdAt = invoice.created != 0
+        ? DateFormat('MMM dd, yyyy').format(
+            DateTime.fromMillisecondsSinceEpoch(invoice.created * 1000),
+          )
+        : '—';
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        decoration: BoxDecoration(
+          color: _isHovered
+              ? theme.colorScheme.primary.withOpacity(0.04)
+              : Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+            ),
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
             children: [
-              // Header: Patient name y payment status
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      _getPatientName(),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Chip(
-                    avatar: Icon(
-                      paymentStatusIcon,
-                      color: paymentStatusColor,
-                      size: 18,
-                    ),
-                    label: Text(
-                      paymentStatusLabel,
-                      style: TextStyle(
-                        color: paymentStatusColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
-                    ),
-                    backgroundColor: paymentStatusColor.withOpacity(0.15), // color del estado de pago
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              
-              // Tipo de Factura
-              Row(
-                children: [
-                  Icon(Icons.description, size: 16, color: theme.colorScheme.primary),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${l10n.invoiceType}: ',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Chip(
-                    label: Text(
-                      invoiceTypeLabel,
-                      style: TextStyle(
-                        color: invoiceTypeColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                      ),
-                    ),
-                    backgroundColor: invoiceTypeColor.withOpacity(0.15), //color del tipo de factura
-                    padding: const EdgeInsets.symmetric(horizontal: 6),
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              const Divider(height: 1),
-              const SizedBox(height: 8),
-              
               // Order ID
-              Row(
-                children: [
-                  Icon(Icons.receipt_long, size: 16, color: theme.colorScheme.primary),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${l10n.orderID}: ',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  invoice.orderID.isNotEmpty ? invoice.orderID : '—',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'monospace',
                   ),
-                  Expanded(
-                    child: Text(
-                      invoice.orderID,
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              
-              // Bill To (Pagador)
-              if (invoice.billTo != null) ...[
-                Row(
-                  children: [
-                    Icon(Icons.person, size: 16, color: theme.colorScheme.primary),
-                    const SizedBox(width: 8),
-                    Text(
-                      '${l10n.billTo}: ',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '${invoice.billTo!.firstName} ${invoice.billTo!.lastName}',
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                  ],
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 6),
-              ],
-              
-              // Laboratory
-              Row(
-                children: [
-                  Icon(Icons.science, size: 16, color: theme.colorScheme.primary),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${l10n.laboratory}: ',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      invoice.laboratory?.company?.name ?? invoice.laboratory?.address ?? 'N/A',
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
               ),
-              const SizedBox(height: 6),
-              
-              // Evaluation Package Status (si existe)
-              if (invoice.evaluationPackage != null) ...[
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Icon(Icons.medical_information, size: 16, color: theme.colorScheme.primary),
-                    const SizedBox(width: 8),
-                    Text(
-                      '${l10n.evaluationPackage}: ',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        _getEvaluationPackageStatusText(invoice.evaluationPackage!.status),
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                  ],
+              // Patient
+              Expanded(
+                flex: 3,
+                child: Text(
+                  _getPatientName(),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w500),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
-              
-              const SizedBox(height: 8),
-              // Total Amount
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    l10n.totalAmount,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    '\$${invoice.totalAmount.toStringAsFixed(2)} USD',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ],
               ),
-              
-              // Botones de actualización de estado de pago
-              // ⚠️ No mostrar botones si la factura está cancelada (estado final)
-              if (onUpdatePaymentStatus != null && 
-                  invoice.paymentStatus != null && 
-                  invoice.paymentStatus != PaymentStatus.cANCELED) ...[
-                const SizedBox(height: 12),
-                const Divider(height: 1),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    // Botón Marcar como Pagado (si está pending)
-                    if (invoice.paymentStatus == PaymentStatus.pENDING)
-                      Expanded(
-                        child: TextButton.icon(
-                          icon: const Icon(Icons.check_circle, size: 18),
-                          label: Text(l10n.markAsPaid),
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.green,
+              // Bill To
+              Expanded(
+                flex: 2,
+                child: Text(
+                  _getBillToName(),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              // Amount
+              Expanded(
+                flex: 2,
+                child: Text(
+                  formattedAmount,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: amountColor,
+                  ),
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              // Kind Badge
+              Expanded(
+                flex: 2,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: kindBg,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        kindLabel,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: kindColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Status Pill
+              Expanded(
+                flex: 2,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: statusBg,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: statusColor,
+                            shape: BoxShape.circle,
                           ),
-                          onPressed: () => onUpdatePaymentStatus!(invoice.id, PaymentStatus.pAID),
                         ),
-                      ),
-                    
-                    // Espaciador si hay dos botones
-                    if (invoice.paymentStatus == PaymentStatus.pENDING)
-                      const SizedBox(width: 8),
-                    
-                    // Botón Cancelar Pago (si está paid o pending)
-                    Expanded(
-                      child: TextButton.icon(
-                        icon: const Icon(Icons.block, size: 18),
-                        label: Text(l10n.cancelPayment),
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.red,
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            statusLabel,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: statusColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        onPressed: () => onUpdatePaymentStatus!(invoice.id, PaymentStatus.cANCELED),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ],
+              ),
+              // Date
+              Expanded(
+                flex: 2,
+                child: Text(
+                  createdAt,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              // Actions
+              Expanded(
+                flex: 2,
+                child: widget.onUpdatePaymentStatus != null && canManage
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (invoice.paymentStatus == PaymentStatus.pENDING)
+                            _ActionButton(
+                              label: l10n.markAsPaid,
+                              icon: Icons.check_circle_outline,
+                              color: const Color(0xFF059669),
+                              onTap: () => widget.onUpdatePaymentStatus!(
+                                invoice.id,
+                                PaymentStatus.pAID,
+                              ),
+                            ),
+                          if (invoice.paymentStatus == PaymentStatus.pAID)
+                            _ActionButton(
+                              label: l10n.cancelPayment,
+                              icon: Icons.block,
+                              color: theme.colorScheme.error,
+                              onTap: () => widget.onUpdatePaymentStatus!(
+                                invoice.id,
+                                PaymentStatus.cANCELED,
+                              ),
+                            ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-  
-  String _getPatientName() {
-    if (invoice.patient == null) return l10n.patient;
-    
-    final patient = invoice.patient!;
-    
-    if (patient.isPerson && patient.asPerson != null) {
-      final person = patient.asPerson!;
-      return '${person.firstName} ${person.lastName}';
-    } else if (patient.isAnimal && patient.asAnimal != null) {
-      final animal = patient.asAnimal!;
-      return '${animal.firstName} ${animal.lastName}';
-    }
-    
-    return '${l10n.patient} ${patient.id}';
-  }
+}
 
-  String _getEvaluationPackageStatusText(ResultStatus? status) {
-    switch (status) {
-      case ResultStatus.cOMPLETED:
-        return l10n.statusCompleted;
-      case ResultStatus.iNPROGRESS:
-        return l10n.statusInProgress;
-      case ResultStatus.pENDING:
-        return l10n.statusPending;
-      default:
-        return 'N/A';
-    }
+// ─── Action Button ───────────────────────────────────────────────────────────
+
+class _ActionButton extends StatefulWidget {
+  final String label;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ActionButton({
+    required this.label,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  State<_ActionButton> createState() => _ActionButtonState();
+}
+
+class _ActionButtonState extends State<_ActionButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        decoration: BoxDecoration(
+          color: _hovered
+              ? widget.color.withOpacity(0.12)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: InkWell(
+          onTap: widget.onTap,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(widget.icon, size: 16, color: widget.color),
+                const SizedBox(width: 4),
+                Text(
+                  widget.label,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: widget.color,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

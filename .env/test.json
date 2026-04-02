@@ -5,5 +5,9 @@
     "desktopApiURL":"https://localhost:8443/",
     "mobileWsURL":"https://localhost:8443/ws/",
     "webWsURL":"https://localhost:8443/ws/",
-    "desktopWsURL":"https://localhost:8443/ws/"
+    "desktopWsURL":"https://localhost:8443/ws/",
+    "mobileMailcowAuthURL":"https://localhost:8443/auth/mailcow",
+    "webMailcowAuthURL":"https://localhost:8443/auth/mailcow",
+    "desktopMailcowAuthURL":"https://localhost:8443/auth/mailcow",
+    "webMailcowAuthCallbackPath": "/auth/mailcow/callback"
 }

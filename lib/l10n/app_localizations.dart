@@ -293,7 +293,7 @@ abstract class AppLocalizations {
   /// **'Pagado'**
   String get paid;
 
-  /// Estado de pago: pendiente
+  /// Estado pendiente
   ///
   /// In es, this message translates to:
   /// **'Pendiente'**
@@ -461,7 +461,7 @@ abstract class AppLocalizations {
   /// **'Empresas'**
   String get companies;
 
-  /// Término para examen en singular
+  /// Palabra examen singular
   ///
   /// In es, this message translates to:
   /// **'Examen'**
@@ -719,7 +719,7 @@ abstract class AppLocalizations {
   /// **'Examen sin nombre'**
   String get examWithoutName;
 
-  /// Término para indicador en singular
+  /// Palabra indicador singular
   ///
   /// In es, this message translates to:
   /// **'Indicador'**
@@ -839,10 +839,10 @@ abstract class AppLocalizations {
   /// **'Subir'**
   String get upload;
 
-  /// Botón para cambiar el logo existente
+  /// Botón para cambiar logo
   ///
   /// In es, this message translates to:
-  /// **'Cambiar logo'**
+  /// **'Cambiar Logo'**
   String get changeLogo;
 
   /// Mensaje durante la carga de archivo
@@ -1130,19 +1130,19 @@ abstract class AppLocalizations {
   /// Tipo de valor numérico
   ///
   /// In es, this message translates to:
-  /// **'Numérico'**
+  /// **'NUMÉRICO'**
   String get valueTypeNumeric;
 
-  /// Tipo de valor de texto
+  /// Tipo de valor texto
   ///
   /// In es, this message translates to:
-  /// **'Texto'**
+  /// **'TEXTO'**
   String get valueTypeText;
 
   /// Tipo de valor booleano
   ///
   /// In es, this message translates to:
-  /// **'Booleano'**
+  /// **'BOOLEANO'**
   String get valueTypeBoolean;
 
   /// Etiqueta para campo de unidad de medida
@@ -1157,10 +1157,10 @@ abstract class AppLocalizations {
   /// **'Rango Normal'**
   String get normalRange;
 
-  /// Término para indicadores en plural
+  /// Palabra indicadores en minúscula
   ///
   /// In es, this message translates to:
-  /// **'Indicadores'**
+  /// **'indicadores'**
   String get indicators;
 
   /// Botón para agregar nuevo indicador
@@ -2278,6 +2278,378 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Seleccionar Laboratorio'**
   String get selectLaboratory;
+
+  /// Respuesta afirmativa
+  ///
+  /// In es, this message translates to:
+  /// **'Sí'**
+  String get yes;
+
+  /// Respuesta negativa
+  ///
+  /// In es, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// Mensaje de validación para campo numérico
+  ///
+  /// In es, this message translates to:
+  /// **'Debe ser un valor numérico'**
+  String get mustBeNumeric;
+
+  /// Título de sección de resultados de exámenes
+  ///
+  /// In es, this message translates to:
+  /// **'Resultados de Exámenes'**
+  String get examResultsTitle;
+
+  /// Descripción de sección de resultados
+  ///
+  /// In es, this message translates to:
+  /// **'Complete los valores de los indicadores para cada examen del paquete'**
+  String get examResultsDescription;
+
+  /// Título para datos de referencia
+  ///
+  /// In es, this message translates to:
+  /// **'Datos de Referencia'**
+  String get referenceData;
+
+  /// Estado en progreso
+  ///
+  /// In es, this message translates to:
+  /// **'En Progreso'**
+  String get inProgress;
+
+  /// Estado completado
+  ///
+  /// In es, this message translates to:
+  /// **'Completado'**
+  String get completed;
+
+  /// Título de la sección de información del paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Información del Paciente'**
+  String get patientInformation;
+
+  /// Descripción de la acción de actualizar datos del paciente
+  ///
+  /// In es, this message translates to:
+  /// **'Actualice los datos del paciente.'**
+  String get updatePatientData;
+
+  /// Opción para mostrar todos los pacientes sin filtro
+  ///
+  /// In es, this message translates to:
+  /// **'Todos los pacientes'**
+  String get allPatients;
+
+  /// Columna de acciones en tablas
+  ///
+  /// In es, this message translates to:
+  /// **'Acciones'**
+  String get actions;
+
+  /// Texto de ayuda para selección de plantilla de examen
+  ///
+  /// In es, this message translates to:
+  /// **'Ej: Hemograma completo, Perfil lipídico...'**
+  String get examTemplateHint;
+
+  /// Mensaje de validación para costo base
+  ///
+  /// In es, this message translates to:
+  /// **'El costo debe ser mayor a cero'**
+  String get costMustBeGreaterThanZero;
+
+  /// Información sobre restricciones al crear un examen
+  ///
+  /// In es, this message translates to:
+  /// **'Una vez creado, el laboratorio y la plantilla serán de solo lectura. Solo el costo base podrá ajustarse posteriormente.'**
+  String get examCreationInfo;
+
+  /// Título de sección de información del examen
+  ///
+  /// In es, this message translates to:
+  /// **'Información del Examen'**
+  String get examInformation;
+
+  /// Descripción para actualizar datos del examen
+  ///
+  /// In es, this message translates to:
+  /// **'Actualice los datos del examen.'**
+  String get updateExamData;
+
+  /// Descripción para actualizar datos de la empresa
+  ///
+  /// In es, this message translates to:
+  /// **'Actualice los datos de la empresa.'**
+  String get updateCompanyData;
+
+  /// Texto para laboratorio general
+  ///
+  /// In es, this message translates to:
+  /// **'Lab General'**
+  String get generalLaboratory;
+
+  /// Texto para indicar que no hay datos disponibles
+  ///
+  /// In es, this message translates to:
+  /// **'N/A'**
+  String get notAvailable;
+
+  /// Opción para mostrar todos los roles sin filtro
+  ///
+  /// In es, this message translates to:
+  /// **'Todos los Roles'**
+  String get allRoles;
+
+  /// Título de la sección de información personal
+  ///
+  /// In es, this message translates to:
+  /// **'Información Personal'**
+  String get personalInformation;
+
+  /// Descripción para actualizar datos del usuario
+  ///
+  /// In es, this message translates to:
+  /// **'Actualice los datos personales del usuario.'**
+  String get updateUserData;
+
+  /// Descripción para actualizar datos del template de examen
+  ///
+  /// In es, this message translates to:
+  /// **'Actualiza la información del template de examen'**
+  String get updateExamTemplateData;
+
+  /// Título de sección de información de ubicación
+  ///
+  /// In es, this message translates to:
+  /// **'Información de Ubicación'**
+  String get locationInformation;
+
+  /// Descripción para actualizar datos de ubicación
+  ///
+  /// In es, this message translates to:
+  /// **'Actualice la dirección física y los métodos de contacto directo.'**
+  String get updateLocationData;
+
+  /// Título para sección de números de contacto
+  ///
+  /// In es, this message translates to:
+  /// **'Números de contacto'**
+  String get contactNumbers;
+
+  /// Título de sección de información de empleados
+  ///
+  /// In es, this message translates to:
+  /// **'Información de Empleados'**
+  String get employeeInformation;
+
+  /// Mensaje cuando no hay empleados asignados
+  ///
+  /// In es, this message translates to:
+  /// **'No hay empleados asignados a este laboratorio'**
+  String get noEmployeesAssigned;
+
+  /// Etiqueta para ID de sucursal
+  ///
+  /// In es, this message translates to:
+  /// **'ID de Sucursal'**
+  String get branchId;
+
+  /// Etiqueta para última actualización
+  ///
+  /// In es, this message translates to:
+  /// **'Última Actualización'**
+  String get lastUpdate;
+
+  /// Formato para mostrar días transcurridos
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {days} días'**
+  String daysAgo(int days);
+
+  /// Mensaje informativo sobre visibilidad de cambios
+  ///
+  /// In es, this message translates to:
+  /// **'Los cambios realizados serán visibles para todos los operarios inmediatamente.'**
+  String get changesVisibleImmediately;
+
+  /// Placeholder para búsqueda de empleados
+  ///
+  /// In es, this message translates to:
+  /// **' Ej: Juan Perez'**
+  String get searchEmployeePlaceholder;
+
+  /// Etiqueta para empleados
+  ///
+  /// In es, this message translates to:
+  /// **'Empleados'**
+  String get employees;
+
+  /// Etiqueta para total de laboratorios
+  ///
+  /// In es, this message translates to:
+  /// **'Total Laboratorios'**
+  String get totalLabs;
+
+  /// Mensaje cuando el paciente es verificado
+  ///
+  /// In es, this message translates to:
+  /// **'Paciente verificado'**
+  String get patientVerified;
+
+  /// Acción para ocultar
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar'**
+  String get hide;
+
+  /// Acción para mostrar
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar'**
+  String get show;
+
+  /// Mensaje para configurar datos de facturación
+  ///
+  /// In es, this message translates to:
+  /// **'Configura los datos de facturación'**
+  String get configureBillingData;
+
+  /// Placeholder para nombre de doctor
+  ///
+  /// In es, this message translates to:
+  /// **'Dr. Nombre...'**
+  String get doctorNamePlaceholder;
+
+  /// Título de resumen
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen'**
+  String get summary;
+
+  /// Texto de cálculo automático
+  ///
+  /// In es, this message translates to:
+  /// **'Cálculo automático'**
+  String get automaticCalculation;
+
+  /// Etiqueta de total
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// Formato de fecha y hora
+  ///
+  /// In es, this message translates to:
+  /// **'DD/MM/YYYY HH:MM'**
+  String get dateTimeFormat;
+
+  /// Botón para confirmar selección
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar Selección'**
+  String get confirmSelection;
+
+  /// Mensaje de error para formato de archivo inválido
+  ///
+  /// In es, this message translates to:
+  /// **'Formato no válido. Usa JPG, JPEG, PNG o GIF'**
+  String get invalidFileFormat;
+
+  /// Mensaje indicando que la función solo está disponible en web
+  ///
+  /// In es, this message translates to:
+  /// **'Funcionalidad solo disponible en web'**
+  String get onlyAvailableOnWeb;
+
+  /// Título de sección de información de empresa
+  ///
+  /// In es, this message translates to:
+  /// **'INFORMACIÓN DE LA EMPRESA'**
+  String get companyInfo;
+
+  /// Campo de nombre de empresa
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre de la Empresa'**
+  String get companyName;
+
+  /// Campo de RUC o Tax ID
+  ///
+  /// In es, this message translates to:
+  /// **'RUC / Tax ID'**
+  String get taxIDRUC;
+
+  /// Título de sección de información de laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'INFORMACIÓN DEL LABORATORIO'**
+  String get laboratoryInfo;
+
+  /// Campo de dirección del laboratorio
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección del Laboratorio'**
+  String get laboratoryAddress;
+
+  /// Hint para campo de teléfonos de contacto
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfonos de Contacto (separados por comas)'**
+  String get contactPhonesHint;
+
+  /// Placeholder para teléfonos de contacto
+  ///
+  /// In es, this message translates to:
+  /// **'555-1234, 555-5678'**
+  String get contactPhonesPlaceholder;
+
+  /// Título de sección de información de facturación
+  ///
+  /// In es, this message translates to:
+  /// **'INFORMACIÓN DE FACTURACIÓN'**
+  String get billingInfo;
+
+  /// Formato corto de fecha
+  ///
+  /// In es, this message translates to:
+  /// **'DD/MM/AAAA'**
+  String get dateFormatShort;
+
+  /// Firma del bioanalista
+  ///
+  /// In es, this message translates to:
+  /// **'Firma'**
+  String get signature;
+
+  /// Campo de firma del bioanalista
+  ///
+  /// In es, this message translates to:
+  /// **'Firma del Bioanalista'**
+  String get bioanalystSignature;
+
+  /// Botón para subir firma
+  ///
+  /// In es, this message translates to:
+  /// **'Subir Firma'**
+  String get uploadSignature;
+
+  /// Botón para cambiar firma
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar Firma'**
+  String get changeSignature;
+
+  /// Mensaje de firma requerida
+  ///
+  /// In es, this message translates to:
+  /// **'Firma requerida para aprobar'**
+  String get signatureRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
