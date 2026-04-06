@@ -57,8 +57,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorUploadingSignature => 'Error al subir firma';
 
   @override
-  String get errorApprovingEvaluationPackage =>
-      'Error al aprobar paquete de evaluación';
+  String get errorApprovingEvaluationPackage => 'Error al aprobar paquete de evaluación';
 
   @override
   String get invoice => 'Factura';
@@ -145,23 +144,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get useExistingBillTo => 'Usar pagador existente';
 
   @override
-  String get useExistingBillToHint =>
-      'Busca por cédula para reutilizar los datos de facturación';
+  String get useExistingBillToHint => 'Busca por cédula para reutilizar los datos de facturación';
 
   @override
-  String get billToSearchHint =>
-      'Ingresa la cédula y presiona buscar para reutilizar un pagador';
+  String get billToSearchHint => 'Ingresa la cédula y presiona buscar para reutilizar un pagador';
 
   @override
   String get billToNotFound => 'No se encontró un pagador con esa cédula';
 
   @override
-  String get billToSelectionRequired =>
-      'Selecciona un pagador existente o ingresa los datos de facturación';
+  String get billToSelectionRequired => 'Selecciona un pagador existente o ingresa los datos de facturación';
 
   @override
-  String get billingFormToggleHint =>
-      'Haga clic en \"Mostrar\" para ingresar los datos de facturación';
+  String get billingFormToggleHint => 'Haga clic en \"Mostrar\" para ingresar los datos de facturación';
 
   @override
   String get createNewPerson => 'Crear Nueva Persona';
@@ -221,12 +216,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get approveEvaluationPackage => 'Aprobar Paquete de Evaluación';
 
   @override
-  String get approveEvaluationPackageConfirmation =>
-      '¿Está seguro de que desea aprobar este paquete de evaluación? Esta acción registrará su revisión como bioanalista.';
+  String get approveEvaluationPackageConfirmation => '¿Está seguro de que desea aprobar este paquete de evaluación? Esta acción registrará su revisión como bioanalista.';
 
   @override
-  String get evaluationPackageApprovedSuccessfully =>
-      'Paquete de evaluación aprobado exitosamente';
+  String get evaluationPackageApprovedSuccessfully => 'Paquete de evaluación aprobado exitosamente';
 
   @override
   String get bioanalystSignature => 'Firma del Bioanalista';
@@ -241,8 +234,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fileNoExtension => 'El archivo no tiene extensión';
 
   @override
-  String get invalidImageExtension =>
-      'Extensión no válida. Use: jpeg, jpg, png, gif';
+  String get invalidImageExtension => 'Extensión no válida. Use: jpeg, jpg, png, gif';
 
   @override
   String get uploadError => 'Error al subir el archivo';
@@ -257,23 +249,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get imageLoadError => 'Error al cargar la imagen';
 
   @override
-  String get viewOnlyMode =>
-      'Solo puedes ver este paquete de evaluación. Solo los propietarios y técnicos pueden editar los resultados.';
+  String get viewOnlyMode => 'Solo puedes ver este paquete de evaluación. Solo los propietarios y técnicos pueden editar los resultados.';
 
   @override
-  String get bioanalystViewMode =>
-      'Como bioanalista, puedes revisar los resultados y aprobar el paquete de evaluación cuando esté completo.';
+  String get bioanalystViewMode => 'Como bioanalista, puedes revisar los resultados y aprobar el paquete de evaluación cuando esté completo.';
 
   @override
-  String get markAsCompletedDescription =>
-      'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.';
+  String get markAsCompletedDescription => 'Marca que todos los resultados de los exámenes han sido completados y están listos para revisión del bioanalista.';
 
   @override
   String get markAsReviewed => 'Marcar como revisado';
 
   @override
-  String get markAsReviewedDescription =>
-      'Marca que has revisado todos los resultados del paquete de evaluación.';
+  String get markAsReviewedDescription => 'Marca que has revisado todos los resultados del paquete de evaluación.';
 
   @override
   String get isApproved => 'Aprobado';
@@ -601,8 +589,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get searchByOrderID => 'Buscar (filtrado por ID de orden)';
 
   @override
-  String get searchByReferredPackage =>
-      'Buscar (filtrado por referido del paquete)';
+  String get searchByReferredPackage => 'Buscar (filtrado por referido del paquete)';
 
   @override
   String get filter => 'Filtrar';
@@ -689,8 +676,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error008 => 'El laboratorio es requerido';
 
   @override
-  String get error009 =>
-      'Ya existe una cuenta con el correo electrónico proporcionado';
+  String get error009 => 'Ya existe una cuenta con el correo electrónico proporcionado';
 
   @override
   String get error010 => 'Ya existe una empresa con el RUC/NIT proporcionado';
@@ -720,8 +706,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error018 => 'Error al intentar eliminar la empresa';
 
   @override
-  String get error019 =>
-      'Una vez que inicias sesión por primera vez, no puedes actualizar tu correo electrónico';
+  String get error019 => 'Una vez que inicias sesión por primera vez, no puedes actualizar tu correo electrónico';
 
   @override
   String get error020 => 'El empleado no forma parte del laboratorio';
@@ -742,15 +727,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error025 => 'Acceso denegado';
 
   @override
-  String get error026 =>
-      'Número de teléfono inválido, debe estar en formato E.164';
+  String get error026 => 'Número de teléfono inválido, debe estar en formato E.164';
 
   @override
   String get error027 => 'Formato de correo electrónico inválido';
 
   @override
-  String get error028 =>
-      'Formato de fecha y hora inválido, debe ser timestamp unix';
+  String get error028 => 'Formato de fecha y hora inválido, debe ser timestamp unix';
 
   @override
   String get error029 => 'Sesión no encontrada';
@@ -768,12 +751,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error033 => 'Plantilla de examen no encontrada';
 
   @override
-  String get error034 =>
-      'La plantilla de examen está siendo usada en uno o más exámenes de laboratorio';
+  String get error034 => 'La plantilla de examen está siendo usada en uno o más exámenes de laboratorio';
 
   @override
-  String get error035 =>
-      'Ya existe una plantilla de examen con el mismo nombre';
+  String get error035 => 'Ya existe una plantilla de examen con el mismo nombre';
 
   @override
   String get error036 => 'El ID de la empresa es requerido';
@@ -803,15 +784,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error044 => 'El costo base del examen debe ser un valor positivo';
 
   @override
-  String get error045 =>
-      'El examen está siendo usado en uno o más paquetes de evaluación y no puede ser eliminado';
+  String get error045 => 'El examen está siendo usado en uno o más paquetes de evaluación y no puede ser eliminado';
 
   @override
   String get error046 => 'Faltan campos del paciente humano';
 
   @override
-  String get error047 =>
-      'La fecha y hora proporcionada no puede ser mayor que la hora actual';
+  String get error047 => 'La fecha y hora proporcionada no puede ser mayor que la hora actual';
 
   @override
   String get error048 => 'Error al intentar crear el paciente';
@@ -823,8 +802,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error050 => 'Paciente no encontrado';
 
   @override
-  String get error051 =>
-      'Ya existe una cuenta con el número de teléfono proporcionado';
+  String get error051 => 'Ya existe una cuenta con el número de teléfono proporcionado';
 
   @override
   String get error052 => 'Error al intentar eliminar el paciente';
@@ -851,46 +829,37 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error059 => 'Paquete de evaluación no encontrado';
 
   @override
-  String get error060 =>
-      'Error al intentar actualizar el paquete de evaluación';
+  String get error060 => 'Error al intentar actualizar el paquete de evaluación';
 
   @override
   String get error061 => 'El pago de la factura ya fue cancelado';
 
   @override
-  String get error062 =>
-      'El indicador #%d para el examen de entrada #%d tiene un índice fuera de rango (%d)';
+  String get error062 => 'El indicador #%d para el examen de entrada #%d tiene un índice fuera de rango (%d)';
 
   @override
-  String get error063 =>
-      'Valor inválido para el indicador #%d en el examen de entrada #%d';
+  String get error063 => 'Valor inválido para el indicador #%d en el examen de entrada #%d';
 
   @override
-  String get error064 =>
-      'El indicador #%d está duplicado para el examen de entrada #%d';
+  String get error064 => 'El indicador #%d está duplicado para el examen de entrada #%d';
 
   @override
-  String get error065 =>
-      'El examen de entrada #%d no forma parte del paquete de evaluación';
+  String get error065 => 'El examen de entrada #%d no forma parte del paquete de evaluación';
 
   @override
-  String get error066 =>
-      'Todos los exámenes de este paquete de evaluación ya han sido completados';
+  String get error066 => 'Todos los exámenes de este paquete de evaluación ya han sido completados';
 
   @override
-  String get error067 =>
-      'El pago de este paquete de evaluación ha sido cancelado. No se pueden gestionar valores de exámenes';
+  String get error067 => 'El pago de este paquete de evaluación ha sido cancelado. No se pueden gestionar valores de exámenes';
 
   @override
   String get error068 => 'Aún faltan resultados del examen #%d';
 
   @override
-  String get error069 =>
-      'El examen de entrada #%d contiene más valores de indicadores de los permitidos';
+  String get error069 => 'El examen de entrada #%d contiene más valores de indicadores de los permitidos';
 
   @override
-  String get error070 =>
-      'La cantidad de exámenes de entrada excede la cantidad incluida en el paquete de evaluación';
+  String get error070 => 'La cantidad de exámenes de entrada excede la cantidad incluida en el paquete de evaluación';
 
   @override
   String get error071 => 'El tipo de archivo no puede estar vacío';
@@ -911,16 +880,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error076 => 'Tipo de acceso no encontrado';
 
   @override
-  String get error077 =>
-      'Permisos de laboratorio insuficientes para esta operación';
+  String get error077 => 'Permisos de laboratorio insuficientes para esta operación';
 
   @override
-  String get error078 =>
-      'Falta la asignación de laboratorio para el usuario empleado';
+  String get error078 => 'Falta la asignación de laboratorio para el usuario empleado';
 
   @override
-  String get error079 =>
-      'No se puede aprobar un paquete de evaluación que no está completo';
+  String get error079 => 'No se puede aprobar un paquete de evaluación que no está completo';
 
   @override
   String get error080 => 'Error al intentar crear la persona';
@@ -932,8 +898,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error082 => 'El paciente ya existe';
 
   @override
-  String get error083 =>
-      'No se pueden actualizar datos de animal para un paciente que no es animal';
+  String get error083 => 'No se pueden actualizar datos de animal para un paciente que no es animal';
 
   @override
   String get error084 => 'Error al intentar actualizar la persona';
@@ -1014,8 +979,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get selectPatient => 'Seleccionar Paciente';
 
   @override
-  String get selectPatientHint =>
-      'Haz clic en el botón para seleccionar un paciente';
+  String get selectPatientHint => 'Haz clic en el botón para seleccionar un paciente';
 
   @override
   String get noPatientSelected => 'No hay paciente seleccionado';
@@ -1030,12 +994,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get patientNotFound => 'Paciente no encontrado';
 
   @override
-  String get patientNotFoundCreateFirst =>
-      'Paciente no encontrado. Por favor, créelo primero en el módulo de Pacientes.';
+  String get patientNotFoundCreateFirst => 'Paciente no encontrado. Por favor, créelo primero en el módulo de Pacientes.';
 
   @override
-  String get patientRequired =>
-      'Debe seleccionar un paciente para crear la factura';
+  String get patientRequired => 'Debe seleccionar un paciente para crear la factura';
 
   @override
   String get completePatientData => 'Complete los datos del paciente';
@@ -1112,8 +1074,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get actionIsIrreversible => 'Esta acción es irreversible';
 
   @override
-  String get cannotDeleteHasDependencies =>
-      'No se puede eliminar porque tiene registros relacionados';
+  String get cannotDeleteHasDependencies => 'No se puede eliminar porque tiene registros relacionados';
 
   @override
   String get cannotDeleteInUse => 'No se puede eliminar porque está en uso';
@@ -1128,8 +1089,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get allResultsCompleted => 'Todos los resultados completados';
 
   @override
-  String get allResultsCompletedDescription =>
-      'Marcar si todos los resultados del examen han sido completados y verificados correctamente';
+  String get allResultsCompletedDescription => 'Marcar si todos los resultados del examen han sido completados y verificados correctamente';
 
   @override
   String get addObservation => 'Agregar observación';
@@ -1144,8 +1104,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get writeObservationsHere => 'Escribe tus observaciones aquí...';
 
   @override
-  String get examResultsNote =>
-      'Nota: Los resultados de exámenes se editan en su módulo correspondiente';
+  String get examResultsNote => 'Nota: Los resultados de exámenes se editan en su módulo correspondiente';
 
   @override
   String get examResults => 'Resultados de exámenes';
@@ -1172,8 +1131,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get templateDescription => 'Descripción de la plantilla';
 
   @override
-  String get atLeastOnePhoneRequired =>
-      'Debe agregar al menos un teléfono de contacto';
+  String get atLeastOnePhoneRequired => 'Debe agregar al menos un teléfono de contacto';
 
   @override
   String get selectLaboratory => 'Seleccionar Laboratorio';
@@ -1185,8 +1143,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get examResultsTitle => 'Resultados de Exámenes';
 
   @override
-  String get examResultsDescription =>
-      'Complete los valores de los indicadores para cada examen del paquete';
+  String get examResultsDescription => 'Complete los valores de los indicadores para cada examen del paquete';
 
   @override
   String get referenceData => 'Datos de Referencia';
@@ -1216,8 +1173,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get costMustBeGreaterThanZero => 'El costo debe ser mayor a cero';
 
   @override
-  String get examCreationInfo =>
-      'Una vez creado, el laboratorio y la plantilla serán de solo lectura. Solo el costo base podrá ajustarse posteriormente.';
+  String get examCreationInfo => 'Una vez creado, el laboratorio y la plantilla serán de solo lectura. Solo el costo base podrá ajustarse posteriormente.';
 
   @override
   String get examInformation => 'Información del Examen';
@@ -1244,15 +1200,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updateUserData => 'Actualice los datos personales del usuario.';
 
   @override
-  String get updateExamTemplateData =>
-      'Actualiza la información del template de examen';
+  String get updateExamTemplateData => 'Actualiza la información del template de examen';
 
   @override
   String get locationInformation => 'Información de Ubicación';
 
   @override
-  String get updateLocationData =>
-      'Actualice la dirección física y los métodos de contacto directo.';
+  String get updateLocationData => 'Actualice la dirección física y los métodos de contacto directo.';
 
   @override
   String get contactNumbers => 'Números de contacto';
@@ -1261,8 +1215,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get employeeInformation => 'Información de Empleados';
 
   @override
-  String get noEmployeesAssigned =>
-      'No hay empleados asignados a este laboratorio';
+  String get noEmployeesAssigned => 'No hay empleados asignados a este laboratorio';
 
   @override
   String get branchId => 'ID de Sucursal';
@@ -1276,8 +1229,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get changesVisibleImmediately =>
-      'Los cambios realizados serán visibles para todos los operarios inmediatamente.';
+  String get changesVisibleImmediately => 'Los cambios realizados serán visibles para todos los operarios inmediatamente.';
 
   @override
   String get searchEmployeePlaceholder => ' Ej: Juan Perez';
